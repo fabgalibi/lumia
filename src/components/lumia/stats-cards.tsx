@@ -44,10 +44,10 @@ export const StatsCards = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {stats.map((stat, index) => (
-        <div key={index} className="bg-gray-800 rounded-xl p-5 border border-gray-700">
+        <div key={index} className="bg-gray-800 rounded-xl p-5 border border-gray-700 shadow-lg">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center ${stat.color}`}>
+              <div className={`w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center ${stat.color} shadow-sm`}>
                 {stat.isEmoji ? (
                   <span className="text-lg">{stat.icon}</span>
                 ) : (

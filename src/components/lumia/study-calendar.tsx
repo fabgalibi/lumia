@@ -12,15 +12,15 @@ export const StudyCalendar = () => {
   );
 
   return (
-    <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
+    <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-lg">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+          <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center shadow-sm">
             <div className="w-4 h-4 bg-white rounded-sm"></div>
           </div>
           <div className="flex items-center gap-2">
             <h3 className="text-white text-lg font-medium">Consistência nos estudos</h3>
-            <div className="w-4 h-4 bg-gray-600 rounded-full flex items-center justify-center">
+            <div className="w-4 h-4 bg-gray-600 rounded-full flex items-center justify-center shadow-sm">
               <span className="text-xs text-gray-300">?</span>
             </div>
           </div>
@@ -28,11 +28,11 @@ export const StudyCalendar = () => {
 
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <div className={`w-4 h-2 rounded ${activeStatus === "Ativo" ? "bg-orange-500" : "bg-gray-600"}`}></div>
+            <div className={`w-4 h-2 rounded shadow-sm ${activeStatus === "Ativo" ? "bg-orange-500" : "bg-gray-600"}`}></div>
             <span className="text-gray-300 text-sm">Ativo</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-2 rounded bg-gray-600"></div>
+            <div className="w-4 h-2 rounded bg-gray-600 shadow-sm"></div>
             <span className="text-gray-300 text-sm">Inativo</span>
           </div>
         </div>

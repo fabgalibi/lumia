@@ -9,10 +9,10 @@ export const SprintSection = () => {
   return (
     <div className="space-y-6">
       {/* Card principal da sprint */}
-      <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
+      <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-lg">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center shadow-sm">
               <div className="w-4 h-4 bg-white rounded-sm"></div>
             </div>
             <div>
@@ -26,7 +26,7 @@ export const SprintSection = () => {
             color="tertiary"
             size="md"
             onClick={() => setIsExpanded(!isExpanded)}
-            className="text-gray-300"
+            className="text-gray-300 hover:bg-gray-700"
           >
             <span className="mr-2">⤢</span>
             Expandir aba
@@ -34,16 +34,16 @@ export const SprintSection = () => {
         </div>
 
         {/* Barra de progresso */}
-        <div className="bg-gray-700 rounded-lg p-4 mb-6">
+        <div className="bg-gray-700 rounded-lg p-4 mb-6 shadow-sm">
           <div className="flex items-center justify-between mb-2">
             <span className="text-white text-sm">88% concluído</span>
-            <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center shadow-sm">
               <span className="text-lg">🚀</span>
             </div>
           </div>
           <div className="w-full bg-gray-600 rounded-full h-2">
             <div 
-              className="bg-gradient-to-r from-orange-500 to-red-600 h-2 rounded-full" 
+              className="bg-gradient-to-r from-orange-500 to-red-600 h-2 rounded-full shadow-sm" 
               style={{ width: '88%' }}
             ></div>
           </div>
@@ -51,7 +51,7 @@ export const SprintSection = () => {
 
         {/* Objetivo atual */}
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center">
+          <div className="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center shadow-sm">
             <div className="w-8 h-8 bg-gray-600 rounded"></div>
           </div>
           <div className="flex-1">
@@ -59,10 +59,10 @@ export const SprintSection = () => {
             <p className="text-orange-500 font-semibold">INSS - Analista de seguro social</p>
           </div>
           <div className="flex items-center gap-2">
-            <div className="bg-gray-600 rounded-lg px-4 py-2">
+            <div className="bg-gray-600 rounded-lg px-4 py-2 shadow-sm">
               <span className="text-white text-sm">Próxima Sprint</span>
             </div>
-            <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center shadow-sm">
               <div className="w-4 h-4 bg-gray-400 rounded"></div>
             </div>
           </div>

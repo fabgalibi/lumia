@@ -90,11 +90,11 @@ export const GoalsTable = () => {
   ];
 
   return (
-    <div className="bg-gray-800 rounded-2xl border border-gray-700">
+    <div className="bg-gray-800 rounded-2xl border border-gray-700 shadow-lg">
       {/* Header */}
       <div className="p-6 border-b border-gray-700">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center shadow-sm">
             <span className="text-white text-lg">📚</span>
           </div>
           <h2 className="text-white text-lg font-medium">Suas metas</h2>
