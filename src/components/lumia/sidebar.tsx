@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
-import { 
-  Calendar 
+import {
+  Calendar,
+  Bell01,
+  BarChart01,
+  Trophy01,
+  Play
 } from "@untitledui/icons";
 
 export const Sidebar = () => {
@@ -33,17 +37,16 @@ export const Sidebar = () => {
 
   const menuItems = [
     { 
-      icon: (props: any) => (
-        <img 
-          src="/images/home-icon.png" 
-          alt="Início" 
-          className="w-6 h-6"
-          style={{ 
-            filter: activeItem === "Início" ? 'none' : 'brightness(0) invert(1)',
-            opacity: activeItem === "Início" ? 1 : 0.7
-          }}
-        />
-      ), 
+                  icon: (props: any) => (
+              <img 
+                src="/images/home-icon.png" 
+                alt="Início" 
+                className="w-6 h-6"
+                style={{
+                  filter: activeItem === "Início" ? 'none' : 'brightness(0) invert(1)'
+                }}
+              />
+            ), 
       label: "Início", 
       path: "/",
       isEmoji: false 
@@ -62,67 +65,71 @@ export const Sidebar = () => {
       isEmoji: false 
     },
     { 
-      icon: (props: any) => (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
-          <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      ), 
+                  icon: (props: any) => (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="w-6 h-6">
+                <path
+                  d="M7 8.5H12M7 12H15M9.68375 18H16.2C17.8802 18 18.7202 18 19.362 17.673C19.9265 17.3854 20.3854 16.9265 20.673 16.362C21 15.7202 21 14.8802 21 13.2V7.8C21 6.11984 21 5.27976 20.673 4.63803C20.3854 4.07354 19.9265 3.6146 19.362 3.32698C18.7202 3 17.8802 3 16.2 3H7.8C6.11984 3 5.27976 3 4.63803 3.32698C4.07354 3.6146 3.6146 4.07354 3.32698 4.63803C3 5.27976 3 6.11984 3 7.8V20.3355C3 20.8684 3 21.1348 3.10923 21.2716C3.20422 21.3906 3.34827 21.4599 3.50054 21.4597C3.67563 21.4595 3.88367 21.2931 4.29976 20.9602L6.68521 19.0518C7.17252 18.662 7.41617 18.4671 7.68749 18.3285C7.9282 18.2055 8.18443 18.1156 8.44921 18.0613C8.74767 18 9.0597 18 9.68375 18Z"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{
+                    color: activeItem === "Mensagens" ? '#F66649' : '#F0F0F1'
+                  }}
+                />
+              </svg>
+            ), 
       label: "Mensagens", 
       path: "/mensagens",
       isEmoji: false 
     },
     { 
-      icon: (props: any) => (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
-          <path d="M18 8C18 6.4087 17.3679 4.88258 16.2426 3.75736C15.1174 2.63214 13.5913 2 12 2C10.4087 2 8.88258 2.63214 7.75736 3.75736C6.63214 4.88258 6 6.4087 6 8C6 15 3 17 3 17H21C21 17 18 15 18 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M13.73 21C13.5542 21.3031 13.3019 21.5547 12.9982 21.7295C12.6946 21.9044 12.3504 21.9965 12 21.9965C11.6496 21.9965 11.3054 21.9044 11.0018 21.7295C10.6982 21.5547 10.4458 21.3031 10.27 21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      ), 
+                  icon: (props: any) => (
+              <Bell01
+                className="w-6 h-6"
+                style={{
+                  color: activeItem === "Notificações" ? '#F66649' : '#F0F0F1'
+                }}
+              />
+            ), 
       label: "Notificações", 
       path: "/notificacoes",
       isEmoji: false 
     },
     { 
-      icon: (props: any) => (
-        <img 
-          src="/images/stats-icon-correct.png" 
-          alt="Estatísticas" 
-          className="w-6 h-6"
-          style={{ 
-            filter: activeItem === "Estatísticas" 
-              ? 'brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%)' 
-              : 'brightness(0) invert(1)',
-            opacity: activeItem === "Estatísticas" ? 1 : 0.7
-          }}
-        />
-      ), 
+                  icon: (props: any) => (
+              <BarChart01
+                className="w-6 h-6"
+                style={{
+                  color: activeItem === "Estatísticas" ? '#F66649' : '#F0F0F1'
+                }}
+              />
+            ), 
       label: "Estatísticas", 
       path: "/estatisticas",
       isEmoji: false 
     },
     { 
-      icon: (props: any) => (
-        <img 
-          src="/images/ranking-icon-correct.png" 
-          alt="Ranking" 
-          className="w-6 h-6"
-          style={{ 
-            filter: activeItem === "Ranking" 
-              ? 'brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%)' 
-              : 'brightness(0) invert(1)',
-            opacity: activeItem === "Ranking" ? 1 : 0.7
-          }}
-        />
-      ), 
+                  icon: (props: any) => (
+              <Trophy01
+                className="w-6 h-6"
+                style={{
+                  color: activeItem === "Ranking" ? '#F66649' : '#F0F0F1'
+                }}
+              />
+            ), 
       label: "Ranking", 
       path: "/ranking",
       isEmoji: false 
     },
     { 
       icon: (props: any) => (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
-          <path d="M8 5V19L19 12L8 5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
+        <Play 
+          className="w-6 h-6" 
+          style={{ 
+            color: activeItem === "Tutoriais" ? '#F66649' : '#F0F0F1'
+          }} 
+        />
       ), 
       label: "Tutoriais", 
       path: "/tutoriais",
@@ -246,38 +253,24 @@ export const Sidebar = () => {
             e.currentTarget.style.borderColor = 'transparent';
           }}
         >
-          <div className="w-8 h-8 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-            <svg 
-              width="24" 
-              height="24" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              className="group-hover:text-red-400 transition-colors duration-200"
-              style={{ color: '#F0F0F1' }}
-            >
-              <path 
-                d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-              />
-              <path 
-                d="M16 17L21 12L16 7" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-              />
-              <path 
-                d="M21 12H9" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div>
+                           <div className="w-8 h-8 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                                     <svg 
+                    width="24" 
+                    height="24" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    className="w-6 h-6 group-hover:text-red-400 transition-colors duration-200"
+                    style={{ color: '#F0F0F1' }}
+                  >
+                    <path 
+                      d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9M16 17L21 12L16 7M21 12H9" 
+                      stroke="currentColor" 
+                      strokeWidth="2" 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                 </div>
           {!isCollapsed && showTexts && (
             <span 
               className="font-medium transition-all duration-200 group-hover:text-red-400" 
