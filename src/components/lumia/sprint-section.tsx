@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Expand04 } from "@untitledui/icons";
+import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProgressBar } from "./progress-bar";
 import objectiveIcon from "/src/assets/images/objective-icon.png";
@@ -76,19 +77,26 @@ export const SprintSection = ({
   };
 
   return (
-    <div className={`${isExpanded ? 'w-full' : 'flex gap-6'}`}>
+    <div className={`${isExpanded ? 'w-full' : 'flex gap-6'} w-full max-w-full`}>
       {/* Card principal da sprint */}
       <div 
-        className={`rounded-xl border shadow-lg ${isExpanded ? 'w-full' : 'flex-1'}`}
+        className={`rounded-xl border shadow-lg flex flex-col ${isExpanded ? 'w-full' : 'flex-1'}`}
         style={{
           background: '#252532',
           borderColor: '#2C2C45',
           borderRadius: '12px',
-          padding: '24px'
+          borderWidth: '1px',
+          padding: '24px',
+          width: isExpanded ? '100%' : 'auto',
+          minWidth: isExpanded ? 'auto' : '600px',
+          maxWidth: isExpanded ? '100%' : '758px',
+          height: '230px',
+          opacity: 1,
+          gap: '24px'
         }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between mb-6" style={{ gap: '24px' }}>
+        <div className="flex items-center justify-between" style={{ gap: '24px', minHeight: '48px' }}>
           <div className="flex items-center" style={{ gap: '10px', padding: '2px 0px' }}>
             {/* Ícone de corrida */}
             <div 
@@ -159,12 +167,13 @@ export const SprintSection = ({
         </div>
 
         {/* Barra de progresso */}
-        <ProgressBar 
-          percentage={sprintData.progress}
-          label={sprintData.progressLabel}
-          isExpanded={isExpanded}
-          className="mb-6"
-        />
+        <div>
+          <ProgressBar 
+            percentage={sprintData.progress}
+            label={sprintData.progressLabel}
+            isExpanded={isExpanded}
+          />
+        </div>
 
         {/* Objetivo atual */}
         <div className="flex items-center justify-between">
@@ -184,7 +193,7 @@ export const SprintSection = ({
                   width: '48px',
                   height: '48px',
                   objectFit: 'contain',
-                  imageRendering: 'high-quality'
+                  imageRendering: 'auto'
                 }}
               />
             </div>
@@ -288,62 +297,59 @@ export const SprintSection = ({
       {/* Card de frase do dia */}
       {showQuote && !isExpanded && (
         <div 
-          className="rounded-lg border relative"
+          className="rounded-lg border relative flex-shrink-0 flex flex-col"
           style={{
             background: '#252532',
             borderColor: '#2C2C45',
             borderRadius: '8px',
+            borderWidth: '1px',
             padding: '24px',
-            width: '400px',
-            minWidth: '400px'
+            width: '350px',
+            minWidth: '300px',
+            maxWidth: '400px',
+            height: '230px',
+            opacity: 1,
+            gap: '24px'
           }}
         >
           <Button
-            color="tertiary"
-            size="lg"
             onClick={handleToggleQuote}
-            className="absolute top-2 right-2 w-11 h-11 p-0"
+            className="absolute"
             style={{
               width: '44px',
               height: '44px',
-              padding: '8px'
+              padding: '8px',
+              right: '8px',
+              top: '8px',
+              backgroundColor: 'transparent',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer'
             }}
           >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M18 6L6 18M6 6L18 18"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <X 
+              size={12}
+              style={{
+                color: '#A4A7AE',
+                strokeWidth: '2px'
+              }}
+            />
           </Button>
           
-          <div className="flex items-center gap-2.5 mb-4">
+          <div className="flex items-center" style={{ gap: '10px' }}>
             <div 
               className="rounded-lg flex items-center justify-center"
               style={{
                 width: '24px',
                 height: '24px',
-                background: '#FFFFFF'
+                background: 'transparent',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
               }}
             >
-              <svg width="20" height="18" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M3 21C3 17.4 5.4 15 9 15H15C18.6 15 21 17.4 21 21"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
+              <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: '2px' }}>
+                <path d="M5.53645 0.25001C5.66745 0.151515 5.81652 0.0798508 5.97514 0.0391097C6.13376 -0.00163151 6.29884 -0.010652 6.46094 0.0125636C6.62304 0.0357793 6.77899 0.0907762 6.91989 0.174414C7.06079 0.258052 7.18388 0.368694 7.28213 0.500021C7.38038 0.631348 7.45186 0.78079 7.4925 0.939813C7.53314 1.09884 7.54213 1.26433 7.51898 1.42684C7.49582 1.58935 7.44096 1.74569 7.35753 1.88695C7.27411 2.0282 7.16374 2.1516 7.03275 2.25009C5.08258 3.7164 3.96535 5.14271 3.32568 6.38776C4.20397 6.16111 5.13087 6.2144 5.97756 6.54021C6.82424 6.86603 7.54865 7.4482 8.05008 8.20579C8.55151 8.96339 8.80506 9.85877 8.77549 10.7675C8.74592 11.6762 8.43468 12.5531 7.88506 13.2763C7.33543 13.9996 6.57472 14.5331 5.70865 14.8029C4.84258 15.0727 3.91418 15.0653 3.0525 14.7818C2.19082 14.4982 1.43866 13.9525 0.900577 13.2207C0.362491 12.4888 0.0652087 11.607 0.0500507 10.6979C-0.107951 9.16282 0.10946 7.61222 0.683481 6.18026C1.42789 4.29768 2.88303 2.24509 5.53645 0.25001ZM16.7586 0.25001C16.8896 0.151515 17.0387 0.0798508 17.1973 0.0391097C17.356 -0.00163151 17.521 -0.010652 17.6831 0.0125636C17.8452 0.0357793 18.0012 0.0907762 18.1421 0.174414C18.283 0.258052 18.4061 0.368694 18.5043 0.500021C18.6026 0.631348 18.674 0.78079 18.7147 0.939813C18.7553 1.09884 18.7643 1.26433 18.7412 1.42684C18.718 1.58935 18.6632 1.74569 18.5797 1.88695C18.4963 2.0282 18.3859 2.1516 18.2549 2.25009C16.3048 3.7164 15.1875 5.14271 14.5479 6.38776C15.4262 6.16111 16.3531 6.2144 17.1997 6.54021C18.0464 6.86603 18.7708 7.4482 19.2723 8.20579C19.7737 8.96339 20.0273 9.85877 19.9977 10.7675C19.9681 11.6762 19.6569 12.5531 19.1072 13.2763C18.5576 13.9996 17.7969 14.5331 16.9308 14.8029C16.0648 15.0727 15.1364 15.0653 14.2747 14.7818C13.413 14.4982 12.6609 13.9525 12.1228 13.2207C11.5847 12.4888 11.2874 11.607 11.2722 10.6979C11.1142 9.16282 11.3316 7.61222 11.9057 6.18026C12.6513 4.29768 14.1052 2.24509 16.7586 0.25001Z" fill="#FAFAFA"/>
               </svg>
             </div>
             <h3 
@@ -351,22 +357,30 @@ export const SprintSection = ({
               style={{
                 fontFamily: 'Sora',
                 fontWeight: 400,
+                fontStyle: 'normal',
                 fontSize: '16px',
-                lineHeight: '1.26em'
+                lineHeight: '1.26em',
+                letterSpacing: '0%',
+                verticalAlign: 'middle',
+                display: 'flex',
+                alignItems: 'center'
               }}
             >
               Frase do dia
             </h3>
           </div>
           
-          <div className="space-y-4">
+          <div className="flex flex-col flex-1" style={{ gap: '16px' }}>
             <p 
-              className="text-gray-300"
+              className="text-[#E9EAEB]"
               style={{
                 fontFamily: 'Poppins',
                 fontWeight: 400,
+                fontStyle: 'normal',
                 fontSize: '16px',
-                lineHeight: '1.75em'
+                lineHeight: '1.75em',
+                letterSpacing: '0%',
+                verticalAlign: 'middle'
               }}
             >
               "Mudar pode dar medo, mas é uma aventura que pode te levar muito longe."
@@ -376,8 +390,11 @@ export const SprintSection = ({
               style={{
                 fontFamily: 'Poppins',
                 fontWeight: 600,
+                fontStyle: 'italic',
                 fontSize: '16px',
-                lineHeight: '1.75em'
+                lineHeight: '1.75em',
+                letterSpacing: '0%',
+                verticalAlign: 'middle'
               }}
             >
               - Steve Jobs
