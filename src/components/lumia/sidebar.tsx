@@ -148,32 +148,37 @@ export const Sidebar = () => {
     <div className="relative">
       {/* Main Sidebar */}
       <div 
-        className="transition-all duration-300 shadow-lg flex flex-col"
+        className="transition-all duration-300 shadow-lg flex flex-col hidden sm:flex"
         style={{
           background: '#252532',
           borderRight: '1px solid #272737',
           borderRadius: isCollapsed ? '0px' : '0px 16px 16px 0px',
-          width: isCollapsed ? '80px' : '204px',
+          width: isCollapsed ? '96px' : '204px',
           minHeight: '100vh',
           opacity: 1
         }}
       >
       {/* Header */}
-      <div className="p-6 mb-6">
-        <div className="flex items-center">
-          {!isCollapsed && (
-            <div className="flex items-center gap-3">
-              <div className="w-44 h-12 flex items-center justify-center">
-                <img 
-                  src="/images/lumia-logo-718d50.png" 
-                  alt="Lumia Logo" 
-                  className="w-full h-full object-contain"
-                />
-              </div>
+      <div style={{ padding: '40px 24px 0px 24px', marginBottom: '24px' }}>
+        <div className="flex items-center justify-center">
+          {!isCollapsed ? (
+            <div style={{ width: '174px', height: '48px' }} className="flex items-center justify-center">
+              <img 
+                src="/images/lumia-logo-718d50.png" 
+                alt="Lumia Logo" 
+                className="w-full h-full object-contain"
+              />
             </div>
-          )}
-          {isCollapsed && (
-            <div className="w-12 h-12 flex items-center justify-center">
+          ) : (
+            <div 
+              style={{ 
+                width: '48px', 
+                height: '48px',
+                background: 'transparent',
+                borderRadius: '0px'
+              }} 
+              className="flex items-center justify-center"
+            >
               <img 
                 src="/images/lumia-logo-icon-only.png" 
                 alt="Lumia Logo" 
@@ -186,14 +191,14 @@ export const Sidebar = () => {
 
 
       {/* Navigation */}
-      <nav className="flex-1 px-4 pb-4 mb-6">
+      <nav className="flex-1" style={{ padding: '0px 24px', marginBottom: '24px' }}>
               {menuItems.map((item, index) => (
                 <button
                   key={index}
                   onClick={() => handleItemClick(item)}
                   className={`flex items-center transition-all duration-300 hover:bg-gray-700/20`}
                   style={{
-                    padding: isCollapsed ? '8px' : '8px 14px',
+                    padding: '8px',
                     gap: '10px',
                     borderRadius: '8px',
                     background: activeItem === item.label ? '#4B3532' : 'transparent',
@@ -203,10 +208,19 @@ export const Sidebar = () => {
                     opacity: isCollapsed ? 1 : 1,
                     transform: isCollapsed ? 'scale(1)' : 'scale(1)',
                     cursor: 'pointer',
-                    marginBottom: '12px'
+                    marginBottom: '12px',
+                    alignItems: 'center'
                   }}
                 >
-                  <div className="w-8 h-8 flex items-center justify-center">
+                  <div 
+                    style={{
+                      width: '32px',
+                      height: '32px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                  >
                     <item.icon />
                   </div>
                   {!isCollapsed && showTexts && (
@@ -228,19 +242,20 @@ export const Sidebar = () => {
             </nav>
 
       {/* User section */}
-      <div className="mt-auto p-4">
+      <div className="mt-auto" style={{ padding: '0px 24px 20px 24px' }}>
         <button 
           className="flex items-center transition-all duration-300 hover:bg-red-900/20 group"
           style={{
-            padding: isCollapsed ? '8px' : '8px 14px',
+            padding: '8px',
             gap: '10px',
             borderRadius: '8px',
             background: 'transparent',
             color: '#F0F0F1',
-            width: isCollapsed ? '48px' : '204px',
+            width: isCollapsed ? '48px' : '100%',
             justifyContent: isCollapsed ? 'center' : 'flex-start',
             border: '1px solid transparent',
-            transition: 'all 0.3s ease'
+            transition: 'all 0.3s ease',
+            alignItems: 'center'
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)';
@@ -251,7 +266,16 @@ export const Sidebar = () => {
             e.currentTarget.style.borderColor = 'transparent';
           }}
         >
-                           <div className="w-8 h-8 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                           <div 
+                             style={{
+                               width: '32px',
+                               height: '32px',
+                               display: 'flex',
+                               alignItems: 'center',
+                               justifyContent: 'center'
+                             }}
+                             className="group-hover:scale-110 transition-transform duration-200"
+                           >
                                      <svg 
                     width="24" 
                     height="24" 
@@ -303,18 +327,29 @@ export const Sidebar = () => {
           alignItems: 'center',
           justifyContent: 'center',
           cursor: 'pointer',
-          zIndex: 10
+          zIndex: 10,
+          gap: '10px'
         }}
       >
-        <img 
-          src="/images/collapse-button.png" 
-          alt="Collapse Button" 
+        <svg 
+          width="24" 
+          height="24" 
+          viewBox="0 0 24 24" 
+          fill="none" 
           style={{
             width: '24px',
             height: '24px',
-            objectFit: 'contain'
+            color: '#F66649'
           }}
-        />
+        >
+          <path 
+            d="M9 18L15 12L9 6" 
+            stroke="currentColor" 
+            strokeWidth="2.5" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          />
+        </svg>
       </button>
     </div>
   );

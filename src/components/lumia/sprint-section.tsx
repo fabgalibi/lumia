@@ -77,7 +77,7 @@ export const SprintSection = ({
   };
 
   return (
-    <div className={`${isExpanded ? 'w-full' : 'flex gap-6'} w-full max-w-full`}>
+    <div className={`${isExpanded ? 'w-full' : 'flex flex-col lg:flex-row gap-6'} w-full max-w-full`}>
       {/* Card principal da sprint */}
       <div 
         className={`rounded-xl border shadow-lg flex flex-col ${isExpanded ? 'w-full' : 'flex-1'}`}
@@ -297,16 +297,16 @@ export const SprintSection = ({
       {/* Card de frase do dia */}
       {showQuote && !isExpanded && (
         <div 
-          className="rounded-lg border relative flex-shrink-0 flex flex-col"
+          className="rounded-lg border relative flex-shrink-0 flex flex-col w-full lg:w-auto"
           style={{
             background: '#252532',
             borderColor: '#2C2C45',
             borderRadius: '8px',
             borderWidth: '1px',
             padding: '24px',
-            width: '350px',
-            minWidth: '300px',
-            maxWidth: '400px',
+            width: '100%',
+            minWidth: '250px',
+            maxWidth: '320px',
             height: '230px',
             opacity: 1,
             gap: '24px'

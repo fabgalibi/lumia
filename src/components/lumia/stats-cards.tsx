@@ -1,4 +1,3 @@
-import { Clock } from "@untitledui/icons";
 
 export const StatsCards = () => {
   const stats = [
@@ -86,16 +85,16 @@ export const StatsCards = () => {
   return (
     <div className="w-full">
       {/* Header com Sprint Progress */}
-      <div className="flex items-center justify-between mb-6 px-8 py-6" style={{ background: 'transparent' }}>
-        <div className="flex items-center gap-4">
-          <div className="rounded-lg overflow-hidden" style={{ width: '61px', height: '56px' }}>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4" style={{ background: 'transparent' }}>
+        <div className="flex items-center gap-4 flex-1">
+          <div className="rounded-lg overflow-hidden flex-shrink-0" style={{ width: '61px', height: '56px' }}>
             <img 
               src="/images/sprint-image.png" 
               alt="Sprint Progress" 
               className="w-full h-full object-cover"
             />
           </div>
-          <div style={{ width: '325px' }}>
+          <div className="flex-1 min-w-0">
             <p className="text-white text-sm mb-2" style={{ fontFamily: 'Sora', fontWeight: 400, fontSize: '14px', lineHeight: '1.43' }}>
               Faltam 6 metas para completar essa sprint.
             </p>
@@ -110,7 +109,7 @@ export const StatsCards = () => {
         </div>
         
         <button 
-          className="flex items-center gap-2 text-white px-4 py-2 rounded-lg transition-colors"
+          className="flex items-center text-white rounded-lg transition-colors flex-shrink-0"
           style={{ 
             background: '#C74228',
             border: '2px solid',
@@ -118,19 +117,53 @@ export const StatsCards = () => {
             boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
             fontFamily: 'Sora',
             fontWeight: 600,
-            fontSize: '14px'
+            fontSize: '14px',
+            lineHeight: '1.4285714285714286em',
+            padding: '10px 14px',
+            gap: '4px',
+            borderRadius: '8px',
+            justifyContent: 'center',
+            alignItems: 'center'
           }}
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style={{ color: '#FFFFFF' }}>
-            <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M12 8V12L15 15" stroke="currentColor" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          <span>Baixar relatório</span>
+          {/* Ícone download-cloud-02 */}
+          <div 
+            style={{
+              width: '20px',
+              height: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ color: '#FFFFFF' }}>
+              <path
+                d="M8 17L12 21M12 21L16 17M12 21V12M20 16.7428C21.2215 15.734 22 14.2079 22 12.5C22 9.46243 19.5376 7 16.5 7C16.2815 7 16.0771 6.886 15.9661 6.69774C14.6621 4.48484 12.2544 3 9.5 3C5.35786 3 2 6.35786 2 10.5C2 12.5661 2.83545 14.4371 4.18695 15.7935"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+          
+          {/* Text padding */}
+          <div 
+            style={{
+              padding: '0px 2px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <span className="hidden sm:inline">Baixar relatório</span>
+            <span className="sm:hidden">Relatório</span>
+          </div>
         </button>
       </div>
 
       {/* Cards de Estatísticas */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4" style={{ gap: '24px', padding: '0 32px 12px' }}>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4" style={{ gap: '24px' }}>
         {stats.map((stat, index) => (
           <div key={index} className="rounded-xl border shadow-lg" style={{ 
             background: '#252532', 
