@@ -80,9 +80,9 @@ export const SprintSection = ({
     <div className={`${isExpanded ? 'w-full' : 'flex flex-col lg:flex-row gap-6'} w-full max-w-full`}>
       {/* Card principal da sprint */}
       <div 
-        className={`rounded-xl border shadow-lg flex flex-col ${isExpanded ? 'w-full' : 'flex-1'}`}
+        className={`rounded-xl border flex flex-col ${isExpanded ? 'w-full' : 'flex-1'}`}
         style={{
-          background: '#252532',
+          background: 'linear-gradient(135deg, #252532 0%, #2A2A3A 100%)',
           borderColor: '#2C2C45',
           borderRadius: '12px',
           borderWidth: '1px',
@@ -92,7 +92,15 @@ export const SprintSection = ({
           maxWidth: isExpanded ? '100%' : '758px',
           height: '230px',
           opacity: 1,
-          gap: '24px'
+          gap: '24px',
+          boxShadow: `
+            0px 4px 6px -1px rgba(0, 0, 0, 0.1),
+            0px 2px 4px -1px rgba(0, 0, 0, 0.06),
+            inset 0px 1px 0px rgba(255, 255, 255, 0.05),
+            inset 0px -1px 0px rgba(0, 0, 0, 0.1),
+            0px 0px 0px 1px rgba(255, 255, 255, 0.02)
+          `,
+          position: 'relative'
         }}
       >
         {/* Header */}
@@ -105,7 +113,8 @@ export const SprintSection = ({
                 width: '32px',
                 height: '32px',
                 padding: '2px 0px',
-                alignSelf: 'flex-start'
+                alignSelf: 'flex-start',
+                filter: 'drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.1))'
               }}
             >
               <svg width="24" height="25" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: '4px' }}>
@@ -117,7 +126,7 @@ export const SprintSection = ({
               <h2 
                 className="text-white"
                 style={{
-                  fontFamily: 'Sora',
+                  fontFamily: 'var(--font-sora)',
                   fontWeight: 400,
                   fontSize: '16px',
                   lineHeight: '1.26em'
@@ -128,10 +137,10 @@ export const SprintSection = ({
               <p 
                 className="text-gray-300"
                 style={{
-                  fontFamily: 'Sora',
-                  fontWeight: 300,
+                  fontFamily: 'var(--font-sora)',
+                  fontWeight: 400,
                   fontSize: '14px',
-                  lineHeight: '1.43em'
+                  lineHeight: '1.4285714285714286em'
                 }}
               >
                 {sprintData.description}
@@ -139,24 +148,19 @@ export const SprintSection = ({
             </div>
           </div>
           <Button
-            color="tertiary"
+            variant="tertiary"
             size="md"
             onClick={handleToggleExpanded}
-            className="flex items-center cursor-pointer hover:opacity-80 transition-opacity"
-            style={{
-              padding: '10px 0px',
-              gap: '4px',
-              backgroundColor: 'transparent',
-              border: 'none',
-              borderRadius: '8px'
-            }}
+            className="flex items-center gap-1 hover:opacity-80 transition-opacity rounded-lg"
+            aria-label={isExpanded ? 'Minimizar seção da sprint' : 'Expandir seção da sprint'}
           >
             <Expand04 className="w-5 h-5" style={{ color: '#F5F5F5' }} />
             <span 
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'var(--font-sora)',
                 fontWeight: 600,
                 fontSize: '14px',
+                lineHeight: '1.4285714285714286em',
                 color: '#F5F5F5',
                 padding: '0px 2px'
               }}
@@ -201,10 +205,10 @@ export const SprintSection = ({
               <p 
                 className="text-white"
                 style={{
-                  fontFamily: 'Sora',
+                  fontFamily: 'var(--font-sora)',
                   fontWeight: 400,
                   fontSize: '14px',
-                  lineHeight: '1.43em'
+                  lineHeight: '1.4285714285714286em'
                 }}
               >
                 {sprintData.currentObjective.label}
@@ -212,9 +216,10 @@ export const SprintSection = ({
               <p 
                 className="font-semibold"
                 style={{
-                  fontFamily: 'Sora',
+                  fontFamily: 'var(--font-sora)',
                   fontWeight: 600,
                   fontSize: '14px',
+                  lineHeight: '1.4285714285714286em',
                   color: '#F48E2F'
                 }}
               >
@@ -222,72 +227,68 @@ export const SprintSection = ({
               </p>
             </div>
           </div>
-          <div className="flex items-center">
+          <div 
+            className="flex items-center"
+            style={{
+              gap: '-40px'
+            }}
+          >
+            {/* Container principal do badge */}
             <div 
-              className="rounded-lg flex items-center relative"
+              className="flex items-center justify-center"
               style={{
                 background: '#43434A',
                 padding: '6px 48px 6px 16px',
-                borderRadius: '8px'
+                borderRadius: '8px',
+                gap: '10px'
               }}
             >
               <span 
                 className="text-white"
                 style={{
-                  fontFamily: 'Sora',
+                  fontFamily: 'var(--font-sora)',
                   fontWeight: 400,
                   fontSize: '16px',
-                  lineHeight: '1.5em'
+                  lineHeight: '1.5em',
+                  color: '#FFFFFF'
                 }}
               >
                 Próxima Sprint
               </span>
-              <div 
-                className="rounded-full absolute"
+            </div>
+            
+            {/* Círculo do ícone sobreposto */}
+            <div 
+              style={{
+                width: '48px',
+                height: '48px',
+                background: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: '9999px',
+                marginLeft: '-40px',
+                position: 'relative'
+              }}
+            >
+              <div
                 style={{
-                  width: '48px',
-                  height: '48px',
-                  background: '#43434A',
-                  borderRadius: '9999px',
-                  right: '-12px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  zIndex: 10,
-                  border: '1px solid rgba(255, 255, 255, 0.2)'
+                  position: 'absolute',
+                  left: '12px',
+                  top: '12px',
+                  width: '24px',
+                  height: '24px'
                 }}
               >
-                <div
+                <img 
+                  src="/src/assets/icons/lock-icon.svg" 
+                  alt="Lock icon"
                   style={{
+                    width: '16px',
+                    height: '18px',
                     position: 'absolute',
-                    left: '12px',
-                    top: '12px',
-                    width: '24px',
-                    height: '24px'
+                    left: '4px',
+                    top: '3px',
+                    filter: 'brightness(0) saturate(100%) invert(100%)'
                   }}
-                >
-                  <svg 
-                    width="24" 
-                    height="24" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    xmlns="http://www.w3.org/2000/svg"
-                    style={{
-                      position: 'absolute',
-                      left: '0px',
-                      top: '0px',
-                      width: '24px',
-                      height: '24px'
-                    }}
-                  >
-                    <path
-                      d="M17 10V8C17 5.23858 14.7614 3 12 3C9.23858 3 7 5.23858 7 8V10M12 14.5V16.5M8.8 21H15.2C16.8802 21 17.7202 21 18.362 20.673C18.9265 20.3854 19.3854 19.9265 19.673 19.362C20 18.7202 20 17.8802 20 16.2V14.8C20 13.1198 20 12.2798 19.673 11.638C19.3854 11.0735 18.9265 10.6146 18.362 10.327C17.7202 10 16.8802 10 15.2 10H8.8C7.11984 10 6.27976 10 5.63803 10.327C5.07354 10.6146 4.6146 11.0735 4.32698 11.638C4 12.2798 4 13.1198 4 14.8V16.2C4 17.8802 4 18.7202 4.32698 19.362C4.6146 19.9265 5.07354 20.3854 5.63803 20.673C6.27976 21 7.11984 21 8.8 21Z"
-                      stroke="white"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
+                />
               </div>
             </div>
           </div>
@@ -299,7 +300,7 @@ export const SprintSection = ({
         <div 
           className="rounded-lg border relative flex-shrink-0 flex flex-col w-full lg:w-auto"
           style={{
-            background: '#252532',
+            background: 'linear-gradient(135deg, #252532 0%, #2A2A3A 100%)',
             borderColor: '#2C2C45',
             borderRadius: '8px',
             borderWidth: '1px',
@@ -309,23 +310,23 @@ export const SprintSection = ({
             maxWidth: '320px',
             height: '230px',
             opacity: 1,
-            gap: '24px'
+            gap: '24px',
+            boxShadow: `
+              0px 4px 6px -1px rgba(0, 0, 0, 0.1),
+              0px 2px 4px -1px rgba(0, 0, 0, 0.06),
+              inset 0px 1px 0px rgba(255, 255, 255, 0.05),
+              inset 0px -1px 0px rgba(0, 0, 0, 0.1),
+              0px 0px 0px 1px rgba(255, 255, 255, 0.02)
+            `,
+            position: 'relative'
           }}
         >
           <Button
+            variant="icon"
+            size="icon"
             onClick={handleToggleQuote}
-            className="absolute"
-            style={{
-              width: '44px',
-              height: '44px',
-              padding: '8px',
-              right: '8px',
-              top: '8px',
-              backgroundColor: 'transparent',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer'
-            }}
+            className="absolute right-2 top-2 rounded-lg"
+            aria-label="Fechar frase do dia"
           >
             <X 
               size={12}
@@ -345,7 +346,8 @@ export const SprintSection = ({
                 background: 'transparent',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                filter: 'drop-shadow(0px 0px 6px rgba(250, 250, 250, 0.15))'
               }}
             >
               <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: '2px' }}>
@@ -355,7 +357,7 @@ export const SprintSection = ({
             <h3 
               className="text-white"
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'var(--font-sora)',
                 fontWeight: 400,
                 fontStyle: 'normal',
                 fontSize: '16px',
@@ -374,7 +376,7 @@ export const SprintSection = ({
             <p 
               className="text-[#E9EAEB]"
               style={{
-                fontFamily: 'Poppins',
+                fontFamily: 'var(--font-sora)',
                 fontWeight: 400,
                 fontStyle: 'normal',
                 fontSize: '16px',
@@ -388,7 +390,7 @@ export const SprintSection = ({
             <p 
               className="text-white"
               style={{
-                fontFamily: 'Poppins',
+                fontFamily: 'var(--font-sora)',
                 fontWeight: 600,
                 fontStyle: 'italic',
                 fontSize: '16px',

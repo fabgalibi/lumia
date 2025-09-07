@@ -1,5 +1,5 @@
 import React from 'react';
-import { HelpCircle, LampDesk } from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
 
 interface StudyConsistencyCalendarProps {
   data?: {
@@ -68,13 +68,15 @@ const StudyConsistencyCalendar: React.FC<StudyConsistencyCalendarProps> = ({
         {/* Title Section */}
         <div className="flex items-center" style={{ gap: '12px' }}>
           <div className="w-6 h-6 flex items-center justify-center">
-            <LampDesk className="w-5 h-5 text-white" strokeWidth={1.5} />
+            <svg width="20" height="20" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.6261 2.04409L7.67102 4.99918M10.6261 2.04409L9.89501 1.31299C9.3039 0.721884 8.34556 0.721884 7.75445 1.31299L6.93993 2.12752C6.34881 2.71863 6.34881 3.67697 6.93993 4.26808L7.67102 4.99918M10.6261 2.04409L15.6056 4.37308L10 9.9787L7.67102 4.99918M7.31717 1.69024L6.39437 0.767442M14.2307 5.74785C14.7869 6.11682 15.1533 6.74861 15.1533 7.46573C15.1533 8.60363 14.2307 9.52626 13.0928 9.52626C12.3757 9.52626 11.7439 9.15984 11.3749 8.60405M21.2326 21.2326H3.31497C1.90801 21.2326 0.767442 20.092 0.767442 18.685C0.767442 17.2781 1.90801 16.1375 3.31497 16.1375H21.2326M19.9588 16.1375V21.2326M3.31497 18.685H19.9588M6.0336 13.59L3.93486 10.0561M7.45852 4.78701L4.18495 8.06058M3.17927 16.1375V14.6635C3.17927 14.0706 3.65986 13.59 4.25275 13.59H8.2387C8.83155 13.59 9.31218 14.0706 9.31218 14.6635V16.1375H3.17927ZM4.5582 8.96117C4.5582 9.66465 3.98792 10.2349 3.28444 10.2349C2.58096 10.2349 2.01068 9.66465 2.01068 8.96117C2.01068 8.25769 2.58096 7.68741 3.28444 7.68741C3.98792 7.68741 4.5582 8.25769 4.5582 8.96117Z" stroke="white" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </div>
           <div className="flex items-center">
             <h3 
               className="text-white"
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'var(--font-sora)',
                 fontWeight: 400,
                 fontStyle: 'Regular',
                 fontSize: '16px',
@@ -115,7 +117,7 @@ const StudyConsistencyCalendar: React.FC<StudyConsistencyCalendarProps> = ({
             <span 
               className="text-white"
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'var(--font-sora)',
                 fontWeight: 400,
                 fontSize: '12px',
                 lineHeight: '1.5em'
@@ -139,7 +141,7 @@ const StudyConsistencyCalendar: React.FC<StudyConsistencyCalendarProps> = ({
             <span 
               className="text-white"
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'var(--font-sora)',
                 fontWeight: 400,
                 fontSize: '12px',
                 lineHeight: '1.5em'
@@ -160,7 +162,7 @@ const StudyConsistencyCalendar: React.FC<StudyConsistencyCalendarProps> = ({
               key={day}
               className="text-white flex items-center"
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'var(--font-sora)',
                 fontWeight: 400,
                 fontSize: '10px',
                 lineHeight: '1.6em',

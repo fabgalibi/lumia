@@ -1,10 +1,4 @@
 import { useState, useEffect } from "react";
-import { 
-  Clock,
-  Menu01,
-  Settings01,
-  HelpCircle
-} from "@untitledui/icons";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -57,40 +51,37 @@ export const Header = () => {
 
   return (
     <header 
-      className="w-full px-4 sm:px-8 lg:px-8"
+      className="w-full"
       style={{
         background: 'transparent',
-        paddingTop: '24px',
-        paddingBottom: '24px',
-        borderBottom: '1px solid #272737'
+        padding: '24px 32px 24px 32px',
+        borderBottom: '1px solid #272737',
+        borderLeft: '1px solid #272737'
       }}
     >
-      <div className="flex items-center justify-between w-full flex-wrap gap-4">
+      <div className="flex items-center justify-between w-full">
         {/* Mensagem de boas-vindas */}
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0 flex items-center">
           <h1 
             className="text-white"
             style={{ 
-              fontFamily: 'Sora', 
+              fontFamily: 'var(--font-sora)', 
               fontWeight: 400, 
-              fontStyle: 'Regular',
               fontSize: '14px',
-              lineHeight: '1.25em',
-              letterSpacing: '0%',
-              verticalAlign: 'middle',
-              textAlign: 'left'
+              lineHeight: '1.4285714285714286em',
+              textAlign: 'left',
+              margin: 0
             }}
           >
-            <span className="hidden sm:inline">Bem-vindo de volta!</span>
-            <span className="sm:hidden">Olá!</span><br />
-            <span style={{ color: '#FFFFFF' }}>Max William</span>
+            Bem-vindo de volta!<br />
+            Max William
           </h1>
         </div>
 
         {/* Cronômetro e Menu do usuário */}
-        <div className="flex items-center justify-center flex-wrap" style={{ gap: '16px' }}>
+        <div className="flex items-center" style={{ gap: '24px' }}>
           {/* Cronômetro */}
-          <div className="flex items-center justify-center flex-wrap" style={{ gap: '16px' }}>
+          <div className="flex items-center" style={{ gap: '16px' }}>
             {/* Container do cronômetro */}
             <div 
               className="flex items-center relative" 
@@ -104,12 +95,14 @@ export const Header = () => {
             >
               {/* Ícone do relógio */}
               <div className="w-6 h-6 flex items-center justify-center">
-                <Clock className="w-5 h-5 text-white" strokeWidth={2} />
+                <svg width="20" height="20" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M11 5V11L15 13M21 11C21 16.5228 16.5228 21 11 21C5.47715 21 1 16.5228 1 11C1 5.47715 5.47715 1 11 1C16.5228 1 21 5.47715 21 11Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </div>
               <span 
                 className="text-white"
                 style={{ 
-                  fontFamily: 'Sora', 
+                  fontFamily: 'var(--font-sora)', 
                   fontWeight: 600, 
                   fontSize: '14px',
                   lineHeight: '1.4285714285714286em',
@@ -153,19 +146,83 @@ export const Header = () => {
                 {/* Ícone */}
                 <div className="relative z-10 flex items-center justify-center h-full">
                   {isRunning ? (
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="w-4 h-4 text-white">
-                      <rect x="8" y="6" width="3" height="12" rx="1" fill="currentColor"/>
-                      <rect x="13" y="6" width="3" height="12" rx="1" fill="currentColor"/>
-                    </svg>
+                    <div className="flex items-center justify-center" style={{ gap: '4px' }}>
+                      {/* Primeira barra do pause */}
+                      <svg width="5" height="14" viewBox="0 0 5 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g filter="url(#filter0_i_pause1)">
+                          <path d="M0 1.16666C0 0.522333 0.522333 0 1.16666 0H3.49999C4.14432 0 4.66665 0.522333 4.66665 1.16666V12.8333C4.66665 13.4776 4.14432 14 3.49999 14H1.16666C0.522333 14 0 13.4776 0 12.8333V1.16666Z" fill="url(#paint0_linear_pause1)"/>
+                          <path d="M0 1.16666C0 0.522333 0.522333 0 1.16666 0H3.49999C4.14432 0 4.66665 0.522333 4.66665 1.16666V12.8333C4.66665 13.4776 4.14432 14 3.49999 14H1.16666C0.522333 14 0 13.4776 0 12.8333V1.16666Z" fill="url(#paint1_linear_pause1)"/>
+                        </g>
+                        <defs>
+                          <filter id="filter0_i_pause1" x="0" y="0" width="4.66667" height="14.3281" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                            <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+                            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                            <feOffset dy="0.3125"/>
+                            <feGaussianBlur stdDeviation="0.15625"/>
+                            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"/>
+                            <feBlend mode="normal" in2="shape" result="effect1_innerShadow_pause1"/>
+                          </filter>
+                          <linearGradient id="paint0_linear_pause1" x1="2.33333" y1="0" x2="2.33333" y2="14" gradientUnits="userSpaceOnUse">
+                            <stop stopColor="#161616"/>
+                            <stop offset="1" stopColor="#707070"/>
+                          </linearGradient>
+                          <linearGradient id="paint1_linear_pause1" x1="2.5419" y1="-0.826855" x2="2.5419" y2="14.8269" gradientUnits="userSpaceOnUse">
+                            <stop stopColor="white"/>
+                            <stop offset="1" stopColor="#CECECE"/>
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                      {/* Segunda barra do pause */}
+                      <svg width="5" height="14" viewBox="0 0 5 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g filter="url(#filter0_i_pause2)">
+                          <path d="M0 1.16666C0 0.522333 0.522333 0 1.16666 0H3.49999C4.14432 0 4.66665 0.522333 4.66665 1.16666V12.8333C4.66665 13.4776 4.14432 14 3.49999 14H1.16666C0.522333 14 0 13.4776 0 12.8333V1.16666Z" fill="url(#paint0_linear_pause2)"/>
+                          <path d="M0 1.16666C0 0.522333 0.522333 0 1.16666 0H3.49999C4.14432 0 4.66665 0.522333 4.66665 1.16666V12.8333C4.66665 13.4776 4.14432 14 3.49999 14H1.16666C0.522333 14 0 13.4776 0 12.8333V1.16666Z" fill="url(#paint1_linear_pause2)"/>
+                        </g>
+                        <defs>
+                          <filter id="filter0_i_pause2" x="0" y="0" width="4.66667" height="14.3281" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                            <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+                            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                            <feOffset dy="0.3125"/>
+                            <feGaussianBlur stdDeviation="0.15625"/>
+                            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"/>
+                            <feBlend mode="normal" in2="shape" result="effect1_innerShadow_pause2"/>
+                          </filter>
+                          <linearGradient id="paint0_linear_pause2" x1="2.33333" y1="0" x2="2.33333" y2="14" gradientUnits="userSpaceOnUse">
+                            <stop stopColor="#161616"/>
+                            <stop offset="1" stopColor="#707070"/>
+                          </linearGradient>
+                          <linearGradient id="paint1_linear_pause2" x1="2.5419" y1="-0.826855" x2="2.5419" y2="14.8269" gradientUnits="userSpaceOnUse">
+                            <stop stopColor="white"/>
+                            <stop offset="1" stopColor="#CECECE"/>
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                    </div>
                   ) : (
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="w-4 h-4 text-white">
-                      <path
-                        d="M5 4.98951C5 4.01835 5 3.53277 5.20249 3.2651C5.37889 3.03191 5.64852 2.88761 5.9404 2.87018C6.27544 2.85017 6.67946 3.11953 7.48752 3.65823L18.0031 10.6686C18.6708 11.1137 19.0046 11.3363 19.1209 11.6168C19.2227 11.8621 19.2227 12.1377 19.1209 12.383C19.0046 12.6635 18.6708 12.886 18.0031 13.3312L7.48752 20.3415C6.67946 20.8802 6.27544 21.1496 5.9404 21.1296C5.64852 21.1122 5.37889 20.9679 5.20249 20.7347C5 20.467 5 19.9814 5 19.0103V4.98951Z"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
+                    <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <g filter="url(#filter0_i_0_38)">
+                        <path d="M1.68152 0.153997L11.7619 6.03421C12.5015 6.46567 12.5015 7.53438 11.7619 7.96584L1.68152 13.846C0.936115 14.2809 0 13.7432 0 12.8802V1.11982C0 0.256852 0.936114 -0.280825 1.68152 0.153997Z" fill="url(#paint0_linear_0_38)"/>
+                      </g>
+                      <defs>
+                        <filter id="filter0_i_0_38" x="0" y="0" width="12.3166" height="15.0063" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                          <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+                          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                          <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                          <feOffset dy="1"/>
+                          <feGaussianBlur stdDeviation="0.5"/>
+                          <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+                          <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"/>
+                          <feBlend mode="normal" in2="shape" result="effect1_innerShadow_0_38"/>
+                        </filter>
+                        <linearGradient id="paint0_linear_0_38" x1="6.70878" y1="-0.82686" x2="6.70878" y2="14.827" gradientUnits="userSpaceOnUse">
+                          <stop stopColor="white"/>
+                          <stop offset="1" stopColor="#CECECE"/>
+                        </linearGradient>
+                      </defs>
                     </svg>
                   )}
                 </div>
@@ -201,14 +258,15 @@ export const Header = () => {
                 ></div>
                 {/* Ícone */}
                 <div className="relative z-10 flex items-center justify-center h-full">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="w-4 h-4 text-white">
-                    <path
-                      d="M3 7.8C3 6.11984 3 5.27976 3.32698 4.63803C3.6146 4.07354 4.07354 3.6146 4.63803 3.32698C5.27976 3 6.11984 3 7.8 3H16.2C17.8802 3 18.7202 3 19.362 3.32698C19.9265 3.6146 20.3854 4.07354 20.673 4.63803C21 5.27976 21 6.11984 21 7.8V16.2C21 17.8802 21 18.7202 20.673 19.362C20.3854 19.9265 19.9265 20.3854 19.362 20.673C18.7202 21 17.8802 21 16.2 21H7.8C6.11984 21 5.27976 21 4.63803 20.673C4.07354 20.3854 3.6146 19.9265 3.32698 19.362C3 18.7202 3 17.8802 3 16.2V7.8Z"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
+                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 10.8333V2.16667C0 1.57083 0.212333 1.06094 0.637 0.637C1.06167 0.213055 1.57156 0.000722222 2.16667 0H10.8333C11.4292 0 11.9394 0.212333 12.3641 0.637C12.7887 1.06167 13.0007 1.57156 13 2.16667V10.8333C13 11.4292 12.788 11.9394 12.3641 12.3641C11.9401 12.7887 11.4299 13.0007 10.8333 13H2.16667C1.57083 13 1.06094 12.788 0.637 12.3641C0.213055 11.9401 0.000722222 11.4299 0 10.8333Z" fill="black"/>
+                    <path d="M0 10.8333V2.16667C0 1.57083 0.212333 1.06094 0.637 0.637C1.06167 0.213055 1.57156 0.000722222 2.16667 0H10.8333C11.4292 0 11.9394 0.212333 12.3641 0.637C12.7887 1.06167 13.0007 1.57156 13 2.16667V10.8333C13 11.4292 12.788 11.9394 12.3641 12.3641C11.9401 12.7887 11.4299 13.0007 10.8333 13H2.16667C1.57083 13 1.06094 12.788 0.637 12.3641C0.213055 11.9401 0.000722222 11.4299 0 10.8333Z" fill="url(#paint0_linear_0_55)"/>
+                    <defs>
+                      <linearGradient id="paint0_linear_0_55" x1="7.08102" y1="-0.767796" x2="7.08102" y2="13.7679" gradientUnits="userSpaceOnUse">
+                        <stop stopColor="white"/>
+                        <stop offset="1" stopColor="#CECECE"/>
+                      </linearGradient>
+                    </defs>
                   </svg>
                 </div>
               </button>
@@ -235,7 +293,9 @@ export const Header = () => {
                   borderRadius: '8px'
                 }}
               >
-                <Menu01 className="w-5 h-5" style={{ color: '#F48E2F', strokeWidth: '1.67' }} />
+                <svg width="17" height="12" viewBox="0 0 17 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0.850037 5.95001H16.15M0.850037 0.850037H16.15M0.850037 11.05H16.15" stroke="#F48E2F" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </button>
 
               {/* Avatar com Menu Dropdown */}

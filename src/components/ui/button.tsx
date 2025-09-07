@@ -2,8 +2,8 @@ import React from 'react';
 import { cn } from '@/utils/cn';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'tertiary' | 'ghost';
-  size?: 'xs' | 'sm' | 'md' | 'lg';
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'ghost' | 'icon';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'icon';
   iconLeading?: React.ComponentType<{ className?: string }>;
   iconTrailing?: React.ComponentType<{ className?: string }>;
   children?: React.ReactNode;
@@ -25,14 +25,16 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       primary: "bg-orange-600 text-white hover:bg-orange-700",
       secondary: "bg-gray-600 text-white hover:bg-gray-700",
       tertiary: "bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white",
-      ghost: "bg-transparent text-gray-400 hover:bg-gray-700 hover:text-white"
+      ghost: "bg-transparent text-gray-400 hover:bg-gray-700 hover:text-white",
+      icon: "bg-transparent text-gray-400 hover:bg-gray-700 hover:text-white border-none"
     };
     
     const sizeClasses = {
       xs: "h-6 px-2 text-xs",
       sm: "h-8 px-3 text-sm",
       md: "h-10 px-4 text-sm",
-      lg: "h-12 px-6 text-base"
+      lg: "h-12 px-6 text-base",
+      icon: "h-11 w-11 p-2"
     };
 
     return (

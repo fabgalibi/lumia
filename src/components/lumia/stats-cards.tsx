@@ -95,10 +95,10 @@ export const StatsCards = () => {
             />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-white text-sm mb-2" style={{ fontFamily: 'Sora', fontWeight: 400, fontSize: '14px', lineHeight: '1.43' }}>
+            <p className="text-white text-sm mb-2" style={{ fontFamily: 'var(--font-sora)', fontWeight: 400, fontSize: '14px', lineHeight: '1.4285714285714286em' }}>
               Faltam 6 metas para completar essa sprint.
             </p>
-            <button className="flex items-center gap-2 text-orange-500 hover:text-orange-400 transition-colors" style={{ fontFamily: 'Sora', fontWeight: 600, fontSize: '14px' }}>
+            <button className="flex items-center gap-2 text-orange-500 hover:text-orange-400 transition-colors" style={{ fontFamily: 'var(--font-sora)', fontWeight: 600, fontSize: '14px', lineHeight: '1.4285714285714286em' }}>
               <span>Completar agora</span>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style={{ color: '#F66649' }}>
                 <path d="M7 17L17 7" stroke="currentColor" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
@@ -115,7 +115,7 @@ export const StatsCards = () => {
             border: '2px solid',
             borderImage: 'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%) 1',
             boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
-            fontFamily: 'Sora',
+            fontFamily: 'var(--font-sora)',
             fontWeight: 600,
             fontSize: '14px',
             lineHeight: '1.4285714285714286em',
@@ -198,7 +198,7 @@ export const StatsCards = () => {
                       />
                     </svg>
                     <span style={{ 
-                      fontFamily: 'Sora', 
+                      fontFamily: 'var(--font-sora)', 
                       fontWeight: 600, 
                       fontSize: '14px', 
                       lineHeight: '1.4285714285714286em', 
@@ -209,7 +209,7 @@ export const StatsCards = () => {
                     </span>
                   </div>
                   <span style={{ 
-                    fontFamily: 'Sora', 
+                    fontFamily: 'var(--font-sora)', 
                     fontWeight: 400, 
                     fontSize: '10px', 
                     lineHeight: '1.3em', 
@@ -227,7 +227,7 @@ export const StatsCards = () => {
               <div className="flex flex-col" style={{ gap: '16px', flex: 1 }}>
                 <div className="flex flex-col" style={{ gap: '4px' }}>
                   <h3 style={{ 
-                    fontFamily: 'Sora', 
+                    fontFamily: 'var(--font-sora)', 
                     fontWeight: 400, 
                     fontSize: '12px', 
                     lineHeight: '1.5em', 
@@ -237,10 +237,12 @@ export const StatsCards = () => {
                     {stat.title}
                   </h3>
                   <p style={{ 
-                    fontFamily: 'Sora', 
+                    fontFamily: 'var(--font-sora)', 
                     fontWeight: 400, 
+                    fontStyle: 'normal',
                     fontSize: '24px', 
                     lineHeight: '1.25em', 
+                    letterSpacing: '0%',
                     color: '#F7F7F7',
                     textAlign: 'left'
                   }}>

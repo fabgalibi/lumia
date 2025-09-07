@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SearchMd, FilterLines, Eye } from "@untitledui/icons";
+// Imports removidos - usando SVGs inline do Figma
 
 export const GoalsTable = () => {
   const [activeTab, setActiveTab] = useState("Lista de Tópicos");
@@ -114,27 +114,14 @@ export const GoalsTable = () => {
               className="w-6 h-6 flex items-center justify-center"
               style={{ width: '24px', height: '24px' }}
             >
-              <svg width="16" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"
-                  stroke="#F0F0F1"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
-                  stroke="#F0F0F1"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
+              <svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17 18V15H4C2.34315 15 1 16.3431 1 18M5.8 21H13.8C14.9201 21 15.4802 21 15.908 20.782C16.2843 20.5903 16.5903 20.2843 16.782 19.908C17 19.4802 17 18.9201 17 17.8V4.2C17 3.07989 17 2.51984 16.782 2.09202C16.5903 1.71569 16.2843 1.40973 15.908 1.21799C15.4802 1 14.9201 1 13.8 1H5.8C4.11984 1 3.27976 1 2.63803 1.32698C2.07354 1.6146 1.6146 2.07354 1.32698 2.63803C1 3.27976 1 4.11984 1 5.8V16.2C1 17.8802 1 18.7202 1.32698 19.362C1.6146 19.9265 2.07354 20.3854 2.63803 20.673C3.27976 21 4.11984 21 5.8 21Z" stroke="#F0F0F1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
             <h2 
               className="text-white"
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'var(--font-sora)',
                 fontWeight: 400,
                 fontSize: '16px',
                 lineHeight: '1.75em'
@@ -188,7 +175,7 @@ export const GoalsTable = () => {
               >
                 <span 
                   style={{
-                    fontFamily: 'Sora',
+                    fontFamily: 'var(--font-sora)',
                     fontWeight: 600,
                     fontSize: '14px',
                     lineHeight: '1.4285714285714286em',
@@ -210,7 +197,7 @@ export const GoalsTable = () => {
               >
                 <span 
                   style={{
-                    fontFamily: 'Sora',
+                    fontFamily: 'var(--font-sora)',
                     fontWeight: 400,
                     fontSize: '14px',
                     lineHeight: '1.4285714285714286em',
@@ -259,12 +246,14 @@ export const GoalsTable = () => {
                 width: '320px'
               }}
             >
-                <SearchMd className="w-5 h-5" style={{ color: '#94979C' }} />
+                <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16.15 16.1498L12.4525 12.4524M14.45 7.64988C14.45 11.4054 11.4055 14.4498 7.65 14.4498C3.89449 14.4498 0.850037 11.4054 0.850037 7.64988C0.850037 3.89436 3.89449 0.849913 7.65 0.849913C11.4055 0.849913 14.45 3.89436 14.45 7.64988Z" stroke="#94979C" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
                 <input
                   placeholder="Buscar "
                   className="flex-1 bg-transparent text-white placeholder-gray-400 outline-none"
                   style={{
-                    fontFamily: 'Sora',
+                    fontFamily: 'var(--font-sora)',
                     fontWeight: 400,
                     fontSize: '16px',
                     lineHeight: '1.5em',
@@ -287,10 +276,12 @@ export const GoalsTable = () => {
                 boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)'
               }}
             >
-              <FilterLines className="w-5 h-5" style={{ color: '#FFFFFF' }} />
+              <svg width="17" height="12" viewBox="0 0 17 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3.40002 5.94989H13.6M0.850037 0.849913H16.15M5.95001 11.0499H11.05" stroke="white" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
               <span 
                 style={{
-                  fontFamily: 'Sora',
+                  fontFamily: 'var(--font-sora)',
                   fontWeight: 600,
                   fontSize: '14px',
                   lineHeight: '1.4285714285714286em',
@@ -314,13 +305,12 @@ export const GoalsTable = () => {
                 padding: '12px 16px',
                 background: '#2D2D45',
                 borderBottom: '1px solid #2C2C45',
-                borderRight: '1px solid #2C2C45',
                 textAlign: 'left'
               }}
             >
               <span
                 style={{
-                  fontFamily: 'Inter',
+                  fontFamily: 'var(--font-body)',
                   fontWeight: 600,
                   fontSize: '12px',
                   lineHeight: '1.5em',
@@ -332,16 +322,15 @@ export const GoalsTable = () => {
             </th>
             <th
               style={{
-                padding: '12px 16px',
+                padding: '12px 20px',
                 background: '#2D2D45',
                 borderBottom: '1px solid #2C2C45',
-                borderRight: '1px solid #2C2C45',
                 textAlign: 'left'
               }}
             >
               <span
                 style={{
-                  fontFamily: 'Inter',
+                  fontFamily: 'var(--font-body)',
                   fontWeight: 600,
                   fontSize: '12px',
                   lineHeight: '1.5em',
@@ -353,17 +342,16 @@ export const GoalsTable = () => {
             </th>
             <th
               style={{
-                padding: '12px 16px',
+                padding: '12px 20px',
                 background: '#2D2D45',
                 borderBottom: '1px solid #2C2C45',
-                borderRight: '1px solid #2C2C45',
                 textAlign: 'left',
                 width: '165px'
               }}
             >
               <span
                 style={{
-                  fontFamily: 'Inter',
+                  fontFamily: 'var(--font-body)',
                   fontWeight: 600,
                   fontSize: '12px',
                   lineHeight: '1.5em',
@@ -375,17 +363,16 @@ export const GoalsTable = () => {
             </th>
             <th
               style={{
-                padding: '12px 16px',
+                padding: '12px 20px',
                 background: '#2D2D45',
                 borderBottom: '1px solid #2C2C45',
-                borderRight: '1px solid #2C2C45',
                 textAlign: 'left',
                 width: '165px'
               }}
             >
               <span
                 style={{
-                  fontFamily: 'Inter',
+                  fontFamily: 'var(--font-body)',
                   fontWeight: 600,
                   fontSize: '12px',
                   lineHeight: '1.5em',
@@ -397,10 +384,9 @@ export const GoalsTable = () => {
             </th>
             <th
               style={{
-                padding: '12px 16px',
+                padding: '12px 20px',
                 background: '#2D2D45',
                 borderBottom: '1px solid #2C2C45',
-                borderRight: '1px solid #2C2C45',
                 textAlign: 'left',
                 width: '140px',
                 whiteSpace: 'nowrap'
@@ -408,7 +394,7 @@ export const GoalsTable = () => {
             >
               <span
                 style={{
-                  fontFamily: 'Inter',
+                  fontFamily: 'var(--font-body)',
                   fontWeight: 600,
                   fontSize: '12px',
                   lineHeight: '1.5em',
@@ -420,16 +406,15 @@ export const GoalsTable = () => {
             </th>
             <th
               style={{
-                padding: '12px 16px',
+                padding: '12px 20px',
                 background: '#2D2D45',
                 borderBottom: '1px solid #2C2C45',
-                borderRight: '1px solid #2C2C45',
                 textAlign: 'left'
               }}
             >
               <span
                 style={{
-                  fontFamily: 'Inter',
+                  fontFamily: 'var(--font-body)',
                   fontWeight: 600,
                   fontSize: '12px',
                   lineHeight: '1.5em',
@@ -444,12 +429,12 @@ export const GoalsTable = () => {
                 padding: '12px 24px',
                 background: '#2D2D45',
                 borderBottom: '1px solid #2C2C45',
-                textAlign: 'left'
+                textAlign: 'center'
               }}
             >
               <span
                 style={{
-                  fontFamily: 'Inter',
+                  fontFamily: 'var(--font-body)',
                   fontWeight: 600,
                   fontSize: '12px',
                   lineHeight: '1.5em',
@@ -468,8 +453,8 @@ export const GoalsTable = () => {
                 style={{
                   padding: '16px 20px',
                   borderBottom: '1px solid #2C2C45',
-                  borderRight: '1px solid #2C2C45',
-                  textAlign: 'center'
+                  textAlign: 'center',
+                  background: '#252532'
                 }}
               >
                 <div
@@ -486,13 +471,13 @@ export const GoalsTable = () => {
                 style={{
                   padding: '16px 20px',
                   borderBottom: '1px solid #2C2C45',
-                  borderRight: '1px solid #2C2C45',
-                  textAlign: 'left'
+                  textAlign: 'left',
+                  background: '#252532'
                 }}
               >
                 <span
                   style={{
-                    fontFamily: 'Inter',
+                    fontFamily: 'var(--font-body)',
                     fontWeight: 400,
                     fontSize: '14px',
                     lineHeight: '1.4285714285714286em',
@@ -507,14 +492,13 @@ export const GoalsTable = () => {
                 style={{
                   padding: '16px 20px',
                   borderBottom: '1px solid #2C2C45',
-                  borderRight: '1px solid #2C2C45',
                   textAlign: 'left',
                   width: '165px'
                 }}
               >
                 <span
                   style={{
-                    fontFamily: 'Inter',
+                    fontFamily: 'var(--font-body)',
                     fontWeight: 400,
                     fontSize: '14px',
                     lineHeight: '1.4285714285714286em',
@@ -528,14 +512,13 @@ export const GoalsTable = () => {
                 style={{
                   padding: '16px 20px',
                   borderBottom: '1px solid #2C2C45',
-                  borderRight: '1px solid #2C2C45',
                   textAlign: 'left',
                   width: '165px'
                 }}
               >
                 <span
                   style={{
-                    fontFamily: 'Inter',
+                    fontFamily: 'var(--font-body)',
                     fontWeight: 400,
                     fontSize: '14px',
                     lineHeight: '1.4285714285714286em',
@@ -549,7 +532,6 @@ export const GoalsTable = () => {
                 style={{
                   padding: '16px 0px 16px 20px',
                   borderBottom: '1px solid #2C2C45',
-                  borderRight: '1px solid #2C2C45',
                   textAlign: 'center',
                   width: '140px',
                   height: '72px'
@@ -558,7 +540,7 @@ export const GoalsTable = () => {
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
                   <span
                     style={{
-                      fontFamily: 'Inter',
+                      fontFamily: 'var(--font-body)',
                       fontWeight: 400,
                       fontSize: '14px',
                       lineHeight: '1.4285714285714286em',
@@ -583,13 +565,13 @@ export const GoalsTable = () => {
                 style={{
                   padding: '16px 20px',
                   borderBottom: '1px solid #2C2C45',
-                  borderRight: '1px solid #2C2C45',
-                  textAlign: 'left'
+                  textAlign: 'left',
+                  background: '#252532'
                 }}
               >
                 <span
                   style={{
-                    fontFamily: 'Inter',
+                    fontFamily: 'var(--font-body)',
                     fontWeight: 400,
                     fontSize: '14px',
                     lineHeight: '1.4285714285714286em',
@@ -611,10 +593,16 @@ export const GoalsTable = () => {
                   style={{
                     padding: '8px',
                     borderRadius: '6px',
-                    margin: '0 auto'
+                    margin: '0 auto',
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer'
                   }}
                 >
-                  <Eye className="w-4 h-4" style={{ color: '#85888E' }} />
+                  <svg width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0.940167 5.98281C0.847978 5.83684 0.801884 5.76385 0.776081 5.65128C0.756699 5.56672 0.756699 5.43336 0.776081 5.3488C0.801884 5.23623 0.847978 5.16324 0.940167 5.01727C1.70199 3.811 3.96961 0.761544 7.42533 0.761544C10.881 0.761544 13.1487 3.811 13.9105 5.01727C14.0027 5.16324 14.0488 5.23623 14.0746 5.3488C14.094 5.43336 14.094 5.56672 14.0746 5.65128C14.0488 5.76385 14.0027 5.83684 13.9105 5.98281C13.1487 7.18909 10.8811 10.2385 7.42533 10.2385C3.96961 10.2385 1.70199 7.18909 0.940167 5.98281Z" stroke="#85888E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M7.42533 7.53083C8.5469 7.53083 9.45611 6.62161 9.45611 5.50004C9.45611 4.37847 8.5469 3.46926 7.42533 3.46926C6.30376 3.46926 5.39454 4.37847 5.39454 5.50004C5.39454 6.62161 6.30376 7.53083 7.42533 7.53083Z" stroke="#85888E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
                 </button>
               </td>
             </tr>
