@@ -77,20 +77,21 @@ export const SprintSection = ({
   };
 
   return (
-    <div className={`${isExpanded ? 'w-full' : 'flex flex-col lg:flex-row gap-6'} w-full max-w-full`}>
+    <div className={`w-full ${isExpanded ? 'flex flex-col' : 'flex flex-col xl:flex-row'} gap-6`}>
       {/* Card principal da sprint */}
       <div 
-        className={`rounded-xl border flex flex-col ${isExpanded ? 'w-full' : 'flex-1'}`}
+        className={`rounded-xl border flex flex-col ${isExpanded ? 'w-full' : 'flex-1 min-w-0'}`}
         style={{
-          background: 'linear-gradient(135deg, #252532 0%, #2A2A3A 100%)',
+          background: 'linear-gradient(135deg, rgba(37, 37, 50, 1) 0%, #2A2A3A 100%)',
           borderColor: '#2C2C45',
           borderRadius: '12px',
           borderWidth: '1px',
           padding: '24px',
           width: isExpanded ? '100%' : 'auto',
-          minWidth: isExpanded ? 'auto' : '600px',
-          maxWidth: isExpanded ? '100%' : '758px',
-          height: '230px',
+          minWidth: isExpanded ? 'auto' : '0',
+          maxWidth: isExpanded ? '100%' : 'none',
+          height: 'auto',
+          minHeight: '230px',
           opacity: 1,
           gap: '24px',
           boxShadow: `
@@ -104,11 +105,11 @@ export const SprintSection = ({
         }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between" style={{ gap: '24px', minHeight: '48px' }}>
-          <div className="flex items-center" style={{ gap: '10px', padding: '2px 0px' }}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6" style={{ minHeight: '48px' }}>
+          <div className="flex items-start sm:items-center" style={{ gap: '10px', padding: '2px 0px' }}>
             {/* Ícone de corrida */}
             <div 
-              className="flex items-center justify-center"
+              className="flex items-center justify-center flex-shrink-0"
               style={{
                 width: '32px',
                 height: '32px',
@@ -122,7 +123,7 @@ export const SprintSection = ({
                 <path d="M6.5 10.5L8.5 12.395L6.6665 14.5M15.5 13.5L17.5 15.395L15.6665 17.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
-            <div style={{ gap: '6px' }} className="flex flex-col justify-center">
+            <div style={{ gap: '6px' }} className="flex flex-col justify-center min-w-0 flex-1">
               <h2 
                 className="text-white"
                 style={{
@@ -151,11 +152,12 @@ export const SprintSection = ({
             variant="tertiary"
             size="md"
             onClick={handleToggleExpanded}
-            className="flex items-center gap-1 hover:opacity-80 transition-opacity rounded-lg"
+            className="flex items-center gap-1 hover:opacity-80 transition-opacity rounded-lg self-start sm:self-center flex-shrink-0 cursor-pointer"
             aria-label={isExpanded ? 'Minimizar seção da sprint' : 'Expandir seção da sprint'}
           >
             <Expand04 className="w-5 h-5" style={{ color: '#F5F5F5' }} />
             <span 
+              className="hidden sm:inline"
               style={{
                 fontFamily: 'var(--font-sora)',
                 fontWeight: 600,
@@ -180,10 +182,10 @@ export const SprintSection = ({
         </div>
 
         {/* Objetivo atual */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center" style={{ gap: '8px' }}>
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="flex items-center min-w-0" style={{ gap: '8px' }}>
             <div 
-              className="rounded-lg flex items-center justify-center overflow-hidden"
+              className="rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0"
               style={{
                 width: '48px',
                 height: '48px',
@@ -201,7 +203,7 @@ export const SprintSection = ({
                 }}
               />
             </div>
-            <div className="flex flex-col" style={{ width: '325px', gap: '6px' }}>
+            <div className="flex flex-col min-w-0 flex-1" style={{ gap: '6px' }}>
               <p 
                 className="text-white"
                 style={{
@@ -214,7 +216,7 @@ export const SprintSection = ({
                 {sprintData.currentObjective.label}
               </p>
               <p 
-                className="font-semibold"
+                className="font-semibold break-words"
                 style={{
                   fontFamily: 'var(--font-sora)',
                   fontWeight: 600,
@@ -228,7 +230,7 @@ export const SprintSection = ({
             </div>
           </div>
           <div 
-            className="flex items-center"
+            className="flex items-center flex-shrink-0"
             style={{
               gap: '-40px'
             }}
@@ -244,7 +246,7 @@ export const SprintSection = ({
               }}
             >
               <span 
-                className="text-white"
+                className="text-white whitespace-nowrap"
                 style={{
                   fontFamily: 'var(--font-sora)',
                   fontWeight: 400,
@@ -265,16 +267,26 @@ export const SprintSection = ({
                 background: 'rgba(255, 255, 255, 0.1)',
                 borderRadius: '9999px',
                 marginLeft: '-40px',
-                position: 'relative'
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                boxShadow: `
+                  0px 0px 0px 1px rgba(255, 255, 255, 0.1),
+                  inset 0px 1px 0px rgba(255, 255, 255, 0.2),
+                  inset 0px -1px 0px rgba(0, 0, 0, 0.1)
+                `,
+                backdropFilter: 'blur(10px)'
               }}
             >
               <div
                 style={{
-                  position: 'absolute',
-                  left: '12px',
-                  top: '12px',
                   width: '24px',
-                  height: '24px'
+                  height: '24px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
                 }}
               >
                 <img 
@@ -283,9 +295,6 @@ export const SprintSection = ({
                   style={{
                     width: '16px',
                     height: '18px',
-                    position: 'absolute',
-                    left: '4px',
-                    top: '3px',
                     filter: 'brightness(0) saturate(100%) invert(100%)'
                   }}
                 />
@@ -298,9 +307,9 @@ export const SprintSection = ({
       {/* Card de frase do dia */}
       {showQuote && !isExpanded && (
         <div 
-          className="rounded-lg border relative flex-shrink-0 flex flex-col w-full lg:w-auto"
+          className="rounded-lg border relative flex-shrink-0 flex flex-col w-full xl:w-auto"
           style={{
-            background: 'linear-gradient(135deg, #252532 0%, #2A2A3A 100%)',
+            background: 'linear-gradient(135deg, rgba(37, 37, 50, 1) 0%, #2A2A3A 100%)',
             borderColor: '#2C2C45',
             borderRadius: '8px',
             borderWidth: '1px',
@@ -308,7 +317,8 @@ export const SprintSection = ({
             width: '100%',
             minWidth: '250px',
             maxWidth: '320px',
-            height: '230px',
+            height: 'auto',
+            minHeight: '230px',
             opacity: 1,
             gap: '24px',
             boxShadow: `
@@ -325,7 +335,7 @@ export const SprintSection = ({
             variant="icon"
             size="icon"
             onClick={handleToggleQuote}
-            className="absolute right-2 top-2 rounded-lg"
+            className="absolute right-2 top-2 rounded-lg cursor-pointer"
             aria-label="Fechar frase do dia"
           >
             <X 
@@ -339,7 +349,7 @@ export const SprintSection = ({
           
           <div className="flex items-center" style={{ gap: '10px' }}>
             <div 
-              className="rounded-lg flex items-center justify-center"
+              className="rounded-lg flex items-center justify-center flex-shrink-0"
               style={{
                 width: '24px',
                 height: '24px',
@@ -372,9 +382,9 @@ export const SprintSection = ({
             </h3>
           </div>
           
-          <div className="flex flex-col flex-1" style={{ gap: '16px' }}>
+          <div className="flex flex-col flex-1 min-h-0" style={{ gap: '16px' }}>
             <p 
-              className="text-[#E9EAEB]"
+              className="text-[#E9EAEB] break-words"
               style={{
                 fontFamily: 'var(--font-sora)',
                 fontWeight: 400,
@@ -388,7 +398,7 @@ export const SprintSection = ({
               "Mudar pode dar medo, mas é uma aventura que pode te levar muito longe."
             </p>
             <p 
-              className="text-white"
+              className="text-white break-words"
               style={{
                 fontFamily: 'var(--font-sora)',
                 fontWeight: 600,

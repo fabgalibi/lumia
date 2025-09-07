@@ -55,7 +55,7 @@ const StudyConsistencyCalendar: React.FC<StudyConsistencyCalendarProps> = ({
     <div
       className="rounded-lg border flex flex-col w-full"
       style={{
-        background: '#252532',
+        background: 'rgba(37, 37, 50, 1)',
         borderColor: '#2C2C45',
         borderWidth: '1px',
         borderRadius: '8px',
@@ -89,7 +89,7 @@ const StudyConsistencyCalendar: React.FC<StudyConsistencyCalendarProps> = ({
               {data.title}
             </h3>
             <div className="relative group" style={{ marginLeft: '4px' }}>
-              <button className="w-4 h-4 flex items-center justify-center">
+              <button className="w-4 h-4 flex items-center justify-center hover:bg-[#333346] rounded transition-all duration-200 cursor-pointer">
                 <HelpCircle className="w-4 h-4 text-[#85888E]" strokeWidth={1.33} />
               </button>
               {/* Tooltip */}

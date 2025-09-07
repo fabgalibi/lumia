@@ -50,7 +50,7 @@ export const ProgressBar = ({
             fontWeight: 400,
             fontSize: '14px',
             lineHeight: '1.26em',
-            left: `calc(${percentage}% - 140px)`, // Posiciona o texto com bastante espaço do foguete
+            left: `calc(${percentage}% - 180px)`, // Aumentado o espaço entre o texto e o foguete
             top: '50%',
             transform: 'translateY(-50%)',
             zIndex: 15,

@@ -98,7 +98,7 @@ export const StatsCards = () => {
             <p className="text-white text-sm mb-2" style={{ fontFamily: 'var(--font-sora)', fontWeight: 400, fontSize: '14px', lineHeight: '1.4285714285714286em' }}>
               Faltam 6 metas para completar essa sprint.
             </p>
-            <button className="flex items-center gap-2 text-orange-500 hover:text-orange-400 transition-colors" style={{ fontFamily: 'var(--font-sora)', fontWeight: 600, fontSize: '14px', lineHeight: '1.4285714285714286em' }}>
+            <button className="flex items-center gap-2 text-orange-500 hover:text-orange-400 hover:bg-[#333346] transition-all duration-200 px-2 py-1 rounded cursor-pointer" style={{ fontFamily: 'var(--font-sora)', fontWeight: 600, fontSize: '14px', lineHeight: '1.4285714285714286em' }}>
               <span>Completar agora</span>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style={{ color: '#F66649' }}>
                 <path d="M7 17L17 7" stroke="currentColor" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
@@ -109,7 +109,7 @@ export const StatsCards = () => {
         </div>
         
         <button 
-          className="flex items-center text-white rounded-lg transition-colors flex-shrink-0"
+          className="flex items-center text-white rounded-lg transition-all duration-200 flex-shrink-0 cursor-pointer"
           style={{ 
             background: '#C74228',
             border: '2px solid',
@@ -124,6 +124,16 @@ export const StatsCards = () => {
             borderRadius: '8px',
             justifyContent: 'center',
             alignItems: 'center'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = '#B03A20';
+            e.currentTarget.style.borderImage = 'linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%) 1';
+            e.currentTarget.style.boxShadow = '0px 1px 2px 0px rgba(255, 255, 255, 0.1), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.1), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.25)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = '#C74228';
+            e.currentTarget.style.borderImage = 'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%) 1';
+            e.currentTarget.style.boxShadow = '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)';
           }}
         >
           {/* Ícone download-cloud-02 */}
@@ -166,7 +176,7 @@ export const StatsCards = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4" style={{ gap: '24px' }}>
         {stats.map((stat, index) => (
           <div key={index} className="rounded-xl border shadow-lg" style={{ 
-            background: '#252532', 
+            background: 'rgba(37, 37, 50, 1)', 
             borderColor: '#2C2C45', 
             borderRadius: '12px',
             padding: '16px 20px 20px',

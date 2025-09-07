@@ -15,7 +15,7 @@ export const StudyCalendar = () => {
     <div 
       className="rounded-xl border shadow-lg w-full"
       style={{
-        background: '#252532',
+        background: 'rgba(37, 37, 50, 1)',
         borderColor: '#2C2C45',
         borderRadius: '8px',
         padding: '20px 24px'
