@@ -11,7 +11,7 @@ interface ReviewSuggestion {
 
 interface ReviewSuggestionCardProps {
   suggestion: ReviewSuggestion;
-  onReview: (id: string) => void;
+  onReview: (suggestion: ReviewSuggestion) => void;
 }
 
 export const ReviewSuggestionCard = ({ suggestion, onReview }: ReviewSuggestionCardProps) => {
@@ -252,7 +252,7 @@ export const ReviewSuggestionCard = ({ suggestion, onReview }: ReviewSuggestionC
 
         {/* Right section - Action button */}
         <button
-          onClick={() => onReview(suggestion.id)}
+          onClick={() => onReview(suggestion)}
           className="flex items-center justify-center hover:opacity-90 hover:shadow-lg transition-all duration-200"
           style={{
             gap: '4px',

@@ -1,14 +1,48 @@
 import { useState } from "react";
 import { ReviewSuggestionCard } from "./review-suggestion-card";
+import { GoalDetailsModal } from "./goal-details-modal";
 // Imports removidos - usando SVGs inline do Figma
 
 export const GoalsTable = () => {
   const [activeTab, setActiveTab] = useState("Lista de Tópicos");
+  const [selectedGoal, setSelectedGoal] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleReviewGoal = (id: string) => {
-    console.log(`Revisando meta: ${id}`);
-    // Aqui será implementada a lógica para revisar a meta
-    // Pode abrir um modal, navegar para uma página, etc.
+  const handleReviewGoal = (goal: any) => {
+    // Converter sugestão de revisão para formato de meta se necessário
+    const modalGoal = {
+      topic: goal.topic,
+      studyType: goal.studyType || "Revisão",
+      timeStudied: goal.timeStudied || "0h",
+      performance: goal.performance,
+      mentorCommand: goal.mentorCommand || "Revisar conteúdo",
+      status: goal.status || "pending",
+      subjects: goal.subjects ? goal.subjects : [
+        "Conteúdo para revisão",
+        "Tópicos importantes",
+        "Pontos de atenção"
+      ],
+      materials: goal.materials ? goal.materials : [
+        "Material de apoio",
+        "Exercícios práticos"
+      ],
+      mentorCommands: goal.mentorCommands ? goal.mentorCommands : [
+        "Revisar conteúdo",
+        "Praticar exercícios"
+      ],
+      additionalTips: goal.additionalTips ? goal.additionalTips : [
+        "Foque nos pontos mais importantes",
+        "Pratique com questões similares"
+      ]
+    };
+    
+    setSelectedGoal(modalGoal);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedGoal(null);
   };
 
   const goals = [
@@ -18,7 +52,31 @@ export const GoalsTable = () => {
       timeStudied: "2h30",
       performance: "84%",
       mentorCommand: "Enviar resumo dos principais dilemas éticos",
-      status: "completed"
+      status: "pending",
+      subjects: [
+        "Princípios e valores do serviço público (legalidade, impessoalidade, moralidade, publicidade e eficiência);",
+        "Código de Ética Profissional do Servidor Público Civil do Poder Executivo Federal;",
+        "Conduta ética e deveres do servidor;",
+        "Vedações e conflitos de interesse;",
+        "Transparência, sigilo e acesso à informação;",
+        "Responsabilidade funcional e sanções éticas."
+      ],
+      materials: [
+        "Lei 8.112/90 - Estatuto dos Servidores Públicos;",
+        "Decreto 1.171/94 - Código de Ética Profissional;",
+        "Lei 12.527/11 - Lei de Acesso à Informação;",
+        "Jurisprudência do STF sobre ética no serviço público."
+      ],
+      mentorCommands: [
+        "Elaborar resumo dos 5 princípios constitucionais;",
+        "Analisar 3 casos práticos de conflito de interesse;",
+        "Estudar as principais vedações do servidor público."
+      ],
+      additionalTips: [
+        "Foque nos princípios constitucionais da administração pública;",
+        "Estude bem as diferenças entre moralidade e legalidade;",
+        "Pratique com questões sobre transparência e acesso à informação."
+      ]
     },
     {
       topic: "Noções de Direito Administrativo",
@@ -26,7 +84,7 @@ export const GoalsTable = () => {
       timeStudied: "3h15",
       performance: "84%",
       mentorCommand: "Liberar mapa mental sobre atos administrativos",
-      status: "in-progress"
+      status: "pending"
     },
     {
       topic: "Legislação Previdenciária",
@@ -34,7 +92,7 @@ export const GoalsTable = () => {
       timeStudied: "2h",
       performance: "84%",
       mentorCommand: "Atualizar aluno sobre mudanças recentes no INSS",
-      status: "in-progress"
+      status: "completed"
     },
     {
       topic: "Direito",
@@ -694,6 +752,7 @@ export const GoalsTable = () => {
                   }}
                 >
                   <button
+                    onClick={() => handleReviewGoal(goal)}
                     className="flex items-center justify-center hover:bg-[#333346] transition-all duration-200 cursor-pointer"
                     style={{
                       padding: '8px',
@@ -733,6 +792,24 @@ export const GoalsTable = () => {
           ))}
         </div>
       )}
+
+      {/* Modal */}
+      <GoalDetailsModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        goal={selectedGoal || {
+          topic: "Ética no Serviço Público",
+          studyType: "Estudos de caso",
+          timeStudied: "2h30",
+          performance: "84%",
+          mentorCommand: "Enviar resumo dos principais dilemas éticos",
+          status: "pending",
+          subjects: [],
+          materials: [],
+          mentorCommands: [],
+          additionalTips: []
+        }}
+      />
     </div>
   );
 };
