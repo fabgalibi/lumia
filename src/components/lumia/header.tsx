@@ -5,6 +5,7 @@ export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [time, setTime] = useState("00:00:00");
+  const [initialTime] = useState("00:00:00");
 
   // Fechar menu quando clicar fora
   useEffect(() => {
@@ -55,7 +56,7 @@ export const Header = () => {
         <div className="flex items-center" style={{ gap: '24px' }}>
           {/* Cronômetro */}
           <Timer 
-            initialTime={time}
+            initialTime={initialTime}
             onTimeChange={setTime}
             showControls={true}
           />

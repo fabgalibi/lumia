@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Expand04 } from "@untitledui/icons";
 import { X, Minimize2 } from "lucide-react";
 import { Timer } from "./timer";
@@ -31,6 +31,14 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showPerformanceModal, setShowPerformanceModal] = useState(false);
   const [timer, setTimer] = useState("00:35:46");
+  const [initialTimer] = useState("00:00:00");
+
+  // Resetar estado quando o modal for fechado
+  useEffect(() => {
+    if (!isOpen) {
+      setIsFullscreen(false);
+    }
+  }, [isOpen]);
 
   const toggleSection = (section: keyof typeof expandedSections) => {
     setExpandedSections(prev => {
@@ -190,25 +198,26 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
 
   return (
       <div
-        className={`fixed inset-0 flex ${isFullscreen ? 'items-center justify-center p-4' : 'items-center justify-end p-4'}`}
+        className={`fixed inset-0 flex ${isFullscreen ? 'items-center justify-center p-4' : 'items-end justify-end p-4'}`}
         style={{
           backgroundColor: isFullscreen ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.5)',
           zIndex: 9999
         }}
       >
             <div
-              className={`relative overflow-y-auto ${isFullscreen ? 'w-[95vw] h-[95vh]' : 'w-full max-w-lg max-h-[90vh]'}`}
+              className={`relative flex flex-col ${isFullscreen ? 'w-[95vw] h-[95vh]' : 'w-[617px] max-h-[90vh]'}`}
               style={{
                 background: '#202028',
                 border: '1px solid #272737',
-                borderRadius: isFullscreen ? '16px' : '16px',
-                boxShadow: isFullscreen ? '0px 8px 32px 0px rgba(0, 0, 0, 0.3)' : '0px 8px 32px 0px rgba(0, 0, 0, 0.3)',
+                borderRadius: '16px',
+                boxShadow: '0px 8px 32px 0px rgba(0, 0, 0, 0.3)',
                 minHeight: isFullscreen ? '95vh' : '500px',
-                maxWidth: isFullscreen ? '95vw' : '500px',
-                margin: isFullscreen ? '0' : '0',
-                width: isFullscreen ? '95vw' : 'auto',
+                maxWidth: isFullscreen ? '95vw' : '617px',
+                margin: isFullscreen ? '0' : '0 16px 16px 0',
+                width: isFullscreen ? '95vw' : '617px',
                 height: isFullscreen ? '95vh' : 'auto',
-                padding: isFullscreen ? '0' : '0'
+                padding: '0',
+                overflow: 'hidden'
               }}
             >
         {/* Header */}
@@ -218,8 +227,9 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
             padding: isFullscreen ? '12px 16px sm:16px lg:24px' : '24px 16px 16px 24px',
             background: '#252532',
             borderBottom: '1.5px solid #272737',
-            borderTopLeftRadius: isFullscreen ? '0px' : '16px',
-            borderTopRightRadius: isFullscreen ? '0px' : '16px'
+            borderTopLeftRadius: '16px',
+            borderTopRightRadius: '16px',
+            flexShrink: 0
           }}
         >
           <div className="flex flex-col gap-1 flex-1">
@@ -227,8 +237,10 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
               style={{
                 fontFamily: 'Sora',
                 fontWeight: 600,
+                fontStyle: 'SemiBold',
                 fontSize: '18px',
-                lineHeight: '1.5555555555555556em',
+                lineHeight: '1.5em',
+                letterSpacing: '0%',
                 color: '#F7F7F7'
               }}
             >
@@ -279,7 +291,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
             {/* Cronômetro - só aparece em tela cheia */}
             {isFullscreen && (
               <Timer 
-                initialTime={timer}
+                initialTime={initialTimer}
                 onTimeChange={setTimer}
                 showControls={true}
                 className="w-full sm:w-auto"
@@ -297,7 +309,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                       background: 'transparent',
                       border: 'none',
                       borderRight: '1px solid #373A41',
-                      borderRadius: '0px',
+                      borderRadius: '8px 0px 0px 8px',
                       gap: '6px'
                     }}
                   >
@@ -322,7 +334,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                       padding: '8px 12px',
                       background: 'transparent',
                       border: 'none',
-                      borderRadius: '0px'
+                      borderRadius: '0px 8px 8px 0px'
                     }}
                   >
                   <X className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: '#F0F0F1' }} />
@@ -375,7 +387,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                     background: 'transparent',
                     border: 'none',
                     borderLeft: '1px solid #373A41',
-                    borderRadius: '0px'
+                    borderRadius: '0px 8px 8px 0px'
                   }}
                 >
                   <X className="w-5 h-5" style={{ color: '#F0F0F1' }} />
@@ -387,10 +399,13 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
 
             {/* Content */}
             <div
-              className={`flex flex-col gap-4 sm:gap-6 ${isFullscreen ? 'p-6' : 'p-4 sm:p-6'}`}
+              className={`flex flex-col gap-4 sm:gap-6 flex-1 overflow-y-auto overflow-x-hidden ${isFullscreen ? 'p-6' : 'p-6'}`}
+              style={{
+                minHeight: 0
+              }}
             >
           {sections.map((section) => (
-            <div key={section.key} className="w-full">
+            <div key={section.key} className="w-full min-w-0">
               <div 
                 className="flex items-center justify-between cursor-pointer"
                 onClick={() => toggleSection(section.key)}
@@ -403,12 +418,13 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                   borderTopRightRadius: '8px',
                   borderBottomLeftRadius: expandedSections[section.key] ? '0px' : '8px',
                   borderBottomRightRadius: expandedSections[section.key] ? '0px' : '8px',
-                  gap: '12px'
+                  gap: '12px',
+                  minWidth: 0
                 }}
               >
-                <div className="flex items-center" style={{ gap: '10px' }}>
+                <div className="flex items-center flex-1 min-w-0" style={{ gap: '10px' }}>
                   <div 
-                    className="flex items-center justify-center"
+                    className="flex items-center justify-center flex-shrink-0"
                     style={{
                       width: '32px',
                       height: '32px'
@@ -417,6 +433,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                     {section.icon}
                   </div>
                   <span 
+                    className="truncate"
                     style={{
                       fontFamily: 'DM Sans',
                       fontWeight: 600,
@@ -435,6 +452,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                   viewBox="0 0 24 24" 
                   fill="none" 
                   xmlns="http://www.w3.org/2000/svg"
+                  className="flex-shrink-0"
                   style={{
                     transform: expandedSections[section.key] ? 'rotate(180deg)' : 'rotate(0deg)',
                     transition: 'transform 0.2s ease-in-out'
@@ -495,15 +513,14 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
 
             {/* Footer */}
             <div
-              className={`flex ${isFullscreen ? 'flex-row justify-between items-center' : 'flex-col sm:flex-row'}`}
+              className={`flex flex-shrink-0 ${isFullscreen ? 'flex-row justify-between items-center' : 'flex-col sm:flex-row'}`}
               style={{
                 background: 'rgba(32, 32, 40, 1)',
                 borderTop: '1px solid #2C2C45',
                 borderBottomLeftRadius: isFullscreen ? '16px' : '16px',
                 borderBottomRightRadius: isFullscreen ? '16px' : '16px',
                 padding: isFullscreen ? '32px 24px' : '32px 24px',
-                gap: isFullscreen ? '16px' : '16px',
-                marginTop: 'auto'
+                gap: isFullscreen ? '16px' : '16px'
               }}
             >
           {isFullscreen ? (

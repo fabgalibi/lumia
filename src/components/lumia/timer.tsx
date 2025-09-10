@@ -18,6 +18,11 @@ export const Timer: React.FC<TimerProps> = ({
   const [time, setTime] = useState(initialTime);
   const [isRunning, setIsRunning] = useState(false);
 
+  // Sincronizar com initialTime quando mudar
+  useEffect(() => {
+    setTime(initialTime);
+  }, [initialTime]);
+
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isRunning) {
@@ -50,6 +55,9 @@ export const Timer: React.FC<TimerProps> = ({
   const resetTimer = () => {
     setTime(initialTime);
     setIsRunning(false);
+    if (onTimeChange) {
+      onTimeChange(initialTime);
+    }
   };
 
   return (

@@ -46,14 +46,14 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
       }}
     >
       <div
-        className="fixed"
+        className="fixed flex flex-col"
         style={{
           background: '#202028',
           border: '1px solid #272737',
           borderRadius: '16px',
           boxShadow: '0px 8px 32px 0px rgba(0, 0, 0, 0.3)',
           width: '508px',
-          minHeight: 'fit-content',
+          height: 'fit-content',
           maxHeight: '90vh',
           right: '40px',
           bottom: '40px',
@@ -102,9 +102,10 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
 
         {/* Content */}
         <div
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-4 flex-1"
           style={{
-            padding: '20px 24px 24px'
+            padding: '20px 24px 24px',
+            overflowY: 'auto'
           }}
         >
           {/* Questões */}
@@ -344,7 +345,7 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
 
         {/* Footer */}
         <div
-          className="flex flex-col"
+          className="flex flex-col flex-shrink-0"
           style={{
             gap: '20px',
             padding: '0px 0px 20px',
