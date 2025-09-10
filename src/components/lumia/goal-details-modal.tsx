@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Expand04 } from "@untitledui/icons";
 import { X, Minimize2 } from "lucide-react";
 import { Timer } from "./timer";
+import { PerformanceModal } from "./performance-modal";
 
 interface GoalDetailsModalProps {
   isOpen: boolean;
@@ -28,6 +29,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
     additionalTips: false
   });
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showPerformanceModal, setShowPerformanceModal] = useState(false);
   const [timer, setTimer] = useState("00:35:46");
 
   const toggleSection = (section: keyof typeof expandedSections) => {
@@ -47,6 +49,20 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
       
       return newState;
     });
+  };
+
+  const handleConcluirMeta = () => {
+    setShowPerformanceModal(true);
+  };
+
+  const handlePerformanceSave = (data: any) => {
+    console.log('Performance data saved:', data);
+    // Aqui você pode implementar a lógica para salvar os dados de performance
+    setShowPerformanceModal(false);
+  };
+
+  const handlePerformanceClose = () => {
+    setShowPerformanceModal(false);
   };
 
   if (!isOpen) return null;
@@ -554,6 +570,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                 </button>
                 
                 <button
+                  onClick={handleConcluirMeta}
                   className="flex items-center justify-center hover:bg-[#0A4A2E] transition-all duration-200 cursor-pointer"
                   style={{
                     gap: '4px',
@@ -619,6 +636,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
               </button>
               
               <button
+                onClick={handleConcluirMeta}
                 className="flex items-center justify-center hover:bg-[#0A4A2E] transition-all duration-200 cursor-pointer flex-1"
                 style={{
                   gap: '4px',
@@ -655,6 +673,13 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
           )}
         </div>
       </div>
+
+      {/* Performance Modal */}
+      <PerformanceModal
+        isOpen={showPerformanceModal}
+        onClose={handlePerformanceClose}
+        onSave={handlePerformanceSave}
+      />
     </div>
   );
 };
