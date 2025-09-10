@@ -6,3 +6,6 @@ export * from './inputs';
 
 // Notification Components
 export * from './notifications';
+
+// Animation Components
+export * from './animations';

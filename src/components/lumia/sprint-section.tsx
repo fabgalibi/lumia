@@ -24,6 +24,7 @@ interface SprintData {
 interface SprintSectionProps {
   data?: SprintData;
   isExpanded?: boolean;
+  externalProgress?: number; // Progresso externo para integração com backend
   onToggleExpanded?: (expanded: boolean) => void;
   onShowQuote?: (show: boolean) => void;
 }
@@ -31,6 +32,7 @@ interface SprintSectionProps {
 export const SprintSection = ({ 
   data,
   isExpanded: externalIsExpanded,
+  externalProgress,
   onToggleExpanded,
   onShowQuote
 }: SprintSectionProps) => {
@@ -57,6 +59,10 @@ export const SprintSection = ({
   const sprintData = data || defaultData;
   const isExpanded = externalIsExpanded !== undefined ? externalIsExpanded : internalIsExpanded;
   const showQuote = onShowQuote !== undefined ? true : internalShowQuote; // Se onShowQuote existe, sempre mostrar
+  
+  // Usar progresso externo se disponível, senão usar o padrão
+  const currentProgress = externalProgress !== undefined ? externalProgress : sprintData.progress;
+  const currentProgressLabel = `${currentProgress}% concluído`;
 
   const handleToggleExpanded = () => {
     const newExpanded = !isExpanded;
@@ -80,6 +86,7 @@ export const SprintSection = ({
     <div className={`w-full ${isExpanded ? 'flex flex-col' : 'flex flex-col xl:flex-row'} gap-6`}>
       {/* Card principal da sprint */}
       <div 
+        data-sprint-section
         className={`rounded-xl border flex flex-col ${isExpanded ? 'w-full' : 'flex-1 min-w-0'}`}
         style={{
           background: 'linear-gradient(135deg, rgba(37, 37, 50, 1) 0%, #2A2A3A 100%)',
@@ -175,8 +182,8 @@ export const SprintSection = ({
         {/* Barra de progresso */}
         <div>
           <ProgressBar 
-            percentage={sprintData.progress}
-            label={sprintData.progressLabel}
+            percentage={currentProgress}
+            label={currentProgressLabel}
             isExpanded={isExpanded}
           />
         </div>

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import rocketIcon from "/src/assets/icons/rocket-icon.svg";
 import progressBarBg from "/src/assets/images/progress-bar-bg.png";
 
@@ -12,11 +11,11 @@ interface ProgressBarProps {
 export const ProgressBar = ({ 
   percentage, 
   label, 
-  isExpanded = false, 
   className = "" 
 }: ProgressBarProps) => {
   return (
     <div 
+      data-progress-bar
       className={`rounded-lg relative overflow-hidden ${className}`}
       style={{
         background: `url(${progressBarBg})`,

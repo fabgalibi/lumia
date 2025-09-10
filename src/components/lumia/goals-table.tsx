@@ -1,14 +1,18 @@
 import { useState } from "react";
 import { ReviewSuggestionCard } from "./review-suggestion-card";
 import { GoalDetailsModal, GoalSuccessNotification } from "./goal-details-modal";
+import { RocketAnimation } from "../animations";
+import { useSprint } from "@/contexts/sprint-context";
 // Imports removidos - usando SVGs inline do Figma
 
 export const GoalsTable = () => {
+  const { updateProgress } = useSprint();
   const [activeTab, setActiveTab] = useState("Lista de Tópicos");
   const [selectedGoal, setSelectedGoal] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showSuccessNotification, setShowSuccessNotification] = useState(false);
   const [completedGoalName, setCompletedGoalName] = useState<string>("");
+  const [showRocketAnimation, setShowRocketAnimation] = useState(false);
 
   const handleReviewGoal = (goal: any) => {
     // Converter sugestão de revisão para formato de meta se necessário
@@ -51,13 +55,30 @@ export const GoalsTable = () => {
     console.log('Performance data saved:', data);
     // Armazenar o nome da meta antes de fechar o modal
     setCompletedGoalName(selectedGoal?.topic || "Ética no Serviço Público");
+    
+    // Iniciar animação do foguete
+    console.log('Starting rocket animation...');
+    setShowRocketAnimation(true);
+  };
+
+  const handleRocketComplete = () => {
+    console.log('Rocket animation completed');
+    
+    // Aumentar progresso da sprint (simulando integração com backend)
+    updateProgress(5);
+    
+    // Mostrar notificação após o foguete pousar
     setShowSuccessNotification(true);
+    
+    // Resetar animação
+    setShowRocketAnimation(false);
     
     // Auto-hide notification after 5 seconds
     setTimeout(() => {
       setShowSuccessNotification(false);
     }, 5000);
   };
+
 
   const goals = [
     {
@@ -824,6 +845,12 @@ export const GoalsTable = () => {
           mentorCommands: [],
           additionalTips: []
         }}
+      />
+
+      {/* Rocket Animation */}
+      <RocketAnimation
+        isVisible={showRocketAnimation}
+        onComplete={handleRocketComplete}
       />
 
       {/* Success Notification */}
