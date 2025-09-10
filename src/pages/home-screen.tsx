@@ -5,14 +5,21 @@ import StudyConsistencyCalendar from "@/components/lumia/study-consistency-calen
 import { GoalsTable } from "@/components/lumia/goals-table";
 import { Sidebar } from "@/components/lumia/sidebar";
 import { SprintProvider, useSprint } from "@/contexts/sprint-context";
+import { SidebarProvider, useSidebar } from "@/contexts/sidebar-context";
 
 const HomeScreenContent = () => {
   const { progress } = useSprint();
+  const { sidebarWidth } = useSidebar();
   
   return (
     <div className="min-h-screen flex overflow-hidden" style={{ background: 'rgba(25, 25, 35, 1)' }}>
       <Sidebar />
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden pt-6">
+      <div 
+        className="flex-1 flex flex-col min-w-0 overflow-hidden pt-6 transition-all duration-300"
+        style={{ 
+          marginLeft: `${sidebarWidth}px`
+        }}
+      >
         <Header />
         <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 overflow-x-auto overflow-y-auto">
           <StatsCards />
@@ -30,7 +37,9 @@ const HomeScreenContent = () => {
 export const HomeScreen = () => {
   return (
     <SprintProvider>
-      <HomeScreenContent />
+      <SidebarProvider>
+        <HomeScreenContent />
+      </SidebarProvider>
     </SprintProvider>
   );
 };

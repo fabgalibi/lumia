@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
+import { useSidebar } from "@/contexts/sidebar-context";
 
 export const Sidebar = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const { isCollapsed, toggleSidebar } = useSidebar();
   const [showTexts, setShowTexts] = useState(true);
   const [activeItem, setActiveItem] = useState("Início");
   const [isLogoutHovered, setIsLogoutHovered] = useState(false);
@@ -10,11 +11,11 @@ export const Sidebar = () => {
     if (isCollapsed) {
       // Expandindo: esconder textos primeiro, depois expandir
       setShowTexts(false);
-      setIsCollapsed(false);
+      toggleSidebar();
     } else {
       // Colapsando: esconder textos imediatamente
       setShowTexts(false);
-      setIsCollapsed(true);
+      toggleSidebar();
     }
   };
 
@@ -157,46 +158,53 @@ export const Sidebar = () => {
   };
 
   return (
-    <div className="relative">
+    <div 
+      className="fixed left-0 top-0 h-screen z-50"
+      style={{
+        width: isCollapsed ? '96px' : '244px'
+      }}
+    >
       {/* Main Sidebar */}
       <div 
-        className="transition-all duration-300 shadow-lg"
+        className="h-full transition-all duration-300 shadow-lg"
         style={{
           background: 'rgba(37, 37, 50, 1)',
           borderRight: '1px solid #272737',
           borderRadius: isCollapsed ? '0px' : '0px 16px 16px 0px',
-          width: isCollapsed ? '96px' : '244px'
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column'
         }}
       >
-      {/* Header */}
-      <div className="p-6">
-        <div className="flex items-center">
-          {!isCollapsed && (
-            <div className="flex items-center gap-3">
-              <div className="w-44 h-12 flex items-center justify-center">
+        {/* Header */}
+        <div className="p-6 flex-shrink-0">
+          <div className="flex items-center">
+            {!isCollapsed && (
+              <div className="flex items-center gap-3">
+                <div className="w-44 h-12 flex items-center justify-center">
+                  <img 
+                    src="/images/lumia-logo-718d50.png" 
+                    alt="Lumia Logo" 
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              </div>
+            )}
+            {isCollapsed && (
+              <div className="w-12 h-12 flex items-center justify-center">
                 <img 
-                  src="/images/lumia-logo-718d50.png" 
+                  src="/images/lumia-logo-icon-only.png" 
                   alt="Lumia Logo" 
                   className="w-full h-full object-contain"
                 />
               </div>
-            </div>
-          )}
-          {isCollapsed && (
-            <div className="w-12 h-12 flex items-center justify-center">
-              <img 
-                src="/images/lumia-logo-icon-only.png" 
-                alt="Lumia Logo" 
-                className="w-full h-full object-contain"
-              />
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
 
-
-                  {/* Navigation */}
-            <nav className="p-4" style={{ gap: '12px', display: 'flex', flexDirection: 'column' }}>
+        {/* Navigation - ocupa o espaço restante */}
+        <nav className="flex-1 px-4 py-2" style={{ gap: '12px', display: 'flex', flexDirection: 'column' }}>
               {menuItems.map((item, index) => (
                 <button
                   key={index}
@@ -254,10 +262,10 @@ export const Sidebar = () => {
                   )}
                 </button>
               ))}
-            </nav>
+        </nav>
 
-      {/* User section */}
-      <div className="mt-auto p-4">
+        {/* User section - fica no final */}
+        <div className="flex-shrink-0 p-4">
         <button 
           className="flex items-center transition-all duration-200 group"
           style={{
