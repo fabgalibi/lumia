@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useSidebar } from "@/contexts/sidebar-context";
+import { LogoutModal } from "@/components/modals/logout-modal";
 
 export const Sidebar = () => {
   const { isCollapsed, toggleSidebar } = useSidebar();
   const [showTexts, setShowTexts] = useState(true);
   const [activeItem, setActiveItem] = useState("Início");
   const [isLogoutHovered, setIsLogoutHovered] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const handleToggle = () => {
     if (isCollapsed) {
@@ -42,7 +44,7 @@ export const Sidebar = () => {
             <path d="M13.3333 24V10.6667H24V24H13.3333ZM0 13.3333V0H10.6667V13.3333H0ZM8 10.6667V2.66667H2.66667V10.6667H8ZM0 24V16H10.6667V24H0ZM2.66667 21.3333H8V18.6667H2.66667V21.3333ZM16 21.3333H21.3333V13.3333H16V21.3333ZM13.3333 0H24V8H13.3333V0ZM16 2.66667V5.33333H21.3333V2.66667H16Z" fill="#F0F0F1"/>
           </svg>
         )
-      ), 
+            ), 
       label: "Início", 
       path: "/",
       isEmoji: false 
@@ -72,9 +74,9 @@ export const Sidebar = () => {
         ) : (
           <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M19.8 2.2H2.2V15.4H18.513L19.8 16.687V2.2ZM19.8 0C21.01 0 21.989 0.99 21.989 2.2L22 22L17.6 17.6H2.2C0.99 17.6 0 16.61 0 15.4V2.2C0 0.99 0.99 0 2.2 0H19.8ZM17.6 11H4.4V13.2H17.6V11ZM17.6 7.7H4.4V9.9H17.6V7.7ZM17.6 4.4H4.4V6.6H17.6V4.4Z" fill="#F0F0F1"/>
-          </svg>
+              </svg>
         )
-      ), 
+            ), 
       label: "Mensagens", 
       path: "/mensagens",
       isEmoji: false 
@@ -90,7 +92,7 @@ export const Sidebar = () => {
             <path d="M21.5772 16.9823C20.6284 16.0092 18.8532 14.5453 18.8532 9.75C18.8532 6.10781 16.1778 3.19219 12.5704 2.47688V1.5C12.5704 0.671719 11.8672 0 11 0C10.1328 0 9.42956 0.671719 9.42956 1.5V2.47688C5.82216 3.19219 3.14681 6.10781 3.14681 9.75C3.14681 14.5453 1.37159 16.0092 0.422845 16.9823C0.128203 17.2847 -0.0024214 17.6461 3.3952e-05 18C0.00543572 18.7687 0.637443 19.5 1.57637 19.5H20.4236C21.3626 19.5 21.9951 18.7687 22 18C22.0024 17.6461 21.8718 17.2842 21.5772 16.9823ZM3.31623 17.25C4.35828 15.9389 5.49756 13.7658 5.50296 9.77719C5.50296 9.76781 5.50002 9.75937 5.50002 9.75C5.50002 6.85031 7.96224 4.5 11 4.5C14.0378 4.5 16.5 6.85031 16.5 9.75C16.5 9.75937 16.497 9.76781 16.497 9.77719C16.5024 13.7662 17.6417 15.9394 18.6838 17.25H3.31623ZM11 24C12.7345 24 14.1414 22.657 14.1414 21H7.85863C7.85863 22.657 9.26554 24 11 24Z" fill="#F0F0F1"/>
           </svg>
         )
-      ), 
+            ), 
       label: "Notificações", 
       path: "/notificacoes",
       isEmoji: false 
@@ -111,7 +113,7 @@ export const Sidebar = () => {
             <path fillRule="evenodd" clipRule="evenodd" d="M12 2.04533C10.2341 2.20681 8.53335 2.79283 7.04278 3.75346C5.55221 4.71408 4.31598 6.02084 3.43944 7.56235C2.5629 9.10387 2.07204 10.8345 2.00868 12.6066C1.94533 14.3788 2.31135 16.14 3.07557 17.7402C3.83979 19.3404 4.97955 20.7321 6.39771 21.7967C7.81588 22.8613 9.47041 23.5673 11.2203 23.8544C12.9702 24.1416 14.7636 24.0015 16.4476 23.4459C18.1317 22.8904 19.6564 21.936 20.892 20.664L12.372 13.7773C12.256 13.6837 12.1623 13.5653 12.098 13.4308C12.0336 13.2963 12.0001 13.1491 12 13V2.04533ZM14 2.04533V12H23.9547C23.7209 9.43869 22.597 7.04027 20.7784 5.22163C18.9597 3.40298 16.5613 2.2791 14 2.04533ZM23.9547 14H15.828L22.1493 19.108C23.1701 17.5838 23.7909 15.8272 23.9547 14ZM0 13C0 5.82 5.82 0 13 0C20.18 0 26 5.82 26 13C26.0058 15.9757 24.9854 18.8624 23.1107 21.1733C21.8932 22.6822 20.3529 23.8991 18.6032 24.7344C16.8535 25.5696 14.9388 26.0021 13 26C9.55218 26 6.24558 24.6304 3.80761 22.1924C1.36964 19.7544 0 16.4478 0 13Z" fill="#F0F0F1"/>
           </svg>
         )
-      ), 
+            ), 
       label: "Estatísticas", 
       path: "/estatisticas",
       isEmoji: false 
@@ -127,7 +129,7 @@ export const Sidebar = () => {
             <path d="M4.79831 13.4203H2.39378C1.62374 13.4203 1 14.0301 1 14.7799V23.6404C1 24.3903 1.62507 25 2.39378 25H4.79964C5.57101 25 6.19475 24.3903 6.19475 23.6391V14.7799C6.1944 14.4191 6.0473 14.0731 5.78574 13.818C5.52419 13.5629 5.16954 13.4194 4.79964 13.419M13.7023 1H11.2977C10.5264 1 9.90263 1.60973 9.90263 2.36086V23.6378C9.90263 24.3903 10.5277 24.9987 11.2991 24.9987H13.7023C14.4736 24.9987 15.0974 24.389 15.0974 23.6378V2.36216C15.0974 1.60973 14.4723 1.0013 13.7009 1.0013M22.6062 7.71611H20.2004C19.429 7.71611 18.8053 8.32584 18.8053 9.07827V23.6378C18.8053 24.3903 19.4303 24.9987 20.2004 24.9987H22.6049C22.9748 24.9984 23.3294 24.8549 23.591 24.5997C23.8526 24.3446 23.9996 23.9987 24 23.6378V9.07697C24 8.32454 23.3749 7.71611 22.6036 7.71611" stroke="#F0F0F1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         )
-      ), 
+            ), 
       label: "Ranking", 
       path: "/ranking",
       isEmoji: false 
@@ -157,6 +159,21 @@ export const Sidebar = () => {
     // TODO: Implementar navegação quando as páginas estiverem criadas
   };
 
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true);
+  };
+
+  const handleLogoutConfirm = () => {
+    console.log('Usuário confirmou logout');
+    setShowLogoutModal(false);
+    // TODO: Implementar lógica de logout real
+  };
+
+  const handleLogoutClose = () => {
+    console.log('Fechando modal de logout');
+    setShowLogoutModal(false);
+  };
+
   return (
     <div 
       className="fixed left-0 top-0 h-screen z-50"
@@ -177,31 +194,31 @@ export const Sidebar = () => {
           flexDirection: 'column'
         }}
       >
-        {/* Header */}
+      {/* Header */}
         <div className="p-6 flex-shrink-0">
-          <div className="flex items-center">
-            {!isCollapsed && (
-              <div className="flex items-center gap-3">
-                <div className="w-44 h-12 flex items-center justify-center">
-                  <img 
-                    src="/images/lumia-logo-718d50.png" 
-                    alt="Lumia Logo" 
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-              </div>
-            )}
-            {isCollapsed && (
-              <div className="w-12 h-12 flex items-center justify-center">
+        <div className="flex items-center">
+          {!isCollapsed && (
+            <div className="flex items-center gap-3">
+              <div className="w-44 h-12 flex items-center justify-center">
                 <img 
-                  src="/images/lumia-logo-icon-only.png" 
+                  src="/images/lumia-logo-718d50.png" 
                   alt="Lumia Logo" 
                   className="w-full h-full object-contain"
                 />
               </div>
-            )}
-          </div>
+            </div>
+          )}
+          {isCollapsed && (
+            <div className="w-12 h-12 flex items-center justify-center">
+              <img 
+                src="/images/lumia-logo-icon-only.png" 
+                alt="Lumia Logo" 
+                className="w-full h-full object-contain"
+              />
+            </div>
+          )}
         </div>
+      </div>
 
         {/* Navigation - ocupa o espaço restante */}
         <nav className="flex-1 px-4 py-2" style={{ gap: '12px', display: 'flex', flexDirection: 'column' }}>
@@ -262,11 +279,12 @@ export const Sidebar = () => {
                   )}
                 </button>
               ))}
-        </nav>
+            </nav>
 
         {/* User section - fica no final */}
         <div className="flex-shrink-0 p-4">
         <button 
+          onClick={handleLogoutClick}
           className="flex items-center transition-all duration-200 group"
           style={{
             padding: isCollapsed ? '8px' : '8px 14px',
@@ -289,13 +307,13 @@ export const Sidebar = () => {
             setIsLogoutHovered(false);
           }}
         >
-          <div className="w-8 h-8 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                           <div className="w-8 h-8 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
             {isLogoutHovered ? (
-              <svg 
-                width="24" 
-                height="24" 
-                viewBox="0 0 24 24" 
-                fill="none" 
+                                     <svg 
+                    width="24" 
+                    height="24" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
                 className="w-6 h-6 transition-colors duration-200"
               >
                 <path fillRule="evenodd" clipRule="evenodd" d="M24 2.57143C24 1.88944 23.7291 1.23539 23.2468 0.753154C22.7646 0.270918 22.1105 0 21.4285 0L9.42788 0C8.74587 0 8.09178 0.270918 7.60952 0.753154C7.12726 1.23539 6.85633 1.88944 6.85633 2.57143V5.89543C7.55194 6.45257 8.00328 7.25865 8.11468 8.14286H14.1424C14.6489 8.14286 15.1505 8.24263 15.6185 8.43646C16.0865 8.6303 16.5117 8.91442 16.8699 9.27259C17.2281 9.63076 17.5122 10.056 17.7061 10.5239C17.8999 10.9919 17.9997 11.4935 17.9997 12C17.9997 12.5065 17.8999 13.0081 17.7061 13.4761C17.5122 13.944 17.2281 14.3692 16.8699 14.7274C16.5117 15.0856 16.0865 15.3697 15.6185 15.5635C15.1505 15.7574 14.6489 15.8571 14.1424 15.8571H8.11468C8.00328 16.7413 7.55194 17.5474 6.85633 18.1046V21.4286C6.85633 22.1106 7.12726 22.7646 7.60952 23.2468C8.09178 23.7291 8.74587 24 9.42788 24H21.4285C22.1105 24 22.7646 23.7291 23.2468 23.2468C23.7291 22.7646 24 22.1106 24 21.4286V2.57143ZM5.2054 7.38343C5.44037 7.48075 5.6412 7.64556 5.78249 7.85703C5.92378 8.06849 5.99918 8.31711 5.99915 8.57143V10.2857H14.1424C14.5971 10.2857 15.0331 10.4663 15.3546 10.7878C15.6761 11.1093 15.8568 11.5453 15.8568 12C15.8568 12.4547 15.6761 12.8907 15.3546 13.2122C15.0331 13.5337 14.5971 13.7143 14.1424 13.7143H5.99915V15.4286C5.99893 15.6827 5.9234 15.9311 5.7821 16.1423C5.6408 16.3535 5.44007 16.5181 5.20527 16.6154C4.97046 16.7126 4.71211 16.738 4.46284 16.6885C4.21358 16.639 3.98458 16.5167 3.80476 16.3371L0.37603 12.9086C0.135246 12.6675 0 12.3407 0 12C0 11.6593 0.135246 11.3325 0.37603 11.0914L3.80476 7.66286C3.98445 7.48304 4.21341 7.36053 4.46271 7.31079C4.71201 7.26106 4.97046 7.28633 5.2054 7.38343Z" fill="#F97066"/>
@@ -307,12 +325,12 @@ export const Sidebar = () => {
                 viewBox="0 0 22 24" 
                 fill="none" 
                 className="w-6 h-6 transition-colors duration-200"
-                style={{ color: '#F0F0F1' }}
-              >
+                    style={{ color: '#F0F0F1' }}
+                  >
                 <path fillRule="evenodd" clipRule="evenodd" d="M19.5666 2.32783C19.4353 2.20962 19.2621 2.14292 19.0817 2.14099H6.51035C6.32537 2.14099 6.15117 2.20956 6.02546 2.32783C5.96639 2.38309 5.91932 2.44894 5.88696 2.5216C5.85461 2.59425 5.83759 2.67229 5.83689 2.75123V4.40026C5.83689 4.6844 5.71863 4.9569 5.50813 5.15782C5.29764 5.35874 5.01214 5.47161 4.71445 5.47161C4.41676 5.47161 4.13126 5.35874 3.92076 5.15782C3.71027 4.9569 3.59201 4.6844 3.59201 4.40026V2.75123C3.59201 2.01414 3.9045 1.31134 4.45404 0.797086C5.00436 0.285625 5.74224 -0.000399814 6.51035 4.19468e-07H19.0817C19.8485 4.19468e-07 20.5902 0.286266 21.138 0.7988C21.6857 1.31134 22 2.01586 22 2.75295V21.2488C22 21.9859 21.6875 22.687 21.138 23.2029C20.5884 23.7154 19.8485 24 19.0817 24H6.51035C5.7435 24 5.00179 23.7154 4.45404 23.2012C3.90629 22.6869 3.59201 21.9841 3.59201 21.2471V19.5997C3.59201 19.3156 3.71027 19.0431 3.92076 18.8422C4.13126 18.6413 4.41676 18.5284 4.71445 18.5284C5.01214 18.5284 5.29764 18.6413 5.50813 18.8422C5.71863 19.0431 5.83689 19.3156 5.83689 19.5997V21.2488C5.83689 21.403 5.90334 21.5573 6.02725 21.6722C6.15837 21.7894 6.33073 21.8554 6.51035 21.8573H19.0817C19.2666 21.8573 19.4408 21.7887 19.5666 21.6722C19.6256 21.6169 19.6727 21.5511 19.705 21.4784C19.7374 21.4057 19.7544 21.3277 19.7551 21.2488V2.75123C19.7551 2.59696 19.6905 2.44268 19.5666 2.32783ZM5.14367 7.58174C5.34768 7.66394 5.52193 7.80146 5.64484 7.97728C5.76774 8.15309 5.83389 8.35946 5.83509 8.57082V10.9278H13.694C13.9916 10.9278 14.2771 11.0407 14.4876 11.2416C14.6981 11.4425 14.8164 11.715 14.8164 11.9991C14.8164 12.2833 14.6981 12.5558 14.4876 12.7567C14.2771 12.9576 13.9916 13.0705 13.694 13.0705H5.83689V15.4275C5.83693 15.6394 5.77112 15.8466 5.64779 16.0228C5.52446 16.199 5.34914 16.3364 5.14402 16.4175C4.93889 16.4986 4.71317 16.5198 4.49541 16.4784C4.27766 16.4371 4.07764 16.335 3.92066 16.1851L0.328857 12.7568C0.2246 12.6573 0.141895 12.5392 0.0854702 12.4092C0.0290432 12.2792 0 12.1399 0 11.9991C0 11.8584 0.0290432 11.7191 0.0854702 11.5891C0.141895 11.4591 0.2246 11.341 0.328857 11.2415L3.92066 7.81316C4.07771 7.66351 4.27772 7.56165 4.49541 7.52046C4.71309 7.47927 4.93868 7.5006 5.14367 7.58174Z" fill="currentColor"/>
-              </svg>
+                  </svg>
             )}
-          </div>
+                 </div>
           {!isCollapsed && showTexts && (
             <span 
               className="font-medium transition-all duration-200" 
@@ -360,6 +378,13 @@ export const Sidebar = () => {
           }}
         />
       </button>
+
+      {/* Logout Modal */}
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={handleLogoutClose}
+        onConfirm={handleLogoutConfirm}
+      />
     </div>
   );
 };
