@@ -3,10 +3,12 @@ import { Expand04 } from "@untitledui/icons";
 import { X, Minimize2 } from "lucide-react";
 import { Timer } from "./timer";
 import { PerformanceModal } from "./performance-modal";
+import { SuccessNotification } from "../notifications";
 
 interface GoalDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSave?: (data: any) => void;
   goal: {
     topic: string;
     studyType: string;
@@ -21,7 +23,7 @@ interface GoalDetailsModalProps {
   };
 }
 
-export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onClose, goal }) => {
+export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onClose, onSave, goal }) => {
   const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
     subjects: true,
     materials: false,
@@ -30,7 +32,6 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
   });
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showPerformanceModal, setShowPerformanceModal] = useState(false);
-  const [timer, setTimer] = useState("00:35:46");
   const [initialTimer] = useState("00:00:00");
 
   // Resetar estado quando o modal for fechado
@@ -67,6 +68,12 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
     console.log('Performance data saved:', data);
     // Aqui você pode implementar a lógica para salvar os dados de performance
     setShowPerformanceModal(false);
+    onClose(); // Fechar o modal principal também
+    
+    // Chamar callback do componente pai se fornecido
+    if (onSave) {
+      onSave(data);
+    }
   };
 
   const handlePerformanceClose = () => {
@@ -292,7 +299,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
             {isFullscreen && (
               <Timer 
                 initialTime={initialTimer}
-                onTimeChange={setTimer}
+                onTimeChange={() => {}}
                 showControls={true}
                 className="w-full sm:w-auto"
               />
@@ -697,6 +704,24 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
         onClose={handlePerformanceClose}
         onSave={handlePerformanceSave}
       />
+
     </div>
+  );
+};
+
+// Componente separado para a notificação que fica fora do modal
+export const GoalSuccessNotification: React.FC<{ 
+  isVisible: boolean; 
+  onClose: () => void; 
+  goalName: string;
+}> = ({ isVisible, onClose, goalName }) => {
+  return (
+    <SuccessNotification
+      isVisible={isVisible}
+      onClose={onClose}
+      title="Meta concluída com sucesso!"
+      message="Você concluiu a meta '{goalName}'. Continue avançando rumo à sua aprovação!"
+      goalName={goalName}
+    />
   );
 };

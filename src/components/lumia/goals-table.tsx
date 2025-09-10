@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { ReviewSuggestionCard } from "./review-suggestion-card";
-import { GoalDetailsModal } from "./goal-details-modal";
+import { GoalDetailsModal, GoalSuccessNotification } from "./goal-details-modal";
 // Imports removidos - usando SVGs inline do Figma
 
 export const GoalsTable = () => {
   const [activeTab, setActiveTab] = useState("Lista de Tópicos");
   const [selectedGoal, setSelectedGoal] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showSuccessNotification, setShowSuccessNotification] = useState(false);
+  const [completedGoalName, setCompletedGoalName] = useState<string>("");
 
   const handleReviewGoal = (goal: any) => {
     // Converter sugestão de revisão para formato de meta se necessário
@@ -43,6 +45,18 @@ export const GoalsTable = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedGoal(null);
+  };
+
+  const handlePerformanceSave = (data: any) => {
+    console.log('Performance data saved:', data);
+    // Armazenar o nome da meta antes de fechar o modal
+    setCompletedGoalName(selectedGoal?.topic || "Ética no Serviço Público");
+    setShowSuccessNotification(true);
+    
+    // Auto-hide notification after 5 seconds
+    setTimeout(() => {
+      setShowSuccessNotification(false);
+    }, 5000);
   };
 
   const goals = [
@@ -797,6 +811,7 @@ export const GoalsTable = () => {
       <GoalDetailsModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
+        onSave={handlePerformanceSave}
         goal={selectedGoal || {
           topic: "Ética no Serviço Público",
           studyType: "Estudos de caso",
@@ -809,6 +824,13 @@ export const GoalsTable = () => {
           mentorCommands: [],
           additionalTips: []
         }}
+      />
+
+      {/* Success Notification */}
+      <GoalSuccessNotification
+        isVisible={showSuccessNotification}
+        onClose={() => setShowSuccessNotification(false)}
+        goalName={completedGoalName}
       />
     </div>
   );
