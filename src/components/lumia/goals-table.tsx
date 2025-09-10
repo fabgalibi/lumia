@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ReviewSuggestionCard } from "./review-suggestion-card";
 import { GoalDetailsModal, GoalSuccessNotification } from "./goal-details-modal";
 import { RocketAnimation } from "../animations";
+import { SkipGoalNotification } from "../notifications/skip-goal-notification";
 import { useSprint } from "@/contexts/sprint-context";
 // Imports removidos - usando SVGs inline do Figma
 
@@ -13,6 +14,8 @@ export const GoalsTable = () => {
   const [showSuccessNotification, setShowSuccessNotification] = useState(false);
   const [completedGoalName, setCompletedGoalName] = useState<string>("");
   const [showRocketAnimation, setShowRocketAnimation] = useState(false);
+  const [showSkipNotification, setShowSkipNotification] = useState(false);
+  const [skippedGoalName, setSkippedGoalName] = useState<string>("");
 
   const handleReviewGoal = (goal: any) => {
     // Converter sugestão de revisão para formato de meta se necessário
@@ -53,10 +56,21 @@ export const GoalsTable = () => {
 
   const handlePerformanceSave = (data: any) => {
     console.log('Performance data saved:', data);
+    
+    // Verificar se é uma ação de pular meta
+    if (data.action === 'skip') {
+      console.log('Goal skipped:', data.reason);
+      // Armazenar o nome da meta pulada
+      setSkippedGoalName(selectedGoal?.topic || "Ética no Serviço Público");
+      // Mostrar notificação de skip
+      setShowSkipNotification(true);
+      return;
+    }
+    
     // Armazenar o nome da meta antes de fechar o modal
     setCompletedGoalName(selectedGoal?.topic || "Ética no Serviço Público");
     
-    // Iniciar animação do foguete
+    // Iniciar animação do foguete apenas para conclusão de meta
     console.log('Starting rocket animation...');
     setShowRocketAnimation(true);
   };
@@ -858,6 +872,13 @@ export const GoalsTable = () => {
         isVisible={showSuccessNotification}
         onClose={() => setShowSuccessNotification(false)}
         goalName={completedGoalName}
+      />
+
+      {/* Skip Notification */}
+      <SkipGoalNotification
+        isVisible={showSkipNotification}
+        onClose={() => setShowSkipNotification(false)}
+        goalName={skippedGoalName}
       />
     </div>
   );

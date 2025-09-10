@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Expand04 } from "@untitledui/icons";
 import { X, Minimize2 } from "lucide-react";
 import { Timer } from "./timer";
-import { PerformanceModal } from "../modals/performance-modal";
-import { SkipGoalModal } from "../modals/skip-goal-modal";
+import { PerformanceModal } from "./performance-modal";
+import { SkipGoalModal } from "./skip-goal-modal";
 import { SuccessNotification } from "../notifications";
 
 interface GoalDetailsModalProps {

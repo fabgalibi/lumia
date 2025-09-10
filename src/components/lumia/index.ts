@@ -1,6 +1,4 @@
-// Modals
-export { GoalDetailsModal } from './goal-details-modal';
-export { PerformanceModal } from './performance-modal';
+// Modals moved to ../modals
 
 // Notifications moved to ../notifications
 

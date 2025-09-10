@@ -1,6 +1,9 @@
 // Lumia Components
 export * from './lumia';
 
+// Modals
+export * from './modals';
+
 // Input Components
 export * from './inputs';
 
