@@ -87,20 +87,17 @@ export const SprintSection = ({
       {/* Card principal da sprint */}
       <div 
         data-sprint-section
-        className={`rounded-xl border flex flex-col ${isExpanded ? 'w-full' : 'flex-1 min-w-0'}`}
+        className={`rounded-xl border flex flex-col ${isExpanded ? 'w-full' : 'flex-1 min-w-0'} p-5 md:p-[22px] lg:p-6 gap-5 md:gap-[22px] lg:gap-6 min-h-[284px] md:min-h-[240px] lg:min-h-[230px]`}
         style={{
           background: 'linear-gradient(135deg, rgba(37, 37, 50, 1) 0%, #2A2A3A 100%)',
           borderColor: '#2C2C45',
           borderRadius: '12px',
           borderWidth: '1px',
-          padding: '24px',
           width: isExpanded ? '100%' : 'auto',
           minWidth: isExpanded ? 'auto' : '0',
           maxWidth: isExpanded ? '100%' : 'none',
           height: 'auto',
-          minHeight: '230px',
           opacity: 1,
-          gap: '24px',
           boxShadow: `
             0px 4px 6px -1px rgba(0, 0, 0, 0.1),
             0px 2px 4px -1px rgba(0, 0, 0, 0.06),
@@ -113,42 +110,38 @@ export const SprintSection = ({
       >
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6" style={{ minHeight: '48px' }}>
-          <div className="flex items-start sm:items-center" style={{ gap: '10px', padding: '2px 0px' }}>
+          <div className="flex items-start sm:items-center gap-3 md:gap-3 lg:gap-2.5">
             {/* Ícone de corrida */}
             <div 
-              className="flex items-center justify-center flex-shrink-0"
+              className="flex items-center justify-center flex-shrink-0 w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8"
               style={{
-                width: '32px',
-                height: '32px',
                 padding: '2px 0px',
                 alignSelf: 'flex-start',
                 filter: 'drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.1))'
               }}
             >
-              <svg width="24" height="25" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: '4px' }}>
+              <svg width="18" height="19" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg" className="md:w-5 md:h-5 lg:w-6 lg:h-6" style={{ marginLeft: '3px' }}>
                 <path d="M3 4.5H12V20.5H3V4.5ZM12 7.5H21V23.5H12V7.5Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 <path d="M6.5 10.5L8.5 12.395L6.6665 14.5M15.5 13.5L17.5 15.395L15.6665 17.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
-            <div style={{ gap: '6px' }} className="flex flex-col justify-center min-w-0 flex-1">
+            <div className="flex flex-col justify-center min-w-0 flex-1 gap-1.5 md:gap-1.5 lg:gap-1.5">
               <h2 
-                className="text-white"
+                className="text-white text-base md:text-base lg:text-base"
                 style={{
                   fontFamily: 'var(--font-sora)',
                   fontWeight: 400,
-                  fontSize: '16px',
                   lineHeight: '1.26em'
                 }}
               >
                 {sprintData.title}
               </h2>
               <p 
-                className="text-gray-300"
+                className="text-gray-300 text-xs md:text-sm lg:text-sm"
                 style={{
                   fontFamily: 'var(--font-sora)',
-                  fontWeight: 400,
-                  fontSize: '14px',
-                  lineHeight: '1.4285714285714286em'
+                  fontWeight: 300,
+                  lineHeight: '1.67em'
                 }}
               >
                 {sprintData.description}
@@ -159,7 +152,7 @@ export const SprintSection = ({
             variant="tertiary"
             size="md"
             onClick={handleToggleExpanded}
-            className="flex items-center gap-1 hover:opacity-80 transition-opacity rounded-lg self-start sm:self-center flex-shrink-0 cursor-pointer"
+            className="hidden sm:flex items-center gap-1 hover:opacity-80 transition-opacity rounded-lg self-start sm:self-center flex-shrink-0 cursor-pointer"
             aria-label={isExpanded ? 'Minimizar seção da sprint' : 'Expandir seção da sprint'}
           >
             <Expand04 className="w-5 h-5" style={{ color: '#F5F5F5' }} />
@@ -190,45 +183,40 @@ export const SprintSection = ({
 
         {/* Objetivo atual */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div className="flex items-center min-w-0" style={{ gap: '8px' }}>
+          <div className="flex items-center min-w-0 gap-2 md:gap-2.5 lg:gap-2">
             <div 
-              className="rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0"
+              className="rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0 w-10 h-10 md:w-11 md:h-11 lg:w-12 lg:h-12"
               style={{
-                width: '48px',
-                height: '48px',
                 borderRadius: '8px'
               }}
             >
               <img 
                 src={objectiveIcon} 
                 alt="Objetivo"
+                className="w-10 h-10 md:w-11 md:h-11 lg:w-12 lg:h-12"
                 style={{
-                  width: '48px',
-                  height: '48px',
                   objectFit: 'contain',
                   imageRendering: 'auto'
                 }}
               />
             </div>
-            <div className="flex flex-col min-w-0 flex-1" style={{ gap: '6px' }}>
+            <div className="flex flex-col min-w-0 flex-1 gap-1 md:gap-1.5 lg:gap-1.5">
               <p 
-                className="text-white"
+                className="text-white text-xs md:text-sm lg:text-sm"
                 style={{
                   fontFamily: 'var(--font-sora)',
                   fontWeight: 400,
-                  fontSize: '14px',
-                  lineHeight: '1.4285714285714286em'
+                  lineHeight: '1.5em'
                 }}
               >
                 {sprintData.currentObjective.label}
               </p>
               <p 
-                className="font-semibold break-words"
+                className="font-semibold break-words text-xs md:text-sm lg:text-sm"
                 style={{
                   fontFamily: 'var(--font-sora)',
                   fontWeight: 600,
-                  fontSize: '14px',
-                  lineHeight: '1.4285714285714286em',
+                  lineHeight: '1.5em',
                   color: '#F48E2F'
                 }}
               >
@@ -237,32 +225,31 @@ export const SprintSection = ({
             </div>
           </div>
           <div 
-            className="flex items-center flex-shrink-0"
+            className="flex items-center flex-shrink-0 w-full md:w-auto lg:w-auto"
             style={{
               gap: '-40px'
             }}
           >
             {/* Container principal do badge */}
             <div 
-              className="flex items-center justify-center"
+              className="flex items-center justify-center w-full md:w-auto lg:w-auto"
               style={{
                 background: '#43434A',
-                padding: '6px 48px 6px 16px',
+                padding: '10px 48px 10px 16px',
                 borderRadius: '8px',
                 gap: '10px'
               }}
             >
               <span 
-                className="text-white whitespace-nowrap"
+                className="text-white whitespace-nowrap text-sm md:text-sm lg:text-base"
                 style={{
                   fontFamily: 'var(--font-sora)',
                   fontWeight: 400,
-                  fontSize: '16px',
-                  lineHeight: '1.5em',
+                  lineHeight: '1.43em',
                   color: '#FFFFFF'
                 }}
               >
-                Próxima Sprint
+                Próxima Sprint (bloqueada)
               </span>
             </div>
             
@@ -314,20 +301,15 @@ export const SprintSection = ({
       {/* Card de frase do dia */}
       {showQuote && !isExpanded && (
         <div 
-          className="rounded-lg border relative flex-shrink-0 flex flex-col w-full xl:w-auto"
+          className="rounded-lg border relative flex-shrink-0 flex flex-col w-full xl:w-auto p-5 md:p-[22px] lg:p-6 gap-5 md:gap-[22px] lg:gap-6 min-h-[284px] md:min-h-[240px] lg:min-h-[230px] lg:min-w-[250px] lg:max-w-[320px]"
           style={{
             background: 'linear-gradient(135deg, rgba(37, 37, 50, 1) 0%, #2A2A3A 100%)',
             borderColor: '#2C2C45',
             borderRadius: '8px',
             borderWidth: '1px',
-            padding: '24px',
             width: '100%',
-            minWidth: '250px',
-            maxWidth: '320px',
             height: 'auto',
-            minHeight: '230px',
             opacity: 1,
-            gap: '24px',
             boxShadow: `
               0px 4px 6px -1px rgba(0, 0, 0, 0.1),
               0px 2px 4px -1px rgba(0, 0, 0, 0.06),

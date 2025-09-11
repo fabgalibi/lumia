@@ -400,18 +400,16 @@ export const GoalsTable = () => {
 
           {/* Search and Filter */}
           <div 
-            className="flex items-center"
+            className="flex flex-row items-center"
             style={{
-              gap: '16px',
-              alignItems: 'center'
+              gap: '16px'
             }}
           >
             {/* Input field */}
             <div 
-              className="flex flex-col"
+              className="flex flex-col flex-1"
               style={{
-                gap: '6px',
-                width: '320px'
+                gap: '6px'
               }}
             >
             <div 
@@ -423,7 +421,7 @@ export const GoalsTable = () => {
                 border: '1px solid #2D2D36',
                 borderRadius: '8px',
                 boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
-                width: '320px'
+                width: '100%'
               }}
             >
                 <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -447,8 +445,7 @@ export const GoalsTable = () => {
             <button
               className="flex items-center justify-center hover:bg-[#333346] transition-all duration-200 cursor-pointer"
               style={{
-                gap: '4px',
-                padding: '10px 14px',
+                padding: '10px',
                 background: '#2D2D45',
                 border: '1px solid',
                 borderImage: 'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%) 1',
@@ -459,17 +456,6 @@ export const GoalsTable = () => {
               <svg width="17" height="12" viewBox="0 0 17 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M3.40002 5.94989H13.6M0.850037 0.849913H16.15M5.95001 11.0499H11.05" stroke="white" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-              <span 
-                style={{
-                  fontFamily: 'var(--font-sora)',
-                  fontWeight: 600,
-                  fontSize: '14px',
-                  lineHeight: '1.4285714285714286em',
-                  color: '#FFFFFF'
-                }}
-              >
-                Filtrar por
-              </span>
             </button>
           </div>
         </div>
@@ -477,9 +463,11 @@ export const GoalsTable = () => {
 
       {/* Conteúdo das tabs */}
       {activeTab === "Lista de Tópicos" ? (
-        /* Tabela de tópicos */
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[800px]" style={{ borderCollapse: 'collapse' }}>
+        /* Tabela de tópicos - Desktop e Mobile */
+        <>
+          {/* Desktop Table */}
+          <div className="hidden lg:block overflow-x-auto">
+            <table className="w-full min-w-[800px]" style={{ borderCollapse: 'collapse' }}>
           <thead>
             <tr>
               <th
@@ -822,7 +810,215 @@ export const GoalsTable = () => {
             ))}
           </tbody>
         </table>
-        </div>
+          </div>
+
+          {/* Mobile Cards */}
+          <div className="lg:hidden flex flex-col gap-4 p-4">
+            {goals.map((goal, index) => (
+              <div
+                key={index}
+                className="rounded-lg border"
+                style={{
+                  background: '#272738',
+                  borderColor: '#2C2C45',
+                  borderRadius: '8px',
+                  borderWidth: '1px',
+                  padding: '16px'
+                }}
+              >
+                {/* Header do Card */}
+                <div className="mb-4">
+                  <h3
+                    style={{
+                      fontFamily: 'Inter',
+                      fontWeight: 500,
+                      fontSize: '16px',
+                      lineHeight: '1.5em',
+                      letterSpacing: '-1%',
+                      color: '#F0F0F1',
+                      marginBottom: '12px'
+                    }}
+                  >
+                    {goal.topic}
+                  </h3>
+                </div>
+
+                {/* Informações do Card */}
+                <div className="space-y-4">
+                  {/* Status e Tipo de estudo */}
+                  <div className="flex justify-between items-center">
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center gap-2">
+                        <span
+                          style={{
+                            fontFamily: 'Inter',
+                            fontWeight: 400,
+                            fontSize: '12px',
+                            lineHeight: '1.33em',
+                            color: '#F0F0F1'
+                          }}
+                        >
+                          Status
+                        </span>
+                        <div
+                          className="rounded-full"
+                          style={{
+                            width: '16px',
+                            height: '16px',
+                            background: goal.status === "completed" ? '#F79009' : '#17B26A'
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-end gap-1">
+                      <span
+                        style={{
+                          fontFamily: 'Inter',
+                          fontWeight: 400,
+                          fontSize: '12px',
+                          lineHeight: '1.33em',
+                          color: '#F0F0F1'
+                        }}
+                      >
+                        Tipo de estudo
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: 'Inter',
+                          fontWeight: 600,
+                          fontSize: '14px',
+                          lineHeight: '1.43em',
+                          letterSpacing: '-0.5%',
+                          color: '#F0F0F1'
+                        }}
+                      >
+                        {goal.studyType}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Tempo estudado e Desempenho */}
+                  <div className="flex justify-between items-center">
+                    <div className="flex flex-col gap-1">
+                      <span
+                        style={{
+                          fontFamily: 'Inter',
+                          fontWeight: 400,
+                          fontSize: '12px',
+                          lineHeight: '1.33em',
+                          color: '#F0F0F1'
+                        }}
+                      >
+                        Tempo estudado
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: 'Inter',
+                          fontWeight: 600,
+                          fontSize: '14px',
+                          lineHeight: '1.43em',
+                          letterSpacing: '-0.5%',
+                          color: '#F0F0F1'
+                        }}
+                      >
+                        {goal.timeStudied}
+                      </span>
+                    </div>
+                    <div className="flex flex-col items-end gap-1">
+                      <span
+                        style={{
+                          fontFamily: 'Inter',
+                          fontWeight: 400,
+                          fontSize: '12px',
+                          lineHeight: '1.33em',
+                          color: '#F0F0F1'
+                        }}
+                      >
+                        Desempenho
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 flex items-center justify-center">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="6.67" stroke="#85888E" strokeWidth="1.33"/>
+                            <path d="M6.06 6.67a2 2 0 0 1 3.88 0.67c0 1.33-2 2-2 2" stroke="#85888E" strokeWidth="1.33" strokeLinecap="round" strokeLinejoin="round"/>
+                            <path d="M8 11.33h.01" stroke="#85888E" strokeWidth="1.33" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </div>
+                        <span
+                          style={{
+                            fontFamily: 'Inter',
+                            fontWeight: 600,
+                            fontSize: '14px',
+                            lineHeight: '1.43em',
+                            letterSpacing: '-0.5%',
+                            color: '#F0F0F1'
+                          }}
+                        >
+                          {goal.performance}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Comandos do mentor */}
+                  <div className="flex flex-col gap-1">
+                    <span
+                      style={{
+                        fontFamily: 'Inter',
+                        fontWeight: 400,
+                        fontSize: '12px',
+                        lineHeight: '1.33em',
+                        color: '#F0F0F1'
+                      }}
+                    >
+                      Comandos do mentor
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: 'Inter',
+                        fontWeight: 600,
+                        fontSize: '14px',
+                        lineHeight: '1.43em',
+                        letterSpacing: '-0.5%',
+                        color: '#F0F0F1'
+                      }}
+                    >
+                      {goal.mentorCommand}
+                    </span>
+                  </div>
+
+                  {/* Botão Visualizar meta */}
+                  <button
+                    onClick={() => handleReviewGoal(goal)}
+                    className="w-full flex items-center justify-center gap-2 hover:bg-[#333346] transition-all duration-200 cursor-pointer"
+                    style={{
+                      padding: '10px 14px',
+                      background: '#2D2D45',
+                      borderRadius: '8px',
+                      boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)'
+                    }}
+                  >
+                    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.940167 5.98281C0.847978 5.83684 0.801884 5.76385 0.776081 5.65128C0.756699 5.56672 0.756699 5.43336 0.776081 5.3488C0.801884 5.23623 0.847978 5.16324 0.940167 5.01727C1.70199 3.811 3.96961 0.761544 7.42533 0.761544C10.881 0.761544 13.1487 3.811 13.9105 5.01727C14.0027 5.16324 14.0488 5.23623 14.0746 5.3488C14.094 5.43336 14.094 5.56672 14.0746 5.65128C14.0488 5.76385 14.0027 5.83684 13.9105 5.98281C13.1487 7.18909 10.8811 10.2385 7.42533 10.2385C3.96961 10.2385 1.70199 7.18909 0.940167 5.98281Z" stroke="#CECFD2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M7.42533 7.53083C8.5469 7.53083 9.45611 6.62161 9.45611 5.50004C9.45611 4.37847 8.5469 3.46926 7.42533 3.46926C6.30376 3.46926 5.39454 4.37847 5.39454 5.50004C5.39454 6.62161 6.30376 7.53083 7.42533 7.53083Z" stroke="#CECFD2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-sora)',
+                        fontWeight: 600,
+                        fontSize: '14px',
+                        lineHeight: '1.43em',
+                        color: '#CECFD2'
+                      }}
+                    >
+                      Visualizar meta
+                    </span>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       ) : (
         /* Lista de sugestões de revisão */
         <div 
