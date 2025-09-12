@@ -8,6 +8,23 @@ export const Sidebar = () => {
   const [activeItem, setActiveItem] = useState("Início");
   const [isLogoutHovered, setIsLogoutHovered] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detectar se é mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024); // lg breakpoint
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // No mobile, o sidebar deve iniciar fechado independente do estado do contexto
+  const isSidebarOpen = isMobile ? !isCollapsed : !isCollapsed;
+
 
   const handleToggle = () => {
     if (isCollapsed) {
@@ -175,27 +192,40 @@ export const Sidebar = () => {
   };
 
   return (
-    <div 
-      className="fixed left-0 top-0 h-screen z-50"
-      style={{
-        width: isCollapsed ? '96px' : '244px'
-      }}
-    >
+    <>
+      {/* Overlay escuro para mobile */}
+      {isMobile && isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={toggleSidebar}
+        />
+      )}
+
+      <div 
+        className="fixed left-0 top-0 h-screen z-50"
+        style={{
+          width: isMobile ? (isSidebarOpen ? '359px' : '0px') : (isCollapsed ? '96px' : '244px'),
+          height: isMobile ? '812px' : '100vh',
+          transform: isMobile ? (isSidebarOpen ? 'translateX(0)' : 'translateX(-100%)') : 'translateX(0)',
+          overflow: 'hidden'
+        }}
+      >
       {/* Main Sidebar */}
       <div 
         className="h-full transition-all duration-300 shadow-lg"
         style={{
           background: 'rgba(37, 37, 50, 1)',
           borderRight: '1px solid #272737',
-          borderRadius: isCollapsed ? '0px' : '0px 16px 16px 0px',
+          borderRadius: isMobile ? '0px 24px 24px 0px' : (isCollapsed ? '0px' : '0px 16px 16px 0px'),
           width: '100%',
           height: '100%',
           display: 'flex',
           flexDirection: 'column'
         }}
       >
-      {/* Header */}
-        <div className="p-6 flex-shrink-0">
+      {/* Header Desktop */}
+        {!isMobile && (
+          <div className="p-6 flex-shrink-0">
         <div className="flex items-center">
           {!isCollapsed && (
             <div className="flex items-center gap-3">
@@ -217,24 +247,91 @@ export const Sidebar = () => {
               />
             </div>
           )}
+            </div>
+          </div>
+        )}
+
+        {/* Header Mobile - Status Bar + Logo + Botão Fechar */}
+        {isMobile && (
+          <div className="flex-shrink-0">
+            {/* Status Bar iPhone */}
+            <div className="w-full h-[38px] bg-black flex items-center justify-between px-4">
+              <div className="text-white text-[11px] font-medium">9:41</div>
+              <div className="flex items-center gap-1">
+                {/* Signal */}
+                <div className="flex items-end gap-0.5">
+                  <div className="w-1 h-1 bg-white/40 rounded-sm"></div>
+                  <div className="w-1 h-1.5 bg-white/40 rounded-sm"></div>
+                  <div className="w-1 h-2 bg-white/40 rounded-sm"></div>
+                  <div className="w-1 h-2.5 bg-white/40 rounded-sm"></div>
+                </div>
+                {/* WiFi */}
+                <div className="ml-2">
+                  <svg width="15" height="11" viewBox="0 0 15 11" fill="none">
+                    <path d="M7.5 8.5L3 4M7.5 8.5L12 4M7.5 8.5V11" stroke="#DADADA" strokeWidth="1" fill="none"/>
+                  </svg>
+                </div>
+                {/* Battery */}
+                <div className="ml-2 flex items-center">
+                  <div className="w-6 h-3 border border-white/35 rounded-sm relative">
+                    <div className="absolute right-0 top-0 w-0.5 h-1 bg-white/35 rounded-r-sm"></div>
+                    <div className="w-4 h-2 bg-white/40 rounded-sm m-0.5"></div>
+                  </div>
+                </div>
         </div>
       </div>
 
+            {/* Logo + Botão Fechar */}
+            <div className="flex items-center justify-between px-4 py-5">
+              <div className="w-[145px] h-10">
+                <img 
+                  src="/images/lumia-logo-718d50.png" 
+                  alt="Lumia Logo" 
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <button
+                onClick={toggleSidebar}
+                className="flex items-center justify-center"
+                style={{
+                  background: '#24212D',
+                  border: '1px solid #272737',
+                  borderRadius: '40px',
+                  padding: '10px',
+                  gap: '10px'
+                }}
+              >
+                <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 6H15M3 1H15M3 11H15" stroke="#F66649" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Navigation - ocupa o espaço restante */}
-        <nav className="flex-1 px-4 py-2" style={{ gap: '12px', display: 'flex', flexDirection: 'column' }}>
+        <nav 
+          className="flex-1" 
+          style={{ 
+            gap: '12px', 
+            display: 'flex', 
+            flexDirection: 'column',
+            padding: isMobile ? '12px 16px' : '16px'
+          }}
+        >
               {menuItems.map((item, index) => (
                 <button
                   key={index}
                   onClick={() => handleItemClick(item)}
                   className="flex items-center transition-all duration-200"
                   style={{
-                    padding: isCollapsed ? '8px' : '8px 14px',
+                    padding: isMobile ? '8px 14px' : (isCollapsed ? '8px' : '8px 14px'),
                     gap: '10px',
                     borderRadius: '8px',
                     background: activeItem === item.label ? '#4B3532' : 'transparent',
                     color: '#F0F0F1',
-                    width: isCollapsed ? '48px' : '204px',
-                    justifyContent: isCollapsed ? 'center' : 'flex-start',
+                    width: isMobile ? '100%' : (isCollapsed ? '48px' : '204px'),
+                    justifyContent: isMobile ? 'flex-start' : (isCollapsed ? 'center' : 'flex-start'),
                     opacity: isCollapsed ? 1 : 1,
                     transform: isCollapsed ? 'scale(1)' : 'scale(1)',
                     cursor: 'pointer'
@@ -282,18 +379,18 @@ export const Sidebar = () => {
             </nav>
 
         {/* User section - fica no final */}
-        <div className="flex-shrink-0 p-4">
+        <div className="flex-shrink-0" style={{ padding: isMobile ? '12px 16px' : '16px' }}>
         <button 
           onClick={handleLogoutClick}
           className="flex items-center transition-all duration-200 group"
           style={{
-            padding: isCollapsed ? '8px' : '8px 14px',
+            padding: isMobile ? '8px 14px' : (isCollapsed ? '8px' : '8px 14px'),
             gap: '10px',
             borderRadius: '8px',
             background: 'transparent',
             color: '#F0F0F1',
-            width: isCollapsed ? '48px' : '204px',
-            justifyContent: isCollapsed ? 'center' : 'flex-start',
+            width: isMobile ? '100%' : (isCollapsed ? '48px' : '204px'),
+            justifyContent: isMobile ? 'flex-start' : (isCollapsed ? 'center' : 'flex-start'),
             border: '1px solid transparent',
             transition: 'all 0.2s ease',
             cursor: 'pointer'
@@ -349,35 +446,8 @@ export const Sidebar = () => {
       </div>
       </div>
 
-      {/* Collapse Button - Positioned absolutely outside sidebar */}
-      <button
-        onClick={handleToggle}
-        className={`absolute top-24 transition-all duration-300 hover:bg-[#333346] hover:shadow-md ${isCollapsed ? "rotate-180" : ""}`}
-        style={{
-          right: isCollapsed ? '-12px' : '-20px',
-          background: '#24212D',
-          border: '1px solid rgba(12, 14, 18, 0.1)',
-          borderRadius: '24px',
-          padding: '4px',
-          width: '32px',
-          height: '32px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          cursor: 'pointer',
-          zIndex: 10
-        }}
-      >
-        <img 
-          src="/images/collapse-button.png" 
-          alt="Collapse Button" 
-          style={{
-            width: '24px',
-            height: '24px',
-            objectFit: 'contain'
-          }}
-        />
-      </button>
+      {/* Collapse Button - Desktop only */}
+
 
       {/* Logout Modal */}
       <LogoutModal
@@ -386,5 +456,70 @@ export const Sidebar = () => {
         onConfirm={handleLogoutConfirm}
       />
     </div>
+
+    {/* Collapse Button - Outside sidebar container, synchronized movement */}
+    {!isMobile && (
+      <div
+        className="fixed top-24 transition-all duration-100 ease-in-out"
+        style={{
+          left: isCollapsed ? '78px' : '226px',
+          width: '40px',
+          height: '40px',
+          background: '#252532',
+          borderRadius: '50%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          zIndex: 9999
+        }}
+      >
+        <button
+          onClick={handleToggle}
+          className="transition-all duration-300 hover:bg-[#333346] hover:shadow-md"
+          style={{
+            background: '#24212D',
+            border: '1px solid rgba(12, 14, 18, 0.1)',
+            borderRadius: '50%',
+            padding: '4px',
+            width: '32px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer'
+          }}
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            {isCollapsed ? (
+              // chevron-right quando colapsado
+              <path
+                d="M9 18L15 12L9 6"
+                stroke="#F66649"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            ) : (
+              // chevron-left quando expandido
+              <path
+                d="M15 18L9 12L15 6"
+                stroke="#F66649"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            )}
+          </svg>
+        </button>
+      </div>
+    )}
+    </>
   );
 };

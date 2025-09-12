@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Header } from "@/components/lumia/header";
 import { StatsCards } from "@/components/lumia/stats-cards";
 import { SprintSection } from "@/components/lumia/sprint-section";
@@ -10,6 +11,19 @@ import { SidebarProvider, useSidebar } from "@/contexts/sidebar-context";
 const HomeScreenContent = () => {
   const { progress } = useSprint();
   const { sidebarWidth } = useSidebar();
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detectar se é mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024); // lg breakpoint
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
   return (
     <div className="min-h-screen flex overflow-hidden" style={{ background: 'rgba(25, 25, 35, 1)' }}>
@@ -17,7 +31,7 @@ const HomeScreenContent = () => {
       <div 
         className="flex-1 flex flex-col min-w-0 overflow-hidden pt-6 transition-all duration-300"
         style={{ 
-          marginLeft: `${sidebarWidth}px`
+          marginLeft: isMobile ? '0px' : `${sidebarWidth}px`
         }}
       >
         <Header />
