@@ -323,26 +323,32 @@ export const GoalsTable = () => {
 
         {/* Content */}
         <div 
-          className="flex flex-col lg:flex-row"
+          className="content-container flex flex-col justify-center items-center lg:flex-row lg:justify-center lg:items-center"
           style={{
-            justifyContent: 'space-between',
-            alignItems: 'center',
             alignSelf: 'stretch',
-            padding: '16px 24px',
+            padding: '20px 16px 16px',
             borderRadius: '12px',
-            gap: '16px'
+            gap: '20px'
           }}
         >
+          <style jsx>{`
+            @media (min-width: 1024px) {
+              .content-container {
+                padding: 16px 24px !important;
+                gap: 24px !important;
+              }
+            }
+          `}</style>
           {/* Tabs */}
           <div 
-            className="flex flex-col"
+            className="flex flex-col w-full"
             style={{
               gap: '8px',
               justifyContent: 'center',
               alignSelf: 'stretch'
             }}
           >
-            <div className="flex" style={{ gap: '12px' }}>
+            <div className="flex w-auto" style={{ gap: '12px' }}>
               <button
                 onClick={() => setActiveTab("Lista de Tópicos")}
                 className="flex items-center justify-center hover:bg-[#333346] transition-all duration-200 cursor-pointer"
@@ -400,30 +406,38 @@ export const GoalsTable = () => {
 
           {/* Search and Filter */}
           <div 
-            className="flex flex-row items-center"
+            className="flex flex-row items-center w-full lg:w-auto"
             style={{
               gap: '16px'
             }}
           >
             {/* Input field */}
             <div 
-              className="flex flex-col flex-1"
+              className="input-field-container flex flex-col flex-1 lg:flex-none"
               style={{
-                gap: '6px'
-              }}
-            >
-            <div 
-              className="flex items-center"
-              style={{
-                gap: '8px',
-                padding: '8px 12px',
-                background: '#2D2D3B',
-                border: '1px solid #2D2D36',
-                borderRadius: '8px',
-                boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
+                gap: '6px',
                 width: '100%'
               }}
             >
+              <style jsx>{`
+                @media (min-width: 1024px) {
+                  .input-field-container {
+                    width: 320px !important;
+                  }
+                }
+              `}</style>
+              <div 
+                className="input-container flex items-center"
+                style={{
+                  gap: '8px',
+                  padding: '8px 12px',
+                  background: '#2D2D3B',
+                  border: '1px solid #2D2D36',
+                  borderRadius: '8px',
+                  boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
+                  width: '100%'
+                }}
+              >
                 <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M16.15 16.1498L12.4525 12.4524M14.45 7.64988C14.45 11.4054 11.4055 14.4498 7.65 14.4498C3.89449 14.4498 0.850037 11.4054 0.850037 7.64988C0.850037 3.89436 3.89449 0.849913 7.65 0.849913C11.4055 0.849913 14.45 3.89436 14.45 7.64988Z" stroke="#94979C" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
@@ -445,17 +459,32 @@ export const GoalsTable = () => {
             <button
               className="flex items-center justify-center hover:bg-[#333346] transition-all duration-200 cursor-pointer"
               style={{
-                padding: '10px',
+                width: '127px',
+                height: '40px',
+                gap: '4px',
+                padding: '10px 14px',
                 background: '#2D2D45',
                 border: '1px solid',
                 borderImage: 'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%) 1',
                 borderRadius: '8px',
-                boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)'
+                boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
+                opacity: 1
               }}
             >
               <svg width="17" height="12" viewBox="0 0 17 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M3.40002 5.94989H13.6M0.850037 0.849913H16.15M5.95001 11.0499H11.05" stroke="white" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
+              <span className="hidden lg:inline"
+                style={{
+                  fontFamily: 'var(--font-sora)',
+                  fontWeight: 600,
+                  fontSize: '14px',
+                  lineHeight: '1.4285714285714286em',
+                  color: '#FFFFFF'
+                }}
+              >
+                Filtrar por
+              </span>
             </button>
           </div>
         </div>
@@ -1022,7 +1051,7 @@ export const GoalsTable = () => {
       ) : (
         /* Lista de sugestões de revisão */
         <div 
-          className="flex flex-col"
+          className="flex flex-col w-full"
           style={{
             gap: '16px',
             padding: '0px 24px'
