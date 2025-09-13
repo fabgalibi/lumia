@@ -253,7 +253,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
         <div 
           className={`flex items-center justify-between ${isFullscreen ? 'flex-col sm:flex-row gap-4 sm:gap-8 lg:gap-16' : 'flex-row gap-4'}`}
           style={{
-            padding: isFullscreen ? '12px 16px sm:16px lg:24px' : '24px 16px 16px 24px',
+            padding: isFullscreen ? '12px 16px sm:16px lg:24px' : '24px 16px 16px',
             background: '#252532',
             borderBottom: '1.5px solid #272737',
             borderTopLeftRadius: '16px',
@@ -268,7 +268,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                 fontWeight: 600,
                 fontStyle: 'SemiBold',
                 fontSize: '18px',
-                lineHeight: '1.5em',
+                lineHeight: '1.5555555555555556em',
                 letterSpacing: '0%',
                 color: '#F7F7F7'
               }}
@@ -373,7 +373,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
               <>
                 <button
                   onClick={() => setIsFullscreen(true)}
-                  className="flex items-center justify-center hover:bg-[#333346] transition-all duration-200 cursor-pointer"
+                  className="hidden lg:flex items-center justify-center hover:bg-[#333346] transition-all duration-200 cursor-pointer"
                   style={{
                     gap: '6px',
                     padding: '10px 12px',
@@ -542,14 +542,14 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
 
             {/* Footer */}
             <div
-              className={`flex flex-shrink-0 ${isFullscreen ? 'flex-row justify-between items-center' : 'flex-col sm:flex-row'}`}
+              className={`flex flex-shrink-0 ${isFullscreen ? 'flex-row justify-between items-center' : 'flex-row gap-4 lg:flex-col lg:sm:flex-row'}`}
               style={{
-                background: 'rgba(32, 32, 40, 1)',
+                background: isFullscreen ? 'rgba(32, 32, 40, 1)' : 'rgba(32, 32, 40, 1)',
                 borderTop: '1px solid #2C2C45',
-                borderBottomLeftRadius: isFullscreen ? '16px' : '16px',
-                borderBottomRightRadius: isFullscreen ? '16px' : '16px',
-                padding: isFullscreen ? '32px 24px' : '32px 24px',
-                gap: isFullscreen ? '16px' : '16px'
+                borderBottomLeftRadius: isFullscreen ? '16px' : '0px',
+                borderBottomRightRadius: isFullscreen ? '16px' : '0px',
+                padding: isFullscreen ? '32px 24px' : '24px 16px 16px',
+                gap: '16px'
               }}
             >
           {isFullscreen ? (
@@ -657,14 +657,15 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
             <>
               <button
                 onClick={handlePularMeta}
-                className="flex items-center justify-center hover:bg-[#6B1A0F] transition-all duration-200 cursor-pointer flex-1"
+                className="flex items-center justify-center hover:bg-[#6B1A0F] transition-all duration-200 cursor-pointer flex-1 lg:flex-1"
                 style={{
                   gap: '4px',
                   padding: '10px 14px',
                   background: '#55160C',
                   border: '1px solid #912018',
                   borderRadius: '8px',
-                  boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)'
+                  boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
+                  width: '100%'
                 }}
               >
                 <span 
@@ -685,7 +686,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
               
               <button
                 onClick={handleConcluirMeta}
-                className="flex items-center justify-center hover:bg-[#0A4A2E] transition-all duration-200 cursor-pointer flex-1"
+                className="flex items-center justify-center hover:bg-[#0A4A2E] transition-all duration-200 cursor-pointer flex-1 lg:flex-1"
                 style={{
                   gap: '4px',
                   padding: '10px 14px',
@@ -693,7 +694,8 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                   border: '2px solid',
                   borderImage: 'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%) 1',
                   borderRadius: '8px',
-                  boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)'
+                  boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
+                  width: '100%'
                 }}
               >
                 <span 
