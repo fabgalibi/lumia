@@ -204,7 +204,7 @@ export const Sidebar = () => {
       <div 
         className="fixed left-0 top-0 h-screen z-50"
         style={{
-          width: isMobile ? (isSidebarOpen ? '359px' : '0px') : (isCollapsed ? '96px' : '244px'),
+          width: isMobile ? (isSidebarOpen ? '100vw' : '0px') : (isCollapsed ? '96px' : '244px'),
           height: isMobile ? '812px' : '100vh',
           transform: isMobile ? (isSidebarOpen ? 'translateX(0)' : 'translateX(-100%)') : 'translateX(0)',
           overflow: 'hidden'
@@ -281,8 +281,8 @@ export const Sidebar = () => {
         </div>
       </div>
 
-            {/* Logo + Botão Fechar */}
-            <div className="flex items-center justify-between px-4 py-5">
+            {/* Logo + Botão Fechar - Conforme Figma */}
+            <div className="flex items-center justify-between px-4 py-5" style={{ gap: '154px' }}>
               <div className="w-[145px] h-10">
                 <img 
                   src="/images/lumia-logo-718d50.png" 
@@ -298,11 +298,12 @@ export const Sidebar = () => {
                   border: '1px solid #272737',
                   borderRadius: '40px',
                   padding: '10px',
-                  gap: '10px'
+                  width: '44px',
+                  height: '44px'
                 }}
               >
-                <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3 6H15M3 1H15M3 11H15" stroke="#F66649" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 7H19M1 1H19M7 13H19" stroke="#F66649" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </button>
             </div>
@@ -474,19 +475,19 @@ export const Sidebar = () => {
           zIndex: 9999
         }}
       >
-        <button
-          onClick={handleToggle}
+      <button
+        onClick={handleToggle}
           className="transition-all duration-300 hover:bg-[#333346] hover:shadow-md"
-          style={{
-            background: '#24212D',
-            border: '1px solid rgba(12, 14, 18, 0.1)',
+        style={{
+          background: '#24212D',
+          border: '1px solid rgba(12, 14, 18, 0.1)',
             borderRadius: '50%',
-            padding: '4px',
-            width: '32px',
-            height: '32px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+          padding: '4px',
+          width: '32px',
+          height: '32px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
             cursor: 'pointer'
           }}
         >
@@ -517,8 +518,8 @@ export const Sidebar = () => {
               />
             )}
           </svg>
-        </button>
-      </div>
+      </button>
+    </div>
     )}
     </>
   );

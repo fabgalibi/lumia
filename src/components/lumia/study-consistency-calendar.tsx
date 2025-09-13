@@ -55,13 +55,13 @@ const StudyConsistencyCalendar: React.FC<StudyConsistencyCalendarProps> = ({
 
   return (
     <div
-      className="rounded-lg border flex flex-col w-full max-w-[343px] mx-auto sm:max-w-[400px] sm:mx-auto md:max-w-[500px] md:mx-auto lg:max-w-none lg:mx-0"
+      className="rounded-lg border flex flex-col w-full lg:max-w-none lg:mx-0"
       style={{
         background: 'rgba(37, 37, 50, 1)',
         borderColor: '#2C2C45',
         borderWidth: '1px',
         borderRadius: '8px',
-        padding: '16px 12px',
+        padding: '16px',
         gap: '8px',
         height: 'auto',
         maxHeight: isExpanded ? 'none' : 'none',
@@ -210,7 +210,6 @@ const StudyConsistencyCalendar: React.FC<StudyConsistencyCalendarProps> = ({
             className="flex flex-col gap-0.5"
             style={{ 
               width: '100%', 
-              maxWidth: '268px',
               overflowX: 'hidden',
               overflowY: 'visible'
             }}
@@ -223,17 +222,15 @@ const StudyConsistencyCalendar: React.FC<StudyConsistencyCalendarProps> = ({
               {days.map((day, index) => (
                 <div 
                   key={day}
-                  className="text-white"
+                  className="text-white flex-1"
                   style={{
                     fontFamily: 'var(--font-sora)',
                     fontWeight: 400,
                     fontSize: '12px',
                     lineHeight: '1.5em',
-                    width: '100%',
-                    minWidth: index === 0 ? '30px' : '35px',
-                    paddingLeft: index === 0 ? '3px' : '0px',
                     display: 'flex',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    justifyContent: 'center'
                   }}
                 >
                   {day}
@@ -252,8 +249,8 @@ const StudyConsistencyCalendar: React.FC<StudyConsistencyCalendarProps> = ({
               {days.map((_, dayIndex) => (
                 <div 
                   key={dayIndex}
-                  className="flex flex-col gap-0.5"
-                  style={{ width: '100%', minWidth: dayIndex === 0 ? '35px' : '36px' }}
+                  className="flex flex-col gap-0.5 flex-1"
+                  style={{ width: '100%' }}
                 >
                   {(isExpanded ? hours : hours.slice(0, 9)).map((_, hourIndex) => (
                     <div 
