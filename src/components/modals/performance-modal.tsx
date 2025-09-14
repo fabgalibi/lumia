@@ -55,7 +55,7 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
       className="fixed inset-0 overflow-y-auto"
       style={{
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        zIndex: 10000
+        zIndex: 999999
       }}
     >
       <div

@@ -450,12 +450,6 @@ export const Sidebar = () => {
       {/* Collapse Button - Desktop only */}
 
 
-      {/* Logout Modal */}
-      <LogoutModal
-        isOpen={showLogoutModal}
-        onClose={handleLogoutClose}
-        onConfirm={handleLogoutConfirm}
-      />
     </div>
 
     {/* Collapse Button - Outside sidebar container, synchronized movement */}
@@ -521,6 +515,13 @@ export const Sidebar = () => {
       </button>
     </div>
     )}
+
+    {/* Logout Modal - Outside all containers */}
+    <LogoutModal
+      isOpen={showLogoutModal}
+      onClose={handleLogoutClose}
+      onConfirm={handleLogoutConfirm}
+    />
     </>
   );
 };

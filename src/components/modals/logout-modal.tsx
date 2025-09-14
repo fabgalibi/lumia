@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface LogoutModalProps {
   isOpen: boolean;
@@ -11,20 +11,41 @@ export const LogoutModal: React.FC<LogoutModalProps> = ({
   onClose,
   onConfirm
 }) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detectar se é mobile
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
+
   console.log('LogoutModal renderizado, isOpen:', isOpen);
   
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-[9999] pointer-events-none" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+    <div 
+      className="fixed inset-0 flex items-center justify-center z-[999999] pointer-events-none" 
+      style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+    >
       <div 
         className="relative bg-[#252532] rounded-2xl shadow-2xl overflow-hidden pointer-events-auto"
         style={{ 
-          width: '484px',
-          height: '256px',
-          borderRadius: '16px', // radius-2xl
+          width: isMobile ? '343px' : '484px',
+          height: isMobile ? 'fit-content' : '256px',
+          minHeight: isMobile ? '200px' : '256px',
+          borderRadius: '16px',
           boxShadow: '0px 3px 3px -1.5px rgba(255, 255, 255, 0), 0px 8px 8px -4px rgba(255, 255, 255, 0), 0px 20px 24px -4px rgba(255, 255, 255, 0)',
-          opacity: 1
+          opacity: 1,
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)'
         }}
       >
         {/* Background pattern decorative */}
@@ -33,7 +54,11 @@ export const LogoutModal: React.FC<LogoutModalProps> = ({
         </div>
 
         {/* Header */}
-        <div className="relative p-6 pr-12" style={{ height: '156px' }}>
+        <div className="relative" style={{ 
+          padding: isMobile ? '20px 16px 16px' : '24px 48px 24px 24px',
+          height: isMobile ? 'fit-content' : '156px',
+          minHeight: isMobile ? '120px' : '156px'
+        }}>
           <button
             onClick={() => {
               console.log('Botão X clicado - fechando modal');
@@ -67,8 +92,10 @@ export const LogoutModal: React.FC<LogoutModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="pt-8 px-6 pb-8">
-          <div className="flex gap-3 justify-end">
+        <div style={{ 
+          padding: isMobile ? '16px 16px 20px' : '32px 24px 32px'
+        }}>
+          <div className={`flex gap-3 ${isMobile ? 'flex-col' : 'justify-end'}`}>
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -87,10 +114,10 @@ export const LogoutModal: React.FC<LogoutModalProps> = ({
                 fontFamily: 'Sora', 
                 fontWeight: 600, 
                 fontStyle: 'normal',
-                fontSize: '14px', // text-md
-                lineHeight: '1.5em', // Line height/text-md
+                fontSize: '14px',
+                lineHeight: '1.5em',
                 letterSpacing: '0%',
-                width: '212px',
+                width: isMobile ? '100%' : '212px',
                 height: '44px',
                 padding: '10px 16px',
                 boxShadow: '0px 1px 2px 0px rgba(0, 0, 0, 0.05), inset 0px -2px 0px 0px rgba(10, 13, 18, 0.05), inset 0px 0px 0px 1px rgba(10, 13, 18, 0.18)',
@@ -111,13 +138,13 @@ export const LogoutModal: React.FC<LogoutModalProps> = ({
                 fontFamily: 'Sora', 
                 fontWeight: 600, 
                 fontStyle: 'normal',
-                fontSize: '14px', // text-md
-                lineHeight: '1.5em', // Line height/text-md
+                fontSize: '14px',
+                lineHeight: '1.5em',
                 letterSpacing: '0%',
-                width: '212px',
+                width: isMobile ? '100%' : '212px',
                 height: '44px',
-                borderRadius: '8px', // radius-md
-                padding: '10px 24px', // spacing-xl = 24px
+                borderRadius: '8px',
+                padding: '10px 24px',
                 gap: '6px',
                 background: 'rgba(240, 68, 56, 1)',
                 border: '2px solid',
