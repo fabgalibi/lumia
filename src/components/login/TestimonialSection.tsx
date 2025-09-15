@@ -5,13 +5,15 @@ interface TestimonialSectionProps {
 }
 
 export const TestimonialSection: React.FC<TestimonialSectionProps> = ({ isMobile }) => {
-  const [screenSize, setScreenSize] = useState<'mobile' | 'notebook' | 'desktop'>('desktop');
+  const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'notebook' | 'desktop'>('desktop');
 
   useEffect(() => {
     const checkScreenSize = () => {
       const width = window.innerWidth;
       if (width < 768) {
         setScreenSize('mobile');
+      } else if (width < 1024) {
+        setScreenSize('tablet');
       } else if (width < 1440) {
         setScreenSize('notebook');
       } else {
@@ -279,7 +281,8 @@ export const TestimonialSection: React.FC<TestimonialSectionProps> = ({ isMobile
                         style={{ 
                           objectFit: 'contain',
                           display: 'block',
-                          opacity: 1
+                          opacity: 1,
+                          filter: 'brightness(0) invert(1)'
                         }}
                       />
                     </div>

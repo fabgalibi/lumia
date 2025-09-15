@@ -5,13 +5,15 @@ interface LoginFormProps {
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
-  const [screenSize, setScreenSize] = useState<'mobile' | 'notebook' | 'desktop'>('desktop');
+  const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'notebook' | 'desktop'>('desktop');
 
   useEffect(() => {
     const checkScreenSize = () => {
       const width = window.innerWidth;
       if (width < 768) {
         setScreenSize('mobile');
+      } else if (width < 1024) {
+        setScreenSize('tablet');
       } else if (width < 1440) {
         setScreenSize('notebook');
       } else {
@@ -33,38 +35,376 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
   };
 
   return (
-            <div
-              className="flex items-center justify-center"
-              style={{
-                padding: isMobile ? '32px 16px' : '0',
-                width: isMobile ? '100%' : screenSize === 'notebook' ? '350px' : '510px',
-                height: isMobile ? 'auto' : screenSize === 'notebook' ? '600px' : '832px'
-              }}
-            >
+    <div 
+      className="flex items-center justify-center"
+      style={{
+        padding: isMobile ? '0' : '0',
+        width: isMobile ? '100%' : screenSize === 'notebook' ? '350px' : '510px',
+        height: isMobile ? '100%' : screenSize === 'notebook' ? '600px' : '832px'
+      }}
+    >
       <div 
         className="w-full"
         style={{
-          background: isMobile ? '#202028' : 'transparent',
+          background: isMobile ? 'transparent' : 'transparent',
           borderRadius: '12px',
-          padding: isMobile ? '32px 24px' : screenSize === 'notebook' ? '24px 20px' : '0',
+          padding: isMobile ? '0' : screenSize === 'notebook' ? '24px 20px' : '0',
           maxWidth: isMobile ? '100%' : screenSize === 'notebook' ? '350px' : '510px',
-          height: isMobile ? 'auto' : screenSize === 'notebook' ? '600px' : '832px',
+          height: isMobile ? '100%' : screenSize === 'notebook' ? '600px' : '832px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           gap: isMobile ? '24px' : screenSize === 'notebook' ? '32px' : '24px'
         }}
       >
-        {/* Header Section - Frame 3 */}
-        <div 
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: screenSize === 'notebook' ? '20px' : '32px',
-            width: '100%'
-          }}
-        >
+        {/* Mobile Layout */}
+        {isMobile ? (
+          <>
+            {/* Header Section - Frame 3 */}
+            <div 
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '24px',
+                width: '100%'
+              }}
+            >
+              {/* Logo */}
+              <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {/* Efeito de iluminação sutil no topo - Mobile */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '-204px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '300px',
+                    height: '200px',
+                    background: `
+                      radial-gradient(
+                        ellipse at center,
+                        rgba(255, 100, 50, 0.25) 0%,
+                        rgba(255, 150, 100, 0.15) 30%,
+                        rgba(255, 200, 150, 0.08) 60%,
+                        rgba(255, 220, 180, 0.03) 80%,
+                        transparent 100%
+                      )
+                    `,
+                    borderRadius: '50%',
+                    zIndex: 1,
+                    filter: 'blur(40px)'
+                  }}
+                />
+                <img
+                  src="/images/lumia-logo-icon-only.png"
+                  alt="Lumia Logo"
+                  style={{
+                    width: '76px',
+                    height: '76px',
+                    objectFit: 'contain',
+                    position: 'relative',
+                    zIndex: 2
+                  }}
+                />
+              </div>
+
+              {/* Badge e Textos */}
+              <div 
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '16px',
+                  width: '100%'
+                }}
+              >
+            {/* Badge */}
+            <div 
+              style={{
+                background: '#392E27',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                borderRadius: '8px',
+                padding: '4px 6px',
+                    boxShadow: '0px 1px 2px 0px rgba(10, 13, 18, 0.05), inset 0px -2px 0px 0px rgba(165, 90, 24, 0.09), inset 0px 0px 0px 1px rgba(10, 13, 18, 0.18)'
+              }}
+            >
+              <span 
+                style={{
+                  fontFamily: 'Rajdhani',
+                  fontWeight: 600,
+                      fontSize: '12px',
+                      lineHeight: '1.67em',
+                  letterSpacing: '-0.5%',
+                      color: '#F48E2F',
+                      textAlign: 'center'
+                }}
+              >
+                ACESSE SUA CONTA
+              </span>
+            </div>
+
+                {/* Textos de Boas-vindas */}
+                <div 
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '8px',
+                    width: '100%'
+                  }}
+                >
+              <h1 
+                style={{
+                  fontFamily: 'Sora',
+                  fontWeight: 600,
+                      fontSize: '20px',
+                      lineHeight: '1.5em',
+                      color: '#FFFFFF',
+                      textAlign: 'center',
+                      margin: 0
+                }}
+              >
+                Boas vindas!
+              </h1>
+              <p 
+                style={{
+                  fontFamily: 'Sora',
+                  fontWeight: 400,
+                      fontSize: '14px',
+                      lineHeight: '1.43em',
+                      color: '#FFFFFF',
+                      textAlign: 'center',
+                      margin: 0
+                }}
+              >
+                Insira suas informações de acesso nos campos abaixo para prosseguir.
+              </p>
+            </div>
+          </div>
+        </div>
+
+            {/* Form Section */}
+            <div 
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '32px',
+                width: '100%'
+              }}
+            >
+              {/* Form Fields */}
+              <div 
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '20px',
+                  width: '100%'
+                }}
+              >
+                {/* Email Field */}
+                <div 
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '6px',
+                    width: '100%'
+                  }}
+                >
+              <label 
+                style={{
+                  fontFamily: 'Sora',
+                      fontWeight: 500,
+                  fontSize: '14px',
+                      color: '#FFFFFF'
+                }}
+              >
+                E-mail
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Insira seu e-mail"
+                style={{
+                  background: '#111921',
+                  border: '1px solid #2D2D36',
+                  borderRadius: '8px',
+                      padding: '8px 12px',
+                  fontFamily: 'Sora',
+                  fontWeight: 400,
+                  fontSize: '16px',
+                  lineHeight: '1.5em',
+                      color: '#717680',
+                      width: '100%',
+                      boxSizing: 'border-box',
+                      boxShadow: '0px 1px 2px 0px rgba(10, 13, 18, 0.05)'
+                }}
+              />
+            </div>
+
+                {/* Password Field */}
+                <div 
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '6px',
+                    width: '100%'
+                  }}
+                >
+              <label 
+                style={{
+                  fontFamily: 'Sora',
+                      fontWeight: 500,
+                  fontSize: '14px',
+                      color: '#FFFFFF'
+                }}
+              >
+                Senha
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Insira sua senha"
+                    style={{
+                      background: '#111921',
+                      border: '1px solid #2D2D36',
+                      borderRadius: '8px',
+                      padding: '8px 12px',
+                      fontFamily: 'Sora',
+                      fontWeight: 400,
+                      fontSize: '16px',
+                      lineHeight: '1.5em',
+                      color: '#717680',
+                      width: '100%',
+                      boxSizing: 'border-box',
+                      boxShadow: '0px 1px 2px 0px rgba(10, 13, 18, 0.05)'
+                    }}
+                  />
+                  <p
+                    style={{
+                      fontFamily: 'Sora',
+                      fontWeight: 400,
+                      fontSize: '14px',
+                      lineHeight: '1.43em',
+                      color: '#FFFFFF',
+                      textAlign: 'right',
+                      margin: 0
+                    }}
+                  >
+                    Esqueci minha senha
+                  </p>
+                </div>
+              </div>
+
+              {/* Login Button */}
+              <button
+                type="submit"
+                onClick={handleSubmit}
+                style={{
+                  background: '#C74228',
+                  border: '2px solid rgba(255, 255, 255, 0.12)',
+                  borderRadius: '8px',
+                  padding: '12px 18px',
+                  fontFamily: 'Sora',
+                  fontWeight: 600,
+                  fontSize: '16px',
+                  lineHeight: '1.5em',
+                  color: '#FFFFFF',
+                  width: '100%',
+                  cursor: 'pointer',
+                  boxShadow: '0px 1px 2px 0px rgba(10, 13, 18, 0.05), inset 0px -2px 0px 0px rgba(10, 13, 18, 0.05), inset 0px 0px 0px 1px rgba(10, 13, 18, 0.18)'
+                }}
+              >
+                Acessar conta
+              </button>
+            </div>
+
+            {/* Social Media Section */}
+            <div 
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '12px',
+                width: '247px',
+                marginTop: 'auto'
+              }}
+            >
+              <p
+                style={{
+                  fontFamily: 'Sora',
+                  fontWeight: 500,
+                  fontSize: '14px',
+                  lineHeight: '1.43em',
+                  color: '#D9D9D9',
+                  textAlign: 'center',
+                  margin: 0
+                }}
+              >
+                Siga a LUMIA nas redes sociais
+              </p>
+              <div 
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '20px'
+                }}
+              >
+                {/* Facebook */}
+                <img
+                  src="/images/social-icons/facebook-icon.png"
+                  alt="Facebook"
+                  width="32"
+                  height="32"
+                  style={{ objectFit: 'contain' }}
+                />
+
+                {/* Instagram */}
+                <img
+                  src="/images/social-icons/instagram-icon.png"
+                  alt="Instagram"
+                  width="32"
+                  height="32"
+                  style={{ objectFit: 'contain' }}
+                />
+
+                {/* YouTube */}
+                <img
+                  src="/images/social-icons/youtube-icon.png"
+                  alt="YouTube"
+                  width="32"
+                  height="32"
+                  style={{ objectFit: 'contain' }}
+                />
+
+                {/* X (Twitter) */}
+                <img
+                  src="/images/social-icons/twitter-icon.png"
+                  alt="X (Twitter)"
+                  width="32"
+                  height="32"
+                  style={{ 
+                    objectFit: 'contain',
+                    filter: 'brightness(0) invert(1)'
+                  }}
+                />
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            {/* Desktop Layout - Header Section - Frame 3 */}
+            <div 
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: screenSize === 'notebook' ? '20px' : '32px',
+                width: '100%'
+              }}
+            >
             {/* Logo - Responsivo */}
             <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               {/* Efeito de iluminação sutil no topo - baseado na imagem */}
@@ -265,14 +605,14 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                     background: 'transparent',
                     border: 'none',
                     color: '#94979C',
-                    fontFamily: 'Sora',
-                    fontWeight: 400,
-                    fontSize: '16px',
-                    lineHeight: '1.5em',
+                  fontFamily: 'Sora',
+                  fontWeight: 400,
+                  fontSize: '16px',
+                  lineHeight: '1.5em',
                     outline: 'none',
                     width: '100%'
-                  }}
-                  onFocus={(e) => {
+                }}
+                onFocus={(e) => {
                     e.target.parentElement.style.borderColor = '#F48E2F';
                     e.target.style.color = '#FFFFFF';
                   }}
@@ -419,12 +759,14 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center'
-              }}
-            >
-              Acessar conta
+            }}
+          >
+            Acessar conta
             </span>
           </button>
         </div>
+          </>
+        )}
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TestimonialSection, LoginForm } from '../components/login';
 
 export const LoginScreen = () => {
-  const [screenSize, setScreenSize] = useState<'mobile' | 'notebook' | 'desktop'>('desktop');
+  const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'notebook' | 'desktop'>('desktop');
 
   // Detectar tamanho da tela
   useEffect(() => {
@@ -10,6 +10,8 @@ export const LoginScreen = () => {
       const width = window.innerWidth;
       if (width < 768) {
         setScreenSize('mobile');
+      } else if (width < 1024) {
+        setScreenSize('tablet');
       } else if (width < 1440) {
         setScreenSize('notebook');
       } else {
@@ -35,7 +37,7 @@ export const LoginScreen = () => {
         backgroundRepeat: 'no-repeat',
         width: '100%',
         minHeight: '100vh',
-        padding: screenSize === 'mobile' ? '32px 16px' : screenSize === 'notebook' ? '20px 32px' : '4vh 32px'
+        padding: screenSize === 'mobile' ? '80px 16px 32px 16px' : screenSize === 'tablet' ? '80px 16px 32px 16px' : screenSize === 'notebook' ? '20px 32px' : '4vh 32px'
       }}
     >
               {/* Container Principal - Flexbox */}
@@ -43,36 +45,51 @@ export const LoginScreen = () => {
                 className="flex items-center justify-center"
                 style={{
                   width: '100%',
-                  minHeight: screenSize === 'mobile' ? 'auto' : '76vh',
-                  maxWidth: screenSize === 'mobile' ? '100%' : 'none',
-                  gap: screenSize === 'mobile' ? '0' : screenSize === 'notebook' ? '40px' : '64px'
+                  minHeight: screenSize === 'mobile' || screenSize === 'tablet' ? 'auto' : '76vh',
+                  maxWidth: screenSize === 'mobile' || screenSize === 'tablet' ? '100%' : 'none',
+                  gap: screenSize === 'mobile' || screenSize === 'tablet' ? '0' : screenSize === 'notebook' ? '40px' : '64px'
                 }}
               >
-                {/* Coluna 1 - Testimonial */}
-                <div
-                  className="flex items-center justify-center"
-                  style={{
-                    width: screenSize === 'mobile' ? '100%' : screenSize === 'notebook' ? '500px' : '770px',
-                    height: screenSize === 'mobile' ? 'auto' : '100%',
-                    order: screenSize === 'mobile' ? 2 : 1,
-                    flex: screenSize === 'mobile' ? 'none' : 'none'
-                  }}
-                >
-                  <TestimonialSection isMobile={screenSize === 'mobile'} />
-                </div>
+                  {/* Mobile e Tablet Layout */}
+                  {screenSize === 'mobile' || screenSize === 'tablet' ? (
+                    <div
+                      className="flex flex-col items-center justify-between w-full"
+                      style={{
+                        height: '100%',
+                        gap: '32px'
+                      }}
+                    >
+                      <LoginForm isMobile={true} />
+                    </div>
+                  ) : (
+                    <>
+                      {/* Coluna 1 - Testimonial */}
+                      <div
+                        className="flex items-center justify-center"
+                        style={{
+                          width: screenSize === 'tablet' ? '400px' : screenSize === 'notebook' ? '500px' : '770px',
+                          height: '100%',
+                          order: 1,
+                          flex: 'none'
+                        }}
+                      >
+                        <TestimonialSection isMobile={false} />
+                      </div>
 
-                {/* Coluna 2 - Login Form */}
-                <div
-                  className="flex items-center justify-center"
-                  style={{
-                    width: screenSize === 'mobile' ? '100%' : screenSize === 'notebook' ? '350px' : '510px',
-                    height: screenSize === 'mobile' ? 'auto' : '100%',
-                    order: screenSize === 'mobile' ? 1 : 2,
-                    flex: screenSize === 'mobile' ? 'none' : 'none'
-                  }}
-                >
-                  <LoginForm isMobile={screenSize === 'mobile'} />
-                </div>
+                      {/* Coluna 2 - Login Form */}
+                      <div
+                        className="flex items-center justify-center"
+                        style={{
+                          width: screenSize === 'tablet' ? '300px' : screenSize === 'notebook' ? '350px' : '510px',
+                          height: '100%',
+                          order: 2,
+                          flex: 'none'
+                        }}
+                      >
+                        <LoginForm isMobile={false} />
+                      </div>
+                    </>
+                  )}
               </div>
     </div>
   );
