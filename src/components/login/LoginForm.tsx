@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 
 interface LoginFormProps {
   isMobile: boolean;
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
+  const navigate = useNavigate();
   const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'notebook' | 'desktop'>('desktop');
 
   useEffect(() => {
@@ -31,8 +33,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Login attempt:', { email, password });
-    // TODO: Implementar lógica de login
+    // Navegar para a home
+    navigate('/home');
   };
+
 
   return (
     <div 
@@ -70,7 +74,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                 width: '100%'
               }}
             >
-              {/* Logo */}
+          {/* Logo */}
               <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {/* Efeito de iluminação sutil no topo - Mobile */}
                 <div
@@ -99,9 +103,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                 <img
                   src="/images/lumia-logo-icon-only.png"
                   alt="Lumia Logo"
-                  style={{
-                    width: '76px',
-                    height: '76px',
+            style={{
+              width: '76px',
+              height: '76px',
                     objectFit: 'contain',
                     position: 'relative',
                     zIndex: 2
@@ -185,7 +189,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
         </div>
 
             {/* Form Section */}
-            <div 
+            <form 
+              onSubmit={handleSubmit}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -301,7 +306,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
               {/* Login Button */}
               <button
                 type="submit"
-                onClick={handleSubmit}
                 style={{
                   background: '#C74228',
                   border: '2px solid rgba(255, 255, 255, 0.12)',
@@ -319,7 +323,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
               >
                 Acessar conta
               </button>
-            </div>
+
+            </form>
 
             {/* Social Media Section */}
             <div 
@@ -613,11 +618,15 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                     width: '100%'
                 }}
                 onFocus={(e) => {
-                    e.target.parentElement.style.borderColor = '#F48E2F';
+                    if (e.target.parentElement) {
+                      e.target.parentElement.style.borderColor = '#F48E2F';
+                    }
                     e.target.style.color = '#FFFFFF';
                   }}
                   onBlur={(e) => {
-                    e.target.parentElement.style.borderColor = '#2D2D36';
+                    if (e.target.parentElement) {
+                      e.target.parentElement.style.borderColor = '#2D2D36';
+                    }
                     if (!e.target.value) {
                       e.target.style.color = '#94979C';
                     }
@@ -687,11 +696,15 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                     width: '100%'
                   }}
                   onFocus={(e) => {
-                    e.target.parentElement.style.borderColor = '#F48E2F';
+                    if (e.target.parentElement) {
+                      e.target.parentElement.style.borderColor = '#F48E2F';
+                    }
                     e.target.style.color = '#FFFFFF';
                   }}
                   onBlur={(e) => {
-                    e.target.parentElement.style.borderColor = '#2D2D36';
+                    if (e.target.parentElement) {
+                      e.target.parentElement.style.borderColor = '#2D2D36';
+                    }
                     if (!e.target.value) {
                       e.target.style.color = '#94979C';
                     }
@@ -726,7 +739,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
 
           {/* Submit Button - Buttons/Button instance */}
           <button
-            type="submit"
+            type="button"
+            onClick={handleSubmit}
             style={{
               background: '#C74228',
               border: '2px solid rgba(255, 255, 255, 0.12)',
@@ -767,6 +781,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
         </div>
           </>
         )}
+
       </div>
     </div>
   );

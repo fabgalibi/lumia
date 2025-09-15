@@ -67,7 +67,7 @@ export const LoginScreen = () => {
                       <div
                         className="flex items-center justify-center"
                         style={{
-                          width: screenSize === 'tablet' ? '400px' : screenSize === 'notebook' ? '500px' : '770px',
+                          width: screenSize === 'notebook' ? '500px' : '770px',
                           height: '100%',
                           order: 1,
                           flex: 'none'
@@ -80,7 +80,7 @@ export const LoginScreen = () => {
                       <div
                         className="flex items-center justify-center"
                         style={{
-                          width: screenSize === 'tablet' ? '300px' : screenSize === 'notebook' ? '350px' : '510px',
+                          width: screenSize === 'notebook' ? '350px' : screenSize === 'desktop' ? '510px' : '300px',
                           height: '100%',
                           order: 2,
                           flex: 'none'

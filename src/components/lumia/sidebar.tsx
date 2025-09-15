@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import { useSidebar } from "@/contexts/sidebar-context";
 import { LogoutModal } from "@/components/modals/logout-modal";
 
 export const Sidebar = () => {
+  const navigate = useNavigate();
   const { isCollapsed, toggleSidebar } = useSidebar();
   const [showTexts, setShowTexts] = useState(true);
   const [activeItem, setActiveItem] = useState("Início");
@@ -183,7 +185,8 @@ export const Sidebar = () => {
   const handleLogoutConfirm = () => {
     console.log('Usuário confirmou logout');
     setShowLogoutModal(false);
-    // TODO: Implementar lógica de logout real
+    // Navegar de volta para o login
+    navigate('/');
   };
 
   const handleLogoutClose = () => {
