@@ -24,12 +24,18 @@ export const LoginScreen = () => {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center p-4"
+      className="min-h-screen flex justify-center"
       style={{
-        background: 'linear-gradient(90deg, rgba(21, 35, 49, 1) 0%, rgba(0, 0, 0, 1) 100%)',
-        width: '100vw',
-        height: '100vh',
-        overflow: 'auto'
+        background: `
+          linear-gradient(90deg, rgba(21, 35, 49, 1) 0%, rgba(0, 0, 0, 1) 100%),
+          linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(21, 35, 49, 1) 100%),
+          #FFFFFF
+        `,
+        backgroundSize: '100% 100%',
+        backgroundRepeat: 'no-repeat',
+        width: '100%',
+        minHeight: '100vh',
+        padding: screenSize === 'mobile' ? '32px 16px' : screenSize === 'notebook' ? '20px 32px' : '4vh 32px'
       }}
     >
               {/* Container Principal - Flexbox */}
@@ -37,7 +43,7 @@ export const LoginScreen = () => {
                 className="flex items-center justify-center"
                 style={{
                   width: '100%',
-                  height: '100%',
+                  minHeight: screenSize === 'mobile' ? 'auto' : '76vh',
                   maxWidth: screenSize === 'mobile' ? '100%' : 'none',
                   gap: screenSize === 'mobile' ? '0' : screenSize === 'notebook' ? '40px' : '64px'
                 }}

@@ -205,7 +205,7 @@ export const TestimonialSection: React.FC<TestimonialSectionProps> = ({ isMobile
                       className="flex items-center justify-center rounded-full"
                       style={{
                         width: screenSize === 'notebook' ? '28px' : '40px',
-                        height: screenSize === 'notebook' ? '28x' : '40px'
+                        height: screenSize === 'notebook' ? '28px' : '40px'
                       }}
                     >
                       <img

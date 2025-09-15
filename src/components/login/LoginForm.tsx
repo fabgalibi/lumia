@@ -66,15 +66,43 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
           }}
         >
             {/* Logo - Responsivo */}
-                    <img
-                      src="/images/lumia-logo-icon-only.png"
-                      alt="Lumia Logo"
-                      style={{
-                        width: screenSize === 'notebook' ? '56px' : '76px',
-                        height: screenSize === 'notebook' ? '56px' : '76px',
-                        objectFit: 'contain'
-                      }}
-                    />
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              {/* Efeito de iluminação sutil no topo - baseado na imagem */}
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '-204px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: screenSize === 'notebook' ? '300px' : '400px',
+                  height: '200px',
+                  background: `
+                    radial-gradient(
+                      ellipse at center,
+                      rgba(255, 100, 50, 0.25) 0%,
+                      rgba(255, 150, 100, 0.15) 30%,
+                      rgba(255, 200, 150, 0.08) 60%,
+                      rgba(255, 220, 180, 0.03) 80%,
+                      transparent 100%
+                    )
+                  `,
+                  borderRadius: '50%',
+                  zIndex: 1,
+                  filter: 'blur(40px)'
+                }}
+              />
+              <img
+                src="/images/lumia-logo-icon-only.png"
+                alt="Lumia Logo"
+                style={{
+                  width: screenSize === 'notebook' ? '56px' : '76px',
+                  height: screenSize === 'notebook' ? '56px' : '76px',
+                  objectFit: 'contain',
+                  position: 'relative',
+                  zIndex: 2
+                }}
+              />
+            </div>
 
             {/* Badge and Text Frame - Frame 1 - Responsivo */}
             <div 
