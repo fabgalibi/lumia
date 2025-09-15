@@ -60,3 +60,17 @@ input[type="number"] {
 input[type="search"]::-webkit-search-cancel-button {
     -webkit-appearance: none;
 }
+
+/* Imagem responsiva */
+.img-responsiva {
+    max-width: 100%; /* nunca ultrapassa o tamanho do container */
+    height: auto;    /* mantém a proporção */
+    display: block;  /* evita espaçamento indesejado */
+}
+
+/* Section com background responsivo */
+.section {
+    background-size: cover;   /* cobre todo o container */
+    background-position: center;
+    width: 100%;
+}
