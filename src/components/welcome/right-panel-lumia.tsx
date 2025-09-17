@@ -88,57 +88,57 @@ export default function RightPanelLumia({
           wineTop={wineTop}
         />
 
-       {/* Moldura externa responsiva */}
- <div
-   style={{
-     position: "absolute",
-     top: "19.6%", // posição exata do Figma
-     left: "15.9%", // posição exata do Figma
-     transform: "none",
-     width: "100%", // largura que estava funcionando
-     height: "84.6%", // altura exata do Figma
-     background: "transparent",
-     border: "3px solid rgba(103,104,119,0.5)",
-     borderRadius: "40px",
-     padding: "40px",
-     zIndex: 2,
-     overflow: "hidden",
-     display: "flex",
-     alignItems: "center",
-     justifyContent: "center",
-     boxShadow: "0 0 0 1px rgba(255,255,255,0.06) inset, 0 8px 40px rgba(255,255,255,0.05)",
-   }}
- >
-  <MockupGlow intensity={glowIntensity} />
+        {/* Moldura externa responsiva */}
+        <div
+          style={{
+            position: "absolute",
+            top: "20.6%", // posição exata do Figma
+            left: "15.9%", // posição exata do Figma
+            transform: "none",
+            width: "100%", // largura que estava funcionando
+            height: "84.6%", // altura exata do Figma
+            background: "transparent",
+            border: "3px solid rgba(103,104,119,0.5)",
+            borderRadius: "40px",
+            padding: "40px",
+            zIndex: 2,
+            overflow: "hidden",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 0 0 1px rgba(255,255,255,0.06) inset, 0 8px 40px rgba(255,255,255,0.05)",
+          }}
+        >
+          <MockupGlow intensity={glowIntensity} />
 
-   {/* Wrapper que segura a imagem */}
-   <div
-     style={{
-       width: "100%",
-       height: "100%",
-       background: "linear-gradient(-90deg, rgba(1, 3, 19, 1) 20%, rgba(66, 76, 95, 0) 80%)", // gradiente exato do Figma
-       borderRadius: "16px 0", // border-radius do mockup no Figma
-       position: "relative",
-       overflow: "hidden",
-       display: "flex",
-       alignItems: "flex-start", // alinha no topo
-       justifyContent: "flex-start", // alinha na esquerda
-     }}
-   >
-     <img
-       src={mockupSrc}
-       alt="Mockup da Interface Lumia"
-       style={{
-         width: "100%",
-         height: "100%",
-         objectFit: "cover", // preenche todo espaço
-         objectPosition: screenSize === "mobile" ? "center center" : screenSize === "tablet" ? "left center" : "left top", // foco responsivo
-         borderRadius: "16px 0",
-         display: "block",
-       }}
-     />
-   </div>
-</div>
+          {/* Wrapper que segura a imagem */}
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              background: "linear-gradient(-90deg, rgba(1, 3, 19, 1) 20%, rgba(66, 76, 95, 0) 80%)", // gradiente exato do Figma
+              borderRadius: "16px 0", // border-radius do mockup no Figma
+              position: "relative",
+              overflow: "hidden",
+              display: "flex",
+              alignItems: "flex-start", // alinha no topo
+              justifyContent: "flex-start", // alinha na esquerda
+            }}
+          >
+            <img
+              src={mockupSrc}
+              alt="Mockup da Interface Lumia"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover", // preenche todo espaço
+                objectPosition: screenSize === "mobile" ? "center center" : screenSize === "tablet" ? "left center" : "left top", // foco responsivo
+                borderRadius: "16px 0",
+                display: "block",
+              }}
+            />
+          </div>
+        </div>
 
       </div>
     </div>

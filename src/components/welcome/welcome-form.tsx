@@ -45,17 +45,17 @@ export default function WelcomeForm({
         />
       </div>
 
-        {/* Conteúdo Principal */}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between', // conforme Figma
-            gap: '184px', // gap exato do Figma
-            flex: 1,
-            alignSelf: 'stretch' // conforme Figma
-          }}
-        >
+      {/* Conteúdo Principal */}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between', // conforme Figma
+          gap: '184px', // gap exato do Figma
+          flex: 1,
+          alignSelf: 'stretch' // conforme Figma
+        }}
+      >
         {/* Seção de Boas-vindas */}
         <div
           style={{
@@ -70,50 +70,55 @@ export default function WelcomeForm({
             style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: '12px'
+              alignSelf: 'stretch', // conforme Figma
+              gap: '12px' // gap exato do Figma
             }}
           >
             <h1
               style={{
                 fontFamily: 'Sora',
-                fontWeight: 400,
-                fontSize: screenSize === 'mobile' ? '18px' : '20px', // fonte responsiva simples
-                lineHeight: '1.5em',
-                color: '#FFFFFF',
-                margin: 0
+                fontWeight: 400, // weight exato do Figma
+                fontSize: '20px', // tamanho exato do Figma
+                lineHeight: '1.5em', // lineHeight exato do Figma
+                color: '#FFFFFF', // cor exata do Figma
+                margin: 0,
+                textAlign: 'left' // alinhamento do Figma
               }}
             >
               Olá, Max William
             </h1>
-            
+
             <div
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '8px'
+                alignSelf: 'stretch', // conforme Figma
+                gap: '8px' // gap exato do Figma
               }}
             >
               <p
                 style={{
                   fontFamily: 'Sora',
-                  fontWeight: 400,
-                  fontSize: '18px',
-                  lineHeight: '1.5555555555555556em',
-                  color: '#FFFFFF',
-                  margin: 0
+                  fontWeight: 400, // weight exato do Figma
+                  fontSize: '18px', // tamanho exato do Figma
+                  lineHeight: '1.5555555555555556em', // lineHeight exato do Figma
+                  color: '#FFFFFF', // cor exata do Figma
+                  margin: 0,
+                  textAlign: 'left' // alinhamento do Figma
                 }}
               >
                 É bom ter você conosco, desejamos boas-vindas a nossa plataforma.
               </p>
-              
+
               <p
                 style={{
                   fontFamily: 'Sora',
-                  fontWeight: 400,
-                  fontSize: '16px',
-                  lineHeight: '1.5em',
-                  color: '#FFFFFF',
-                  margin: 0
+                  fontWeight: 400, // weight exato do Figma
+                  fontSize: '16px', // tamanho exato do Figma
+                  lineHeight: '1.5em', // lineHeight exato do Figma
+                  color: '#FFFFFF', // cor exata do Figma
+                  margin: 0,
+                  textAlign: 'left' // alinhamento do Figma
                 }}
               >
                 Aqui você encontrará um espaço pensado para apoiar sua jornada, com acompanhamento de mentores especializados e materiais exclusivos para ajudar você a estudar com foco e evoluir de maneira consistente.
@@ -124,21 +129,22 @@ export default function WelcomeForm({
           {/* Como acesso a plataforma? */}
           <div
             style={{
-              width: screenSize === 'mobile' ? '100%' : '496px', // responsivo
-              maxWidth: '100%',
+              width: '496px', // largura fixa do Figma
+              maxWidth: '100%', // responsivo para telas menores
               display: 'flex',
               flexDirection: 'column',
-              gap: '24px'
+              gap: '24px' // gap exato do Figma
             }}
           >
             <h2
               style={{
                 fontFamily: 'Sora',
-                fontWeight: 400,
-                fontSize: '16px',
-                lineHeight: '1.5em',
-                color: '#FFFFFF',
-                margin: 0
+                fontWeight: 400, // weight exato do Figma
+                fontSize: '16px', // tamanho exato do Figma
+                lineHeight: '1.5em', // lineHeight exato do Figma
+                color: '#FFFFFF', // cor exata do Figma
+                margin: 0,
+                textAlign: 'left' // alinhamento do Figma
               }}
             >
               Como acesso a plataforma? 🤔
@@ -148,7 +154,8 @@ export default function WelcomeForm({
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '24px'
+                alignSelf: 'stretch', // conforme Figma
+                gap: '24px' // gap exato do Figma
               }}
             >
               {/* Card 1 - Entender Perfil */}
@@ -196,9 +203,9 @@ export default function WelcomeForm({
             }}
           >
             <BackButton onClick={onBackToStart} />
-            <PrepareProfileButton 
-              onClick={onPrepareProfile} 
-              disabled={!termsAccepted} 
+            <PrepareProfileButton
+              onClick={onPrepareProfile}
+              disabled={!termsAccepted}
             />
           </div>
         </div>
@@ -219,7 +226,8 @@ function InfoCard({ icon, title, description }: InfoCardProps) {
     <div
       style={{
         display: 'flex',
-        gap: '16px',
+        alignSelf: 'stretch', // conforme Figma
+        gap: '16px', // gap exato do Figma
         width: '100%'
       }}
     >
@@ -227,14 +235,14 @@ function InfoCard({ icon, title, description }: InfoCardProps) {
       <div
         style={{
           display: 'flex',
-          alignItems: 'center',
-          gap: '10px',
-          padding: '8px',
-          background: '#0F1E2D',
-          border: '1px solid #192634',
-          borderRadius: '6px',
-          width: 'fit-content',
-          height: 'fit-content'
+          alignItems: 'center', // conforme Figma
+          gap: '10px', // gap exato do Figma
+          padding: '8px', // padding exato do Figma
+          background: '#0F1E2D', // cor exata do Figma
+          border: '1px solid #192634', // borda exata do Figma
+          borderRadius: '6px', // border-radius exato do Figma
+          width: 'fit-content', // hug horizontal
+          height: 'fit-content' // hug vertical
         }}
       >
         {icon}
@@ -245,31 +253,34 @@ function InfoCard({ icon, title, description }: InfoCardProps) {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '8px',
+          justifyContent: 'center', // conforme Figma
+          gap: '8px', // gap exato do Figma
           flex: 1
         }}
       >
         <h3
           style={{
             fontFamily: 'Sora',
-            fontWeight: 600,
-            fontSize: '16px',
-            lineHeight: '1.5em',
-            color: '#F0F0F1',
-            margin: 0
+            fontWeight: 600, // weight exato do Figma
+            fontSize: '16px', // tamanho exato do Figma
+            lineHeight: '1.5em', // lineHeight exato do Figma
+            color: '#F0F0F1', // cor exata do Figma
+            margin: 0,
+            textAlign: 'left' // alinhamento do Figma
           }}
         >
           {title}
         </h3>
-        
+
         <p
           style={{
             fontFamily: 'Sora',
-            fontWeight: 400,
-            fontSize: '16px',
-            lineHeight: '1.5em',
-            color: '#CECFD2',
-            margin: 0
+            fontWeight: 400, // weight exato do Figma
+            fontSize: '16px', // tamanho exato do Figma
+            lineHeight: '1.5em', // lineHeight exato do Figma
+            color: '#CECFD2', // cor exata do Figma
+            margin: 0,
+            textAlign: 'left' // alinhamento do Figma
           }}
         >
           {description}
@@ -312,7 +323,7 @@ function TermsCheckbox({ checked, onChange }: TermsCheckboxProps) {
       >
         {checked && <CheckIcon />}
       </div>
-      
+
       <span
         style={{
           fontFamily: 'Sora',
@@ -433,20 +444,21 @@ function PrepareProfileButton({ onClick, disabled }: PrepareProfileButtonProps) 
 /** ===== Ícones ===== */
 function UserSearchIcon() {
   return (
-    <div style={{ width: '24px', height: '24px', position: 'relative' }}>
+    <div style={{ width: '24px', height: '24px', position: 'relative' }}> {/* dimensões exatas do Figma */}
       <svg
-        width="16"
-        height="19"
-        viewBox="0 0 16 19"
+        width="18"
+        height="21"
+        viewBox="0 0 18 21"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ position: 'absolute', left: '6px', top: '3px' }}
+        style={{ position: 'absolute', left: '3px', top: '1.5px' }} // centralizado no container 24x24
       >
         <path
-          d="M8 8C10.21 8 12 6.21 12 4C12 1.79 10.21 0 8 0C5.79 0 4 1.79 4 4C4 6.21 5.79 8 8 8ZM8 10C5.33 10 0 11.34 0 14V16C0 17.1 0.9 18 2 18H14C15.1 18 16 17.1 16 16V14C16 11.34 10.67 10 8 10Z"
+          d="M1 19V17C1 15.9391 1.42143 14.9217 2.17157 14.1716C2.92172 13.4214 3.93913 13 5 13H6.5M15.2 18.2L17 20M3 5C3 6.06087 3.42143 7.07828 4.17157 7.82843C4.92172 8.57857 5.93913 9 7 9C8.06087 9 9.07828 8.57857 9.82843 7.82843C10.5786 7.07828 11 6.06087 11 5C11 3.93913 10.5786 2.92172 9.82843 2.17157C9.07828 1.42143 8.06087 1 7 1C5.93913 1 4.92172 1.42143 4.17157 2.17157C3.42143 2.92172 3 3.93913 3 5ZM10 16C10 16.7956 10.3161 17.5587 10.8787 18.1213C11.4413 18.6839 12.2044 19 13 19C13.7956 19 14.5587 18.6839 15.1213 18.1213C15.6839 17.5587 16 16.7956 16 16C16 15.2044 15.6839 14.4413 15.1213 13.8787C14.5587 13.3161 13.7956 13 13 13C12.2044 13 11.4413 13.3161 10.8787 13.8787C10.3161 14.4413 10 15.2044 10 16Z"
           stroke="#F66649"
           strokeWidth="2"
-          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
     </div>
@@ -464,9 +476,9 @@ function AlertCircleIcon() {
         xmlns="http://www.w3.org/2000/svg"
         style={{ position: 'absolute', left: '2px', top: '2px' }}
       >
-        <circle cx="10" cy="10" r="9" stroke="#F66649" strokeWidth="2" fill="none"/>
-        <path d="M10 6V10" stroke="#F66649" strokeWidth="2" strokeLinecap="round"/>
-        <path d="M10 14H10.01" stroke="#F66649" strokeWidth="2" strokeLinecap="round"/>
+        <circle cx="10" cy="10" r="9" stroke="#F66649" strokeWidth="2" fill="none" />
+        <path d="M10 6V10" stroke="#F66649" strokeWidth="2" strokeLinecap="round" />
+        <path d="M10 14H10.01" stroke="#F66649" strokeWidth="2" strokeLinecap="round" />
       </svg>
     </div>
   );
