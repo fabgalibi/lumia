@@ -37,9 +37,8 @@ export const PreparationStepScreen = () => {
 
   const handleNextStep = () => {
     if (selectedPreparationType) {
-      // Navegar para a próxima etapa
-      console.log('Próxima etapa:', { selectedPreparationType, temConcursoEspecifico, concursoEspecifico });
-      // navigate('/profile-setup/step3');
+      // Navegar para a etapa 3 - Disponibilidade
+      navigate('/profile-setup/availability');
     }
   };
 
@@ -112,6 +111,7 @@ export const PreparationStepScreen = () => {
             {preparationTypes.map((type) => (
               <PreparationTypeCard
                 key={type.id}
+                id={type.id}
                 title={type.title}
                 description={type.description}
                 imageSrc={type.imageSrc}
