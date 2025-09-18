@@ -41,6 +41,55 @@ export const WelcomeScreen = () => {
     }
   };
 
+  // Versão mobile - reutiliza WelcomeForm sem lateral direita
+  if (screenSize === 'mobile') {
+    return (
+      <div
+        style={{
+          width: '100vw',
+          minHeight: '100vh',
+          background: '#0B1219',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'stretch'
+        }}
+      >
+        <div
+          style={{
+            width: '100%',
+            minHeight: '100vh',
+            background: '#0B1219',
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative'
+          }}
+        >
+        {/* Conteúdo - reutiliza WelcomeForm */}
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px 0px', // remove padding lateral
+            width: '100%'
+          }}
+        >
+          <WelcomeForm
+            screenSize={screenSize}
+            termsAccepted={termsAccepted}
+            onTermsChange={setTermsAccepted}
+            onBackToStart={handleBackToStart}
+            onPrepareProfile={handlePrepareProfile}
+          />
+        </div>
+
+        </div>
+      </div>
+    );
+  }
+
+  // Renderização desktop (preservada)
   return (
     <div
       className="min-h-screen flex items-center justify-center"
@@ -48,7 +97,7 @@ export const WelcomeScreen = () => {
         background: 'linear-gradient(135deg, #0F1419 0%, #1A1F28 100%)',
         width: '100%',
         minHeight: '100vh',
-        padding: screenSize === 'desktop' ? '60px 32px' : '0px' // só padding em desktop
+        padding: screenSize === 'desktop' ? '60px 32px' : '0px'
       }}
     >
       {/* Container Principal - Flexbox com duas colunas */}
@@ -57,9 +106,9 @@ export const WelcomeScreen = () => {
         style={{
           width: '100%',
           maxWidth: '1400px',
-          gap: screenSize === 'mobile' ? '0px' : '0px', // sem gap em mobile
-          flexDirection: screenSize === 'mobile' ? 'column' : 'row',
-          padding: screenSize === 'mobile' ? '0px' : '0px', // sem padding em mobile
+          gap: '0px',
+          flexDirection: 'row',
+          padding: '0px',
           alignItems: 'stretch',
           margin: '0 auto',
           position: 'relative',
@@ -70,9 +119,8 @@ export const WelcomeScreen = () => {
         {/* Coluna 1 - Formulário de Boas-vindas (Design do Figma) */}
         <div
           style={{
-            width: screenSize === 'mobile' ? '100%' : '52%',
+            width: '52%',
             height: 'auto',
-            order: screenSize === 'mobile' ? 2 : 1,
             flex: '0 0 auto',
             display: 'flex',
             alignItems: 'center',
@@ -93,9 +141,8 @@ export const WelcomeScreen = () => {
         {/* Coluna 2 - Mockup da Interface */}
         <div
           style={{
-            width: screenSize === 'mobile' ? '100%' : '48%',
-            height: screenSize === 'mobile' ? '400px' : 'auto',
-            order: screenSize === 'mobile' ? 1 : 2,
+            width: '48%',
+            height: 'auto',
             flex: '0 0 auto',
             position: 'relative'
           }}

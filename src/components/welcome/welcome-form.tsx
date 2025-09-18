@@ -33,13 +33,15 @@ export default function WelcomeForm({
       }}
     >
       {/* Logo */}
-      <div style={{ alignSelf: 'flex-start' }}>
+      <div style={{ 
+        alignSelf: screenSize === 'mobile' ? 'center' : 'flex-start' // mobile: center, desktop: flex-start
+      }}>
         <img
           src="/images/lumia-logo-718d50.png"
           alt="Lumia Logo"
           style={{
-            width: screenSize === 'mobile' ? '140px' : '174px', // tamanho responsivo simples
-            height: screenSize === 'mobile' ? '38px' : '48px', // altura proporcional
+            width: screenSize === 'mobile' ? '145px' : '174px', // tamanho exato do Figma mobile/desktop
+            height: screenSize === 'mobile' ? '40px' : '48px', // altura exata do Figma
             objectFit: 'contain'
           }}
         />
@@ -82,7 +84,7 @@ export default function WelcomeForm({
                 lineHeight: '1.5em', // lineHeight exato do Figma
                 color: '#FFFFFF', // cor exata do Figma
                 margin: 0,
-                textAlign: 'left' // alinhamento do Figma
+                textAlign: screenSize === 'mobile' ? 'center' : 'left' // mobile: center, desktop: left
               }}
             >
               Olá, Max William
@@ -104,7 +106,7 @@ export default function WelcomeForm({
                   lineHeight: '1.5555555555555556em', // lineHeight exato do Figma
                   color: '#FFFFFF', // cor exata do Figma
                   margin: 0,
-                  textAlign: 'left' // alinhamento do Figma
+                  textAlign: screenSize === 'mobile' ? 'center' : 'left' // mobile: center, desktop: left
                 }}
               >
                 É bom ter você conosco, desejamos boas-vindas a nossa plataforma.
@@ -118,7 +120,7 @@ export default function WelcomeForm({
                   lineHeight: '1.5em', // lineHeight exato do Figma
                   color: '#FFFFFF', // cor exata do Figma
                   margin: 0,
-                  textAlign: 'left' // alinhamento do Figma
+                  textAlign: screenSize === 'mobile' ? 'center' : 'left' // mobile: center, desktop: left
                 }}
               >
                 Aqui você encontrará um espaço pensado para apoiar sua jornada, com acompanhamento de mentores especializados e materiais exclusivos para ajudar você a estudar com foco e evoluir de maneira consistente.
@@ -144,7 +146,7 @@ export default function WelcomeForm({
                 lineHeight: '1.5em', // lineHeight exato do Figma
                 color: '#FFFFFF', // cor exata do Figma
                 margin: 0,
-                textAlign: 'left' // alinhamento do Figma
+                textAlign: screenSize === 'mobile' ? 'center' : 'left' // mobile: center, desktop: left
               }}
             >
               Como acesso a plataforma? 🤔
@@ -187,10 +189,11 @@ export default function WelcomeForm({
           }}
         >
           {/* Checkbox */}
-          <TermsCheckbox
-            checked={termsAccepted}
-            onChange={onTermsChange}
-          />
+            <TermsCheckbox
+              checked={termsAccepted}
+              onChange={onTermsChange}
+              screenSize={screenSize}
+            />
 
           {/* Botões */}
           <div
@@ -202,10 +205,11 @@ export default function WelcomeForm({
               gap: '24px' // gap exato do Figma
             }}
           >
-            <BackButton onClick={onBackToStart} />
+            <BackButton onClick={onBackToStart} screenSize={screenSize} />
             <PrepareProfileButton
               onClick={onPrepareProfile}
               disabled={!termsAccepted}
+              screenSize={screenSize}
             />
           </div>
         </div>
@@ -266,7 +270,7 @@ function InfoCard({ icon, title, description }: InfoCardProps) {
             lineHeight: '1.5em', // lineHeight exato do Figma
             color: '#F0F0F1', // cor exata do Figma
             margin: 0,
-            textAlign: 'left' // alinhamento do Figma
+            textAlign: 'left' // cards sempre à esquerda
           }}
         >
           {title}
@@ -280,7 +284,7 @@ function InfoCard({ icon, title, description }: InfoCardProps) {
             lineHeight: '1.5em', // lineHeight exato do Figma
             color: '#CECFD2', // cor exata do Figma
             margin: 0,
-            textAlign: 'left' // alinhamento do Figma
+            textAlign: 'left' // cards sempre à esquerda
           }}
         >
           {description}
@@ -294,9 +298,10 @@ function InfoCard({ icon, title, description }: InfoCardProps) {
 type TermsCheckboxProps = {
   checked: boolean;
   onChange: (checked: boolean) => void;
+  screenSize: "mobile" | "tablet" | "notebook" | "desktop";
 };
 
-function TermsCheckbox({ checked, onChange }: TermsCheckboxProps) {
+function TermsCheckbox({ checked, onChange, screenSize: _ }: TermsCheckboxProps) {
   return (
     <div
       style={{
@@ -333,7 +338,30 @@ function TermsCheckbox({ checked, onChange }: TermsCheckboxProps) {
           color: '#CECFD2'
         }}
       >
-        Confirmo que li e aceito os Termos de Uso da plataforma.
+        Confirmo que li e aceito os{' '}
+        <a
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            // Aqui você pode abrir modal ou navegar para página de termos
+            console.log('Abrir Termos de Uso');
+          }}
+          style={{
+            color: '#F66649', // cor laranja Lumia
+            textDecoration: 'none',
+            cursor: 'pointer',
+            fontWeight: 500 // um pouco mais bold para destaque
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = '#FF7A5C'; // hover mais claro
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = '#F66649'; // volta ao original
+          }}
+        >
+          Termos de Uso
+        </a>
+        {' '}da plataforma.
       </span>
     </div>
   );
@@ -342,19 +370,21 @@ function TermsCheckbox({ checked, onChange }: TermsCheckboxProps) {
 /** ===== Botão Voltar ===== */
 type BackButtonProps = {
   onClick: () => void;
+  screenSize: "mobile" | "tablet" | "notebook" | "desktop";
 };
 
-function BackButton({ onClick }: BackButtonProps) {
+function BackButton({ onClick, screenSize }: BackButtonProps) {
+  
   return (
     <button
       onClick={onClick}
       style={{
-        width: '259px',
+        width: screenSize === 'mobile' ? 'auto' : '259px', // mobile: auto width
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         gap: '4px',
-        padding: '12px 14px',
+        padding: screenSize === 'mobile' ? '14px' : '12px 14px', // mobile: só ícone
         background: '#2D2D45',
         border: 'none',
         borderRadius: '8px',
@@ -370,17 +400,19 @@ function BackButton({ onClick }: BackButtonProps) {
       }}
     >
       <ChevronLeftIcon />
-      <span
-        style={{
-          fontFamily: 'Sora',
-          fontWeight: 600,
-          fontSize: '16px',
-          lineHeight: '1.5em',
-          color: '#CECFD2'
-        }}
-      >
-        Voltar ao início
-      </span>
+      {screenSize !== 'mobile' && (
+        <span
+          style={{
+            fontFamily: 'Sora',
+            fontWeight: 600,
+            fontSize: '16px',
+            lineHeight: '1.5em',
+            color: '#CECFD2'
+          }}
+        >
+          Voltar ao início
+        </span>
+      )}
     </button>
   );
 }
@@ -389,20 +421,22 @@ function BackButton({ onClick }: BackButtonProps) {
 type PrepareProfileButtonProps = {
   onClick: () => void;
   disabled: boolean;
+  screenSize: "mobile" | "tablet" | "notebook" | "desktop";
 };
 
-function PrepareProfileButton({ onClick, disabled }: PrepareProfileButtonProps) {
+function PrepareProfileButton({ onClick, disabled, screenSize }: PrepareProfileButtonProps) {
   return (
     <button
       onClick={onClick}
       disabled={disabled}
       style={{
-        width: '260px',
+        width: screenSize === 'mobile' ? 'auto' : '260px', // mobile: auto width
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         gap: '6px',
         padding: '12px 18px',
+        flex: screenSize === 'mobile' ? 1 : 'none', // mobile: cresce para preencher
         background: disabled ? '#4A4A4A' : '#C74228',
         border: disabled ? 'none' : '2px solid transparent',
         backgroundImage: disabled ? 'none' : 'linear-gradient(#C74228, #C74228), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)',
@@ -434,7 +468,7 @@ function PrepareProfileButton({ onClick, disabled }: PrepareProfileButtonProps) 
           color: disabled ? '#666666' : '#FFFFFF'
         }}
       >
-        Preparar meu perfil
+{screenSize === 'mobile' ? 'Prosseguir para etapa 2' : 'Preparar meu perfil'}
       </span>
       <ChevronRightIcon disabled={disabled} />
     </button>
