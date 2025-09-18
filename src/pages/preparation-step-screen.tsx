@@ -6,9 +6,30 @@ import PreparationTypeCard from '@/components/profile-setup/preparation-type-car
 
 export const PreparationStepScreen = () => {
   const navigate = useNavigate();
+  const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'notebook' | 'desktop'>('desktop');
   const [selectedPreparationType, setSelectedPreparationType] = useState<string>('pre-edital'); // pré-selecionado conforme Figma
   const [temConcursoEspecifico, setTemConcursoEspecifico] = useState<string>('sim'); // pré-selecionado "Sim" conforme Figma
   const [concursoEspecifico, setConcursoEspecifico] = useState<string>('');
+
+  // Detectar tamanho da tela para passar aos componentes
+  React.useEffect(() => {
+    const checkScreenSize = () => {
+      const width = window.innerWidth;
+      if (width < 768) {
+        setScreenSize('mobile');
+      } else if (width < 1024) {
+        setScreenSize('tablet');
+      } else if (width < 1440) {
+        setScreenSize('notebook');
+      } else {
+        setScreenSize('desktop');
+      }
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   const handleBackToStep1 = () => {
     navigate('/profile-setup');
@@ -55,7 +76,7 @@ export const PreparationStepScreen = () => {
             display: 'flex',
             flexDirection: 'column',
             alignSelf: 'stretch',
-            gap: '24px', // gap menor para economizar espaço
+            gap: screenSize === 'mobile' ? '16px' : '24px', // gap otimizado para caber na tela
             width: '100%',
             height: 'fit-content' // sizing: vertical: hug conforme Figma
           }}
@@ -63,10 +84,12 @@ export const PreparationStepScreen = () => {
           {/* Título */}
           <h1
             style={{
-              fontFamily: 'Sora',
-              fontWeight: 400,
-              fontSize: '20px',
-              lineHeight: '1.5em',
+              fontFamily: 'Sora', // font-family: Sora
+              fontWeight: 400, // font-weight: 400
+              fontStyle: 'normal', // font-style: Regular
+              fontSize: '16px', // font-size: text-md
+              lineHeight: '1.5em', // line-height: text-md
+              letterSpacing: '0%', // letter-spacing: 0%
               color: '#FFFFFF',
               margin: 0,
               textAlign: 'left'
@@ -79,8 +102,9 @@ export const PreparationStepScreen = () => {
           <div
             style={{
               display: 'flex',
-              flexDirection: 'row', // sempre row no desktop, ProfileLayout já gerencia responsividade
-              alignItems: 'center',
+              flexDirection: screenSize === 'mobile' ? 'column' : 'row', // column no mobile, row no desktop
+              justifyContent: screenSize === 'mobile' ? 'center' : 'flex-start', // alinhamento à esquerda no desktop
+              alignItems: screenSize === 'mobile' ? 'center' : 'flex-start', // alinhamento à esquerda no desktop
               alignSelf: 'stretch',
               gap: '8px'
             }}
@@ -93,7 +117,7 @@ export const PreparationStepScreen = () => {
                 imageSrc={type.imageSrc}
                 isSelected={selectedPreparationType === type.id}
                 onClick={() => setSelectedPreparationType(type.id)}
-                screenSize="desktop" // ProfileLayout gerencia o screenSize
+                screenSize={screenSize} // responsivo baseado na tela atual
               />
             ))}
           </div>
@@ -105,19 +129,21 @@ export const PreparationStepScreen = () => {
             display: 'flex',
             flexDirection: 'column',
             alignSelf: 'stretch',
-            gap: '24px', // gap menor para economizar espaço
+            gap: screenSize === 'mobile' ? '16px' : '24px', // gap otimizado para caber na tela
             width: '100%',
-            height: 'auto', // altura automática para responsividade
-            maxHeight: '320px' // altura máxima para não ultrapassar
+            height: 'auto', // altura automática para ambos
+            maxHeight: 'none' // sem limite de altura
           }}
         >
           {/* Título */}
           <h2
             style={{
-              fontFamily: 'Sora',
-              fontWeight: 400,
-              fontSize: '20px',
-              lineHeight: '1.5em',
+              fontFamily: 'Sora', // font-family: Sora
+              fontWeight: 400, // font-weight: 400
+              fontStyle: 'normal', // font-style: Regular
+              fontSize: '16px', // font-size: text-md
+              lineHeight: '1.5em', // line-height: text-md
+              letterSpacing: '0%', // letter-spacing: 0%
               color: '#FFFFFF',
               margin: 0,
               textAlign: 'left',
@@ -134,7 +160,7 @@ export const PreparationStepScreen = () => {
               display: 'flex',
               flexDirection: 'column',
               alignSelf: 'stretch',
-              gap: '20px', // gap menor para economizar espaço
+              gap: screenSize === 'mobile' ? '24px' : '20px', // gap otimizado para caber na tela
               padding: '0px 8px', // padding conforme Figma
               flex: 1
             }}
@@ -148,7 +174,7 @@ export const PreparationStepScreen = () => {
                 { value: 'nao', label: 'Não' }
               ]}
               name="concurso-especifico"
-              screenSize="desktop" // ProfileLayout gerencia o screenSize
+              screenSize={screenSize} // responsivo baseado na tela atual
             />
 
             {/* Textarea Field - Aparece apenas se "Sim" estiver selecionado */}
@@ -159,7 +185,7 @@ export const PreparationStepScreen = () => {
                 value={concursoEspecifico}
                 onChange={setConcursoEspecifico}
                 maxLength={150}
-                screenSize="desktop" // ProfileLayout gerencia o screenSize
+                screenSize={screenSize} // responsivo baseado na tela atual
               />
             )}
           </div>

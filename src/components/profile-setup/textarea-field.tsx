@@ -32,8 +32,9 @@ export default function TextareaField({
         flexDirection: 'column',
         alignSelf: 'stretch',
         gap: '6px',
-        flex: 1,
-        width: '100%'
+        flex: screenSize === 'mobile' ? 0 : 1, // mobile: sem flex, desktop: flex 1
+        width: '100%',
+        height: screenSize === 'mobile' ? '200px' : 'auto' // mobile: altura fixa 200px conforme Figma
       }}
     >
       {/* Label */}
@@ -106,7 +107,7 @@ export default function TextareaField({
             resize: 'none',
             width: '100%',
             height: '100%',
-            minHeight: screenSize === 'mobile' ? '100px' : '120px', // altura menor para economizar espaço
+            minHeight: screenSize === 'mobile' ? '140px' : '120px', // mobile: altura maior para preencher os 200px
             textAlign: 'left',
             verticalAlign: 'top',
             margin: 0,

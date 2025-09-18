@@ -81,8 +81,8 @@ export default function ProfileLayout({
           display: 'flex',
           flexDirection: 'column',
           alignSelf: 'stretch',
-          gap: screenSize === 'mobile' ? '24px' : '32px', // gap responsivo - menor para caber na tela
-          padding: screenSize === 'mobile' ? '24px 16px 180px 16px' : '64px 56px 140px 56px', // padding top menor
+          gap: screenSize === 'mobile' ? '16px' : '32px', // gap otimizado para caber na tela
+          padding: screenSize === 'mobile' ? '24px 16px 120px 16px' : '64px 56px 140px 56px', // padding bottom otimizado no mobile
           flex: 1,
           background: 'transparent',
           overflowY: 'auto',

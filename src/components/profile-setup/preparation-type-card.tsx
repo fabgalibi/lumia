@@ -30,6 +30,7 @@ export default function PreparationTypeCard({
         gap: '10px',
         padding: '8px',
         width: screenSize === 'mobile' ? '100%' : '660px',
+        maxWidth: '100%', // garante que não ultrapasse a largura disponível
         background: isSelected 
           ? 'linear-gradient(-68deg, rgba(1, 3, 19, 1) 0%, rgba(66, 76, 95, 0) 80%)'
           : 'transparent',
@@ -55,26 +56,26 @@ export default function PreparationTypeCard({
           display: 'flex',
           flexDirection: 'column',
           alignSelf: 'stretch',
-          gap: '12px',
-          padding: '20px 16px 20px 24px', // padding menor para economizar espaço
+          gap: screenSize === 'mobile' ? '8px' : '12px', // gap menor no mobile
+          padding: screenSize === 'mobile' ? '82px 16px 24px' : '24px 16px 24px 24px', // padding original desktop mantido
           background: '#0B1219',
           borderRadius: '6px',
           position: 'relative',
           overflow: 'hidden',
-          minHeight: '160px' // altura menor para economizar espaço
+          minHeight: screenSize === 'mobile' ? '140px' : '180px' // mobile mais quadrado, desktop mantido
         }}
       >
         {/* Background Pattern Decorativo */}
-        <DecorativeBackground />
+        <DecorativeBackground screenSize={screenSize} />
 
         {/* Imagem */}
         <div
           style={{
             position: 'absolute',
-            top: '11.4px',
-            right: '16px',
-            width: '138px',
-            height: '138px',
+            top: screenSize === 'mobile' ? '12px' : '11.4px', // posição mobile conforme Figma
+            right: '16px', // mantém posição à direita
+            width: screenSize === 'mobile' ? '96px' : '138px', // tamanho mobile conforme Figma
+            height: screenSize === 'mobile' ? '96px' : '138px', // tamanho mobile conforme Figma
             zIndex: 3
           }}
         >
@@ -96,8 +97,8 @@ export default function PreparationTypeCard({
             fontFamily: 'Sora', // font-family: Sora
             fontWeight: 400, // font-weight: 400
             fontStyle: 'normal', // font-style: Regular
-            fontSize: '24px', // font-size: text-xs Medium (conforme Figma)
-            lineHeight: '1.3333333333333333em', // line-height: text-xs (32px/24px = 1.333em)
+            fontSize: screenSize === 'mobile' ? '20px' : '24px', // mobile: text-xl (20px), desktop: text-xs (24px)
+            lineHeight: '1.5em', // line-height mobile: text-xl (1.5em), desktop: text-xs (1.333em)
             letterSpacing: '0%', // letter-spacing: 0%
             color: '#FFFFFF',
             margin: 0,
@@ -135,7 +136,7 @@ export default function PreparationTypeCard({
 }
 
 /** ===== Background Decorativo ===== */
-function DecorativeBackground() {
+function DecorativeBackground({ screenSize }: { screenSize: "mobile" | "tablet" | "notebook" | "desktop" }) {
   // Gerar ID único para evitar conflitos entre múltiplos cards
   const uniqueId = React.useMemo(() => Math.random().toString(36).substr(2, 9), []);
   
@@ -143,8 +144,9 @@ function DecorativeBackground() {
     <div
       style={{
         position: 'absolute',
-        top: '-105.6px', // posição Y conforme Figma dos cards de preparação
-        right: '-16px', // posição X conforme Figma dos cards de preparação
+        top: '-122px', // posição Y conforme Figma (mobile: -122px)
+        left: screenSize === 'mobile' ? '32px' : 'auto', // posição X mobile conforme Figma (32px exato)
+        right: screenSize === 'mobile' ? 'auto' : '-16px', // posição X desktop
         width: '336px', // dimensão exata do Figma
         height: '336px',
         pointerEvents: 'none',

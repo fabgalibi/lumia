@@ -23,9 +23,11 @@ export default function RadioGroup({
       style={{
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'center',
+        justifyContent: screenSize === 'mobile' ? 'stretch' : 'flex-start', // stretch no mobile conforme Figma
+        alignItems: screenSize === 'mobile' ? 'stretch' : 'center', // stretch no mobile conforme Figma
+        alignSelf: screenSize === 'mobile' ? 'stretch' : 'auto', // stretch no mobile conforme Figma
         gap: '16px',
-        width: 'fit-content',
+        width: screenSize === 'mobile' ? '100%' : 'fit-content', // full width no mobile
         height: 'fit-content'
       }}
     >
@@ -71,7 +73,7 @@ function RadioOption({
         alignItems: 'center',
         gap: '12px',
         padding: '16px',
-        width: '171.5px', // largura exata do Figma
+        width: screenSize === 'mobile' ? '100%' : '171.5px', // mobile: full width, desktop: largura fixa
         height: 'fit-content',
         background: '#252532', // fill_YIXB5B
         border: isSelected ? '2px solid #F66649' : '1px solid #2C2C45', // stroke conforme seleção
