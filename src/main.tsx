@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import { HomeScreen } from "@/pages/home-screen";
 import { LoginScreen } from "@/pages/login-screen";
 import { WelcomeScreen } from "@/pages/welcome-screen";
+import { ProfileSetupScreen } from "@/pages/profile-setup-screen";
 import { NotFound } from "@/pages/not-found";
 import { RouteProvider } from "@/providers/router-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
@@ -19,6 +20,7 @@ createRoot(document.getElementById("root")!).render(
                         <Route path="/home" element={<HomeScreen />} />
                         <Route path="/login" element={<LoginScreen />} />
                         <Route path="/welcome" element={<WelcomeScreen />} />
+                        <Route path="/profile-setup" element={<ProfileSetupScreen />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </RouteProvider>
