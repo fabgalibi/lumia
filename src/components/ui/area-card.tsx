@@ -26,7 +26,7 @@ export default function AreaCard({
   
   // Dimensões responsivas baseadas no tamanho
   const dimensions = {
-    sm: { width: '280px', height: '280px' }, // mobile - mais espaço
+    sm: { width: 'auto', height: 'auto' }, // mobile - largura automática, altura automática
     md: { width: '259.2px', height: '259.2px' }, // desktop - dimensão exata do Figma
     lg: { width: '300px', height: '300px' } // telas grandes
   };
@@ -43,11 +43,11 @@ export default function AreaCard({
         alignItems: 'stretch',
         gap: '10px', // gap exato do Figma
         padding: '8px', // padding exato do Figma
-        flex: size === 'sm' ? '1 1 100%' : '1 1 auto', // responsivo: mobile ocupa linha toda
-        width: size === 'sm' ? '100%' : currentSize.width, // largura responsiva
-        height: currentSize.height,
-        minHeight: currentSize.height,
-        maxWidth: size === 'sm' ? '400px' : currentSize.width, // largura máxima em mobile
+        flex: size === 'sm' ? '1 0 auto' : '1 1 auto', // mobile: preenche largura, desktop: flex
+        width: size === 'sm' ? '100%' : currentSize.width, // mobile: 100% (alignSelf: stretch), desktop: fixo
+        height: size === 'sm' ? 'auto' : currentSize.height, // mobile: altura automática, desktop: fixa
+        minHeight: size === 'sm' ? '160px' : currentSize.height, // mobile: altura mínima maior
+        maxWidth: size === 'sm' ? 'none' : currentSize.width, // mobile: sem limite, desktop: limitado
         background: isSelected 
           ? 'linear-gradient(-68deg, rgba(19, 11, 1, 1) 0%, rgba(66, 76, 95, 0) 80%)' // Selected state
           : 'transparent', // Default state
@@ -73,11 +73,13 @@ export default function AreaCard({
       }}
     >
       {/* Conteúdo do Card */}
-      <CardContent 
+      <CardContent
         title={title}
         description={description}
         image={image}
         overlayImage={overlayImage}
+        size={size}
+        isSelected={isSelected}
       />
     </div>
   );
@@ -89,19 +91,21 @@ type CardContentProps = {
   description: string;
   image?: string;
   overlayImage?: string;
+  size?: 'sm' | 'md' | 'lg';
+  isSelected?: boolean;
 };
 
-function CardContent({ title, description, image }: CardContentProps) {
+function CardContent({ title, description, image, size = 'md', isSelected = false }: CardContentProps) {
   return (
     <div
       style={{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-end',
-        alignSelf: 'stretch',
+        justifyContent: 'flex-end', // conforme Figma - conteúdo no final
+        alignSelf: 'stretch', // conforme Figma - estica para preencher
         alignItems: 'stretch',
-        gap: '12px', // gap exato do Figma (layout_EPD4P4)
-        padding: '101px 16px 24px', // padding exato do Figma (layout_EPD4P4)
+        gap: size === 'sm' ? (isSelected ? '12px' : '4px') : '12px', // mobile: 12px se selecionado, 4px normal; desktop: sempre 12px
+        padding: size === 'sm' ? '76px 16px 24px' : '101px 16px 24px', // mobile: menos padding top
         flex: 1, // sizing: horizontal fill, vertical fill
         background: 'rgba(11, 18, 25, 1)', // fill_5QFRMU - cor exata do Figma
         borderRadius: '6px', // borderRadius exato do Figma
@@ -117,8 +121,10 @@ function CardContent({ title, description, image }: CardContentProps) {
         style={{
           fontFamily: 'Sora',
           fontWeight: 400,
-          fontSize: '24px',
-          lineHeight: '1.3333333333333333em',
+          fontStyle: 'normal', // Regular
+          fontSize: size === 'sm' ? '20px' : '24px', // mobile: text-xl (20px), desktop: 24px
+          lineHeight: size === 'sm' ? '1.5em' : '1.33em', // mobile: text-xl line-height (1.5em), desktop: original
+          letterSpacing: '0%', // letter-spacing: 0%
           color: '#FFFFFF',
           margin: 0,
           padding: 0,
@@ -127,8 +133,8 @@ function CardContent({ title, description, image }: CardContentProps) {
           position: 'relative',
           zIndex: 1,
           width: '100%',
-          letterSpacing: 'normal',
-          textTransform: 'none'
+          textTransform: 'none',
+          display: 'block'
         }}
       >
         {title}
@@ -143,37 +149,43 @@ function CardContent({ title, description, image }: CardContentProps) {
           fontSize: '14px', // font-size: text-sm
           lineHeight: '20px', // line-height: text-sm (20px)
           letterSpacing: '0%', // letter-spacing: 0%
-          color: '#FFFFFF',
+          color: '#CECFD2', // cor correta da descrição
           margin: 0,
           padding: 0,
           textAlign: 'left',
           verticalAlign: 'top',
           position: 'relative',
           zIndex: 1,
-          width: '100%',
+          width: '100%', // sizing: horizontal fill
           textTransform: 'none',
           wordWrap: 'break-word',
-          overflow: 'visible'
+          overflow: 'visible',
+          display: 'block' // garante comportamento de bloco
         }}
       >
         {description}
       </p>
 
-      {/* Imagem da Área - Posicionamento exato do Figma */}
+      {/* Imagem da Área - Posicionamento conforme Figma */}
       {image && (
         <img
           src={image}
           alt={title}
           style={{
             position: 'absolute',
-            top: '10px', // posição Y ajustada para melhor centralização
-            left: '101px', // posição X ajustada para melhor centralização  
-            width: '120px', // largura ajustada para melhor proporção
-            height: '120px', // altura ajustada para melhor proporção
-            objectFit: 'contain', // mantém proporções sem cortar
+            top: size === 'sm' ? '12px' : '10px', // mobile: 12px, desktop: 10px
+            right: size === 'sm' ? '16px' : 'auto', // mobile: 16px da direita
+            left: size === 'sm' ? 'auto' : '101px', // mobile: auto, desktop: 101px da esquerda
+            width: size === 'sm' ? '96px' : '120px', // mobile: 96px, desktop: 120px
+            height: size === 'sm' ? '96px' : '120px', // mobile: 96px, desktop: 120px
+            objectFit: 'contain', // contain para evitar distorção
             zIndex: 0, // atrás dos textos
-            background: 'transparent', // sem fundo adicional
-            borderRadius: '0' // sem border radius na imagem
+            background: 'transparent',
+            borderRadius: '0',
+            imageRendering: 'auto', // renderização automática otimizada
+            filter: 'none', // remove filtros que podem causar tremido
+            transform: 'translateZ(0)', // força aceleração de hardware
+            backfaceVisibility: 'hidden' // melhora renderização
           }}
         />
       )}

@@ -17,7 +17,7 @@ export default function ProgressIndicator({ currentStep, totalSteps, screenSize 
         justifyContent: 'stretch',
         alignItems: 'stretch',
         alignSelf: 'stretch',
-        gap: '6px', // gap exato do Figma
+        gap: screenSize === 'mobile' ? '4px' : '6px', // mobile: 4px, desktop: 6px
         padding: '0', // sem padding - preenche toda largura
         width: '100%',
         boxSizing: 'border-box'

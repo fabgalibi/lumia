@@ -15,7 +15,7 @@ export default function ProfileHeader({ screenSize }: ProfileHeaderProps) {
         justifyContent: 'center', // conforme Figma - logo centralizada
         alignItems: 'center',
         alignSelf: 'stretch',
-        padding: screenSize === 'mobile' ? '24px' : '32px 112px', // padding exato do Figma
+        padding: screenSize === 'mobile' ? '20px 16px 24px' : '32px 112px', // padding conforme Figma mobile/desktop
         background: '#0B1219', // cor de fundo do Figma
         width: '100%',
         boxSizing: 'border-box',
@@ -27,8 +27,8 @@ export default function ProfileHeader({ screenSize }: ProfileHeaderProps) {
         src="/images/lumia-logo-718d50.png"
         alt="Lumia Logo"
         style={{
-          width: '174px', // dimensão exata do Figma
-          height: '48px',
+          width: screenSize === 'mobile' ? '145px' : '174px', // mobile: 145px, desktop: 174px
+          height: screenSize === 'mobile' ? '40px' : '48px', // mobile: 40px, desktop: 48px
           objectFit: 'contain'
         }}
       />

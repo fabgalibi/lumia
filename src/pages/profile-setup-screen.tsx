@@ -77,16 +77,16 @@ export const ProfileSetupScreen = () => {
   return (
     <div
       style={{
-        width: '100vw', // preenche toda a largura da viewport
-        height: '100vh', // preenche toda a altura da viewport
+        width: '100vw',
+        height: '100vh',
         maxWidth: '100vw',
         maxHeight: '100vh',
-        background: '#191923', // cor de fundo exata do Figma
+        background: '#191923',
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
-        margin: 0, // remove margem para preencher tudo
-        padding: 0, // remove padding para preencher tudo
+        margin: 0,
+        padding: 0,
         overflow: 'hidden'
       }}
     >
@@ -108,8 +108,8 @@ export const ProfileSetupScreen = () => {
           display: 'flex',
           flexDirection: 'column',
           alignSelf: 'stretch',
-          gap: '32px', // gap exato do Figma
-          padding: screenSize === 'mobile' ? '40px 20px 100px 20px' : '96px 56px 100px 56px', // padding com espaço para footer fixo
+          gap: screenSize === 'mobile' ? '12px' : '32px', // mobile: 12px, desktop: 32px
+          padding: screenSize === 'mobile' ? '24px 16px 120px 16px' : '96px 56px 100px 56px', // padding responsivo
           flex: 1,
           background: 'transparent', // sem fundo adicional - usa o fundo da tela principal
           overflowY: 'auto' // scroll se necessário
@@ -122,7 +122,7 @@ export const ProfileSetupScreen = () => {
             flexDirection: 'column',
             alignItems: 'center', // centraliza o conjunto
             width: '100%',
-            gap: '32px' // gap entre título e cards
+            gap: screenSize === 'mobile' ? '12px' : '32px' // gap entre título e cards
           }}
         >
           {/* Sub-container para alinhamento à esquerda */}
@@ -132,20 +132,22 @@ export const ProfileSetupScreen = () => {
               flexDirection: 'column',
               alignItems: 'flex-start', // alinha título e cards à esquerda entre si
               width: 'auto', // largura automática baseada no conteúdo
-              gap: '32px' // gap entre título e cards
+              gap: screenSize === 'mobile' ? '12px' : '32px' // gap entre título e cards
             }}
           >
             {/* Título da Seção */}
             <h1
               style={{
                 fontFamily: 'Sora',
-                fontWeight: 400, // weight exato do Figma
-                fontSize: '20px', // tamanho exato do Figma
-                lineHeight: '1.5em', // lineHeight exato do Figma
-                color: '#FFFFFF', // cor exata do Figma
+                fontWeight: 400,
+                fontStyle: 'normal', // Regular
+                fontSize: screenSize === 'mobile' ? '16px' : '20px', // mobile: text-md (16px), desktop: 20px
+                lineHeight: '1.5em', // text-md line-height
+                letterSpacing: '0%', // letter-spacing: 0%
+                color: '#FFFFFF',
                 margin: 0,
-                textAlign: 'left', // alinhado à esquerda
-                width: 'auto' // largura automática
+                textAlign: screenSize === 'mobile' ? 'left' : 'left', // sempre left conforme Figma
+                width: 'auto'
               }}
             >
               Selecione abaixo a área de estudo que você deseja estudar:
@@ -155,10 +157,10 @@ export const ProfileSetupScreen = () => {
           <div
             style={{
               display: 'flex',
-              flexDirection: screenSize === 'mobile' ? 'column' : 'row', // responsivo
+              flexDirection: screenSize === 'mobile' ? 'column' : 'row', // mobile: column, desktop: row
               justifyContent: 'flex-start', // alinha à esquerda
               alignItems: 'stretch', // altura uniforme
-              gap: screenSize === 'mobile' ? '16px' : '8px', // gap responsivo
+              gap: screenSize === 'mobile' ? '8px' : '8px', // gap responsivo
               width: '100%',
               height: 'auto',
               overflow: 'visible',

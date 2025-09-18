@@ -15,7 +15,7 @@ export type ProfileFooterProps = {
 
 /** ===== Componente principal ===== */
 export default function ProfileFooter({ 
-  screenSize: _, 
+  screenSize, 
   onBack, 
   onNext, 
   nextButtonText, 
@@ -32,7 +32,7 @@ export default function ProfileFooter({
         justifyContent: 'space-between', // justifyContent: space-between do Figma
         alignItems: 'center', // alignItems: center do Figma
         gap: 0, // sem gap - space-between já distribui o espaço
-        padding: '32px 56px', // padding exato do Figma (layout_EMB3RB)
+        padding: screenSize === 'mobile' ? '24px 16px 16px' : '32px 56px', // mobile: 24px 16px 16px, desktop: 32px 56px
         width: '100%', // preenche toda a largura disponível
         background: '#0B1219', // cor de fundo do Figma - mesma do header
         boxShadow: '0px -2px 4px 2px rgba(33, 33, 33, 0.04)', // effect_KIOCXP - sombra exata
@@ -45,20 +45,67 @@ export default function ProfileFooter({
       }}
     >
       {/* Botão Voltar */}
-      <BackButton onClick={onBack} />
+      <BackButton onClick={onBack} screenSize={screenSize} />
 
       {/* Indicador de Progresso Central */}
-      <StepIndicator 
-        currentStep={currentStep}
-        totalSteps={totalSteps}
-        stepTitle={stepTitle}
-      />
+      {screenSize === 'mobile' ? (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '10px'
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '2px'
+            }}
+          >
+            <span
+              style={{
+                fontFamily: 'Sora',
+                fontWeight: 400,
+                fontSize: '12px', // Text xs Medium
+                lineHeight: '1.5em',
+                color: '#FFFFFF',
+                textAlign: 'center'
+              }}
+            >
+              Passo {currentStep} de {totalSteps}:
+            </span>
+            <span
+              style={{
+                fontFamily: 'Sora',
+                fontWeight: 600,
+                fontSize: '14px', // Text sm Semibold
+                lineHeight: '1.43em',
+                color: '#F48E2F',
+                textAlign: 'center'
+              }}
+            >
+              {stepTitle}
+            </span>
+          </div>
+        </div>
+      ) : (
+        <StepIndicator 
+          currentStep={currentStep}
+          totalSteps={totalSteps}
+          stepTitle={stepTitle}
+        />
+      )}
 
       {/* Botão Prosseguir */}
       <NextButton 
         onClick={onNext}
         text={nextButtonText}
         disabled={!canProceed}
+        screenSize={screenSize}
       />
     </div>
   );
@@ -67,9 +114,10 @@ export default function ProfileFooter({
 /** ===== Botão Voltar ===== */
 type BackButtonProps = {
   onClick: () => void;
+  screenSize: "mobile" | "tablet" | "notebook" | "desktop";
 };
 
-function BackButton({ onClick }: BackButtonProps) {
+function BackButton({ onClick, screenSize }: BackButtonProps) {
   return (
     <button
       onClick={onClick}
@@ -78,14 +126,14 @@ function BackButton({ onClick }: BackButtonProps) {
         display: 'flex',
         justifyContent: 'center', // centralização
         alignItems: 'center', // alinhamento vertical
-        gap: '4px', // gap exato fornecido
+        gap: screenSize === 'mobile' ? '0px' : '4px', // mobile: sem gap (só ícone), desktop: com gap
         
         // Dimensões
-        width: '259px', // dimensão exata do Figma (layout_CHHSVL)
-        height: 'auto', // sizing: vertical hug do Figma
+        width: screenSize === 'mobile' ? '48px' : '259px', // mobile: 48px conforme Figma, desktop: 259px
+        height: screenSize === 'mobile' ? '48px' : 'auto', // mobile: 48px conforme Figma, desktop: auto
         
         // Padding
-        padding: '12px 14px', // padding exato do Figma (layout_CHHSVL)
+        padding: screenSize === 'mobile' ? '14px' : '12px 14px', // mobile: 14px conforme Figma, desktop: original
         
         // Visual
         background: 'rgba(45, 45, 69, 1)', // background exato fornecido
@@ -133,18 +181,20 @@ function BackButton({ onClick }: BackButtonProps) {
         />
       </svg>
       
-      <span
-        style={{
-          fontFamily: 'Sora', // fontFamily do Figma
-          fontWeight: 600, // Text md Semibold - weight do Figma
-          fontSize: '16px', // Text md Semibold - fontSize do Figma
-          lineHeight: '1.5em', // Text md Semibold - lineHeight do Figma
-          color: '#CECFD2', // fill_HHKBRO - cor exata do Figma
-          textAlign: 'left' // textAlignHorizontal: LEFT do Figma
-        }}
-      >
-        Voltar ao início
-      </span>
+      {screenSize !== 'mobile' && (
+        <span
+          style={{
+            fontFamily: 'Sora', // fontFamily do Figma
+            fontWeight: 600, // Text md Semibold - weight do Figma
+            fontSize: '16px', // Text md Semibold - fontSize do Figma
+            lineHeight: '1.5em', // Text md Semibold - lineHeight do Figma
+            color: '#CECFD2', // fill_HHKBRO - cor exata do Figma
+            textAlign: 'left' // textAlignHorizontal: LEFT do Figma
+          }}
+        >
+          Voltar ao início
+        </span>
+      )}
     </button>
   );
 }
@@ -219,9 +269,10 @@ type NextButtonProps = {
   onClick: () => void;
   text: string;
   disabled: boolean;
+  screenSize: "mobile" | "tablet" | "notebook" | "desktop";
 };
 
-function NextButton({ onClick, text, disabled }: NextButtonProps) {
+function NextButton({ onClick, text, disabled, screenSize }: NextButtonProps) {
   return (
     <button
       onClick={onClick}
@@ -230,8 +281,10 @@ function NextButton({ onClick, text, disabled }: NextButtonProps) {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        gap: '6px', // gap exato do Figma (layout_JX47BY)
-        padding: '12px 18px', // padding exato do Figma (layout_JX47BY)
+        gap: screenSize === 'mobile' ? '0px' : '6px', // mobile: sem gap (só ícone), desktop: com gap
+        padding: screenSize === 'mobile' ? '14px' : '12px 18px', // mobile: 14px conforme Figma, desktop: com texto
+        width: screenSize === 'mobile' ? '48px' : 'auto', // mobile: 48px conforme Figma, desktop: auto
+        height: screenSize === 'mobile' ? '48px' : 'auto', // mobile: 48px conforme Figma, desktop: auto
         background: disabled ? '#4A4A4A' : '#C74228', // fill_58XQMB - cor exata do Figma
         border: disabled ? 'none' : '2px solid transparent',
         backgroundImage: disabled ? 'none' : 'linear-gradient(#C74228, #C74228), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)',
@@ -254,17 +307,19 @@ function NextButton({ onClick, text, disabled }: NextButtonProps) {
         }
       }}
     >
-      <span
-        style={{
-          fontFamily: 'Sora',
-          fontWeight: 600, // weight exato do Figma
-          fontSize: '16px', // tamanho exato do Figma
-          lineHeight: '1.5em', // lineHeight exato do Figma
-          color: disabled ? '#666666' : '#FFFFFF' // cor baseada no estado
-        }}
-      >
-        {text}
-      </span>
+      {screenSize !== 'mobile' && (
+        <span
+          style={{
+            fontFamily: 'Sora',
+            fontWeight: 600, // weight exato do Figma
+            fontSize: '16px', // tamanho exato do Figma
+            lineHeight: '1.5em', // lineHeight exato do Figma
+            color: disabled ? '#666666' : '#FFFFFF' // cor baseada no estado
+          }}
+        >
+          {text}
+        </span>
+      )}
       
       {/* Ícone Chevron Right */}
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
