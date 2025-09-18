@@ -6,6 +6,7 @@ export type ProfileFooterProps = {
   screenSize: "mobile" | "tablet" | "notebook" | "desktop";
   onBack: () => void;
   onNext: () => void;
+  backButtonText: string;
   nextButtonText: string;
   canProceed: boolean;
   currentStep: number;
@@ -18,6 +19,7 @@ export default function ProfileFooter({
   screenSize, 
   onBack, 
   onNext, 
+  backButtonText,
   nextButtonText, 
   canProceed,
   currentStep,
@@ -45,7 +47,7 @@ export default function ProfileFooter({
       }}
     >
       {/* Botão Voltar */}
-      <BackButton onClick={onBack} screenSize={screenSize} />
+      <BackButton onClick={onBack} screenSize={screenSize} text={backButtonText} />
 
       {/* Indicador de Progresso Central */}
       {screenSize === 'mobile' ? (
@@ -115,9 +117,10 @@ export default function ProfileFooter({
 type BackButtonProps = {
   onClick: () => void;
   screenSize: "mobile" | "tablet" | "notebook" | "desktop";
+  text: string;
 };
 
-function BackButton({ onClick, screenSize }: BackButtonProps) {
+function BackButton({ onClick, screenSize, text }: BackButtonProps) {
   return (
     <button
       onClick={onClick}
@@ -192,7 +195,7 @@ function BackButton({ onClick, screenSize }: BackButtonProps) {
             textAlign: 'left' // textAlignHorizontal: LEFT do Figma
           }}
         >
-          Voltar ao início
+          {text}
         </span>
       )}
     </button>

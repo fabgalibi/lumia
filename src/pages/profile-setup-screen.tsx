@@ -34,8 +34,8 @@ export const ProfileSetupScreen = () => {
 
   const handleNextStep = () => {
     if (selectedArea) {
-      // Aqui você pode navegar para a próxima etapa
-      console.log('Próxima etapa:', selectedArea);
+      // Navegar para a etapa 2 - Preparação
+      navigate('/profile-setup/preparation');
     }
   };
 
@@ -120,38 +120,28 @@ export const ProfileSetupScreen = () => {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center', // centraliza o conjunto
+            alignItems: 'flex-start', // alinha tudo à esquerda - mais natural para leitura
             width: '100%',
             gap: screenSize === 'mobile' ? '12px' : '32px' // gap entre título e cards
           }}
         >
-          {/* Sub-container para alinhamento à esquerda */}
-          <div
+          {/* Título da Seção */}
+          <h1
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start', // alinha título e cards à esquerda entre si
-              width: 'auto', // largura automática baseada no conteúdo
-              gap: screenSize === 'mobile' ? '12px' : '32px' // gap entre título e cards
+              fontFamily: 'Sora',
+              fontWeight: 400,
+              fontStyle: 'normal', // Regular
+              fontSize: screenSize === 'mobile' ? '16px' : '20px', // mobile: text-md (16px), desktop: 20px
+              lineHeight: '1.5em', // text-md line-height
+              letterSpacing: '0%', // letter-spacing: 0%
+              color: '#FFFFFF',
+              margin: 0,
+              textAlign: 'left', // sempre left - mais natural para leitura
+              width: '100%'
             }}
           >
-            {/* Título da Seção */}
-            <h1
-              style={{
-                fontFamily: 'Sora',
-                fontWeight: 400,
-                fontStyle: 'normal', // Regular
-                fontSize: screenSize === 'mobile' ? '16px' : '20px', // mobile: text-md (16px), desktop: 20px
-                lineHeight: '1.5em', // text-md line-height
-                letterSpacing: '0%', // letter-spacing: 0%
-                color: '#FFFFFF',
-                margin: 0,
-                textAlign: screenSize === 'mobile' ? 'left' : 'left', // sempre left conforme Figma
-                width: 'auto'
-              }}
-            >
-              Selecione abaixo a área de estudo que você deseja estudar:
-            </h1>
+            Selecione abaixo a área de estudo que você deseja estudar:
+          </h1>
 
           {/* Grid de Cards de Área */}
           <div
@@ -175,8 +165,7 @@ export const ProfileSetupScreen = () => {
               onClick={() => setSelectedArea(area.id)}
               screenSize={screenSize}
             />
-            ))}
-            </div>
+          ))}
           </div>
         </div>
       </div>
@@ -186,6 +175,7 @@ export const ProfileSetupScreen = () => {
         screenSize={screenSize}
         onBack={handleBackToStart}
         onNext={handleNextStep}
+        backButtonText="Voltar ao início"
         nextButtonText="Prosseguir para etapa 2"
         canProceed={!!selectedArea}
         currentStep={1}

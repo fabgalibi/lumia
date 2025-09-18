@@ -1,10 +1,20 @@
 // index.ts
+export { default as ProfileLayout } from './profile-layout';
 export { default as ProfileHeader } from './profile-header';
 export { default as ProgressIndicator } from './progress-indicator';
 export { default as StudyAreaCard } from './study-area-card';
+export { default as PreparationTypeCard } from './preparation-type-card';
+export { default as ConcursoTextarea } from './concurso-textarea';
+export { default as RadioGroup } from './radio-group';
+export { default as TextareaField } from './textarea-field';
 export { default as ProfileFooter } from './profile-footer';
 
+export type { ProfileLayoutProps } from './profile-layout';
 export type { ProfileHeaderProps } from './profile-header';
 export type { ProgressIndicatorProps } from './progress-indicator';
 export type { StudyAreaCardProps } from './study-area-card';
+export type { PreparationTypeCardProps } from './preparation-type-card';
+export type { ConcursoTextareaProps } from './concurso-textarea';
+export type { RadioGroupProps } from './radio-group';
+export type { TextareaFieldProps } from './textarea-field';
 export type { ProfileFooterProps } from './profile-footer';
