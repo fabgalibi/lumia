@@ -137,8 +137,8 @@ export const TrajectoryStepScreen = () => {
             fontFamily: 'Sora',
             fontWeight: 400,
             fontStyle: 'Regular',
-            fontSize: '16px', // Font size/text-md Medium
-            lineHeight: '1.5em', // Line height/text-md
+            fontSize: screenSize === 'mobile' ? '16px' : '20px', // mobile: text-md, desktop: text-xl
+            lineHeight: '1.5em',
             letterSpacing: '0%',
             color: '#FFFFFF',
             margin: 0,
@@ -169,7 +169,8 @@ export const TrajectoryStepScreen = () => {
               border: isWorking === 'sim' ? '2px solid #F66649' : '1px solid #2C2C45',
               borderRadius: '12px',
               cursor: 'pointer',
-              flex: 1,
+              width: screenSize === 'mobile' ? 'auto' : '171.5px',
+              flex: screenSize === 'mobile' ? 1 : 'none',
               transition: 'all 0.3s ease'
             }}
           >
@@ -217,7 +218,8 @@ export const TrajectoryStepScreen = () => {
               border: isWorking === 'nao' ? '2px solid #F66649' : '1px solid #2C2C45',
               borderRadius: '12px',
               cursor: 'pointer',
-              flex: 1,
+              width: screenSize === 'mobile' ? 'auto' : '171.5px',
+              flex: screenSize === 'mobile' ? 1 : 'none',
               transition: 'all 0.3s ease'
             }}
           >
