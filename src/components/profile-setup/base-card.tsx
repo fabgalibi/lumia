@@ -14,8 +14,10 @@ export type BaseCardProps = {
   width?: string; // default: screenSize === 'mobile' ? '100%' : '437px'
   minHeight?: {
     mobile: string;
+    tablet: string;
+    notebook: string;
     desktop: string;
-  }; // default: { mobile: '140px', desktop: '180px' }
+  }; // default: { mobile: '140px', tablet: '140px', notebook: '160px', desktop: '180px' }
   
   // Conteúdo
   title: string;
@@ -33,25 +35,33 @@ export type BaseCardProps = {
   // Customizações de imagem
   imageSize?: {
     mobile: string;
+    tablet: string;
+    notebook: string;
     desktop: string;
-  }; // default: { mobile: '96px', desktop: '138px' }
+  }; // default: { mobile: '96px', tablet: '96px', notebook: '120px', desktop: '138px' }
   
   imagePosition?: {
     mobile: { top: string; right?: string; left?: string; };
+    tablet: { top: string; right?: string; left?: string; };
+    notebook: { top: string; right?: string; left?: string; };
     desktop: { top: string; right?: string; left?: string; };
-  }; // default: { mobile: { top: '12px', right: '16px' }, desktop: { top: '11.4px', right: '16px' } }
+  }; // default: { mobile: { top: '12px', right: '16px' }, tablet: { top: '12px', right: '16px' }, notebook: { top: '11px', right: '16px' }, desktop: { top: '11.4px', right: '16px' } }
 
   // Customizações de padding
   contentPadding?: {
     mobile: string;
+    tablet: string;
+    notebook: string;
     desktop: string;
-  }; // default: { mobile: '82px 16px 24px', desktop: '96px 16px 24px' }
+  }; // default: { mobile: '82px 16px 24px', tablet: '82px 16px 24px', notebook: '88px 16px 24px', desktop: '96px 16px 24px' }
 
   // Customizações de descrição
   descriptionWidth?: {
     mobile: string;
+    tablet: string;
+    notebook: string;
     desktop: string;
-  }; // default: { mobile: '100%', desktop: '100%' }
+  }; // default: { mobile: 'auto', tablet: 'auto', notebook: 'auto', desktop: '100%' }
 };
 
 /** ===== Componente BaseCard reutilizável ===== */
@@ -61,32 +71,48 @@ export default function BaseCard({
   onClick,
   screenSize,
   width,
-  minHeight = { mobile: '140px', desktop: '180px' },
+  minHeight = { mobile: '140px', tablet: '140px', notebook: '160px', desktop: '180px' },
   title,
   description,
   imageSrc,
   grids = [{ position: 'right' }],
-  imageSize = { mobile: '96px', desktop: '138px' },
+  imageSize = { mobile: '96px', tablet: '96px', notebook: '120px', desktop: '138px' },
   imagePosition = { 
     mobile: { top: '12px', right: '16px' }, 
+    tablet: { top: '12px', right: '16px' },
+    notebook: { top: '11px', right: '16px' },
     desktop: { top: '11.4px', right: '16px' } 
   },
   contentPadding = {
     mobile: '82px 16px 24px',
+    tablet: '82px 16px 24px',
+    notebook: '88px 16px 24px',
     desktop: '96px 16px 24px'
   },
   descriptionWidth = {
-    mobile: '100%',
+    mobile: 'auto',
+    tablet: 'auto',
+    notebook: 'auto',
     desktop: '100%'
   }
 }: BaseCardProps) {
   
   const cardWidth = width || (screenSize === 'mobile' ? '100%' : '437px');
-  const currentMinHeight = screenSize === 'mobile' ? minHeight.mobile : minHeight.desktop;
-  const currentImageSize = screenSize === 'mobile' ? imageSize.mobile : imageSize.desktop;
-  const currentImagePos = screenSize === 'mobile' ? imagePosition.mobile : imagePosition.desktop;
-  const currentContentPadding = screenSize === 'mobile' ? contentPadding.mobile : contentPadding.desktop;
-  const currentDescriptionWidth = screenSize === 'mobile' ? descriptionWidth.mobile : descriptionWidth.desktop;
+  const currentMinHeight = screenSize === 'mobile' ? minHeight.mobile : 
+                          screenSize === 'tablet' ? minHeight.tablet :
+                          screenSize === 'notebook' ? minHeight.notebook : minHeight.desktop;
+  const currentImageSize = screenSize === 'mobile' ? imageSize.mobile : 
+                          screenSize === 'tablet' ? imageSize.tablet :
+                          screenSize === 'notebook' ? imageSize.notebook : imageSize.desktop;
+  const currentImagePos = screenSize === 'mobile' ? imagePosition.mobile : 
+                         screenSize === 'tablet' ? imagePosition.tablet :
+                         screenSize === 'notebook' ? imagePosition.notebook : imagePosition.desktop;
+  const currentContentPadding = screenSize === 'mobile' ? contentPadding.mobile : 
+                               screenSize === 'tablet' ? contentPadding.tablet :
+                               screenSize === 'notebook' ? contentPadding.notebook : contentPadding.desktop;
+  const currentDescriptionWidth = screenSize === 'mobile' ? descriptionWidth.mobile : 
+                                 screenSize === 'tablet' ? descriptionWidth.tablet :
+                                 screenSize === 'notebook' ? descriptionWidth.notebook : descriptionWidth.desktop;
 
   return (
     <div
@@ -124,7 +150,7 @@ export default function BaseCard({
           flexDirection: 'column',
           justifyContent: 'flex-end',
           alignSelf: 'stretch',
-          gap: '12px',
+          gap: screenSize === 'mobile' ? '8px' : '12px', // gap responsivo conforme Figma
           padding: currentContentPadding,
           background: '#0B1219',
           borderRadius: '6px',
@@ -174,15 +200,17 @@ export default function BaseCard({
           style={{
             fontFamily: 'Sora',
             fontWeight: 400,
-            fontStyle: 'normal',
-            fontSize: screenSize === 'mobile' ? '20px' : '24px',
-            lineHeight: screenSize === 'mobile' ? '1.5em' : '1.3333333333333333em',
-            letterSpacing: '0%',
+            fontStyle: 'Regular',
+            fontSize: '20px', // Font size/text-xl conforme especificações
+            lineHeight: '1.5em', // Line height/text-xl conforme especificações
+            letterSpacing: '0%', // letter-spacing: 0% conforme especificações
             color: '#FFFFFF',
             margin: 0,
             textAlign: 'left',
             position: 'relative',
-            zIndex: 4
+            zIndex: 4,
+            width: screenSize === 'mobile' || screenSize === 'tablet' ? '191px' : 'auto', // largura fixa 191px no mobile/tablet conforme Figma
+            maxWidth: '100%'
           }}
         >
           {title}
@@ -193,16 +221,16 @@ export default function BaseCard({
           style={{
             fontFamily: 'Sora',
             fontWeight: 400,
-            fontStyle: 'normal',
-            fontSize: '14px',
-            lineHeight: '1.4285714285714286em',
-            letterSpacing: '0%',
+            fontStyle: 'Regular',
+            fontSize: '14px', // Font size/text-sm conforme especificações
+            lineHeight: '1.4285714285714286em', // Line height/text-sm conforme especificações
+            letterSpacing: '0%', // letter-spacing: 0% conforme especificações
             color: '#FFFFFF',
             margin: 0,
             textAlign: 'left',
             position: 'relative',
             zIndex: 4,
-            width: currentDescriptionWidth,
+            width: currentDescriptionWidth, // usar o valor passado via props
             maxWidth: '100%'
           }}
         >

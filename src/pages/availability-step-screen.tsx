@@ -9,6 +9,7 @@ export const AvailabilityStepScreen = () => {
   const [selectedStudyTime, setSelectedStudyTime] = useState<string>('normal'); // "Normal" selecionado por padrão conforme Figma
   const [selectedStartDate, setSelectedStartDate] = useState<string>('data-especifica'); // "Selecionar uma data específica" selecionado conforme Figma
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined); // Data selecionada para o CustomDatePicker
+  const [isDatePickerModalOpen, setIsDatePickerModalOpen] = useState(false);
 
   // Detectar tamanho da tela para passar aos componentes
   React.useEffect(() => {
@@ -192,14 +193,20 @@ export const AvailabilityStepScreen = () => {
               description={option.description}
               imageSrc={option.imageSrc}
               isSelected={selectedStartDate === option.id}
-              onClick={() => setSelectedStartDate(option.id)}
+              onClick={() => {
+                setSelectedStartDate(option.id);
+                // Se for o card "Selecionar uma data específica" e for mobile/tablet, abrir modal
+                if (option.id === 'data-especifica' && (screenSize === 'mobile' || screenSize === 'tablet')) {
+                  setIsDatePickerModalOpen(true);
+                }
+              }}
               screenSize={screenSize}
             />
           ))}
         </div>
 
-        {/* Date Picker - Aparece apenas se "Selecionar uma data específica" estiver selecionado */}
-        {selectedStartDate === 'data-especifica' && (
+        {/* Date Picker - Desktop: inline, Mobile: modal */}
+        {selectedStartDate === 'data-especifica' && screenSize !== 'mobile' && screenSize !== 'tablet' && (
           <div
             style={{
               display: 'flex',
@@ -210,13 +217,164 @@ export const AvailabilityStepScreen = () => {
               maxWidth: '100%'
             }}
           >
-            {/* CustomDatePicker baseado no Figma */}
+            {/* CustomDatePicker inline para desktop */}
             <CustomDatePicker
               selectedDate={selectedDate}
               onDateSelect={setSelectedDate}
               screenSize={screenSize}
             />
+          </div>
+        )}
 
+        {/* Modal do DatePicker para mobile/tablet */}
+        {isDatePickerModalOpen && (screenSize === 'mobile' || screenSize === 'tablet') && (
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'rgba(0, 0, 0, 0.3)', // Fundo levemente escurecido - padrão de modal
+              display: 'flex',
+              alignItems: 'flex-end',
+              justifyContent: 'center',
+              zIndex: 1000
+            }}
+            onClick={() => setIsDatePickerModalOpen(false)}
+          >
+            <div
+              style={{
+                width: '100%',
+                maxHeight: '70vh',
+                background: '#202028',
+                borderRadius: '12px 12px 0px 0px',
+                display: 'flex',
+                flexDirection: 'column'
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header do Modal */}
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '24px 16px 16px',
+                  borderBottom: '1.5px solid #272737',
+                  background: '#252532'
+                }}
+              >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <span style={{
+                    fontFamily: 'Sora',
+                    fontWeight: 600,
+                    fontSize: '16px',
+                    lineHeight: '1.5em',
+                    color: '#F7F7F7'
+                  }}>
+                    Selecionar uma data específica
+                  </span>
+                  <span style={{
+                    fontFamily: 'Sora',
+                    fontWeight: 400,
+                    fontSize: '12px',
+                    lineHeight: '1.5em',
+                    color: '#FFFFFF'
+                  }}>
+                    Datas disponíveis: entre 05 à 17/10/2025
+                  </span>
+                </div>
+                <button
+                  onClick={() => setIsDatePickerModalOpen(false)}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '12px',
+                    borderRadius: '6px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 5L5 15M5 5L15 15" stroke="#F0F0F1" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+
+              {/* Conteúdo do Modal - Calendário */}
+              <div style={{ padding: '20px 16px' }}>
+                <CustomDatePicker
+                  selectedDate={selectedDate}
+                  onDateSelect={setSelectedDate}
+                  screenSize={screenSize}
+                />
+              </div>
+
+              {/* Footer do Modal */}
+              <div
+                style={{
+                  borderTop: '1px solid #22262F',
+                  padding: '20px 16px 16px',
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                  gap: '12px'
+                }}
+              >
+                <button
+                  onClick={() => setIsDatePickerModalOpen(false)}
+                  style={{
+                    background: '#2D2D45',
+                    border: 'none',
+                    borderRadius: '8px',
+                    padding: '10px 14px',
+                    cursor: 'pointer',
+                    fontFamily: 'Sora',
+                    fontWeight: 600,
+                    fontSize: '14px',
+                    lineHeight: '1.4285714285714286em',
+                    color: '#CECFD2',
+                    transition: 'background-color 0.3s ease',
+                    boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
+                    minWidth: 'auto',
+                    flex: 1,
+                    gap: '4px'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#3D3D55'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#2D2D45'}
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={() => setIsDatePickerModalOpen(false)}
+                  style={{
+                    background: '#C74228',
+                    border: '2px solid transparent',
+                    borderImage: 'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%) 1',
+                    borderRadius: '8px',
+                    padding: '10px 14px',
+                    cursor: 'pointer',
+                    fontFamily: 'Sora',
+                    fontWeight: 600,
+                    fontSize: '14px',
+                    lineHeight: '1.4285714285714286em',
+                    color: '#FFFFFF',
+                    transition: 'background-color 0.3s ease',
+                    boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
+                    minWidth: 'auto',
+                    flex: 1,
+                    gap: '4px'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#D55238'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#C74228'}
+                >
+                  Aplicar
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </div>
