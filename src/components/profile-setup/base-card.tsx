@@ -82,7 +82,7 @@ export default function BaseCard({
   isSelected,
   onClick,
   screenSize,
-  width,
+  // width removido - Grid controla a largura
   minHeight = { mobile: '140px', tablet: '140px', notebook: '160px', desktop: '180px' },
   title,
   description,
@@ -110,11 +110,7 @@ export default function BaseCard({
   titleStyle
 }: BaseCardProps) {
   
-  const cardWidth = typeof width === 'object' ? 
-    (screenSize === 'mobile' ? width.mobile : 
-     screenSize === 'tablet' ? width.tablet :
-     screenSize === 'notebook' ? width.notebook : width.desktop) :
-    (width || (screenSize === 'mobile' ? '100%' : '437px'));
+  // cardWidth removido - Grid controla a largura
   const currentMinHeight = screenSize === 'mobile' ? minHeight.mobile : 
                           screenSize === 'tablet' ? minHeight.tablet :
                           screenSize === 'notebook' ? minHeight.notebook : minHeight.desktop;
@@ -139,7 +135,7 @@ export default function BaseCard({
         flexDirection: 'column',
         gap: '10px',
         padding: '8px',
-        width: cardWidth,
+        width: '100%', // Grid controla a largura
         maxWidth: '100%',
         background: isSelected 
           ? 'linear-gradient(-68deg, rgba(19, 11, 1, 1) 0%, rgba(66, 76, 95, 0) 80%)' // Selected gradient
@@ -167,7 +163,7 @@ export default function BaseCard({
           flexDirection: 'column',
           justifyContent: 'flex-end',
           alignSelf: 'stretch',
-          gap: screenSize === 'mobile' ? '8px' : '12px', // gap responsivo conforme Figma
+          gap: screenSize === 'mobile' ? '4px' : '12px', // gap mobile 4px, desktop 12px conforme Figma
           padding: currentContentPadding,
           background: '#0B1219',
           borderRadius: '6px',

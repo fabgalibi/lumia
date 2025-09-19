@@ -36,7 +36,7 @@ export default function ProfileFooter({
         gap: 0, // sem gap - space-between já distribui o espaço
         padding: screenSize === 'mobile' ? '24px 16px 16px' : '32px 56px', // mobile: 24px 16px 16px, desktop: 32px 56px
         width: '100%', // preenche toda a largura disponível
-        background: '#0B1219', // cor de fundo do Figma - mesma do header
+        background: '#0B1219', // cor sólida conforme imagem
         boxShadow: '0px -2px 4px 2px rgba(33, 33, 33, 0.04)', // effect_KIOCXP - sombra exata
         position: 'fixed', // posição fixa na parte inferior
         bottom: 0,

@@ -33,17 +33,12 @@ export default function TrajectoryStudyCard({
       onClick={onClick}
       screenSize={screenSize}
       // Customizações específicas do TrajectoryStudyCard conforme Figma
-      width={{
-        mobile: '100%',
-        tablet: '100%', 
-        notebook: '259.2px', // largura exata do Figma
-        desktop: '259.2px' // largura exata do Figma
-      }}
+      // width removido - Tailwind Grid controla o layout
       minHeight={{
-        mobile: '180px',
-        tablet: '180px',
-        notebook: '236px', // altura exata do Figma
-        desktop: '236px' // altura exata do Figma
+        mobile: '200px', // aumentado para dar espaço para imagem
+        tablet: '220px', // aumentado para dar espaço para imagem
+        notebook: '240px', // aumentado para dar espaço para imagem
+        desktop: '260px' // aumentado para dar espaço para imagem
       }}
       grids={[
         { 
@@ -53,22 +48,22 @@ export default function TrajectoryStudyCard({
         }
       ]}
       imageSize={{
-        mobile: '100px',
-        tablet: '100px',
-        notebook: '130px', // tamanho exato do Figma
-        desktop: '130px' // tamanho exato do Figma
+        mobile: '108px', // tamanho exato do Figma
+        tablet: '108px', // mantém o mesmo tamanho
+        notebook: '108px', // mantém o mesmo tamanho
+        desktop: '108px' // mantém o mesmo tamanho
       }}
       imagePosition={{
-        mobile: { top: '8px', left: '50%', transform: 'translateX(-50%)' },
-        tablet: { top: '8px', left: '50%', transform: 'translateX(-50%)' },
-        notebook: { top: '16px', right: '16px' }, // posição anterior que estava melhor
-        desktop: { top: '16px', right: '16px' } // posição anterior que estava melhor
+        mobile: { top: '20px', right: '16px' }, // posição mais baixa
+        tablet: { top: '24px', right: '16px' }, // posição mais baixa
+        notebook: { top: '28px', right: '16px' }, // posição mais baixa
+        desktop: { top: '32px', right: '16px' } // posição mais baixa
       }}
       contentPadding={{
-        mobile: '80px 16px 24px',
-        tablet: '80px 16px 24px',
-        notebook: '112px 16px 24px', // padding exato do Figma
-        desktop: '112px 16px 24px' // padding exato do Figma
+        mobile: '88px 16px 24px', // padding mobile do Figma
+        tablet: '100px 20px 24px', // ajustado para aproveitar o espaço em 2 colunas
+        notebook: '100px 20px 24px', // padding intermediário
+        desktop: '112px 16px 24px' // padding desktop do Figma
       }}
       descriptionWidth={{
         mobile: '100%',
@@ -78,8 +73,12 @@ export default function TrajectoryStudyCard({
       }}
       // Typography específica para esta tela
       titleStyle={{
-        fontSize: '24px', // Text xs Medium mas com 24px conforme Figma
-        lineHeight: '1.3333333333333333em'
+        fontSize: screenSize === 'mobile' ? '20px' : 
+                  screenSize === 'tablet' ? '22px' : 
+                  screenSize === 'notebook' ? '23px' : '24px', // gradativo entre tamanhos
+        lineHeight: screenSize === 'mobile' ? '1.5em' : 
+                   screenSize === 'tablet' ? '1.45em' : 
+                   screenSize === 'notebook' ? '1.4em' : '1.3333333333333333em' // gradativo entre tamanhos
       }}
     />
   );

@@ -7,6 +7,7 @@ export const TrajectoryStepScreen = () => {
   const navigate = useNavigate();
   const [studyTime, setStudyTime] = useState<string>('ouro'); // "Ouro" selecionado por padrão conforme Figma
   const [isWorking, setIsWorking] = useState<string>('sim'); // "Sim" selecionado por padrão conforme Figma
+  // Removido windowWidth - usando screenSize do ProfileLayout
 
   // Dados dos cards de tempo de estudo conforme Figma
   const studyTimeOptions = [
@@ -98,15 +99,11 @@ export const TrajectoryStepScreen = () => {
         {/* Cards de Tempo de Estudo */}
         <div
           style={{
-            display: 'flex',
-            flexDirection: screenSize === 'mobile' || screenSize === 'tablet' ? 'column' : 'row',
-            justifyContent: 'flex-start', // alinhados à esquerda
-            alignItems: 'center',
-            gap: '8px', // gap fixo do Figma
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '8px',
             width: '100%',
-            padding: '0px',
-            overflowX: screenSize === 'mobile' || screenSize === 'tablet' ? 'visible' : 'auto', // scroll horizontal se necessário no desktop
-            overflowY: 'visible'
+            justifyContent: 'start' // alinha cards à esquerda
           }}
         >
           {studyTimeOptions.map((option) => (
@@ -140,8 +137,8 @@ export const TrajectoryStepScreen = () => {
             fontFamily: 'Sora',
             fontWeight: 400,
             fontStyle: 'Regular',
-            fontSize: '20px', // Font size/text-xl
-            lineHeight: '1.5em', // Line height/text-xl
+            fontSize: '16px', // Font size/text-md Medium
+            lineHeight: '1.5em', // Line height/text-md
             letterSpacing: '0%',
             color: '#FFFFFF',
             margin: 0,
@@ -155,9 +152,9 @@ export const TrajectoryStepScreen = () => {
         <div
           style={{
             display: 'flex',
-            flexDirection: screenSize === 'mobile' ? 'column' : 'row',
+            flexDirection: 'row',
             gap: '16px',
-            padding: screenSize === 'mobile' ? '0' : '0 8px'
+            width: '100%'
           }}
         >
           {/* Opção Sim */}
@@ -168,11 +165,11 @@ export const TrajectoryStepScreen = () => {
               alignItems: 'center',
               gap: '12px',
               padding: '16px',
-              background: isWorking === 'sim' ? '#252532' : 'transparent',
+              background: '#252532',
               border: isWorking === 'sim' ? '2px solid #F66649' : '1px solid #2C2C45',
               borderRadius: '12px',
               cursor: 'pointer',
-              width: screenSize === 'mobile' ? '100%' : '171.5px',
+              flex: 1,
               transition: 'all 0.3s ease'
             }}
           >
@@ -189,7 +186,7 @@ export const TrajectoryStepScreen = () => {
               }}
             >
               {isWorking === 'sim' && (
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="6.67" height="4.58" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M8.33333 2.5L3.75 7.08333L1.66667 5" stroke="#FFFFFF" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               )}
@@ -216,11 +213,11 @@ export const TrajectoryStepScreen = () => {
               alignItems: 'center',
               gap: '12px',
               padding: '16px',
-              background: isWorking === 'nao' ? '#252532' : 'transparent',
+              background: '#252532',
               border: isWorking === 'nao' ? '2px solid #F66649' : '1px solid #2C2C45',
               borderRadius: '12px',
               cursor: 'pointer',
-              width: screenSize === 'mobile' ? '100%' : '171.5px',
+              flex: 1,
               transition: 'all 0.3s ease'
             }}
           >
@@ -237,7 +234,7 @@ export const TrajectoryStepScreen = () => {
               }}
             >
               {isWorking === 'nao' && (
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="6.67" height="4.58" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M8.33333 2.5L3.75 7.08333L1.66667 5" stroke="#FFFFFF" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               )}

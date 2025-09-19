@@ -16,7 +16,7 @@ export default function ProfileHeader({ screenSize }: ProfileHeaderProps) {
         alignItems: 'center',
         alignSelf: 'stretch',
         padding: screenSize === 'mobile' ? '20px 16px 24px' : '32px 112px', // padding conforme Figma mobile/desktop
-        background: '#0B1219', // cor de fundo do Figma
+        background: screenSize === 'mobile' ? 'linear-gradient(0deg, #0B1219, #252532)' : '#0B1219', // gradiente mobile conforme Figma
         width: '100%',
         boxSizing: 'border-box',
         minHeight: screenSize === 'mobile' ? '72px' : '112px' // altura mínima para o header
