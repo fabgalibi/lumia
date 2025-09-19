@@ -1,32 +1,11 @@
 // profile-setup-screen.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { ProfileHeader, ProgressIndicator, StudyAreaCard, ProfileFooter } from '@/components/profile-setup';
+import { ProfileLayout, StudyAreaCard } from '@/components/profile-setup';
 
 export const ProfileSetupScreen = () => {
   const navigate = useNavigate();
-  const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'notebook' | 'desktop'>('desktop');
   const [selectedArea, setSelectedArea] = useState<string>('controle'); // área pré-selecionada conforme Figma
-
-  // Detectar tamanho da tela
-  useEffect(() => {
-    const checkScreenSize = () => {
-      const width = window.innerWidth;
-      if (width < 768) {
-        setScreenSize('mobile');
-      } else if (width < 1024) {
-        setScreenSize('tablet');
-      } else if (width < 1440) {
-        setScreenSize('notebook');
-      } else {
-        setScreenSize('desktop');
-      }
-    };
-
-    checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    return () => window.removeEventListener('resize', checkScreenSize);
-  }, []);
 
   const handleBackToStart = () => {
     navigate('/welcome');
@@ -75,56 +54,18 @@ export const ProfileSetupScreen = () => {
   ];
 
   return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100vh',
-        maxWidth: '100vw',
-        maxHeight: '100vh',
-        background: '#191923',
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative',
-        margin: 0,
-        padding: 0,
-        overflow: 'hidden'
-      }}
+    <ProfileLayout
+      currentStep={1}
+      totalSteps={6}
+      stepTitle="Área de Estudo"
+      backButtonText="Voltar ao início"
+      nextButtonText="Prosseguir para etapa 2"
+      canProceed={!!selectedArea}
+      onBack={handleBackToStart}
+      onNext={handleNextStep}
     >
-      {/* Header com Logo */}
-      <ProfileHeader 
-        screenSize={screenSize}
-      />
-
-      {/* Indicador de Progresso */}
-      <ProgressIndicator 
-        currentStep={1}
-        totalSteps={6}
-        screenSize={screenSize}
-      />
-
-      {/* Conteúdo Principal */}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignSelf: 'stretch',
-          gap: screenSize === 'mobile' ? '12px' : '32px', // mobile: 12px, desktop: 32px
-          padding: screenSize === 'mobile' ? '24px 16px 120px 16px' : '96px 56px 100px 56px', // padding responsivo
-          flex: 1,
-          background: 'transparent', // sem fundo adicional - usa o fundo da tela principal
-          overflowY: 'auto' // scroll se necessário
-        }}
-      >
-        {/* Container com Título e Cards Alinhados */}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start', // alinha tudo à esquerda - mais natural para leitura
-            width: '100%',
-            gap: screenSize === 'mobile' ? '12px' : '32px' // gap entre título e cards
-          }}
-        >
+      {(screenSize) => (
+        <>
           {/* Título da Seção */}
           <h1
             style={{
@@ -167,22 +108,9 @@ export const ProfileSetupScreen = () => {
             />
           ))}
           </div>
-        </div>
-      </div>
-
-      {/* Footer com Navegação */}
-      <ProfileFooter
-        screenSize={screenSize}
-        onBack={handleBackToStart}
-        onNext={handleNextStep}
-        backButtonText="Voltar ao início"
-        nextButtonText="Prosseguir para etapa 2"
-        canProceed={!!selectedArea}
-        currentStep={1}
-        totalSteps={6}
-        stepTitle="Área de Estudo"
-      />
-    </div>
+        </>
+      )}
+    </ProfileLayout>
   );
 };
 

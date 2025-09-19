@@ -12,7 +12,7 @@ export type ProfileLayoutProps = {
   canProceed: boolean;
   onBack: () => void;
   onNext: () => void;
-  children: React.ReactNode;
+  children: React.ReactNode | ((screenSize: 'mobile' | 'tablet' | 'notebook' | 'desktop') => React.ReactNode);
 };
 
 /** ===== Componente principal ===== */
@@ -82,14 +82,19 @@ export default function ProfileLayout({
           flexDirection: 'column',
           alignSelf: 'stretch',
           gap: screenSize === 'mobile' ? '16px' : '32px', // gap otimizado para caber na tela
-          padding: screenSize === 'mobile' ? '24px 16px 120px 16px' : '64px 56px 140px 56px', // padding bottom otimizado no mobile
+          padding: screenSize === 'mobile' ? '24px 16px 120px 16px' : 
+                   screenSize === 'tablet' ? '32px 20px 140px 20px' :
+                   screenSize === 'notebook' ? '48px 24px 140px 24px' : 
+                   '64px 32px 140px 32px', // padding bem reduzido para evitar overflow
           flex: 1,
           background: 'transparent',
           overflowY: 'auto',
-          scrollPaddingBottom: '20px' // espaço adicional no final do scroll
+          overflowX: 'hidden', // evita scroll horizontal
+          scrollPaddingBottom: '20px', // espaço adicional no final do scroll
+          maxWidth: '100%' // garante que não ultrapasse a largura da tela
         }}
       >
-        {children}
+        {typeof children === 'function' ? children(screenSize) : children}
       </div>
 
       {/* Footer com Navegação */}

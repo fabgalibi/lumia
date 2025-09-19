@@ -36,11 +36,7 @@ export const AvailabilityStepScreen = () => {
   };
 
   const handleNextStep = () => {
-    if (selectedStudyTime && selectedStartDate) {
-      // Navegar para a próxima etapa
-      console.log('Próxima etapa:', { selectedStudyTime, selectedStartDate, selectedDate });
-      // navigate('/profile-setup/step4');
-    }
+    navigate('/profile-setup/trajectory');
   };
 
   // Dados dos tempos de estudo conforme Figma

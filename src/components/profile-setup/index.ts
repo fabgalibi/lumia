@@ -13,6 +13,7 @@ export { default as GridBackground } from './grid-background';
 export { default as BaseCard } from './base-card';
 export { default as ProfileFooter } from './profile-footer';
 export { default as CustomDatePicker } from './custom-date-picker';
+export { default as TrajectoryStudyCard } from './trajectory-study-card';
 
 export type { ProfileLayoutProps } from './profile-layout';
 export type { ProfileHeaderProps } from './profile-header';
@@ -28,3 +29,4 @@ export type { GridBackgroundProps } from './grid-background';
 export type { BaseCardProps } from './base-card';
 export type { ProfileFooterProps } from './profile-footer';
 export type { CustomDatePickerProps } from './custom-date-picker';
+export type { TrajectoryStudyCardProps } from './trajectory-study-card';

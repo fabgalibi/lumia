@@ -7,6 +7,7 @@ import { WelcomeScreen } from "@/pages/welcome-screen";
 import { ProfileSetupScreen } from "@/pages/profile-setup-screen";
 import { PreparationStepScreen } from "@/pages/preparation-step-screen";
 import { AvailabilityStepScreen } from "@/pages/availability-step-screen";
+import { TrajectoryStepScreen } from "@/pages/trajectory-step-screen";
 import { NotFound } from "@/pages/not-found";
 import { RouteProvider } from "@/providers/router-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
@@ -25,6 +26,7 @@ createRoot(document.getElementById("root")!).render(
                         <Route path="/profile-setup" element={<ProfileSetupScreen />} />
                         <Route path="/profile-setup/preparation" element={<PreparationStepScreen />} />
                         <Route path="/profile-setup/availability" element={<AvailabilityStepScreen />} />
+                        <Route path="/profile-setup/trajectory" element={<TrajectoryStepScreen />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </RouteProvider>

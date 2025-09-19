@@ -11,7 +11,12 @@ export type BaseCardProps = {
   screenSize: "mobile" | "tablet" | "notebook" | "desktop";
   
   // Dimensões customizáveis
-  width?: string; // default: screenSize === 'mobile' ? '100%' : '437px'
+  width?: string | {
+    mobile: string;
+    tablet: string;
+    notebook: string;
+    desktop: string;
+  }; // default: screenSize === 'mobile' ? '100%' : '437px'
   minHeight?: {
     mobile: string;
     tablet: string;
@@ -41,10 +46,10 @@ export type BaseCardProps = {
   }; // default: { mobile: '96px', tablet: '96px', notebook: '120px', desktop: '138px' }
   
   imagePosition?: {
-    mobile: { top: string; right?: string; left?: string; };
-    tablet: { top: string; right?: string; left?: string; };
-    notebook: { top: string; right?: string; left?: string; };
-    desktop: { top: string; right?: string; left?: string; };
+    mobile: { top: string; right?: string; left?: string; transform?: string; };
+    tablet: { top: string; right?: string; left?: string; transform?: string; };
+    notebook: { top: string; right?: string; left?: string; transform?: string; };
+    desktop: { top: string; right?: string; left?: string; transform?: string; };
   }; // default: { mobile: { top: '12px', right: '16px' }, tablet: { top: '12px', right: '16px' }, notebook: { top: '11px', right: '16px' }, desktop: { top: '11.4px', right: '16px' } }
 
   // Customizações de padding
@@ -62,6 +67,13 @@ export type BaseCardProps = {
     notebook: string;
     desktop: string;
   }; // default: { mobile: 'auto', tablet: 'auto', notebook: 'auto', desktop: '100%' }
+  
+  // Customizações de estilo
+  titleStyle?: {
+    fontSize?: string;
+    lineHeight?: string;
+    fontWeight?: number;
+  };
 };
 
 /** ===== Componente BaseCard reutilizável ===== */
@@ -94,10 +106,15 @@ export default function BaseCard({
     tablet: 'auto',
     notebook: 'auto',
     desktop: '100%'
-  }
+  },
+  titleStyle
 }: BaseCardProps) {
   
-  const cardWidth = width || (screenSize === 'mobile' ? '100%' : '437px');
+  const cardWidth = typeof width === 'object' ? 
+    (screenSize === 'mobile' ? width.mobile : 
+     screenSize === 'tablet' ? width.tablet :
+     screenSize === 'notebook' ? width.notebook : width.desktop) :
+    (width || (screenSize === 'mobile' ? '100%' : '437px'));
   const currentMinHeight = screenSize === 'mobile' ? minHeight.mobile : 
                           screenSize === 'tablet' ? minHeight.tablet :
                           screenSize === 'notebook' ? minHeight.notebook : minHeight.desktop;
@@ -178,6 +195,7 @@ export default function BaseCard({
             top: currentImagePos.top,
             ...(currentImagePos.right ? { right: currentImagePos.right } : {}),
             ...(currentImagePos.left ? { left: currentImagePos.left } : {}),
+            ...(currentImagePos.transform ? { transform: currentImagePos.transform } : {}),
             width: currentImageSize,
             height: currentImageSize,
             zIndex: 3
@@ -201,15 +219,15 @@ export default function BaseCard({
             fontFamily: 'Sora',
             fontWeight: 400,
             fontStyle: 'Regular',
-            fontSize: '20px', // Font size/text-xl conforme especificações
-            lineHeight: '1.5em', // Line height/text-xl conforme especificações
+            fontSize: titleStyle?.fontSize || '20px', // Font size/text-xl conforme especificações
+            lineHeight: titleStyle?.lineHeight || '1.5em', // Line height/text-xl conforme especificações
             letterSpacing: '0%', // letter-spacing: 0% conforme especificações
             color: '#FFFFFF',
             margin: 0,
             textAlign: 'left',
             position: 'relative',
             zIndex: 4,
-            width: screenSize === 'mobile' || screenSize === 'tablet' ? '191px' : 'auto', // largura fixa 191px no mobile/tablet conforme Figma
+            width: screenSize === 'mobile' || screenSize === 'tablet' ? '191px' : '100%', // textos preenchem toda a largura disponível
             maxWidth: '100%'
           }}
         >
