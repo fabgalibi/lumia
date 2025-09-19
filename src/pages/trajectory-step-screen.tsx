@@ -50,7 +50,7 @@ export const TrajectoryStepScreen = () => {
 
   const handleNextStep = () => {
     // TODO: Navegar para próxima etapa
-    console.log('Próxima etapa');
+    navigate('/availability');
   };
 
   // Verificar se pode prosseguir

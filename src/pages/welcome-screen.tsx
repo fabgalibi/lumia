@@ -64,25 +64,25 @@ export const WelcomeScreen = () => {
             position: 'relative'
           }}
         >
-        {/* Conteúdo - reutiliza WelcomeForm */}
-        <div
-          style={{
-            flex: 1,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '20px 0px', // remove padding lateral
-            width: '100%'
-          }}
-        >
-          <WelcomeForm
-            screenSize={screenSize}
-            termsAccepted={termsAccepted}
-            onTermsChange={setTermsAccepted}
-            onBackToStart={handleBackToStart}
-            onPrepareProfile={handlePrepareProfile}
-          />
-        </div>
+          {/* Conteúdo - reutiliza WelcomeForm */}
+          <div
+            style={{
+              flex: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '20px 0px', // remove padding lateral
+              width: '100%'
+            }}
+          >
+            <WelcomeForm
+              screenSize={screenSize}
+              termsAccepted={termsAccepted}
+              onTermsChange={setTermsAccepted}
+              onBackToStart={handleBackToStart}
+              onPrepareProfile={handlePrepareProfile}
+            />
+          </div>
 
         </div>
       </div>
@@ -163,16 +163,6 @@ export const WelcomeScreen = () => {
             wineScale={1.15}
           />
         </div>
-
-
-
-
-
-
-
-
-
-
 
       </div>
     </div>
