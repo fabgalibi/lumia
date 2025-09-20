@@ -1,6 +1,8 @@
 // profile-layout.tsx
 import React, { useState, useEffect } from 'react';
-import { ProfileHeader, ProgressIndicator, ProfileFooter } from '@/components/profile-setup';
+import ProfileHeader from './profile-header';
+import ProgressIndicator from './progress-indicator';
+import ProfileFooter from './profile-footer';
 
 /** ===== Props públicas ===== */
 export type ProfileLayoutProps = {
@@ -82,10 +84,10 @@ export default function ProfileLayout({
           flexDirection: 'column',
           alignSelf: 'stretch',
           gap: screenSize === 'mobile' ? '16px' : '32px', // gap otimizado para caber na tela
-          padding: screenSize === 'mobile' ? '24px 16px 120px 16px' : 
-                   screenSize === 'tablet' ? '32px 20px 140px 20px' :
-                   screenSize === 'notebook' ? '48px 24px 140px 24px' : 
-                   '64px 32px 140px 32px', // padding bem reduzido para evitar overflow
+          padding: screenSize === 'mobile' ? '24px 16px 140px 16px' : 
+                   screenSize === 'tablet' ? '32px 20px 160px 20px' :
+                   screenSize === 'notebook' ? '48px 24px 160px 24px' : 
+                   '64px 32px 160px 32px', // padding aumentado para evitar footer cobrindo conteúdo
           flex: 1,
           background: 'transparent',
           overflowY: 'auto',

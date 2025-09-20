@@ -1,6 +1,6 @@
 // base-card.tsx
 import React from "react";
-import { GridBackground } from '@/components/profile-setup';
+import GridBackground from './grid-background';
 
 /** ===== Props públicas ===== */
 export type BaseCardProps = {

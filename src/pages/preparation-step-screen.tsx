@@ -1,8 +1,7 @@
 // preparation-step-screen.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { ProfileLayout, RadioGroup, TextareaField } from '@/components/profile-setup';
-import PreparationTypeCard from '@/components/profile-setup/preparation-type-card';
+import { ProfileLayout, RadioGroup, TextareaField, PreparationTypeCard } from '@/components/profile-setup';
 
 export const PreparationStepScreen = () => {
   const navigate = useNavigate();

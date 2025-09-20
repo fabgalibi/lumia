@@ -1,32 +1,7 @@
-// index.ts
-export { default as ProfileLayout } from './profile-layout';
-export { default as ProfileHeader } from './profile-header';
-export { default as ProgressIndicator } from './progress-indicator';
-export { default as StudyAreaCard } from './study-area-card';
-export { default as PreparationTypeCard } from './preparation-type-card';
-export { default as ConcursoTextarea } from './concurso-textarea';
-export { default as RadioGroup } from './radio-group';
-export { default as TextareaField } from './textarea-field';
-export { default as StudyTimeCard } from './study-time-card';
-export { default as StartDateCard } from './start-date-card';
-export { default as GridBackground } from './grid-background';
-export { default as BaseCard } from './base-card';
-export { default as ProfileFooter } from './profile-footer';
-export { default as CustomDatePicker } from './custom-date-picker';
-export { default as TrajectoryStudyCard } from './trajectory-study-card';
-
-export type { ProfileLayoutProps } from './profile-layout';
-export type { ProfileHeaderProps } from './profile-header';
-export type { ProgressIndicatorProps } from './progress-indicator';
-export type { StudyAreaCardProps } from './study-area-card';
-export type { PreparationTypeCardProps } from './preparation-type-card';
-export type { ConcursoTextareaProps } from './concurso-textarea';
-export type { RadioGroupProps } from './radio-group';
-export type { TextareaFieldProps } from './textarea-field';
-export type { StudyTimeCardProps } from './study-time-card';
-export type { StartDateCardProps } from './start-date-card';
-export type { GridBackgroundProps } from './grid-background';
-export type { BaseCardProps } from './base-card';
-export type { ProfileFooterProps } from './profile-footer';
-export type { CustomDatePickerProps } from './custom-date-picker';
-export type { TrajectoryStudyCardProps } from './trajectory-study-card';
+// Main index.ts - Re-export all components and types from subfolders
+export * from './shared';
+export * from './step1-area-selection';
+export * from './step2-preparation';
+export * from './step3-availability';
+export * from './step4-trajectory';
+export * from './step5-knowledge';

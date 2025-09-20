@@ -49,8 +49,7 @@ export const TrajectoryStepScreen = () => {
   };
 
   const handleNextStep = () => {
-    // TODO: Navegar para próxima etapa
-    navigate('/availability');
+    navigate('/profile-setup/knowledge');
   };
 
   // Verificar se pode prosseguir

@@ -1,6 +1,6 @@
 // study-time-card.tsx
 import React from "react";
-import { BaseCard } from '@/components/profile-setup';
+import { BaseCard } from '@/components/profile-setup/shared';
 
 /** ===== Props públicas ===== */
 export type StudyTimeCardProps = {
