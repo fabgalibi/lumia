@@ -57,14 +57,14 @@ export default function ProfileLayout({
         width: '100vw',
         height: '100vh',
         maxWidth: '100vw',
-        maxHeight: '100vh',
+        minHeight: '100vh',
         background: '#191923',
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
         margin: 0,
         padding: 0,
-        overflow: 'hidden'
+        overflow: 'auto'
       }}
     >
       {/* Header com Logo */}
@@ -93,7 +93,8 @@ export default function ProfileLayout({
           overflowY: 'auto',
           overflowX: 'hidden', // evita scroll horizontal
           scrollPaddingBottom: '20px', // espaço adicional no final do scroll
-          maxWidth: '100%' // garante que não ultrapasse a largura da tela
+          maxWidth: '100%', // garante que não ultrapasse a largura da tela
+          minHeight: 0 // permite que o flex funcione corretamente
         }}
       >
         {typeof children === 'function' ? children(screenSize) : children}

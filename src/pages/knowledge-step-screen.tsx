@@ -59,6 +59,7 @@ export default function KnowledgeStepScreen() {
             knowledgeData={knowledgeData}
             onLevelChange={handleLevelChange}
             onSelectSubjects={handleSelectSubjects}
+            screenSize={screenSize}
           />
         </>
       )}
