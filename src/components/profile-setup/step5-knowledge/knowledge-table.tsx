@@ -1,15 +1,21 @@
 import React from 'react';
 import { CustomRadioButton } from '@/components/ui/custom-radio-button';
+import { SubjectSelectionModal } from './subject-selection-modal';
 
 export interface KnowledgeTableProps {
   subjects: Array<{
     id: string;
-  name: string;
-  description: string;
+    name: string;
+    description: string;
+    topics: Array<{
+      id: string;
+      name: string;
+      selected: boolean;
+    }>;
   }>;
   knowledgeData: Record<string, 'never' | 'started' | 'finished' | 'polishing'>;
   onLevelChange: (subjectId: string, level: 'never' | 'started' | 'finished' | 'polishing') => void;
-  onSelectSubjects: (subjectId: string) => void;
+  onSelectSubjects: (subjectId: string, selectedTopics: string[]) => void;
   screenSize: 'mobile' | 'tablet' | 'notebook' | 'desktop';
 }
 
@@ -20,12 +26,30 @@ export default function KnowledgeTable({
   onSelectSubjects,
   screenSize
 }: KnowledgeTableProps) {
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [selectedSubject, setSelectedSubject] = React.useState<any>(null);
+
+  const handleOpenModal = (subject: any) => {
+    console.log('Opening modal with subject:', subject);
+    setSelectedSubject(subject);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedSubject(null);
+  };
+
+  const handleSaveSelection = (subjectId: string, selectedTopics: string[]) => {
+    onSelectSubjects(subjectId, selectedTopics);
+  };
   
   // Layout de tabela HTML apenas para desktop
   if (screenSize === 'desktop') {
   return (
-      <div
-        style={{
+    <>
+    <div
+      style={{
           backgroundColor: 'rgba(37, 37, 50, 1)',
           border: '1px solid rgba(44, 44, 69, 1)',
           borderRadius: '12px',
@@ -52,7 +76,7 @@ export default function KnowledgeTable({
             >
               <th
                 colSpan={6}
-                style={{
+        style={{
                   width: '100%',
                   height: '72px',
                   paddingTop: '12px',
@@ -66,16 +90,16 @@ export default function KnowledgeTable({
                   fontSize: '12px',
                   lineHeight: '18px',
                   color: '#F0F0F1'
-                }}
-              >
-                <div
-                  style={{
+        }}
+      >
+        <div
+          style={{
                     width: '57px',
                     height: '18px',
-                    display: 'flex',
-                    alignItems: 'center'
-                  }}
-                >
+            display: 'flex',
+            alignItems: 'center'
+          }}
+        >
                   Disciplina
                 </div>
               </th>
@@ -173,9 +197,9 @@ export default function KnowledgeTable({
                       checked={knowledgeData[subject.id] === 'never'}
                       onClick={() => onLevelChange(subject.id, 'never')}
                     />
-                    <span
-                      style={{
-                        fontFamily: 'Inter',
+          <span
+            style={{
+              fontFamily: 'Inter',
                         fontWeight: 400,
                         fontSize: '14px',
                         lineHeight: '20px',
@@ -186,8 +210,8 @@ export default function KnowledgeTable({
                       }}
                     >
                       Nunca estudei
-                    </span>
-                  </div>
+          </span>
+        </div>
                 </td>
                 <td
                   style={{
@@ -211,21 +235,21 @@ export default function KnowledgeTable({
                   onClick={() => onLevelChange(subject.id, 'started')}
                 >
                   <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
+            style={{
+              display: 'flex',
+              alignItems: 'center',
                       gap: '12px',
                       justifyContent: 'flex-start',
                       width: '100%'
-                    }}
-                  >
+            }}
+          >
                     <CustomRadioButton
                       checked={knowledgeData[subject.id] === 'started'}
                       onClick={() => onLevelChange(subject.id, 'started')}
                     />
-                    <span
-                      style={{
-                        fontFamily: 'Inter',
+            <span
+              style={{
+                fontFamily: 'Inter',
                         fontWeight: 400,
                         fontSize: '14px',
                         lineHeight: '20px',
@@ -236,11 +260,11 @@ export default function KnowledgeTable({
                       }}
                     >
                       Comecei teoria, mas não terminei
-                    </span>
-                  </div>
+            </span>
+          </div>
                 </td>
                 <td
-                  style={{
+          style={{
                     paddingTop: '16px',
                     paddingRight: '20px',
                     paddingBottom: '16px',
@@ -260,9 +284,9 @@ export default function KnowledgeTable({
                   }}
                   onClick={() => onLevelChange(subject.id, 'finished')}
                 >
-                  <div
-                    style={{
-                      display: 'flex',
+          <div
+            style={{
+              display: 'flex',
                       alignItems: 'center',
                       gap: '12px',
                       justifyContent: 'center',
@@ -273,11 +297,11 @@ export default function KnowledgeTable({
                       checked={knowledgeData[subject.id] === 'finished'}
                       onClick={() => onLevelChange(subject.id, 'finished')}
                     />
-                    <span
-                      style={{
-                        fontFamily: 'Inter',
-                        fontWeight: 400,
-                        fontSize: '14px',
+            <span
+              style={{
+                fontFamily: 'Inter',
+                fontWeight: 400,
+                fontSize: '14px',
                         lineHeight: '20px',
                         letterSpacing: '0%',
                         color: '#F7F7F7',
@@ -286,7 +310,7 @@ export default function KnowledgeTable({
                       }}
                     >
                       Terminei teoria, mas não tenho confiança
-                    </span>
+            </span>
                   </div>
                 </td>
                 <td
@@ -323,11 +347,11 @@ export default function KnowledgeTable({
                       checked={knowledgeData[subject.id] === 'polishing'}
                       onClick={() => onLevelChange(subject.id, 'polishing')}
                     />
-                    <span
-                      style={{
-                        fontFamily: 'Inter',
-                        fontWeight: 400,
-                        fontSize: '14px',
+            <span
+              style={{
+                fontFamily: 'Inter',
+                fontWeight: 400,
+                fontSize: '14px',
                         lineHeight: '20px',
                         letterSpacing: '0%',
                         color: '#F7F7F7',
@@ -336,8 +360,8 @@ export default function KnowledgeTable({
                       }}
                     >
                       Só falta aparar as arestas
-                    </span>
-                  </div>
+            </span>
+          </div>
                 </td>
 
                 {/* Ação */}
@@ -365,15 +389,15 @@ export default function KnowledgeTable({
                   }}
                 >
                   <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
+              style={{
+                display: 'flex',
+                alignItems: 'center',
                       justifyContent: 'flex-end',
                       height: '100%'
                     }}
                   >
                     <span
-                      onClick={() => knowledgeData[subject.id] !== 'never' && onSelectSubjects(subject.id)}
+                      onClick={() => knowledgeData[subject.id] !== 'never' && handleOpenModal(subject)}
                       style={{
                         fontFamily: 'Inter',
                         fontWeight: 600,
@@ -407,11 +431,21 @@ export default function KnowledgeTable({
           </tbody>
         </table>
       </div>
+      
+      {/* Modal */}
+      <SubjectSelectionModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        subject={selectedSubject}
+        onSave={handleSaveSelection}
+      />
+    </>
     );
   }
 
   // Layout de cards para mobile e tablet
   return (
+    <>
     <div
       style={{
         display: 'grid',
@@ -516,13 +550,13 @@ export default function KnowledgeTable({
         </div>
 
           {/* Action Button */}
-          <div
-            style={{
+      <div
+        style={{
               paddingTop: '16px'
             }}
           >
             <button
-              onClick={() => onSelectSubjects(subject.id)}
+              onClick={() => handleOpenModal(subject)}
               disabled={knowledgeData[subject.id] === 'never'}
               style={{
                 width: '100%',
@@ -582,5 +616,14 @@ export default function KnowledgeTable({
           </div>
         ))}
     </div>
+    
+    {/* Modal */}
+    <SubjectSelectionModal
+      isOpen={isModalOpen}
+      onClose={handleCloseModal}
+      subject={selectedSubject}
+      onSave={handleSaveSelection}
+    />
+    </>
   );
 }
