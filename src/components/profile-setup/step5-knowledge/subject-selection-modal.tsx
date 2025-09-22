@@ -1,4 +1,5 @@
 import React from 'react';
+import { Expand04, Minimize01 } from "@untitledui/icons";
 
 interface Subject {
   id: string;
@@ -24,6 +25,7 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
   onSave
 }) => {
   const [selectedTopics, setSelectedTopics] = React.useState<string[]>([]);
+  const [isExpanded, setIsExpanded] = React.useState(false);
 
   console.log('Modal render - isOpen:', isOpen, 'subject:', subject);
 
@@ -132,7 +134,8 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: isExpanded ? 'center' : 'flex-end',
+        padding: isExpanded ? '0' : '0 24px 0 0',
         zIndex: 9999
       }}
       onClick={onClose}
@@ -142,11 +145,14 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
           backgroundColor: '#202028',
           border: '1px solid #272737',
           borderRadius: '16px',
-          width: '617px',
+          width: isExpanded ? '1360px' : '617px',
           height: '944px',
+          maxWidth: isExpanded ? '1360px' : '617px',
+          maxHeight: '944px',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'flex-end'
+          alignItems: 'flex-end',
+          transition: 'all 0.3s ease'
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -184,7 +190,7 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
                 margin: 0
               }}
             >
-              Selecione os assuntos que você já viu dessa disciplina (3)
+              Selecione os assuntos que você já viu dessa disciplina ({selectedTopics.length})
             </h2>
             <p
               style={{
@@ -210,33 +216,44 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
           >
             {/* Botão Expandir */}
             <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="flex items-center justify-center hover:bg-[#333346] transition-all duration-200 cursor-pointer"
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
                 gap: '6px',
                 padding: '10px 12px',
-                backgroundColor: 'transparent',
+                background: 'transparent',
                 border: '1px solid #22262F',
-                borderRadius: '8px',
-                cursor: 'pointer'
+                borderRadius: '8px'
               }}
             >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7.5 5L12.5 10L7.5 15" stroke="#F0F0F1" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              <span
+              {isExpanded ? (
+                <Minimize01 className="w-5 h-5" style={{ color: '#F0F0F1' }} />
+              ) : (
+                <Expand04 className="w-5 h-5" style={{ color: '#F0F0F1' }} />
+              )}
+              <div 
                 style={{
-                  fontFamily: 'Sora',
-                  fontWeight: 400,
-                  fontSize: '16px',
-                  lineHeight: '1.5em',
-                  color: '#F0F0F1'
+                  padding: '0px 2px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
                 }}
               >
-                Expandir tela
-              </span>
+                <span 
+                  style={{
+                    fontFamily: 'Sora',
+                    fontWeight: 400,
+                    fontStyle: 'Regular',
+                    fontSize: '16px',
+                    lineHeight: '1.5em',
+                    letterSpacing: '0%',
+                    textAlign: 'left',
+                    color: '#F0F0F1'
+                  }}
+                >
+                  {isExpanded ? 'Minimizar tela' : 'Expandir tela'}
+                </span>
+              </div>
             </button>
 
             {/* Botão Fechar */}
@@ -253,7 +270,14 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
                 backgroundColor: 'transparent',
                 border: 'none',
                 borderLeft: '1px solid #373A41',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(240, 240, 241, 0.05)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
               }}
             >
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -272,7 +296,9 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
             gap: '24px',
             padding: '24px',
             flex: 1,
-            overflowY: 'auto'
+            overflowY: 'auto',
+            height: 'calc(944px - 200px)', // Altura fixa baseada no Figma
+            position: 'relative'
           }}
         >
           {(subject.topics || [
@@ -301,24 +327,39 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
                   ? '2px solid #F66649' 
                   : '1px solid #2C2C45',
                 borderRadius: '12px',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
               }}
               onClick={() => handleTopicToggle(topic.id)}
+              onMouseEnter={(e) => {
+                if (!selectedTopics.includes(topic.id)) {
+                  e.currentTarget.style.borderColor = '#373A41';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!selectedTopics.includes(topic.id)) {
+                  e.currentTarget.style.borderColor = '#2C2C45';
+                }
+              }}
             >
+              {/* Content */}
               <div
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
                   alignItems: 'center',
                   gap: '12px',
-                  flex: 1
+                  flex: 1,
+                  minWidth: 0 // Permite que o conteúdo seja comprimido corretamente
                 }}
               >
+                {/* Text and supporting text */}
                 <div
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    flex: 1
+                    flex: 1,
+                    minWidth: 0 // Permite que o texto quebre corretamente
                   }}
                 >
                   <span
@@ -327,15 +368,26 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
                       fontWeight: 400,
                       fontSize: '14px',
                       lineHeight: '1.43em',
-                      color: '#CECFD2'
+                      color: '#CECFD2',
+                      // Comportamento diferente baseado no estado de expansão
+                      ...(isExpanded ? {
+                        wordWrap: 'break-word',
+                        overflowWrap: 'break-word',
+                        hyphens: 'auto'
+                      } : {
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis'
+                      })
                     }}
+                    title={!isExpanded ? topic.name : undefined} // Tooltip com texto completo quando truncado
                   >
                     {topic.name}
                   </span>
                 </div>
               </div>
 
-              {/* Checkbox */}
+              {/* Checkbox base */}
               <div
                 style={{
                   width: '16px',
@@ -347,13 +399,40 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
                   border: selectedTopics.includes(topic.id) 
                     ? 'none' 
                     : '1px solid #373A41',
-                  borderRadius: '4px'
+                  borderRadius: '4px',
+                  position: 'relative',
+                  flexShrink: 0 // Evita que o checkbox seja comprimido
                 }}
               >
                 {selectedTopics.includes(topic.id) && (
-                  <svg width="8" height="6" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 3L3 5L7 1" stroke="#FFFFFF" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+                  <div
+                    style={{
+                      width: '12px',
+                      height: '12px',
+                      position: 'relative'
+                    }}
+                  >
+                    <svg 
+                      width="8" 
+                      height="6" 
+                      viewBox="0 0 8 6" 
+                      fill="none" 
+                      xmlns="http://www.w3.org/2000/svg"
+                      style={{
+                        position: 'absolute',
+                        left: '2px',
+                        top: '3px'
+                      }}
+                    >
+                      <path 
+                        d="M1 3L3 5L7 1" 
+                        stroke="#FFFFFF" 
+                        strokeWidth="1.67" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
                 )}
               </div>
             </div>
@@ -368,7 +447,7 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
             alignSelf: 'stretch',
             gap: '16px',
             padding: '32px 24px',
-            backgroundColor: '#FFFFFF',
+            backgroundColor: '#202028',
             borderTop: '1px solid #2C2C45',
             borderBottomLeftRadius: '16px',
             borderBottomRightRadius: '16px'
@@ -383,20 +462,30 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
               alignItems: 'center',
               gap: '4px',
               padding: '10px 14px',
-              flex: 1,
+              flex: isExpanded ? 'none' : 1,
+              width: isExpanded ? '276.5px' : 'auto',
               backgroundColor: '#2D2D45',
               border: 'none',
               borderRadius: '8px',
               cursor: 'pointer',
-              boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)'
+              boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
+              transition: 'all 0.2s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#373A41';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#2D2D45';
             }}
           >
             <span
               style={{
                 fontFamily: 'Sora',
                 fontWeight: 600,
+                fontStyle: 'SemiBold',
                 fontSize: '14px',
                 lineHeight: '1.43em',
+                letterSpacing: '0%',
                 color: '#CECFD2'
               }}
             >
@@ -413,21 +502,31 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
               alignItems: 'center',
               gap: '4px',
               padding: '10px 14px',
-              flex: 1,
+              flex: isExpanded ? 'none' : 1,
+              width: isExpanded ? '276.5px' : 'auto',
               backgroundColor: '#C74228',
               border: '2px solid',
               borderImage: 'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%) 1',
               borderRadius: '8px',
               cursor: 'pointer',
-              boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)'
+              boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
+              transition: 'all 0.2s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#B03A20';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#C74228';
             }}
           >
             <span
               style={{
                 fontFamily: 'Sora',
                 fontWeight: 600,
+                fontStyle: 'SemiBold',
                 fontSize: '14px',
                 lineHeight: '1.43em',
+                letterSpacing: '0%',
                 color: '#FFFFFF'
               }}
             >
