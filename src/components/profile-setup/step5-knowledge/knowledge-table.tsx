@@ -5,8 +5,8 @@ import { SubjectSelectionModal } from './subject-selection-modal';
 export interface KnowledgeTableProps {
   subjects: Array<{
     id: string;
-    name: string;
-    description: string;
+  name: string;
+  description: string;
     topics: Array<{
       id: string;
       name: string;
@@ -14,6 +14,7 @@ export interface KnowledgeTableProps {
     }>;
   }>;
   knowledgeData: Record<string, 'never' | 'started' | 'finished' | 'polishing'>;
+  selectedTopics?: Record<string, string[]>; // Assuntos selecionados por disciplina (opcional)
   onLevelChange: (subjectId: string, level: 'never' | 'started' | 'finished' | 'polishing') => void;
   onSelectSubjects: (subjectId: string, selectedTopics: string[]) => void;
   screenSize: 'mobile' | 'tablet' | 'notebook' | 'desktop';
@@ -22,6 +23,7 @@ export interface KnowledgeTableProps {
 export default function KnowledgeTable({
   subjects,
   knowledgeData,
+  selectedTopics = {},
   onLevelChange,
   onSelectSubjects,
   screenSize
@@ -43,6 +45,24 @@ export default function KnowledgeTable({
   const handleSaveSelection = (subjectId: string, selectedTopics: string[]) => {
     onSelectSubjects(subjectId, selectedTopics);
   };
+
+  // Função para gerar o texto de apoio dos assuntos selecionados
+  const getSelectedTopicsText = (subjectId: string) => {
+    // Verificação defensiva para evitar erros
+    if (!selectedTopics || typeof selectedTopics !== 'object') {
+      return 'Nenhum assunto selecionado';
+    }
+    
+    const topics = selectedTopics[subjectId];
+    if (!topics || !Array.isArray(topics) || topics.length === 0) {
+      return 'Nenhum assunto selecionado';
+    }
+    
+    // Se há assuntos selecionados, mostra a quantidade
+    return `${topics.length} ${topics.length === 1 ? 'assunto selecionado' : 'assuntos selecionados'}`;
+  };
+
+  // Função para obter os nomes dos assuntos selecionados (para tooltip ou debug)
   
   // Layout de tabela HTML apenas para desktop
   if (screenSize === 'desktop') {
@@ -55,8 +75,8 @@ export default function KnowledgeTable({
           borderRadius: '12px',
           overflow: 'visible',
           boxShadow: '0 1px 3px rgba(0, 0, 0, 0.12)',
-          maxHeight: 'none',
-          height: 'auto'
+          height: 'auto',
+          minWidth: '900px'
         }}
       >
         <table
@@ -64,7 +84,7 @@ export default function KnowledgeTable({
             width: '100%',
             borderCollapse: 'collapse',
             borderSpacing: 0,
-            tableLayout: 'auto'
+            tableLayout: 'fixed'
           }}
         >
           {/* Header da Tabela */}
@@ -78,10 +98,10 @@ export default function KnowledgeTable({
                 colSpan={6}
         style={{
                   width: '100%',
-                  height: '72px',
-                  paddingTop: '12px',
+                  height: '60px',
+                  paddingTop: '8px',
                   paddingRight: '20px',
-                  paddingBottom: '12px',
+                  paddingBottom: '8px',
                   paddingLeft: '20px',
                   textAlign: 'left',
                   borderBottom: '1px solid #2C2C45',
@@ -118,20 +138,19 @@ export default function KnowledgeTable({
                 {/* Nome da Disciplina */}
                 <td
                   style={{
-                    paddingTop: '16px',
-                    paddingRight: '20px',
-                    paddingBottom: '16px',
-                    paddingLeft: '20px',
+                  paddingTop: '12px',
+                  paddingRight: '20px',
+                  paddingBottom: '12px',
+                  paddingLeft: '20px',
                     borderBottom: '1px solid #2C2C45',
                     verticalAlign: 'top',
-                    width: 'auto'
+                    width: '40%'
                   }}
                 >
                   <div
                     style={{
                       display: 'flex',
-                      flexDirection: 'column',
-                      gap: '6px'
+                      flexDirection: 'column'
                     }}
                   >
                     <h3
@@ -139,7 +158,7 @@ export default function KnowledgeTable({
                         fontFamily: 'Inter',
                         fontWeight: 400,
                         fontSize: '14px',
-                        lineHeight: '20px',
+                        lineHeight: '1.43em',
                         letterSpacing: '-0.5%',
                         color: 'rgba(240, 240, 241, 1)',
                         margin: 0
@@ -147,32 +166,43 @@ export default function KnowledgeTable({
                     >
                       {subject.name}
                     </h3>
-                    <p
+                    <div
                       style={{
-                        fontFamily: 'Inter',
-                        fontWeight: 400,
-                        fontSize: '14px',
-                        lineHeight: '20px',
-                        color: 'rgba(148, 151, 156, 1)',
-                        margin: 0
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px'
                       }}
                     >
-                      {subject.description}
-                    </p>
+                      <p
+                        style={{
+                          fontFamily: 'Inter',
+                          fontWeight: 400,
+                          fontSize: '14px',
+                          lineHeight: '1.43em',
+                          letterSpacing: '0%',
+                          color: '#CECFD2',
+                          margin: 0,
+                          flex: 1,
+                          minWidth: 0
+                        }}
+                      >
+                        {getSelectedTopicsText(subject.id)}
+                      </p>
+                    </div>
                   </div>
                 </td>
 
                 {/* Opções de Nível */}
                 <td
                   style={{
-                    paddingTop: '16px',
-                    paddingRight: '20px',
-                    paddingBottom: '16px',
-                    paddingLeft: '20px',
+                  paddingTop: '12px',
+                  paddingRight: '20px',
+                  paddingBottom: '12px',
+                  paddingLeft: '20px',
                     borderBottom: '1px solid #2C2C45',
                     textAlign: 'center',
                     verticalAlign: 'middle',
-                    width: 'auto',
+                    width: '12%',
                     cursor: 'pointer',
                     transition: 'background-color 0.2s ease'
                   }}
@@ -215,14 +245,14 @@ export default function KnowledgeTable({
                 </td>
                 <td
                   style={{
-                    paddingTop: '16px',
-                    paddingRight: '20px',
-                    paddingBottom: '16px',
-                    paddingLeft: '20px',
+                  paddingTop: '12px',
+                  paddingRight: '20px',
+                  paddingBottom: '12px',
+                  paddingLeft: '20px',
                     borderBottom: '1px solid #2C2C45',
                     textAlign: 'center',
                     verticalAlign: 'middle',
-                    width: 'auto',
+                    width: '12%',
                     cursor: 'pointer',
                     transition: 'background-color 0.2s ease'
                   }}
@@ -265,14 +295,14 @@ export default function KnowledgeTable({
                 </td>
                 <td
           style={{
-                    paddingTop: '16px',
-                    paddingRight: '20px',
-                    paddingBottom: '16px',
-                    paddingLeft: '20px',
+                  paddingTop: '12px',
+                  paddingRight: '20px',
+                  paddingBottom: '12px',
+                  paddingLeft: '20px',
                     borderBottom: '1px solid #2C2C45',
                     textAlign: 'center',
                     verticalAlign: 'middle',
-                    width: 'auto',
+                    width: '12%',
                     cursor: 'pointer',
                     transition: 'background-color 0.2s ease'
                   }}
@@ -315,14 +345,14 @@ export default function KnowledgeTable({
                 </td>
                 <td
                   style={{
-                    paddingTop: '16px',
-                    paddingRight: '20px',
-                    paddingBottom: '16px',
-                    paddingLeft: '20px',
+                  paddingTop: '12px',
+                  paddingRight: '20px',
+                  paddingBottom: '12px',
+                  paddingLeft: '20px',
                     borderBottom: '1px solid #2C2C45',
                     textAlign: 'center',
                     verticalAlign: 'middle',
-                    width: 'auto',
+                    width: '12%',
                     cursor: 'pointer',
                     transition: 'background-color 0.2s ease'
                   }}
@@ -367,15 +397,15 @@ export default function KnowledgeTable({
                 {/* Ação */}
                 <td
                   style={{
-                    height: '72px',
-                    paddingTop: '16px',
-                    paddingRight: '20px',
-                    paddingBottom: '16px',
-                    paddingLeft: '20px',
+                    height: '60px',
+                  paddingTop: '12px',
+                  paddingRight: '20px',
+                  paddingBottom: '12px',
+                  paddingLeft: '20px',
                     borderBottom: '1px solid #2C2C45',
-                    textAlign: 'right',
+                    textAlign: 'center',
                     verticalAlign: 'middle',
-                    width: 'auto',
+                    width: '120px',
                     cursor: knowledgeData[subject.id] === 'never' ? 'not-allowed' : 'pointer',
                     transition: 'background-color 0.2s ease'
                   }}
@@ -389,10 +419,10 @@ export default function KnowledgeTable({
                   }}
                 >
                   <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                      justifyContent: 'flex-end',
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
                       height: '100%'
                     }}
                   >
@@ -423,8 +453,8 @@ export default function KnowledgeTable({
                       }}
                     >
                       Selecionar assuntos
-                    </span>
-                  </div>
+            </span>
+          </div>
                 </td>
               </tr>
         ))}
@@ -437,6 +467,7 @@ export default function KnowledgeTable({
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         subject={selectedSubject}
+        selectedTopics={selectedSubject ? selectedTopics[selectedSubject.id] || [] : []}
         onSave={handleSaveSelection}
       />
     </>
@@ -483,11 +514,35 @@ export default function KnowledgeTable({
                 lineHeight: '24px',
                 letterSpacing: '-1%',
                 color: 'rgba(240, 240, 241, 1)',
-                margin: 0
+                margin: 0,
+                marginBottom: '4px'
               }}
             >
               {subject.name}
             </h3>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
+            >
+              <p
+                style={{
+                  fontFamily: 'Inter',
+                  fontWeight: 400,
+                  fontSize: '14px',
+                  lineHeight: '1.43em',
+                  letterSpacing: '0%',
+                  color: '#CECFD2',
+                  margin: 0,
+                  flex: 1,
+                  minWidth: 0
+                }}
+              >
+                {getSelectedTopicsText(subject.id)}
+              </p>
+            </div>
           </div>
 
           {/* Knowledge Level Options */}
@@ -553,22 +608,22 @@ export default function KnowledgeTable({
       <div
         style={{
               paddingTop: '16px'
-            }}
-          >
-            <button
+          }}
+        >
+          <button
               onClick={() => handleOpenModal(subject)}
               disabled={knowledgeData[subject.id] === 'never'}
-              style={{
+            style={{
                 width: '100%',
                 padding: '10px 14px',
                 backgroundColor: knowledgeData[subject.id] === 'never' 
                   ? 'rgba(47, 47, 65, 1)' 
                   : 'rgba(45, 45, 69, 1)',
-                border: 'none',
+              border: 'none',
                 borderRadius: '8px',
-                fontFamily: 'Inter',
+              fontFamily: 'Inter',
                 fontWeight: 500,
-                fontSize: '14px',
+              fontSize: '14px',
                 lineHeight: '20px',
                 color: knowledgeData[subject.id] === 'never' 
                   ? 'rgba(236, 236, 237, 0.5)' 
@@ -615,13 +670,14 @@ export default function KnowledgeTable({
           </div>
           </div>
         ))}
-    </div>
+      </div>
     
     {/* Modal */}
     <SubjectSelectionModal
       isOpen={isModalOpen}
       onClose={handleCloseModal}
       subject={selectedSubject}
+      selectedTopics={selectedSubject ? selectedTopics[selectedSubject.id] || [] : []}
       onSave={handleSaveSelection}
     />
     </>

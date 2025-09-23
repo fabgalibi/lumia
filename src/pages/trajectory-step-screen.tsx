@@ -2,11 +2,19 @@
 import React, { useState } from 'react';
 import { ProfileLayout, TrajectoryStudyCard } from '@/components/profile-setup';
 import { useNavigate } from 'react-router-dom';
+import { useProfileSetup } from '@/contexts/profile-setup-context';
 
 export const TrajectoryStepScreen = () => {
   const navigate = useNavigate();
-  const [studyTime, setStudyTime] = useState<string>('ouro'); // "Ouro" selecionado por padrão conforme Figma
-  const [isWorking, setIsWorking] = useState<string>('sim'); // "Sim" selecionado por padrão conforme Figma
+  const { state, updateTrajectoryData } = useProfileSetup();
+  
+  // Usar dados do contexto ou valores padrão
+  const [studyTime, setStudyTime] = useState<string>(
+    state.trajectoryData?.studyTime || 'ouro'
+  );
+  const [isWorking, setIsWorking] = useState<string>(
+    state.trajectoryData?.isWorking || 'sim'
+  );
   // Removido windowWidth - usando screenSize do ProfileLayout
 
   // Dados dos cards de tempo de estudo conforme Figma
@@ -45,10 +53,20 @@ export const TrajectoryStepScreen = () => {
 
   // Handlers de navegação
   const handleBackToStep3 = () => {
+    // Salvar dados antes de voltar
+    updateTrajectoryData({
+      studyTime,
+      isWorking
+    });
     navigate('/profile-setup/availability');
   };
 
   const handleNextStep = () => {
+    // Salvar dados antes de avançar
+    updateTrajectoryData({
+      studyTime,
+      isWorking
+    });
     navigate('/profile-setup/knowledge');
   };
 

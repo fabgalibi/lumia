@@ -2,13 +2,23 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { ProfileLayout, StudyTimeCard, StartDateCard, CustomDatePicker } from '@/components/profile-setup';
+import { useProfileSetup } from '@/contexts/profile-setup-context';
 
 export const AvailabilityStepScreen = () => {
   const navigate = useNavigate();
+  const { state, updateAvailabilityData } = useProfileSetup();
   const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'notebook' | 'desktop'>('desktop');
-  const [selectedStudyTime, setSelectedStudyTime] = useState<string>('normal'); // "Normal" selecionado por padrão conforme Figma
-  const [selectedStartDate, setSelectedStartDate] = useState<string>('data-especifica'); // "Selecionar uma data específica" selecionado conforme Figma
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined); // Data selecionada para o CustomDatePicker
+  
+  // Usar dados do contexto ou valores padrão
+  const [selectedStudyTime, setSelectedStudyTime] = useState<string>(
+    state.availabilityData?.selectedStudyTime || 'normal'
+  );
+  const [selectedStartDate, setSelectedStartDate] = useState<string>(
+    state.availabilityData?.selectedStartDate || 'data-especifica'
+  );
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+    state.availabilityData?.selectedDate || undefined
+  );
   const [isDatePickerModalOpen, setIsDatePickerModalOpen] = useState(false);
 
   // Detectar tamanho da tela para passar aos componentes
@@ -32,10 +42,22 @@ export const AvailabilityStepScreen = () => {
   }, []);
 
   const handleBackToStep2 = () => {
+    // Salvar dados antes de voltar
+    updateAvailabilityData({
+      selectedStudyTime,
+      selectedStartDate,
+      selectedDate
+    });
     navigate('/profile-setup/preparation');
   };
 
   const handleNextStep = () => {
+    // Salvar dados antes de avançar
+    updateAvailabilityData({
+      selectedStudyTime,
+      selectedStartDate,
+      selectedDate
+    });
     navigate('/profile-setup/trajectory');
   };
 

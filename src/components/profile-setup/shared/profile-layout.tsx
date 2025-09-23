@@ -64,7 +64,7 @@ export default function ProfileLayout({
         position: 'relative',
         margin: 0,
         padding: 0,
-        overflow: 'auto'
+        overflow: 'visible'
       }}
     >
       {/* Header com Logo */}
@@ -84,15 +84,14 @@ export default function ProfileLayout({
           flexDirection: 'column',
           alignSelf: 'stretch',
           gap: screenSize === 'mobile' ? '16px' : '32px', // gap otimizado para caber na tela
-          padding: screenSize === 'mobile' ? '24px 16px 140px 16px' : 
-                   screenSize === 'tablet' ? '32px 20px 160px 20px' :
-                   screenSize === 'notebook' ? '48px 24px 160px 24px' : 
-                   '64px 32px 160px 32px', // padding aumentado para evitar footer cobrindo conteúdo
+          padding: screenSize === 'mobile' ? '24px 16px 100px 16px' : 
+                   screenSize === 'tablet' ? '32px 20px 120px 20px' :
+                   screenSize === 'notebook' ? '48px 24px 120px 24px' : 
+                   '64px 32px 120px 32px', // padding ainda mais reduzido
           flex: 1,
           background: 'transparent',
-          overflowY: 'auto',
+          overflowY: 'visible',
           overflowX: 'hidden', // evita scroll horizontal
-          scrollPaddingBottom: '20px', // espaço adicional no final do scroll
           maxWidth: '100%', // garante que não ultrapasse a largura da tela
           minHeight: 0 // permite que o flex funcione corretamente
         }}

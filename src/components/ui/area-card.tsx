@@ -26,9 +26,9 @@ export default function AreaCard({
   
   // Dimensões responsivas baseadas no tamanho
   const dimensions = {
-    sm: { width: 'auto', height: 'auto' }, // mobile - largura automática, altura automática
-    md: { width: '259.2px', height: '259.2px' }, // desktop - dimensão exata do Figma
-    lg: { width: '300px', height: '300px' } // telas grandes
+    sm: { width: '100%', height: 'auto' }, // mobile - largura 100%, altura automática
+    md: { width: '100%', height: '260px' }, // desktop - largura 100% (grid controla), altura fixa como trajetória
+    lg: { width: '100%', height: '280px' } // telas grandes
   };
 
   const currentSize = dimensions[size];
@@ -105,7 +105,7 @@ function CardContent({ title, description, image, size = 'md', isSelected = fals
         alignSelf: 'stretch', // conforme Figma - estica para preencher
         alignItems: 'stretch',
         gap: size === 'sm' ? (isSelected ? '12px' : '4px') : '12px', // mobile: 12px se selecionado, 4px normal; desktop: sempre 12px
-        padding: size === 'sm' ? '76px 16px 24px' : '101px 16px 24px', // mobile: menos padding top
+        padding: size === 'sm' ? '76px 16px 24px' : '120px 16px 24px', // mobile: menos padding top, desktop: mais padding top
         flex: 1, // sizing: horizontal fill, vertical fill
         background: 'rgba(11, 18, 25, 1)', // fill_5QFRMU - cor exata do Figma
         borderRadius: '6px', // borderRadius exato do Figma
@@ -122,8 +122,8 @@ function CardContent({ title, description, image, size = 'md', isSelected = fals
           fontFamily: 'Sora',
           fontWeight: 400,
           fontStyle: 'normal', // Regular
-          fontSize: size === 'sm' ? '20px' : '24px', // mobile: text-xl (20px), desktop: 24px
-          lineHeight: size === 'sm' ? '1.5em' : '1.33em', // mobile: text-xl line-height (1.5em), desktop: original
+          fontSize: size === 'sm' ? '20px' : '20px', // mobile: text-xl (20px), desktop: 20px (igual trajetória)
+          lineHeight: size === 'sm' ? '1.5em' : '1.5em', // mobile: text-xl line-height (1.5em), desktop: 1.5em (igual trajetória)
           letterSpacing: '0%', // letter-spacing: 0%
           color: '#FFFFFF',
           margin: 0,
@@ -146,8 +146,8 @@ function CardContent({ title, description, image, size = 'md', isSelected = fals
           fontFamily: 'Sora', // font-family: Sora
           fontWeight: 400, // font-weight: 400
           fontStyle: 'normal', // font-style: Regular
-          fontSize: '14px', // font-size: text-sm
-          lineHeight: '20px', // line-height: text-sm (20px)
+          fontSize: '14px', // font-size: text-sm (igual trajetória)
+          lineHeight: '20px', // line-height: text-sm (20px) (igual trajetória)
           letterSpacing: '0%', // letter-spacing: 0%
           color: '#CECFD2', // cor correta da descrição
           margin: 0,
@@ -173,9 +173,9 @@ function CardContent({ title, description, image, size = 'md', isSelected = fals
           alt={title}
           style={{
             position: 'absolute',
-            top: size === 'sm' ? '12px' : '10px', // mobile: 12px, desktop: 10px
-            right: size === 'sm' ? '16px' : 'auto', // mobile: 16px da direita
-            left: size === 'sm' ? 'auto' : '101px', // mobile: auto, desktop: 101px da esquerda
+            top: size === 'sm' ? '12px' : '16px', // mobile: 12px, desktop: 16px
+            right: size === 'sm' ? '16px' : '16px', // mobile: 16px da direita, desktop: 16px da direita
+            left: size === 'sm' ? 'auto' : 'auto', // mobile: auto, desktop: auto
             width: size === 'sm' ? '96px' : '120px', // mobile: 96px, desktop: 120px
             height: size === 'sm' ? '96px' : '120px', // mobile: 96px, desktop: 120px
             objectFit: 'contain', // contain para evitar distorção

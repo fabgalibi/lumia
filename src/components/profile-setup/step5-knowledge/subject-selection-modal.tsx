@@ -15,6 +15,7 @@ interface SubjectSelectionModalProps {
   isOpen: boolean;
   onClose: () => void;
   subject: Subject | null;
+  selectedTopics?: string[]; // Assuntos já selecionados
   onSave: (subjectId: string, selectedTopics: string[]) => void;
 }
 
@@ -22,10 +23,39 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
   isOpen,
   onClose,
   subject,
+  selectedTopics: previouslySelectedTopics = [],
   onSave
 }) => {
   const [selectedTopics, setSelectedTopics] = React.useState<string[]>([]);
   const [isExpanded, setIsExpanded] = React.useState(false);
+  const [screenSize, setScreenSize] = React.useState<'mobile' | 'tablet' | 'notebook' | 'desktop'>('desktop');
+
+  // Detectar tamanho da tela
+  React.useEffect(() => {
+    const checkScreenSize = () => {
+      const width = window.innerWidth;
+      if (width < 768) {
+        setScreenSize('mobile');
+      } else if (width < 1024) {
+        setScreenSize('tablet');
+      } else if (width < 1440) {
+        setScreenSize('notebook');
+      } else {
+        setScreenSize('desktop');
+      }
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  // Reset expanded state when modal opens
+  React.useEffect(() => {
+    if (isOpen) {
+      setIsExpanded(false);
+    }
+  }, [isOpen]);
 
   console.log('Modal render - isOpen:', isOpen, 'subject:', subject);
 
@@ -44,10 +74,16 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
         { id: '9', name: 'Da Organização do Estado (Artigos 18 a 43 da CF/1988)', selected: false },
         { id: '10', name: 'Da Organização dos Poderes (Artigos 44 a 135 da CF/1988)', selected: false }
       ];
-      const selected = topics.filter(topic => topic.selected).map(topic => topic.id);
-      setSelectedTopics(selected);
+      
+      // Se há assuntos previamente selecionados, usa eles; senão usa os que estão marcados como selected nos topics
+      if (previouslySelectedTopics.length > 0) {
+        setSelectedTopics(previouslySelectedTopics);
+      } else {
+        const selected = topics.filter(topic => topic.selected).map(topic => topic.id);
+        setSelectedTopics(selected);
+      }
     }
-  }, [subject]);
+  }, [subject, previouslySelectedTopics]);
 
   const handleTopicToggle = (topicId: string) => {
     setSelectedTopics(prev => 
@@ -133,9 +169,9 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
         bottom: 0,
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: isExpanded ? 'center' : 'flex-end',
-        padding: isExpanded ? '0' : '0 24px 0 0',
+        alignItems: screenSize === 'mobile' ? 'flex-end' : (isExpanded ? 'center' : 'flex-end'),
+        justifyContent: screenSize === 'mobile' ? 'center' : (isExpanded ? 'center' : 'flex-end'),
+        padding: screenSize === 'mobile' ? '0' : (isExpanded ? '0' : '0 24px 0 0'),
         zIndex: 9999
       }}
       onClick={onClose}
@@ -144,11 +180,11 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
         style={{
           backgroundColor: '#202028',
           border: '1px solid #272737',
-          borderRadius: '16px',
-          width: isExpanded ? '1360px' : '617px',
-          height: '944px',
-          maxWidth: isExpanded ? '1360px' : '617px',
-          maxHeight: '944px',
+          borderRadius: screenSize === 'mobile' ? '16px 16px 0 0' : '16px',
+          width: screenSize === 'mobile' ? '100%' : (isExpanded ? '1360px' : '617px'),
+          height: screenSize === 'mobile' ? '80vh' : '944px',
+          maxWidth: screenSize === 'mobile' ? '100%' : (isExpanded ? '1360px' : '617px'),
+          maxHeight: screenSize === 'mobile' ? '80vh' : '944px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-end',
@@ -163,12 +199,12 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
             flexDirection: 'row',
             alignItems: 'center',
             alignSelf: 'stretch',
-            gap: '16px',
-            padding: '24px 16px 16px 24px',
+            gap: screenSize === 'mobile' ? '12px' : '16px',
+            padding: screenSize === 'mobile' ? '20px 16px 16px 20px' : '24px 16px 16px 24px',
             backgroundColor: '#252532',
             borderBottom: '1.5px solid #272737',
-            borderTopLeftRadius: '16px',
-            borderTopRightRadius: '16px'
+            borderTopLeftRadius: screenSize === 'mobile' ? '16px' : '16px',
+            borderTopRightRadius: screenSize === 'mobile' ? '16px' : '16px'
           }}
         >
           <div
@@ -184,7 +220,7 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
               style={{
                 fontFamily: 'Sora',
                 fontWeight: 600,
-                fontSize: '18px',
+                fontSize: screenSize === 'mobile' ? '16px' : '18px',
                 lineHeight: '1.56em',
                 color: '#F7F7F7',
                 margin: 0
@@ -196,7 +232,7 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
               style={{
                 fontFamily: 'Sora',
                 fontWeight: 400,
-                fontSize: '14px',
+                fontSize: screenSize === 'mobile' ? '12px' : '14px',
                 lineHeight: '1.43em',
                 color: '#CECFD2',
                 margin: 0
@@ -214,18 +250,19 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
               gap: '8px'
             }}
           >
-            {/* Botão Expandir */}
-            <button
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="flex items-center justify-center hover:bg-[#333346] transition-all duration-200 cursor-pointer"
-              style={{
-                gap: '6px',
-                padding: '10px 12px',
-                background: 'transparent',
-                border: '1px solid #22262F',
-                borderRadius: '8px'
-              }}
-            >
+            {/* Botão Expandir - Escondido em mobile */}
+            {screenSize !== 'mobile' && (
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="flex items-center justify-center hover:bg-[#333346] transition-all duration-200 cursor-pointer"
+                style={{
+                  gap: '6px',
+                  padding: '10px 12px',
+                  background: 'transparent',
+                  border: '1px solid #22262F',
+                  borderRadius: '8px'
+                }}
+              >
               {isExpanded ? (
                 <Minimize01 className="w-5 h-5" style={{ color: '#F0F0F1' }} />
               ) : (
@@ -254,7 +291,8 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
                   {isExpanded ? 'Minimizar tela' : 'Expandir tela'}
                 </span>
               </div>
-            </button>
+              </button>
+            )}
 
             {/* Botão Fechar */}
             <button
@@ -264,12 +302,12 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
-                padding: '8px 12px 8px 20px',
-                width: '52px',
-                height: '44px',
+                padding: screenSize === 'mobile' ? '8px' : '8px 12px 8px 20px',
+                width: screenSize === 'mobile' ? '44px' : '52px',
+                height: screenSize === 'mobile' ? '44px' : '44px',
                 backgroundColor: 'transparent',
                 border: 'none',
-                borderLeft: '1px solid #373A41',
+                borderLeft: screenSize === 'mobile' ? 'none' : '1px solid #373A41',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease'
               }}
@@ -293,11 +331,11 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
             display: 'flex',
             flexDirection: 'column',
             alignSelf: 'stretch',
-            gap: '24px',
-            padding: '24px',
+            gap: screenSize === 'mobile' ? '16px' : '24px',
+            padding: screenSize === 'mobile' ? '16px' : '24px',
             flex: 1,
             overflowY: 'auto',
-            height: 'calc(944px - 200px)', // Altura fixa baseada no Figma
+            height: screenSize === 'mobile' ? 'calc(80vh - 120px)' : 'calc(944px - 200px)',
             position: 'relative'
           }}
         >
@@ -320,8 +358,8 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
                 flexDirection: 'row',
                 alignItems: 'center',
                 alignSelf: 'stretch',
-                gap: '12px',
-                padding: '16px',
+                gap: screenSize === 'mobile' ? '8px' : '12px',
+                padding: screenSize === 'mobile' ? '12px' : '16px',
                 backgroundColor: '#252532',
                 border: selectedTopics.includes(topic.id) 
                   ? '2px solid #F66649' 
@@ -366,7 +404,7 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
                     style={{
                       fontFamily: 'Sora',
                       fontWeight: 400,
-                      fontSize: '14px',
+                      fontSize: screenSize === 'mobile' ? '12px' : '14px',
                       lineHeight: '1.43em',
                       color: '#CECFD2',
                       // Comportamento diferente baseado no estado de expansão
@@ -444,13 +482,14 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
           style={{
             display: 'flex',
             flexDirection: 'row',
+            justifyContent: screenSize === 'mobile' ? 'stretch' : (isExpanded ? 'flex-end' : 'stretch'),
             alignSelf: 'stretch',
-            gap: '16px',
-            padding: '32px 24px',
+            gap: screenSize === 'mobile' ? '8px' : '16px',
+            padding: screenSize === 'mobile' ? '16px' : '32px 24px',
             backgroundColor: '#202028',
             borderTop: '1px solid #2C2C45',
-            borderBottomLeftRadius: '16px',
-            borderBottomRightRadius: '16px'
+            borderBottomLeftRadius: screenSize === 'mobile' ? '0' : '16px',
+            borderBottomRightRadius: screenSize === 'mobile' ? '0' : '16px'
           }}
         >
           <button
@@ -461,9 +500,10 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
               justifyContent: 'center',
               alignItems: 'center',
               gap: '4px',
-              padding: '10px 14px',
-              flex: isExpanded ? 'none' : 1,
-              width: isExpanded ? '276.5px' : 'auto',
+              padding: screenSize === 'mobile' ? '10px 14px' : '10px 14px',
+              height: screenSize === 'mobile' ? '40px' : 'auto',
+              flex: screenSize === 'mobile' ? 1 : (isExpanded ? 'none' : 1),
+              width: screenSize === 'mobile' ? 'auto' : (isExpanded ? '276.5px' : 'auto'),
               backgroundColor: '#2D2D45',
               border: 'none',
               borderRadius: '8px',
@@ -483,7 +523,7 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
                 fontFamily: 'Sora',
                 fontWeight: 600,
                 fontStyle: 'SemiBold',
-                fontSize: '14px',
+                fontSize: screenSize === 'mobile' ? '12px' : '14px',
                 lineHeight: '1.43em',
                 letterSpacing: '0%',
                 color: '#CECFD2'
@@ -501,9 +541,10 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
               justifyContent: 'center',
               alignItems: 'center',
               gap: '4px',
-              padding: '10px 14px',
-              flex: isExpanded ? 'none' : 1,
-              width: isExpanded ? '276.5px' : 'auto',
+              padding: screenSize === 'mobile' ? '10px 14px' : '10px 14px',
+              height: screenSize === 'mobile' ? '40px' : 'auto',
+              flex: screenSize === 'mobile' ? 1 : (isExpanded ? 'none' : 1),
+              width: screenSize === 'mobile' ? 'auto' : (isExpanded ? '276.5px' : 'auto'),
               backgroundColor: '#C74228',
               border: '2px solid',
               borderImage: 'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%) 1',
@@ -524,13 +565,13 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
                 fontFamily: 'Sora',
                 fontWeight: 600,
                 fontStyle: 'SemiBold',
-                fontSize: '14px',
+                fontSize: screenSize === 'mobile' ? '12px' : '14px',
                 lineHeight: '1.43em',
                 letterSpacing: '0%',
                 color: '#FFFFFF'
               }}
             >
-              Salvar seleção
+              {screenSize === 'mobile' ? 'Prosseguir' : 'Salvar seleção'}
             </span>
           </button>
         </div>

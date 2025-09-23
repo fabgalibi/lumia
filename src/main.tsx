@@ -12,6 +12,7 @@ import KnowledgeStepScreen from "@/pages/knowledge-step-screen";
 import { NotFound } from "@/pages/not-found";
 import { RouteProvider } from "@/providers/router-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
+import { ProfileSetupProvider } from "@/contexts/profile-setup-context";
 import "@/styles/globals.css";
 
 createRoot(document.getElementById("root")!).render(
@@ -29,13 +30,17 @@ createRoot(document.getElementById("root")!).render(
                         <Route path="/home" element={<HomeScreen />} />
                         
                         {/* Profile Setup Flow - Hierarchical Structure */}
-                        <Route path="/profile-setup">
-                            <Route index element={<ProfileSetupScreen />} />
-                            <Route path="preparation" element={<PreparationStepScreen />} />
-                            <Route path="availability" element={<AvailabilityStepScreen />} />
-                            <Route path="trajectory" element={<TrajectoryStepScreen />} />
-                            <Route path="knowledge" element={<KnowledgeStepScreen />} />
-                        </Route>
+                        <Route path="/profile-setup/*" element={
+                            <ProfileSetupProvider>
+                                <Routes>
+                                    <Route index element={<ProfileSetupScreen />} />
+                                    <Route path="preparation" element={<PreparationStepScreen />} />
+                                    <Route path="availability" element={<AvailabilityStepScreen />} />
+                                    <Route path="trajectory" element={<TrajectoryStepScreen />} />
+                                    <Route path="knowledge" element={<KnowledgeStepScreen />} />
+                                </Routes>
+                            </ProfileSetupProvider>
+                        } />
                         
                         {/* Fallback */}
                         <Route path="*" element={<NotFound />} />

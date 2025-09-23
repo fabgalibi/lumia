@@ -1,18 +1,24 @@
 // profile-setup-screen.tsx
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router';
 import { ProfileLayout, StudyAreaCard } from '@/components/profile-setup';
+import { useProfileSetup } from '@/contexts/profile-setup-context';
 
 export const ProfileSetupScreen = () => {
   const navigate = useNavigate();
-  const [selectedArea, setSelectedArea] = useState<string>('controle'); // área pré-selecionada conforme Figma
+  const { state, updateSelectedArea } = useProfileSetup();
+  const { selectedArea } = state;
 
   const handleBackToStart = () => {
+    // Salvar dados antes de voltar
+    updateSelectedArea(selectedArea);
     navigate('/welcome');
   };
 
   const handleNextStep = () => {
     if (selectedArea) {
+      // Salvar dados antes de avançar
+      updateSelectedArea(selectedArea);
       // Navegar para a etapa 2 - Preparação
       navigate('/profile-setup/preparation');
     }
@@ -87,15 +93,11 @@ export const ProfileSetupScreen = () => {
           {/* Grid de Cards de Área */}
           <div
             style={{
-              display: 'flex',
-              flexDirection: screenSize === 'mobile' ? 'column' : 'row', // mobile: column, desktop: row
-              justifyContent: 'flex-start', // alinha à esquerda
-              alignItems: 'stretch', // altura uniforme
-              gap: screenSize === 'mobile' ? '8px' : '8px', // gap responsivo
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gap: '8px',
               width: '100%',
-              height: 'auto',
-              overflow: 'visible',
-              flexWrap: 'wrap' // permite quebra de linha
+              justifyContent: 'start' // alinha cards à esquerda
             }}
           >
           {studyAreas.map((area) => (
@@ -103,7 +105,7 @@ export const ProfileSetupScreen = () => {
               key={area.id}
               area={area}
               isSelected={selectedArea === area.id}
-              onClick={() => setSelectedArea(area.id)}
+              onClick={() => updateSelectedArea(area.id)}
               screenSize={screenSize}
             />
           ))}
