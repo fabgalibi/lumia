@@ -20,27 +20,27 @@ export default function KnowledgeStepScreen() {
   };
 
   const handleBackToStep4 = () => {
-    // Salvar dados antes de voltar
-    updateKnowledgeData('', 'never'); // Trigger para salvar estado atual
+    // Navegar diretamente sem adicionar chave vazia
     navigate('/profile-setup/trajectory');
   };
 
   const handleNextToFinal = () => {
-    // Salvar dados antes de avançar
-    updateKnowledgeData('', 'never'); // Trigger para salvar estado atual
-    navigate('/final-step');
+    // Navegar diretamente sem adicionar chave vazia
+    navigate('/profile-setup/final');
   };
 
   // Lógica mais inteligente para habilitar o botão
   const canProceed = (() => {
-    // 1. Todas as disciplinas devem ter uma seleção
-    if (Object.keys(knowledgeData).length !== subjects.length) {
+    // 1. Todas as disciplinas devem ter uma seleção (filtrar chaves vazias)
+    const validKeys = Object.keys(knowledgeData).filter(key => key !== '');
+    if (validKeys.length !== subjects.length) {
       return false;
     }
     
     // 2. Se selecionou opção diferente de "Nunca estudei", deve ter assuntos selecionados
     for (const subjectId of subjects.map(s => s.id)) {
       const level = knowledgeData[subjectId];
+      
       if (level && level !== 'never') {
         // Se não é "Nunca estudei", deve ter assuntos selecionados
         const hasSelectedTopics = selectedTopics[subjectId] && selectedTopics[subjectId].length > 0;
