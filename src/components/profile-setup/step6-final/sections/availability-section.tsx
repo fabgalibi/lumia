@@ -42,17 +42,34 @@ export const AvailabilitySection: React.FC<AvailabilitySectionProps> = ({
             gap: '8px'
           }}
         >
-          <span
+          <div
             style={{
-              fontFamily: 'Sora',
-              fontWeight: 400,
-              fontSize: '18px',
-              lineHeight: '1.56em',
-              color: '#FFFFFF'
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: '8px'
             }}
           >
-            Tempo dedicado aos estudos
-          </span>
+            <div
+              style={{
+                width: '4px',
+                height: '4px',
+                backgroundColor: '#FFFFFF',
+                borderRadius: '1px'
+              }}
+            />
+            <span
+              style={{
+                fontFamily: 'Sora',
+                fontWeight: 400,
+                fontSize: '18px',
+                lineHeight: '1.56em',
+                color: '#FFFFFF'
+              }}
+            >
+              Tempo dedicado aos estudos
+            </span>
+          </div>
           <span
             style={{
               fontFamily: 'Sora',
@@ -75,17 +92,34 @@ export const AvailabilitySection: React.FC<AvailabilitySectionProps> = ({
             gap: '8px'
           }}
         >
-          <span
+          <div
             style={{
-              fontFamily: 'Sora',
-              fontWeight: 400,
-              fontSize: '18px',
-              lineHeight: '1.56em',
-              color: '#FFFFFF'
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: '8px'
             }}
           >
-            Quando pretende começar
-          </span>
+            <div
+              style={{
+                width: '4px',
+                height: '4px',
+                backgroundColor: '#FFFFFF',
+                borderRadius: '1px'
+              }}
+            />
+            <span
+              style={{
+                fontFamily: 'Sora',
+                fontWeight: 400,
+                fontSize: '18px',
+                lineHeight: '1.56em',
+                color: '#FFFFFF'
+              }}
+            >
+              Quando pretende começar
+            </span>
+          </div>
           <span
             style={{
               fontFamily: 'Sora',

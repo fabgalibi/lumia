@@ -1,7 +1,7 @@
 import React from 'react';
 import { InfoCard } from '../info-card';
 import { KnowledgeIcon } from '../section-icons';
-import { LevelIndicator } from '../level-indicator';
+import { KnowledgeLevelProgress } from '../knowledge-level-progress';
 import { calculateGeneralLevel } from '../data-helpers';
 
 interface KnowledgeSectionProps {
@@ -41,17 +41,34 @@ export const KnowledgeSection: React.FC<KnowledgeSectionProps> = ({
             gap: '8px'
           }}
         >
-          <span
+          <div
             style={{
-              fontFamily: 'Sora',
-              fontWeight: 400,
-              fontSize: '18px',
-              lineHeight: '1.56em',
-              color: '#FFFFFF'
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: '8px'
             }}
           >
-            Seu nível geral:
-          </span>
+            <div
+              style={{
+                width: '4px',
+                height: '4px',
+                backgroundColor: '#FFFFFF',
+                borderRadius: '1px'
+              }}
+            />
+            <span
+              style={{
+                fontFamily: 'Sora',
+                fontWeight: 400,
+                fontSize: '18px',
+                lineHeight: '1.56em',
+                color: '#FFFFFF'
+              }}
+            >
+              Seu nível geral:
+            </span>
+          </div>
           <span
             style={{
               fontFamily: 'Sora',
@@ -66,7 +83,7 @@ export const KnowledgeSection: React.FC<KnowledgeSectionProps> = ({
         </div>
         
         {/* Indicador de nível */}
-        <LevelIndicator level={generalLevel} />
+        <KnowledgeLevelProgress currentLevel={generalLevel} />
       </div>
     </InfoCard>
   );

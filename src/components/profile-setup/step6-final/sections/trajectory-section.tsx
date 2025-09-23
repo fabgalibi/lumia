@@ -41,17 +41,34 @@ export const TrajectorySection: React.FC<TrajectorySectionProps> = ({
             gap: '8px'
           }}
         >
-          <span
+          <div
             style={{
-              fontFamily: 'Sora',
-              fontWeight: 400,
-              fontSize: '18px',
-              lineHeight: '1.56em',
-              color: '#FFFFFF'
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: '8px'
             }}
           >
-            Data de nascimento
-          </span>
+            <div
+              style={{
+                width: '4px',
+                height: '4px',
+                backgroundColor: '#FFFFFF',
+                borderRadius: '1px'
+              }}
+            />
+            <span
+              style={{
+                fontFamily: 'Sora',
+                fontWeight: 400,
+                fontSize: '18px',
+                lineHeight: '1.56em',
+                color: '#FFFFFF'
+              }}
+            >
+              Data de nascimento
+            </span>
+          </div>
           <span
             style={{
               fontFamily: 'Sora',
@@ -74,17 +91,34 @@ export const TrajectorySection: React.FC<TrajectorySectionProps> = ({
             gap: '8px'
           }}
         >
-          <span
+          <div
             style={{
-              fontFamily: 'Sora',
-              fontWeight: 400,
-              fontSize: '18px',
-              lineHeight: '1.56em',
-              color: '#FFFFFF'
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: '8px'
             }}
           >
-            Formação
-          </span>
+            <div
+              style={{
+                width: '4px',
+                height: '4px',
+                backgroundColor: '#FFFFFF',
+                borderRadius: '1px'
+              }}
+            />
+            <span
+              style={{
+                fontFamily: 'Sora',
+                fontWeight: 400,
+                fontSize: '18px',
+                lineHeight: '1.56em',
+                color: '#FFFFFF'
+              }}
+            >
+              Formação
+            </span>
+          </div>
           <span
             style={{
               fontFamily: 'Sora',
@@ -107,17 +141,34 @@ export const TrajectorySection: React.FC<TrajectorySectionProps> = ({
             gap: '8px'
           }}
         >
-          <span
+          <div
             style={{
-              fontFamily: 'Sora',
-              fontWeight: 400,
-              fontSize: '18px',
-              lineHeight: '1.56em',
-              color: '#FFFFFF'
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: '8px'
             }}
           >
-            Tempo de estudo
-          </span>
+            <div
+              style={{
+                width: '4px',
+                height: '4px',
+                backgroundColor: '#FFFFFF',
+                borderRadius: '1px'
+              }}
+            />
+            <span
+              style={{
+                fontFamily: 'Sora',
+                fontWeight: 400,
+                fontSize: '18px',
+                lineHeight: '1.56em',
+                color: '#FFFFFF'
+              }}
+            >
+              Tempo de estudo
+            </span>
+          </div>
           <span
             style={{
               fontFamily: 'Sora',
@@ -140,17 +191,34 @@ export const TrajectorySection: React.FC<TrajectorySectionProps> = ({
             gap: '8px'
           }}
         >
-          <span
+          <div
             style={{
-              fontFamily: 'Sora',
-              fontWeight: 400,
-              fontSize: '18px',
-              lineHeight: '1.56em',
-              color: '#FFFFFF'
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: '8px'
             }}
           >
-            Trabalha atualmente?
-          </span>
+            <div
+              style={{
+                width: '4px',
+                height: '4px',
+                backgroundColor: '#FFFFFF',
+                borderRadius: '1px'
+              }}
+            />
+            <span
+              style={{
+                fontFamily: 'Sora',
+                fontWeight: 400,
+                fontSize: '18px',
+                lineHeight: '1.56em',
+                color: '#FFFFFF'
+              }}
+            >
+              Trabalha atualmente?
+            </span>
+          </div>
           <span
             style={{
               fontFamily: 'Sora',

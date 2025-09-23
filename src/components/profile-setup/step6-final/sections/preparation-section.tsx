@@ -42,17 +42,34 @@ export const PreparationSection: React.FC<PreparationSectionProps> = ({
             gap: '8px'
           }}
         >
-          <span
+          <div
             style={{
-              fontFamily: 'Sora',
-              fontWeight: 400,
-              fontSize: '18px',
-              lineHeight: '1.56em',
-              color: '#FFFFFF'
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: '8px'
             }}
           >
-            Tipo de preparação selecionada
-          </span>
+            <div
+              style={{
+                width: '4px',
+                height: '4px',
+                backgroundColor: '#FFFFFF',
+                borderRadius: '1px'
+              }}
+            />
+            <span
+              style={{
+                fontFamily: 'Sora',
+                fontWeight: 400,
+                fontSize: '18px',
+                lineHeight: '1.56em',
+                color: '#FFFFFF'
+              }}
+            >
+              Tipo de preparação selecionada
+            </span>
+          </div>
           <span
             style={{
               fontFamily: 'Sora',
@@ -75,17 +92,34 @@ export const PreparationSection: React.FC<PreparationSectionProps> = ({
             gap: '8px'
           }}
         >
-          <span
+          <div
             style={{
-              fontFamily: 'Sora',
-              fontWeight: 400,
-              fontSize: '18px',
-              lineHeight: '1.56em',
-              color: '#FFFFFF'
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: '8px'
             }}
           >
-            Algum concurso específico que gostaria de focar?
-          </span>
+            <div
+              style={{
+                width: '4px',
+                height: '4px',
+                backgroundColor: '#FFFFFF',
+                borderRadius: '1px'
+              }}
+            />
+            <span
+              style={{
+                fontFamily: 'Sora',
+                fontWeight: 400,
+                fontSize: '18px',
+                lineHeight: '1.56em',
+                color: '#FFFFFF'
+              }}
+            >
+              Algum concurso específico que gostaria de focar?
+            </span>
+          </div>
           <span
             style={{
               fontFamily: 'Sora',

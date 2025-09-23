@@ -28,17 +28,36 @@ export const StudyAreaSection: React.FC<StudyAreaSectionProps> = ({
           gap: '8px'
         }}
       >
-        <span
+        <div
           style={{
-            fontFamily: 'Sora',
-            fontWeight: 400,
-            fontSize: '18px',
-            lineHeight: '1.56em',
-            color: '#ECECED'
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: '8px'
           }}
         >
-          Área de estudo selecionada
-        </span>
+          <div
+            style={{
+              width: '4px',
+              height: '4px',
+              backgroundColor: '#FFFFFF',
+              borderRadius: '1px'
+            }}
+          />
+          <span
+            style={{
+              fontFamily: 'Sora',
+              fontWeight: 400,
+              fontStyle: 'Regular',
+              fontSize: '18px',
+              lineHeight: '1.56em',
+              letterSpacing: '0%',
+              color: '#ECECED'
+            }}
+          >
+            Área de estudo selecionada
+          </span>
+        </div>
         <span
           style={{
             fontFamily: 'Sora',

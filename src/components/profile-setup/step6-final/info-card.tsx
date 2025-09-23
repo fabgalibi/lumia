@@ -1,4 +1,5 @@
 import React from 'react';
+import { Edit03 } from '@untitledui/icons';
 
 interface InfoCardProps {
   icon: React.ReactNode;
@@ -20,8 +21,7 @@ export const InfoCard: React.FC<InfoCardProps> = ({
         flexDirection: 'column',
         alignSelf: 'stretch',
         border: '1px solid #2C2C45',
-        borderRadius: '8px',
-        backgroundColor: '#202028'
+        borderRadius: '8px'
       }}
     >
       {/* Header */}
@@ -51,10 +51,12 @@ export const InfoCard: React.FC<InfoCardProps> = ({
           {icon}
           <h3
             style={{
-              fontFamily: 'DM Sans',
-              fontWeight: 600,
+              fontFamily: 'Sora',
+              fontWeight: 400,
+              fontStyle: 'Regular',
               fontSize: '18px',
-              lineHeight: '1.56em',
+              lineHeight: '28px',
+              letterSpacing: '0%',
               color: '#F0F0F1',
               margin: 0
             }}
@@ -89,35 +91,21 @@ export const InfoCard: React.FC<InfoCardProps> = ({
             style={{
               fontFamily: 'Sora',
               fontWeight: 600,
+              fontStyle: 'SemiBold',
               fontSize: '14px',
               lineHeight: '1.43em',
+              letterSpacing: '0%',
               color: '#FFFFFF'
             }}
           >
             Editar informações
           </span>
-          <svg
+          <Edit03
             width="20"
             height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M11.25 2.5H5C3.61929 2.5 2.5 3.61929 2.5 5V15C2.5 16.3807 3.61929 17.5 5 17.5H15C16.3807 17.5 17.5 16.3807 17.5 15V8.75"
-              stroke="#FFFFFF"
-              strokeWidth="1.67"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M14.375 1.25C14.7444 0.880625 15.2556 0.880625 15.625 1.25L18.75 4.375C19.1194 4.74438 19.1194 5.25562 18.75 5.625L10 14.375L6.25 15L6.875 11.25L14.375 1.25Z"
-              stroke="#FFFFFF"
-              strokeWidth="1.67"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+            stroke="#FFFFFF"
+            strokeWidth="1.67"
+          />
         </button>
       </div>
 
