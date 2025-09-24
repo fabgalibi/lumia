@@ -22,9 +22,40 @@ export const LevelIndicator: React.FC<LevelIndicatorProps> = ({
         display: 'flex',
         flexDirection: 'column',
         alignSelf: 'stretch',
-        gap: '12px'
+        gap: '12px',
+        position: 'relative'
       }}
     >
+      {/* Ícone do foguete - posicionado na ponta da barra laranja */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '-12px',
+          left: `calc(${(level / totalLevels) * 100}% - 78px)`,
+          width: '63.64px',
+          height: '63.64px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 10
+        }}
+      >
+        <div
+          style={{
+            width: '63.64px',
+            height: '63.64px',
+            backgroundColor: '#FFFFFF',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '24px'
+          }}
+        >
+          🚀
+        </div>
+      </div>
+
       {/* Background com gradiente */}
       <div
         style={{
@@ -45,43 +76,12 @@ export const LevelIndicator: React.FC<LevelIndicatorProps> = ({
             position: 'absolute',
             top: 0,
             left: 0,
-            right: 0,
             bottom: 0,
             background: 'linear-gradient(270deg, rgba(246, 102, 73, 1) 0%, rgba(147, 25, 0, 1) 100%)',
             borderRadius: '8px 40px 40px 8px',
-            width: '856px'
+            width: `${(level / totalLevels) * 856}px`
           }}
         />
-        
-        {/* Ícone do foguete */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '0px',
-            left: '0px',
-            width: '63.64px',
-            height: '63.64px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 2
-          }}
-        >
-          <div
-            style={{
-              width: '63.64px',
-              height: '63.64px',
-              backgroundColor: '#FFFFFF',
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '24px'
-            }}
-          >
-            🚀
-          </div>
-        </div>
       </div>
 
       {/* Níveis de conhecimento */}

@@ -38,7 +38,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
 
   return (
     <div 
-      className={`rounded-lg relative overflow-hidden ${className}`}
+      className={`rounded-lg relative overflow-visible ${className}`}
       style={{
         background: `url(${progressBarBg})`,
         backgroundSize: 'cover',
@@ -91,10 +91,9 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
               width: '63.64px',
               height: '63.64px',
               position: 'absolute',
-              left: `calc(${percentage}% - 32px)`,
-              top: '50%',
-              transform: 'translateY(-50%)',
-              zIndex: 20,
+              left: `calc(32px + (${percentage}% * (100% - 64px) / 100%) - 78px)`,
+              top: '-12px',
+              zIndex: 50,
               transition: 'left 0.3s ease-in-out'
             }}
           >

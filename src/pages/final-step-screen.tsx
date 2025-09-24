@@ -60,7 +60,7 @@ export const FinalStepScreen: React.FC = () => {
           flexDirection: 'column',
           alignSelf: 'stretch',
           gap: '40px',
-          padding: '96px 56px'
+          padding: '32px 56px'
         }}
       >
         {/* Título */}
