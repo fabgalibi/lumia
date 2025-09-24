@@ -6,13 +6,15 @@ interface InfoCardProps {
   title: string;
   onEdit: () => void;
   children: React.ReactNode;
+  screenSize?: 'mobile' | 'tablet' | 'notebook' | 'desktop';
 }
 
 export const InfoCard: React.FC<InfoCardProps> = ({
   icon,
   title,
   onEdit,
-  children
+  children,
+  screenSize = 'desktop'
 }) => {
   return (
     <div
@@ -21,7 +23,8 @@ export const InfoCard: React.FC<InfoCardProps> = ({
         flexDirection: 'column',
         alignSelf: 'stretch',
         border: '1px solid #2C2C45',
-        borderRadius: '8px'
+        borderRadius: '8px',
+        width: '100%'
       }}
     >
       {/* Header */}
@@ -52,10 +55,10 @@ export const InfoCard: React.FC<InfoCardProps> = ({
           <h3
             style={{
               fontFamily: 'Sora',
-              fontWeight: 400,
+              fontWeight: 600,
               fontStyle: 'Regular',
-              fontSize: '18px',
-              lineHeight: '28px',
+              fontSize: screenSize === 'mobile' ? '14px' : '18px',
+              lineHeight: screenSize === 'mobile' ? '1.43em' : '28px',
               letterSpacing: '0%',
               color: '#F0F0F1',
               margin: 0
@@ -73,12 +76,13 @@ export const InfoCard: React.FC<InfoCardProps> = ({
             justifyContent: 'center',
             alignItems: 'center',
             gap: '6px',
-            padding: '8px 12px',
+            padding: screenSize === 'mobile' ? '6px 8px' : '8px 12px',
             backgroundColor: 'transparent',
             border: 'none',
             borderRadius: '6px',
             cursor: 'pointer',
-            transition: 'all 0.2s ease'
+            transition: 'all 0.2s ease',
+            flexShrink: 0
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = 'rgba(240, 240, 241, 0.05)';
@@ -95,10 +99,11 @@ export const InfoCard: React.FC<InfoCardProps> = ({
               fontSize: '14px',
               lineHeight: '1.43em',
               letterSpacing: '0%',
-              color: '#FFFFFF'
+              color: '#FFFFFF',
+              whiteSpace: 'nowrap'
             }}
           >
-            Editar informações
+            {screenSize === 'mobile' ? 'Editar' : 'Editar informações'}
           </span>
           <Edit03
             width="20"

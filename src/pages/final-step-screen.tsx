@@ -54,78 +54,85 @@ export const FinalStepScreen: React.FC = () => {
       onBack={handleBackToKnowledge}
       onNext={handleFinish}
     >
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignSelf: 'stretch',
-          gap: '40px',
-          padding: '32px 56px'
-        }}
-      >
-        {/* Título */}
+      {(screenSize) => (
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
             alignSelf: 'stretch',
-            gap: '32px'
+            gap: screenSize === 'mobile' ? '16px' : '40px',
+            padding: screenSize === 'mobile' ? '0px' : '32px 56px'
           }}
         >
-          <h1
+          {/* Título */}
+          <div
             style={{
-              fontFamily: 'Sora',
-              fontWeight: 400,
-              fontSize: '20px',
-              lineHeight: '1.5em',
-              color: '#FFFFFF',
-              margin: 0
+              display: 'flex',
+              flexDirection: 'column',
+              alignSelf: 'stretch',
+              gap: '32px'
             }}
           >
-            Confirme as informações preenchidas por você nas etapas anteriores nos campos abaixo
-          </h1>
+            <h1
+              style={{
+                fontFamily: 'Sora',
+                fontWeight: 400,
+                fontSize: screenSize === 'mobile' ? '16px' : '20px',
+                lineHeight: '1.5em',
+                color: '#FFFFFF',
+                margin: 0
+              }}
+            >
+              Confirme as informações preenchidas por você nas etapas anteriores nos campos abaixo
+            </h1>
+          </div>
+
+          {/* Cards de informações */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignSelf: 'stretch',
+              gap: screenSize === 'mobile' ? '16px' : '24px'
+            }}
+          >
+            {/* Área de Estudo */}
+            <StudyAreaSection
+              selectedArea={selectedArea}
+              onEdit={handleEditArea}
+              screenSize={screenSize}
+            />
+
+            {/* Preparação */}
+            <PreparationSection
+              preparationData={preparationData}
+              onEdit={handleEditPreparation}
+              screenSize={screenSize}
+            />
+
+            {/* Disponibilidade */}
+            <AvailabilitySection
+              availabilityData={availabilityData}
+              onEdit={handleEditAvailability}
+              screenSize={screenSize}
+            />
+
+            {/* Trajetória */}
+            <TrajectorySection
+              trajectoryData={trajectoryData}
+              onEdit={handleEditTrajectory}
+              screenSize={screenSize}
+            />
+
+            {/* Conhecimentos */}
+            <KnowledgeSection
+              knowledgeData={knowledgeData}
+              onEdit={handleEditKnowledge}
+              screenSize={screenSize}
+            />
+          </div>
         </div>
-
-        {/* Cards de informações */}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignSelf: 'stretch',
-            gap: '24px'
-          }}
-        >
-          {/* Área de Estudo */}
-          <StudyAreaSection
-            selectedArea={selectedArea}
-            onEdit={handleEditArea}
-          />
-
-          {/* Preparação */}
-          <PreparationSection
-            preparationData={preparationData}
-            onEdit={handleEditPreparation}
-          />
-
-          {/* Disponibilidade */}
-          <AvailabilitySection
-            availabilityData={availabilityData}
-            onEdit={handleEditAvailability}
-          />
-
-          {/* Trajetória */}
-          <TrajectorySection
-            trajectoryData={trajectoryData}
-            onEdit={handleEditTrajectory}
-          />
-
-          {/* Conhecimentos */}
-          <KnowledgeSection
-            knowledgeData={knowledgeData}
-            onEdit={handleEditKnowledge}
-          />
-        </div>
-      </div>
+      )}
     </ProfileLayout>
   );
 };

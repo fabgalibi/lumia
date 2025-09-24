@@ -2,6 +2,8 @@ import React from 'react';
 import { InfoCard } from '../info-card';
 import { AvailabilityIcon } from '../section-icons';
 import { getStudyTimeName, getStartDateName } from '../data-helpers';
+import { CardContent } from '../card-content';
+import { CardQuestionAnswer } from '../card-question-answer';
 
 interface AvailabilitySectionProps {
   availabilityData?: {
@@ -10,129 +12,33 @@ interface AvailabilitySectionProps {
     selectedDate?: Date;
   };
   onEdit: () => void;
+  screenSize?: 'mobile' | 'tablet' | 'notebook' | 'desktop';
 }
 
 export const AvailabilitySection: React.FC<AvailabilitySectionProps> = ({
   availabilityData,
-  onEdit
+  onEdit,
+  screenSize = 'desktop'
 }) => {
   return (
     <InfoCard
       icon={<AvailabilityIcon />}
       title="Disponibilidade"
       onEdit={onEdit}
+      screenSize={screenSize}
     >
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          alignSelf: 'stretch',
-          gap: '16px'
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            alignSelf: 'stretch',
-            gap: '8px'
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: '8px'
-            }}
-          >
-            <div
-              style={{
-                width: '4px',
-                height: '4px',
-                backgroundColor: '#FFFFFF',
-                borderRadius: '1px'
-              }}
-            />
-            <span
-              style={{
-                fontFamily: 'Sora',
-                fontWeight: 400,
-                fontSize: '18px',
-                lineHeight: '1.56em',
-                color: '#FFFFFF'
-              }}
-            >
-              Tempo dedicado aos estudos
-            </span>
-          </div>
-          <span
-            style={{
-              fontFamily: 'Sora',
-              fontWeight: 600,
-              fontSize: '18px',
-              lineHeight: '1.56em',
-              color: '#FFFFFF'
-            }}
-          >
-            {getStudyTimeName(availabilityData?.selectedStudyTime || 'normal')}
-          </span>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            alignSelf: 'stretch',
-            gap: '8px'
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: '8px'
-            }}
-          >
-            <div
-              style={{
-                width: '4px',
-                height: '4px',
-                backgroundColor: '#FFFFFF',
-                borderRadius: '1px'
-              }}
-            />
-            <span
-              style={{
-                fontFamily: 'Sora',
-                fontWeight: 400,
-                fontSize: '18px',
-                lineHeight: '1.56em',
-                color: '#FFFFFF'
-              }}
-            >
-              Quando pretende começar
-            </span>
-          </div>
-          <span
-            style={{
-              fontFamily: 'Sora',
-              fontWeight: 600,
-              fontSize: '18px',
-              lineHeight: '1.56em',
-              color: '#FFFFFF'
-            }}
-          >
-            {getStartDateName(availabilityData?.selectedStartDate || 'specific')}
-          </span>
-        </div>
-      </div>
+      <CardContent screenSize={screenSize} layout="multiple">
+        <CardQuestionAnswer
+          question="Tempo dedicado aos estudos"
+          answer={getStudyTimeName(availabilityData?.selectedStudyTime || 'normal')}
+          screenSize={screenSize}
+        />
+        <CardQuestionAnswer
+          question="Quando pretende começar"
+          answer={getStartDateName(availabilityData?.selectedStartDate || 'specific')}
+          screenSize={screenSize}
+        />
+      </CardContent>
     </InfoCard>
   );
 };

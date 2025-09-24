@@ -2,74 +2,34 @@ import React from 'react';
 import { InfoCard } from '../info-card';
 import { StudyAreaIcon } from '../section-icons';
 import { getAreaName } from '../data-helpers';
+import { CardContent } from '../card-content';
+import { CardQuestionAnswer } from '../card-question-answer';
 
 interface StudyAreaSectionProps {
   selectedArea: string;
   onEdit: () => void;
+  screenSize?: 'mobile' | 'tablet' | 'notebook' | 'desktop';
 }
 
 export const StudyAreaSection: React.FC<StudyAreaSectionProps> = ({
   selectedArea,
-  onEdit
+  onEdit,
+  screenSize = 'desktop'
 }) => {
   return (
     <InfoCard
       icon={<StudyAreaIcon />}
       title="Área de Estudo"
       onEdit={onEdit}
+      screenSize={screenSize}
     >
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          alignSelf: 'stretch',
-          gap: '8px'
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: '8px'
-          }}
-        >
-          <div
-            style={{
-              width: '4px',
-              height: '4px',
-              backgroundColor: '#FFFFFF',
-              borderRadius: '1px'
-            }}
-          />
-          <span
-            style={{
-              fontFamily: 'Sora',
-              fontWeight: 400,
-              fontStyle: 'Regular',
-              fontSize: '18px',
-              lineHeight: '1.56em',
-              letterSpacing: '0%',
-              color: '#ECECED'
-            }}
-          >
-            Área de estudo selecionada
-          </span>
-        </div>
-        <span
-          style={{
-            fontFamily: 'Sora',
-            fontWeight: 600,
-            fontSize: '18px',
-            lineHeight: '1.56em',
-            color: '#FFFFFF'
-          }}
-        >
-          {getAreaName(selectedArea)}
-        </span>
-      </div>
+      <CardContent screenSize={screenSize} layout="single">
+        <CardQuestionAnswer
+          question="Área de estudo selecionada"
+          answer={getAreaName(selectedArea)}
+          screenSize={screenSize}
+        />
+      </CardContent>
     </InfoCard>
   );
 };

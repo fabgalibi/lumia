@@ -5,6 +5,7 @@ interface KnowledgeLevelProgressProps {
   currentLevel: number;
   totalLevels?: number;
   className?: string;
+  screenSize?: 'mobile' | 'tablet' | 'notebook' | 'desktop';
 }
 
 const levelData = [
@@ -105,64 +106,73 @@ const LevelIcon: React.FC<{ number: number; isActive: boolean }> = ({ number, is
 export const KnowledgeLevelProgress: React.FC<KnowledgeLevelProgressProps> = ({
   currentLevel,
   totalLevels = 4,
-  className = ""
+  className = "",
+  screenSize = 'desktop'
 }) => {
   const percentage = (currentLevel / totalLevels) * 100;
 
   return (
     <div 
-      className={`flex flex-col gap-4 ${className}`}
+      className={`flex flex-col ${className}`}
       style={{
-        width: '1296px',
-        height: '84px'
+        width: '100%',
+        height: 'auto',
+        minHeight: '84px',
+        gap: screenSize === 'mobile' ? '8px' : screenSize === 'tablet' ? '12px' : '16px'
       }}
     >
       {/* Progress Bar */}
-      <ProgressBar
-        percentage={percentage}
-        showRocket={true}
-        showLabel={false}
-        label=""
-        height="40px"
-        padding="0 32px"
-      />
+      <div style={{ flexShrink: 0 }}>
+        <ProgressBar
+          percentage={percentage}
+          showRocket={true}
+          showLabel={false}
+          label=""
+          height="40px"
+          padding="0"
+        />
+      </div>
 
       {/* Level Indicators */}
       <div 
         className="flex justify-between items-center"
-        style={{
-          padding: '0 24px',
-          gap: '74px',
-          flexWrap: 'nowrap'
-        }}
+          style={{
+            padding: '0',
+            gap: screenSize === 'mobile' ? '20px' : screenSize === 'tablet' ? '40px' : '74px',
+            flexWrap: 'nowrap'
+          }}
       >
         {levelData.map((level) => (
           <div
             key={level.number}
-            className="flex items-center"
-            style={{ 
-              gap: '12px',
-              width: 'fit-content',
-              height: 'fit-content'
-            }}
+            className={`flex ${screenSize === 'notebook' ? 'items-start' : 'items-center'}`}
+                   style={{
+                     gap: (screenSize === 'mobile' || screenSize === 'tablet') ? '0' : '12px',
+                     width: 'fit-content',
+                     height: 'fit-content'
+                   }}
           >
             <LevelIcon 
               number={level.number} 
               isActive={level.number === currentLevel}
             />
-            <span
-              style={{
-                fontFamily: 'Sora',
-                fontWeight: 400,
-                fontSize: '14px',
-                lineHeight: '1.43em',
-                color: level.number === currentLevel ? '#F48E2F' : '#FFFFFF',
-                whiteSpace: 'nowrap',
-                textAlign: 'left'
-              }}
-            >
-              {level.text}
-            </span>
+                   {(screenSize === 'notebook' || screenSize === 'desktop') && (
+                     <span
+                       style={{
+                         fontFamily: 'Sora',
+                         fontWeight: 400,
+                         fontSize: '14px',
+                         lineHeight: '1.43em',
+                         color: level.number === currentLevel ? '#F48E2F' : '#FFFFFF',
+                         whiteSpace: screenSize === 'notebook' ? 'normal' : 'nowrap',
+                         textAlign: 'left',
+                         maxWidth: screenSize === 'notebook' ? '120px' : 'none',
+                         wordWrap: screenSize === 'notebook' ? 'break-word' : 'normal'
+                       }}
+                     >
+                       {level.text}
+                     </span>
+                   )}
           </div>
         ))}
       </div>

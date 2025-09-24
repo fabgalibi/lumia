@@ -24,7 +24,7 @@ export const LevelIndicator: React.FC<LevelIndicatorProps> = ({
         alignSelf: 'stretch',
         gap: '12px',
         position: 'relative',
-        width: '1296px',
+        width: '100%',
         height: '84px'
       }}
     >

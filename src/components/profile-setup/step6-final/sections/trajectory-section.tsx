@@ -2,6 +2,8 @@ import React from 'react';
 import { InfoCard } from '../info-card';
 import { TrajectoryIcon } from '../section-icons';
 import { getTrajectoryStudyTimeName, getWorkStatusName } from '../data-helpers';
+import { CardContent } from '../card-content';
+import { CardQuestionAnswer } from '../card-question-answer';
 
 interface TrajectorySectionProps {
   trajectoryData?: {
@@ -9,229 +11,43 @@ interface TrajectorySectionProps {
     isWorking: string;
   };
   onEdit: () => void;
+  screenSize?: 'mobile' | 'tablet' | 'notebook' | 'desktop';
 }
 
 export const TrajectorySection: React.FC<TrajectorySectionProps> = ({
   trajectoryData,
-  onEdit
+  onEdit,
+  screenSize = 'desktop'
 }) => {
   return (
     <InfoCard
       icon={<TrajectoryIcon />}
       title="Trajetória"
       onEdit={onEdit}
+      screenSize={screenSize}
     >
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          alignSelf: 'stretch',
-          gap: '16px'
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            alignSelf: 'stretch',
-            gap: '8px'
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: '8px'
-            }}
-          >
-            <div
-              style={{
-                width: '4px',
-                height: '4px',
-                backgroundColor: '#FFFFFF',
-                borderRadius: '1px'
-              }}
-            />
-            <span
-              style={{
-                fontFamily: 'Sora',
-                fontWeight: 400,
-                fontSize: '18px',
-                lineHeight: '1.56em',
-                color: '#FFFFFF'
-              }}
-            >
-              Data de nascimento
-            </span>
-          </div>
-          <span
-            style={{
-              fontFamily: 'Sora',
-              fontWeight: 600,
-              fontSize: '18px',
-              lineHeight: '1.56em',
-              color: '#FFFFFF'
-            }}
-          >
-            30/09/2005
-          </span>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            alignSelf: 'stretch',
-            gap: '8px'
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: '8px'
-            }}
-          >
-            <div
-              style={{
-                width: '4px',
-                height: '4px',
-                backgroundColor: '#FFFFFF',
-                borderRadius: '1px'
-              }}
-            />
-            <span
-              style={{
-                fontFamily: 'Sora',
-                fontWeight: 400,
-                fontSize: '18px',
-                lineHeight: '1.56em',
-                color: '#FFFFFF'
-              }}
-            >
-              Formação
-            </span>
-          </div>
-          <span
-            style={{
-              fontFamily: 'Sora',
-              fontWeight: 600,
-              fontSize: '18px',
-              lineHeight: '1.56em',
-              color: '#FFFFFF'
-            }}
-          >
-            Ensino Superior (Incompleto)
-          </span>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            alignSelf: 'stretch',
-            gap: '8px'
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: '8px'
-            }}
-          >
-            <div
-              style={{
-                width: '4px',
-                height: '4px',
-                backgroundColor: '#FFFFFF',
-                borderRadius: '1px'
-              }}
-            />
-            <span
-              style={{
-                fontFamily: 'Sora',
-                fontWeight: 400,
-                fontSize: '18px',
-                lineHeight: '1.56em',
-                color: '#FFFFFF'
-              }}
-            >
-              Tempo de estudo
-            </span>
-          </div>
-          <span
-            style={{
-              fontFamily: 'Sora',
-              fontWeight: 600,
-              fontSize: '18px',
-              lineHeight: '1.56em',
-              color: '#FFFFFF'
-            }}
-          >
-            {getTrajectoryStudyTimeName(trajectoryData?.studyTime || '2-to-4')}
-          </span>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            alignSelf: 'stretch',
-            gap: '8px'
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: '8px'
-            }}
-          >
-            <div
-              style={{
-                width: '4px',
-                height: '4px',
-                backgroundColor: '#FFFFFF',
-                borderRadius: '1px'
-              }}
-            />
-            <span
-              style={{
-                fontFamily: 'Sora',
-                fontWeight: 400,
-                fontSize: '18px',
-                lineHeight: '1.56em',
-                color: '#FFFFFF'
-              }}
-            >
-              Trabalha atualmente?
-            </span>
-          </div>
-          <span
-            style={{
-              fontFamily: 'Sora',
-              fontWeight: 600,
-              fontSize: '18px',
-              lineHeight: '1.56em',
-              color: '#FFFFFF'
-            }}
-          >
-            {getWorkStatusName(trajectoryData?.isWorking || 'yes')}
-          </span>
-        </div>
-      </div>
+      <CardContent screenSize={screenSize} layout="multiple">
+        <CardQuestionAnswer
+          question="Data de nascimento"
+          answer="30/09/2005"
+          screenSize={screenSize}
+        />
+        <CardQuestionAnswer
+          question="Formação"
+          answer="Ensino Superior (Incompleto)"
+          screenSize={screenSize}
+        />
+        <CardQuestionAnswer
+          question="Tempo de estudo"
+          answer={getTrajectoryStudyTimeName(trajectoryData?.studyTime || '2-to-4')}
+          screenSize={screenSize}
+        />
+        <CardQuestionAnswer
+          question="Trabalha atualmente?"
+          answer={getWorkStatusName(trajectoryData?.isWorking || 'yes')}
+          screenSize={screenSize}
+        />
+      </CardContent>
     </InfoCard>
   );
 };
