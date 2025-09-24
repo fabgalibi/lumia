@@ -23,7 +23,9 @@ export const LevelIndicator: React.FC<LevelIndicatorProps> = ({
         flexDirection: 'column',
         alignSelf: 'stretch',
         gap: '12px',
-        position: 'relative'
+        position: 'relative',
+        width: '1296px',
+        height: '84px'
       }}
     >
       {/* Ícone do foguete - posicionado na ponta da barra laranja */}
@@ -93,7 +95,8 @@ export const LevelIndicator: React.FC<LevelIndicatorProps> = ({
           alignItems: 'center',
           alignSelf: 'stretch',
           gap: '74px',
-          padding: '0px 24px'
+          padding: '0px 24px',
+          flexWrap: 'nowrap'
         }}
       >
         {levels.map((levelItem) => (
@@ -103,7 +106,9 @@ export const LevelIndicator: React.FC<LevelIndicatorProps> = ({
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
-              gap: '12px'
+              gap: '12px',
+              width: 'fit-content',
+              height: 'fit-content'
             }}
           >
             {/* Ícone do nível */}
@@ -112,14 +117,30 @@ export const LevelIndicator: React.FC<LevelIndicatorProps> = ({
                 width: '32px',
                 height: '32px',
                 borderRadius: '16px',
-                backgroundColor: levelItem.id === level ? '#DC6803' : '#61656C',
+                backgroundColor: levelItem.id === level ? '#4E1D09' : '#13161B',
                 border: levelItem.id === level ? '1px solid #93370D' : '1px solid #373A41',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                position: 'relative'
+                position: 'relative',
+                flexShrink: 0
               }}
             >
+              {/* Gradient mask */}
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '16px',
+                  background: 'linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%)',
+                  zIndex: 1
+                }}
+              />
+              
+              {/* Icon wrapper */}
               <div
                 style={{
                   width: '24px',
@@ -128,7 +149,9 @@ export const LevelIndicator: React.FC<LevelIndicatorProps> = ({
                   backgroundColor: levelItem.id === level ? '#DC6803' : '#61656C',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
+                  position: 'relative',
+                  zIndex: 2
                 }}
               >
                 <span
@@ -152,7 +175,8 @@ export const LevelIndicator: React.FC<LevelIndicatorProps> = ({
                 fontSize: '14px',
                 lineHeight: '1.43em',
                 color: levelItem.id === level ? '#F48E2F' : '#FFFFFF',
-                textAlign: 'center'
+                textAlign: 'left',
+                whiteSpace: 'nowrap'
               }}
             >
               {levelItem.label}

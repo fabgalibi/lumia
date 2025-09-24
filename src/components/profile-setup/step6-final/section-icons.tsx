@@ -1,123 +1,99 @@
 import React from 'react';
-import { BookOpen01, ZapFast, CalendarHeart02, Route, GraduationHat02 } from '@untitledui/icons';
 
 interface SectionIconProps {
   children: React.ReactNode;
 }
 
 const SectionIcon: React.FC<SectionIconProps> = ({ children }) => (
-  <div
-    style={{
-      width: '32px',
-      height: '32px',
-      borderRadius: '16px',
-      position: 'relative'
-    }}
-  >
-    {/* Background with gradient mask */}
-    <div
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '32px',
-        height: '32px',
-        borderRadius: '16px',
-        background: 'linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%)',
-        border: '1px solid #93370D'
-      }}
-    />
-    
-    {/* Background color circle */}
-    <div
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '32px',
-        height: '32px',
-        borderRadius: '16px',
-        backgroundColor: '#4E1D09',
-        border: '1px solid #93370D'
-      }}
-    />
-    
-    {/* Icon wrapper */}
-    <div
-      style={{
-        position: 'absolute',
-        top: '4px',
-        left: '4px',
-        width: '24px',
-        height: '24px',
-        borderRadius: '12px',
-        backgroundColor: '#DC6803',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
-    >
-      {children}
-    </div>
-  </div>
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <mask id="mask0_14978_4464" style={{maskType:"alpha"}} maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+      <rect width="32" height="32" fill="url(#paint0_linear_14978_4464)"/>
+    </mask>
+    <g mask="url(#mask0_14978_4464)">
+      <circle cx="16" cy="16" r="15.5" fill="#4E1D09" stroke="#93370D"/>
+    </g>
+    <rect x="4" y="4" width="24" height="24" rx="12" fill="#DC6803"/>
+    {children}
+    <defs>
+      <linearGradient id="paint0_linear_14978_4464" x1="16" y1="0" x2="16" y2="32" gradientUnits="userSpaceOnUse">
+        <stop/>
+        <stop offset="1" stopOpacity="0"/>
+      </linearGradient>
+    </defs>
+  </svg>
 );
 
 export const StudyAreaIcon = () => (
   <SectionIcon>
-    <BookOpen01
-      width="16"
-      height="16"
-      stroke="#FFFFFF"
-      strokeWidth="1.67"
-      opacity="1"
-    />
+    <g transform="translate(8, 8)">
+      <path 
+        d="M7.99967 14L7.93297 13.8999C7.46988 13.2053 7.23833 12.858 6.93241 12.6065C6.66158 12.3839 6.34952 12.2169 6.01408 12.1151C5.63517 12 5.21775 12 4.38289 12H3.46634C2.7196 12 2.34624 12 2.06102 11.8547C1.81014 11.7268 1.60616 11.5229 1.47833 11.272C1.33301 10.9868 1.33301 10.6134 1.33301 9.86667V4.13333C1.33301 3.3866 1.33301 3.01323 1.47833 2.72801C1.60616 2.47713 1.81014 2.27316 2.06102 2.14532C2.34624 2 2.7196 2 3.46634 2H3.73301C5.22648 2 5.97322 2 6.54365 2.29065C7.04541 2.54631 7.45336 2.95426 7.70903 3.45603C7.99967 4.02646 7.99967 4.77319 7.99967 6.26667M7.99967 14V6.26667M7.99967 14L8.06638 13.8999C8.52947 13.2053 8.76102 12.858 9.06694 12.6065C9.33777 12.3839 9.64983 12.2169 9.98527 12.1151C10.3642 12 10.7816 12 11.6165 12H12.533C13.2797 12 13.6531 12 13.9383 11.8547C14.1892 11.7268 14.3932 11.5229 14.521 11.272C14.6663 10.9868 14.6663 10.6134 14.6663 9.86667V4.13333C14.6663 3.3866 14.6663 3.01323 14.521 2.72801C14.3932 2.47713 14.1892 2.27316 13.9383 2.14532C13.6531 2 13.2797 2 12.533 2H12.2663C10.7729 2 10.0261 2 9.4557 2.29065C8.95393 2.54631 8.54599 2.95426 8.29032 3.45603C7.99967 4.02646 7.99967 4.77319 7.99967 6.26667" 
+        stroke="white" 
+        strokeWidth="1.33" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+      />
+    </g>
   </SectionIcon>
 );
 
 export const PreparationIcon = () => (
   <SectionIcon>
-    <ZapFast
-      width="16"
-      height="16"
-      stroke="#FFFFFF"
-      strokeWidth="1.67"
-      opacity="1"
-    />
+    <g transform="translate(4, 4)">
+      <path 
+        d="M9.99967 15.6667H6.33301M8.33301 12H5.33301M9.99967 8.33333H6.66634M15.333 6L10.9354 12.1567C10.7407 12.4292 10.6434 12.5654 10.6476 12.679C10.6513 12.7779 10.6987 12.8701 10.7771 12.9305C10.8671 13 11.0345 13 11.3694 13H14.6663L13.9997 18L18.3973 11.8433C18.5919 11.5708 18.6893 11.4346 18.6851 11.321C18.6814 11.2221 18.634 11.1299 18.5556 11.0695C18.4656 11 18.2982 11 17.9633 11H14.6663L15.333 6Z" 
+        stroke="white" 
+        strokeWidth="1.33" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+      />
+    </g>
   </SectionIcon>
 );
 
 export const AvailabilityIcon = () => (
   <SectionIcon>
-    <CalendarHeart02
-      width="16"
-      height="16"
-      stroke="#FFFFFF"
-      strokeWidth="1.67"
-      opacity="1"
-    />
+    <g transform="translate(8, 8)">
+      <path 
+        d="M14 6.66671H2M14 7.66671V5.86671C14 4.7466 14 4.18655 13.782 3.75873C13.5903 3.3824 13.2843 3.07644 12.908 2.88469C12.4802 2.66671 11.9201 2.66671 10.8 2.66671H5.2C4.0799 2.66671 3.51984 2.66671 3.09202 2.88469C2.71569 3.07644 2.40973 3.3824 2.21799 3.75873C2 4.18655 2 4.7466 2 5.86671V11.4667C2 12.5868 2 13.1469 2.21799 13.5747C2.40973 13.951 2.71569 14.257 3.09202 14.4487C3.51984 14.6667 4.0799 14.6667 5.2 14.6667H8.33333M10.6667 1.33337V4.00004M5.33333 1.33337V4.00004M11.6651 10.4747C11.1986 9.95524 10.4206 9.81552 9.8361 10.2912C9.25158 10.7668 9.16929 11.562 9.62831 12.1246C10.0873 12.6871 11.6651 14 11.6651 14C11.6651 14 13.2428 12.6871 13.7018 12.1246C14.1608 11.562 14.0886 10.7618 13.494 10.2912C12.8995 9.82052 12.1316 9.95524 11.6651 10.4747Z" 
+        stroke="white" 
+        strokeWidth="1.33" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+      />
+    </g>
   </SectionIcon>
 );
 
 export const TrajectoryIcon = () => (
   <SectionIcon>
-    <Route
-      width="16"
-      height="16"
-      stroke="#FFFFFF"
-      strokeWidth="1.67"
-      opacity="1"
-    />
+    <g transform="translate(8, 8)" clipPath="url(#clip0_15677_8729)">
+      <path 
+        d="M7.66634 3.33337H7.95594C9.98744 3.33337 11.0032 3.33337 11.3888 3.69823C11.7221 4.01362 11.8698 4.47823 11.7798 4.92818C11.6757 5.44872 10.8464 6.03528 9.18786 7.20839L6.47815 9.12502C4.81961 10.2981 3.99033 10.8847 3.88623 11.4052C3.79625 11.8552 3.94395 12.3198 4.27725 12.6352C4.66283 13 5.67858 13 7.71008 13H8.33301M5.33301 3.33337C5.33301 4.43794 4.43758 5.33337 3.33301 5.33337C2.22844 5.33337 1.33301 4.43794 1.33301 3.33337C1.33301 2.2288 2.22844 1.33337 3.33301 1.33337C4.43758 1.33337 5.33301 2.2288 5.33301 3.33337ZM14.6663 12.6667C14.6663 13.7713 13.7709 14.6667 12.6663 14.6667C11.5618 14.6667 10.6663 13.7713 10.6663 12.6667C10.6663 11.5621 11.5618 10.6667 12.6663 10.6667C13.7709 10.6667 14.6663 11.5621 14.6663 12.6667Z" 
+        stroke="white" 
+        strokeWidth="1.33" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+      />
+    </g>
+    <defs>
+      <clipPath id="clip0_15677_8729">
+        <rect width="16" height="16" fill="white"/>
+      </clipPath>
+    </defs>
   </SectionIcon>
 );
 
 export const KnowledgeIcon = () => (
   <SectionIcon>
-    <GraduationHat02
-      width="16"
-      height="16"
-      stroke="#FFFFFF"
-      strokeWidth="1.67"
-      opacity="1"
-    />
+    <g transform="translate(8, 8)">
+      <path 
+        d="M11.333 9.66667V7.66295C11.333 7.5433 11.333 7.48348 11.3148 7.43066C11.2987 7.38395 11.2724 7.34141 11.2378 7.30611C11.1987 7.26619 11.1452 7.23944 11.0382 7.18593L7.99967 5.66667M2.66634 6.33334V10.8711C2.66634 11.119 2.66634 11.243 2.70502 11.3515C2.73921 11.4475 2.79494 11.5343 2.86793 11.6054C2.95048 11.6858 3.06319 11.7374 3.28858 11.8408L7.55524 13.7963C7.71873 13.8712 7.80048 13.9087 7.88563 13.9235C7.9611 13.9366 8.03825 13.9366 8.11371 13.9235C8.19887 13.9087 8.28062 13.8712 8.44411 13.7963L12.7108 11.8408C12.9362 11.7374 13.0489 11.6858 13.1314 11.6054C13.2044 11.5343 13.2601 11.4475 13.2943 11.3515C13.333 11.243 13.333 11.119 13.333 10.8711V6.33334M1.33301 5.66667L7.76116 2.45259C7.84862 2.40887 7.89234 2.387 7.93821 2.3784C7.97883 2.37078 8.02052 2.37078 8.06114 2.3784C8.10701 2.387 8.15073 2.40887 8.23819 2.45259L14.6663 5.66667L8.23819 8.88075C8.15073 8.92447 8.10701 8.94634 8.06114 8.95494C8.02052 8.96256 7.97883 8.96256 7.93821 8.95494C7.89234 8.94634 7.84862 8.92447 7.76116 8.88075L1.33301 5.66667Z" 
+        stroke="white" 
+        strokeWidth="1.33" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+      />
+    </g>
   </SectionIcon>
 );

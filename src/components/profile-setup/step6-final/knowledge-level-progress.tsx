@@ -110,7 +110,13 @@ export const KnowledgeLevelProgress: React.FC<KnowledgeLevelProgressProps> = ({
   const percentage = (currentLevel / totalLevels) * 100;
 
   return (
-    <div className={`flex flex-col gap-4 ${className}`}>
+    <div 
+      className={`flex flex-col gap-4 ${className}`}
+      style={{
+        width: '1296px',
+        height: '84px'
+      }}
+    >
       {/* Progress Bar */}
       <ProgressBar
         percentage={percentage}
@@ -126,14 +132,19 @@ export const KnowledgeLevelProgress: React.FC<KnowledgeLevelProgressProps> = ({
         className="flex justify-between items-center"
         style={{
           padding: '0 24px',
-          gap: '74px'
+          gap: '74px',
+          flexWrap: 'nowrap'
         }}
       >
         {levelData.map((level) => (
           <div
             key={level.number}
             className="flex items-center"
-            style={{ gap: '12px' }}
+            style={{ 
+              gap: '12px',
+              width: 'fit-content',
+              height: 'fit-content'
+            }}
           >
             <LevelIcon 
               number={level.number} 
@@ -146,7 +157,8 @@ export const KnowledgeLevelProgress: React.FC<KnowledgeLevelProgressProps> = ({
                 fontSize: '14px',
                 lineHeight: '1.43em',
                 color: level.number === currentLevel ? '#F48E2F' : '#FFFFFF',
-                whiteSpace: 'nowrap'
+                whiteSpace: 'nowrap',
+                textAlign: 'left'
               }}
             >
               {level.text}

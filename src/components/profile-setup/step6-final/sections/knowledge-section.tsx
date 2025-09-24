@@ -38,7 +38,8 @@ export const KnowledgeSection: React.FC<KnowledgeSectionProps> = ({
             justifyContent: 'space-between',
             alignItems: 'center',
             alignSelf: 'stretch',
-            gap: '8px'
+            gap: '8px',
+            padding: '0px 24px'
           }}
         >
           <div
