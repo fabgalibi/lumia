@@ -38,7 +38,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
 
   return (
     <div 
-      className={`rounded-lg relative overflow-visible ${className}`}
+      className={`rounded-lg relative overflow-hidden ${className}`}
       style={{
         background: `url(${progressBarBg})`,
         backgroundSize: 'cover',
@@ -64,7 +64,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
       {/* Conteúdo da barra */}
       <div className="relative z-10 flex items-center w-full" style={{ height }}>
         {/* Texto do percentual - posicionado sobre a barra laranja */}
-        {showLabel && label && (
+        {showLabel && label && label.trim() !== '' && (
           <span 
             className="text-white absolute"
             style={{
@@ -75,7 +75,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
               left: getLabelPosition(),
               top: '50%',
               transform: 'translateY(-50%)',
-              zIndex: 15,
+              zIndex: 5,
               transition: 'left 0.3s ease-in-out'
             }}
           >
@@ -91,8 +91,11 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
               width: '63.64px',
               height: '63.64px',
               position: 'absolute',
-              left: `calc(32px + (${percentage}% * (100% - 64px) / 100%) - 78px)`,
-              top: '-12px',
+              left: showLabel && label && label.trim() !== '' 
+                ? `calc(${percentage}% - 38px)` 
+                : `calc(${percentage}% - 79px)`,
+              top: '50%',
+              transform: 'translateY(-50%)',
               zIndex: 50,
               transition: 'left 0.3s ease-in-out'
             }}

@@ -116,6 +116,7 @@ export const KnowledgeLevelProgress: React.FC<KnowledgeLevelProgressProps> = ({
         percentage={percentage}
         showRocket={true}
         showLabel={false}
+        label=""
         height="40px"
         padding="0 32px"
       />
