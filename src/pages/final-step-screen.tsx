@@ -20,7 +20,7 @@ export const FinalStepScreen: React.FC = () => {
   const handleFinish = () => {
     // Aqui você pode salvar todos os dados ou navegar para a próxima tela
     console.log('Dados finais:', state);
-    navigate('/dashboard'); // ou para onde for apropriado
+    navigate('/conclusion'); // Navegar para a tela de conclusão
   };
 
   const handleEditArea = () => {
