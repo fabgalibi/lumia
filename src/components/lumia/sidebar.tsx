@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useSidebar } from "@/contexts/sidebar-context";
+import { useMainContent } from "@/contexts/main-content-context";
 import { LogoutModal } from "@/components/modals/logout-modal";
 
 export const Sidebar = () => {
   const navigate = useNavigate();
   const { isCollapsed, toggleSidebar } = useSidebar();
+  const { setCurrentContent } = useMainContent();
   const [showTexts, setShowTexts] = useState(true);
   const [activeItem, setActiveItem] = useState("Início");
   const [isLogoutHovered, setIsLogoutHovered] = useState(false);
@@ -175,7 +177,12 @@ export const Sidebar = () => {
     setActiveItem(item.label);
     console.log(`Navegando para: ${item.path}`);
     console.log(`Item ativo agora: ${item.label}`);
-    // TODO: Implementar navegação quando as páginas estiverem criadas
+    
+    // Se for "Início", voltar para a home
+    if (item.label === "Início") {
+      setCurrentContent('home');
+    }
+    // TODO: Implementar navegação para outras páginas quando estiverem criadas
   };
 
   const handleLogoutClick = () => {

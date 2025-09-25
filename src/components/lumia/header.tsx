@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import { Timer } from "./timer";
 import { useSidebar } from "../../contexts/sidebar-context";
+import { useMainContent } from "../../contexts/main-content-context";
 
 export const Header = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [initialTime] = useState("00:00:00");
   const [isMobile, setIsMobile] = useState(false);
   const { toggleSidebar } = useSidebar();
+  const { setCurrentContent } = useMainContent();
+  const navigate = useNavigate();
 
   // Detectar se é mobile
   useEffect(() => {
@@ -162,7 +166,13 @@ export const Header = () => {
                   
                   {/* Menu Items */}
                   <div className="py-1">
-                    <button className="w-full px-4 py-2 text-left hover:bg-gray-700/50 transition-colors cursor-pointer">
+              <button
+                onClick={() => {
+                  setCurrentContent('account-settings');
+                  setIsUserMenuOpen(false);
+                }}
+                className="w-full px-4 py-2 text-left hover:bg-gray-700/50 transition-colors cursor-pointer"
+              >
                       <div className="flex items-center gap-3">
                         <div className="w-4 h-4 text-[#94979C]">
                           <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">

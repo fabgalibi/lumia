@@ -5,12 +5,15 @@ import { SprintSection } from "@/components/lumia/sprint-section";
 import StudyConsistencyCalendar from "@/components/lumia/study-consistency-calendar";
 import { GoalsTable } from "@/components/lumia/goals-table";
 import { Sidebar } from "@/components/lumia/sidebar";
+import { AccountSettingsContent } from "@/components/account-settings";
 import { SprintProvider, useSprint } from "@/contexts/sprint-context";
 import { SidebarProvider, useSidebar } from "@/contexts/sidebar-context";
+import { MainContentProvider, useMainContent } from "@/contexts/main-content-context";
 
 const HomeScreenContent = () => {
   const { progress } = useSprint();
   const { sidebarWidth } = useSidebar();
+  const { currentContent } = useMainContent();
   const [isMobile, setIsMobile] = useState(false);
 
   // Detectar se é mobile
@@ -36,12 +39,20 @@ const HomeScreenContent = () => {
       >
         <Header />
         <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 overflow-x-auto overflow-y-auto">
-          <StatsCards />
-          
-          <SprintSection externalProgress={progress} />
-          <StudyConsistencyCalendar />
-          
-          <GoalsTable />
+          {currentContent === 'home' && (
+            <>
+              <StatsCards />
+              <SprintSection externalProgress={progress} />
+              <StudyConsistencyCalendar />
+              <GoalsTable />
+            </>
+          )}
+          {currentContent === 'account-settings' && (
+            <AccountSettingsContent
+              onDeleteAccount={() => console.log('Deletar conta')}
+              onUpdatePhoto={() => console.log('Atualizar foto')}
+            />
+          )}
         </main>
       </div>
     </div>
@@ -52,7 +63,9 @@ export const HomeScreen = () => {
   return (
     <SprintProvider>
       <SidebarProvider>
-        <HomeScreenContent />
+        <MainContentProvider>
+          <HomeScreenContent />
+        </MainContentProvider>
       </SidebarProvider>
     </SprintProvider>
   );
