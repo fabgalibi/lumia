@@ -103,10 +103,10 @@ export const LogoutModal: React.FC<LogoutModalProps> = ({
                 console.log('Botão Cancelar clicado - fechando modal');
                 onClose();
               }}
-              onMouseDown={(e) => {
+              onMouseDown={(_e) => {
                 console.log('Mouse down no botão Cancelar');
               }}
-              onMouseUp={(e) => {
+              onMouseUp={(_e) => {
                 console.log('Mouse up no botão Cancelar');
               }}
               className="bg-[#2D2D45] text-[#CECFD2] rounded-lg hover:bg-[#333346] transition-colors duration-200 cursor-pointer"

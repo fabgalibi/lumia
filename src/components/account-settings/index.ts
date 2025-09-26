@@ -6,5 +6,3 @@ export { FormField } from './form-field';
 export { InputField } from './input-field';
 export { ButtonGroup } from './button-group';
 export { CheckboxField } from './checkbox-field';
-export { SectionDivider } from './section-divider';
-export { FormFooter } from './form-footer';

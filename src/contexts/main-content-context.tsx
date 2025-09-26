@@ -30,3 +30,4 @@ export const MainContentProvider: React.FC<MainContentProviderProps> = ({ childr
     </MainContentContext.Provider>
   );
 };
+

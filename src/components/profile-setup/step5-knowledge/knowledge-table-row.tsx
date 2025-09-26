@@ -39,10 +39,7 @@ export default function KnowledgeTableRow({
         gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr',
         borderBottom: index === totalSubjects - 1 ? 'none' : '1px solid #2C2C45',
         backgroundColor: index % 2 === 0 ? '#252532' : '#252532',
-        transition: 'background-color 0.2s ease',
-        '&:hover': {
-          backgroundColor: '#2A2A3A'
-        }
+        transition: 'background-color 0.2s ease'
       }}
     >
       {/* Subject Column */}

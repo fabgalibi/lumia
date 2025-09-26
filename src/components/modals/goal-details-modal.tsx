@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Expand04 } from "@untitledui/icons";
 import { X, Minimize2 } from "lucide-react";
-import { Timer } from "./timer";
+import { Timer } from "../lumia/timer";
 import { PerformanceModal } from "./performance-modal";
 import { SkipGoalModal } from "./skip-goal-modal";
 import { SuccessNotification } from "../notifications";

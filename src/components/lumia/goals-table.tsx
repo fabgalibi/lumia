@@ -331,14 +331,6 @@ export const GoalsTable = () => {
             gap: '20px'
           }}
         >
-          <style jsx>{`
-            @media (min-width: 1024px) {
-              .content-container {
-                padding: 16px 24px !important;
-                gap: 24px !important;
-              }
-            }
-          `}</style>
           {/* Tabs */}
           <div 
             className="flex flex-col w-full"
@@ -419,13 +411,6 @@ export const GoalsTable = () => {
                 width: '100%'
               }}
             >
-              <style jsx>{`
-                @media (min-width: 1024px) {
-                  .input-field-container {
-                    width: 320px !important;
-                  }
-                }
-              `}</style>
               <div 
                 className="input-container flex items-center"
                 style={{

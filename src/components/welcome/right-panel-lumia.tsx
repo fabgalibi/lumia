@@ -37,15 +37,15 @@ const pct = (n: number) => `${Math.round(clamp01(n) * 100)}%`;
 export default function RightPanelLumia({
   screenSize,
   mockupSrc,
-  aspectRatio = 696 / 1024,
+  aspectRatio: _aspectRatio = 696 / 1024,
 
   wineAmount = 0.80,
   coolAmount = 0.00,
-  hazeAmount = 0.70,
+  hazeAmount: _hazeAmount = 0.70,
 
   wineX = 0.66,
   wineY = 0.86,
-  wineScale = 1.10,
+  wineScale: _wineScale = 1.10,
 
   vignetteTop = 0.36,
   vignetteSides = 0.46,
@@ -78,10 +78,10 @@ export default function RightPanelLumia({
         <BackgroundSmokyGradient
           wineAmount={wineAmount}
           coolAmount={coolAmount}
-          hazeAmount={hazeAmount}
+          hazeAmount={_hazeAmount}
           wineX={wineX}
           wineY={wineY}
-          wineScale={wineScale}
+          wineScale={_wineScale}
           vignetteTop={vignetteTop}
           vignetteSides={vignetteSides}
           vignetteBottom={vignetteBottom}
@@ -162,10 +162,10 @@ type GradientProps = {
 function BackgroundSmokyGradient({
   wineAmount = 0.65,
   coolAmount = 0.12,
-  hazeAmount = 0.70,
+  hazeAmount: _hazeAmount = 0.70,
   wineX = 0.66,
   wineY = 0.86,
-  wineScale = 1.04,
+  wineScale: _wineScale = 1.04,
   vignetteTop = 0.42,
   vignetteSides = 0.55,
   vignetteBottom = 0.36,

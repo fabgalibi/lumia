@@ -84,3 +84,4 @@ export const SettingsTabs: React.FC<SettingsTabsProps> = ({
     </div>
   );
 };
+

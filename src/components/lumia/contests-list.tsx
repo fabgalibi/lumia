@@ -1,6 +1,6 @@
 import { Users01, Clock, ArrowRight, Star01, Bookmark } from "@untitledui/icons";
-import { Button } from "@/components/base/buttons/button";
-import { Badge } from "@/components/base/badges/badges";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 interface Contest {
     id: string;

@@ -9,7 +9,7 @@ interface CardContentProps {
 export const CardContent: React.FC<CardContentProps> = ({
   children,
   screenSize = 'desktop',
-  layout = 'multiple'
+  layout: _layout = 'multiple'
 }) => {
   return (
     <div

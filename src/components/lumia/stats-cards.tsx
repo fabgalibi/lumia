@@ -194,8 +194,7 @@ export const StatsCards = () => {
           style={{ 
             padding: '12px 16px',
             scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-            WebkitScrollbar: 'none'
+            msOverflowStyle: 'none'
           }}
         >
         {stats.map((stat, index) => (

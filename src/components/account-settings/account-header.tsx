@@ -10,7 +10,7 @@ interface AccountHeaderProps {
 
 export const AccountHeader: React.FC<AccountHeaderProps> = ({
   userName,
-  userRole,
+  userRole: _userRole,
   onDeleteAccount,
   onUpdatePhoto
 }) => {

@@ -10,9 +10,7 @@ import {
   FormField,
   InputField,
   ButtonGroup,
-  CheckboxField,
-  SectionDivider,
-  FormFooter
+  CheckboxField
 } from './index';
 import { useMainContent } from '../../contexts/main-content-context';
 
@@ -187,7 +185,7 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
                   </p>
                 </div>
               </div>
-              <SectionDivider />
+              <div style={{ height: '1px', background: '#2C2C45', margin: '16px 0' }} />
             </div>
 
             {/* Form */}
@@ -214,7 +212,7 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
                 </FormField>
               </div>
 
-              <SectionDivider />
+              <div style={{ height: '1px', background: '#2C2C45', margin: '16px 0' }} />
 
               {/* Bio Field */}
               <div style={{
@@ -238,7 +236,7 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
                 </FormField>
               </div>
 
-              <SectionDivider />
+              <div style={{ height: '1px', background: '#2C2C45', margin: '16px 0' }} />
 
               {/* Working Status */}
               <div style={{
@@ -262,7 +260,7 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
                 </FormField>
               </div>
 
-              <SectionDivider />
+              <div style={{ height: '1px', background: '#2C2C45', margin: '16px 0' }} />
 
               {/* Birth Date */}
               <div style={{
@@ -283,7 +281,7 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
                 </FormField>
               </div>
 
-              <SectionDivider />
+              <div style={{ height: '1px', background: '#2C2C45', margin: '16px 0' }} />
 
               {/* Education */}
               <div style={{
@@ -303,7 +301,7 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
                 </FormField>
               </div>
 
-              <SectionDivider />
+              <div style={{ height: '1px', background: '#2C2C45', margin: '16px 0' }} />
 
               {/* Contact Information */}
               <div style={{
@@ -339,7 +337,7 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
                 </FormField>
               </div>
 
-              <SectionDivider />
+              <div style={{ height: '1px', background: '#2C2C45', margin: '16px 0' }} />
 
               {/* Terms Agreement */}
               <CheckboxField
@@ -351,11 +349,42 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
             </div>
 
             {/* Section Footer */}
-            <FormFooter
-              onCancel={handleCancel}
-              onSave={handleSave}
-              isLoading={isLoading}
-            />
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '24px' }}>
+              <button
+                onClick={handleCancel}
+                style={{
+                  padding: '10px 16px',
+                  backgroundColor: '#2D2D45',
+                  color: '#CECFD2',
+                  border: '1px solid #373A41',
+                  borderRadius: '8px',
+                  fontFamily: 'Sora',
+                  fontWeight: 600,
+                  fontSize: '14px',
+                  cursor: 'pointer'
+                }}
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleSave}
+                disabled={isLoading}
+                style={{
+                  padding: '10px 16px',
+                  backgroundColor: '#F66649',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontFamily: 'Sora',
+                  fontWeight: 600,
+                  fontSize: '14px',
+                  cursor: isLoading ? 'not-allowed' : 'pointer',
+                  opacity: isLoading ? 0.6 : 1
+                }}
+              >
+                {isLoading ? 'Salvando...' : 'Salvar alterações'}
+              </button>
+            </div>
           </div>
         )}
 

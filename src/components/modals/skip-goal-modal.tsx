@@ -11,7 +11,7 @@ export const SkipGoalModal: React.FC<SkipGoalModalProps> = ({
   isOpen,
   onClose,
   onSkip,
-  goalName = "Meta"
+  goalName: _goalName = "Meta"
 }) => {
   const [reason, setReason] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);

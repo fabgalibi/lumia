@@ -219,7 +219,7 @@ const StudyConsistencyCalendar: React.FC<StudyConsistencyCalendarProps> = ({
               className="flex"
               style={{ height: '18px', marginBottom: '4px' }}
             >
-              {days.map((day, index) => (
+              {days.map((day, _index) => (
                 <div 
                   key={day}
                   className="text-white flex-1"
@@ -307,7 +307,7 @@ const StudyConsistencyCalendar: React.FC<StudyConsistencyCalendarProps> = ({
                 marginBottom: dayIndex < days.length - 1 ? '4px' : '0px'
               }}
             >
-              {hours.map((hour, hourIndex) => {
+              {hours.map((hour, _hourIndex) => {
                 const isActive = calendarData[day]?.[hour] || false;
                 return (
                   <div
@@ -329,7 +329,7 @@ const StudyConsistencyCalendar: React.FC<StudyConsistencyCalendarProps> = ({
 
       {/* Hours Row - Below Calendar (Desktop) */}
       <div className="hidden lg:flex mt-2" style={{ height: '16px', marginLeft: '31px' }}>
-        {hours.map((hour, index) => (
+        {hours.map((hour, _index) => (
           <div 
             key={hour}
             className="text-white flex items-center justify-center flex-shrink-0"
