@@ -55,10 +55,10 @@ export const ConclusionScreen: React.FC = () => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: screenSize === 'mobile' ? 'flex-start' : 'center', // Centralizar conteúdo verticalmente em desktop
-          gap: screenSize === 'mobile' ? '24px' : 'clamp(32px, 4vh, 56px)', // Gap responsivo
+          gap: screenSize === 'mobile' ? '20px' : '56px', // Gap desktop: 56px conforme Figma
           padding: screenSize === 'mobile' 
-            ? '16px' 
-            : 'clamp(16px, 5vh, 56px) clamp(16px, 4vw, 80px)', // Padding menor para evitar corte
+            ? '24px 16px' // Padding mobile conforme Figma
+            : '56px', // Padding desktop: 56px conforme Figma
           overflowY: 'auto',
           overflowX: 'hidden', // Evita overflow horizontal
           wordWrap: 'break-word', // Quebra palavras quando necessário
@@ -70,12 +70,14 @@ export const ConclusionScreen: React.FC = () => {
           width: '100%', // Ocupa toda a largura disponível
           maxWidth: screenSize === 'mobile' ? '100%' : '600px', // Limita em telas grandes
           margin: screenSize === 'mobile' ? '0' : '0 auto', // Centraliza em telas grandes
-          alignSelf: screenSize === 'mobile' ? 'flex-start' : 'center' // Centraliza em telas grandes
+          alignSelf: screenSize === 'mobile' ? 'flex-start' : 'center', // Centraliza em telas grandes
+          display: 'flex',
+          justifyContent: screenSize === 'mobile' ? 'center' : 'flex-start' // Centraliza logo em mobile
         }}>
           <div style={{
-            width: '174px', 
-            height: '48px',
-            alignSelf: 'flex-start' // Logo alinhado à esquerda dentro do container
+            width: screenSize === 'mobile' ? '145px' : '174px', // Logo menor em mobile conforme Figma
+            height: screenSize === 'mobile' ? '40px' : '48px', // Altura menor em mobile conforme Figma
+            alignSelf: screenSize === 'mobile' ? 'center' : 'flex-start' // Logo centralizado em mobile
           }}>
             <img 
               src="/images/conclusion/lumia-logo-718d50.png" 
@@ -90,7 +92,7 @@ export const ConclusionScreen: React.FC = () => {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: screenSize === 'mobile' ? '32px' : '48px', // Gap do Figma: 48px
+              gap: screenSize === 'mobile' ? '20px' : '48px', // Gap desktop: 48px conforme Figma
               flex: 1,
               justifyContent: screenSize === 'mobile' ? 'flex-start' : 'center', // Centralizar verticalmente
               minHeight: 0, // Permite que flexbox funcione corretamente
@@ -104,7 +106,7 @@ export const ConclusionScreen: React.FC = () => {
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: screenSize === 'mobile' ? '24px' : '32px'
+                gap: screenSize === 'mobile' ? '20px' : '32px' // Gap desktop: 32px conforme Figma
               }}
             >
             {/* Título Principal */}
@@ -119,26 +121,30 @@ export const ConclusionScreen: React.FC = () => {
                 style={{
                   fontFamily: 'Sora',
                   fontWeight: 400,
-                  fontSize: screenSize === 'mobile' ? '16px' : '20px',
-                  lineHeight: '1.5em',
+                  fontStyle: 'Regular',
+                  fontSize: screenSize === 'mobile' ? '20px' : '36px', // Mobile: Font size/text-xl (20px), Desktop: Font size/display-md (36px)
+                  lineHeight: screenSize === 'mobile' ? '1.5em' : '1.222em', // Mobile: Line height/text-xl (1.5em), Desktop: Line height/display-md
+                  letterSpacing: screenSize === 'mobile' ? '0%' : '-2%', // Mobile: 0%, Desktop: -2%
                   color: '#FFFFFF',
                   margin: 0,
+                  textAlign: screenSize === 'mobile' ? 'center' : 'left', // Mobile: center, Desktop: left
                   wordWrap: 'break-word',
                   overflowWrap: 'break-word',
                   hyphens: 'auto'
                 }}
               >
-                Pronto para começar sua jornada, Max William?
+                Pronto para começar sua jornada, <strong style={{ fontWeight: 700 }}>Max William</strong>?
               </h1>
               
               <p
                 style={{
                   fontFamily: 'Sora',
                   fontWeight: 400,
-                  fontSize: screenSize === 'mobile' ? '14px' : '16px',
-                  lineHeight: '1.5em',
+                  fontSize: screenSize === 'mobile' ? '14px' : '16px', // Desktop: 16px (Text md Regular)
+                  lineHeight: screenSize === 'mobile' ? '1.4285714285714286em' : '1.5em', // Desktop: 1.5em conforme Figma
                   color: '#FFFFFF',
                   margin: 0,
+                  textAlign: screenSize === 'mobile' ? 'center' : 'left', // Desktop: left conforme Figma
                   wordWrap: 'break-word',
                   overflowWrap: 'break-word',
                   hyphens: 'auto'
@@ -153,7 +159,7 @@ export const ConclusionScreen: React.FC = () => {
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: screenSize === 'mobile' ? '16px' : 'clamp(16px, 2vh, 24px)', // Gap responsivo
+                gap: screenSize === 'mobile' ? '20px' : '24px', // Gap desktop: 24px conforme Figma
                 width: '100%',
                 maxWidth: screenSize === 'mobile' ? '100%' : '600px' // Limita em telas grandes
               }}
@@ -162,10 +168,11 @@ export const ConclusionScreen: React.FC = () => {
                 style={{
                   fontFamily: 'Sora',
                   fontWeight: 400,
-                  fontSize: screenSize === 'mobile' ? '14px' : '16px',
-                  lineHeight: '1.5em',
+                  fontSize: screenSize === 'mobile' ? '14px' : '16px', // Desktop: 16px (Text md Medium)
+                  lineHeight: screenSize === 'mobile' ? '1.4285714285714286em' : '1.5em', // Desktop: 1.5em conforme Figma
                   color: '#FFFFFF',
                   margin: 0,
+                  textAlign: screenSize === 'mobile' ? 'center' : 'left', // Desktop: left conforme Figma
                   wordWrap: 'break-word',
                   overflowWrap: 'break-word',
                   hyphens: 'auto'
@@ -180,7 +187,7 @@ export const ConclusionScreen: React.FC = () => {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'flex-end',
-                  gap: screenSize === 'mobile' ? '16px' : 'clamp(16px, 2vh, 24px)' // Gap responsivo
+                  gap: screenSize === 'mobile' ? '20px' : '24px' // Gap desktop: 24px conforme Figma
                 }}
               >
                 {/* Feature 1: Mentorias */}
@@ -230,7 +237,7 @@ export const ConclusionScreen: React.FC = () => {
                       style={{
                         fontFamily: 'Sora',
                         fontWeight: 600,
-                        fontSize: screenSize === 'mobile' ? '14px' : '16px',
+                        fontSize: screenSize === 'mobile' ? '14px' : '16px', // Desktop: 16px conforme Figma
                         lineHeight: '1.5em',
                         color: '#F0F0F1',
                         margin: 0,
@@ -245,7 +252,7 @@ export const ConclusionScreen: React.FC = () => {
                       style={{
                         fontFamily: 'Sora',
                         fontWeight: 400,
-                        fontSize: screenSize === 'mobile' ? '14px' : '16px',
+                        fontSize: screenSize === 'mobile' ? '14px' : '16px', // Desktop: 16px conforme Figma
                         lineHeight: '1.5em',
                         color: '#CECFD2',
                         margin: 0,
@@ -305,7 +312,7 @@ export const ConclusionScreen: React.FC = () => {
                       style={{
                         fontFamily: 'Sora',
                         fontWeight: 600,
-                        fontSize: screenSize === 'mobile' ? '14px' : '16px',
+                        fontSize: screenSize === 'mobile' ? '14px' : '16px', // Desktop: 16px conforme Figma
                         lineHeight: '1.5em',
                         color: '#F0F0F1',
                         margin: 0,
@@ -320,7 +327,7 @@ export const ConclusionScreen: React.FC = () => {
                       style={{
                         fontFamily: 'Sora',
                         fontWeight: 400,
-                        fontSize: screenSize === 'mobile' ? '14px' : '16px',
+                        fontSize: screenSize === 'mobile' ? '14px' : '16px', // Desktop: 16px conforme Figma
                         lineHeight: '1.5em',
                         color: '#CECFD2',
                         margin: 0,
@@ -380,7 +387,7 @@ export const ConclusionScreen: React.FC = () => {
                       style={{
                         fontFamily: 'Sora',
                         fontWeight: 600,
-                        fontSize: screenSize === 'mobile' ? '14px' : '16px',
+                        fontSize: screenSize === 'mobile' ? '14px' : '16px', // Desktop: 16px conforme Figma
                         lineHeight: '1.5em',
                         color: '#F0F0F1',
                         margin: 0,
@@ -395,7 +402,7 @@ export const ConclusionScreen: React.FC = () => {
                       style={{
                         fontFamily: 'Sora',
                         fontWeight: 400,
-                        fontSize: screenSize === 'mobile' ? '14px' : '16px',
+                        fontSize: screenSize === 'mobile' ? '14px' : '16px', // Desktop: 16px conforme Figma
                         lineHeight: '1.5em',
                         color: '#CECFD2',
                         margin: 0,
@@ -455,7 +462,7 @@ export const ConclusionScreen: React.FC = () => {
                       style={{
                         fontFamily: 'Sora',
                         fontWeight: 600,
-                        fontSize: screenSize === 'mobile' ? '14px' : '16px',
+                        fontSize: screenSize === 'mobile' ? '14px' : '16px', // Desktop: 16px conforme Figma
                         lineHeight: '1.5em',
                         color: '#F0F0F1',
                         margin: 0,
@@ -470,7 +477,7 @@ export const ConclusionScreen: React.FC = () => {
                       style={{
                         fontFamily: 'Sora',
                         fontWeight: 400,
-                        fontSize: screenSize === 'mobile' ? '14px' : '16px',
+                        fontSize: screenSize === 'mobile' ? '14px' : '16px', // Desktop: 16px conforme Figma
                         lineHeight: '1.5em',
                         color: '#CECFD2',
                         margin: 0,
@@ -484,25 +491,44 @@ export const ConclusionScreen: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Texto final */}
-                <p
-                  style={{
-                    fontFamily: 'Sora',
-                    fontWeight: 400,
-                    fontSize: screenSize === 'mobile' ? '14px' : '16px',
-                    lineHeight: '1.5em',
-                    color: '#ECECED',
-                    margin: `0 55px`,
-                    width: screenSize === 'mobile' ? '100%' : '440px', // Largura fixa
-                    alignSelf: 'flex-start', // Alinha à esquerda
-                    wordWrap: 'break-word',
-                    overflowWrap: 'break-word',
-                    hyphens: 'auto'
-                  }}
-                >
-                  Tudo isso e muito mais para acelerar seus resultados...
-                </p>
               </div>
+            </div>
+
+            {/* Texto final - alinhado com o texto dos features */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: screenSize === 'mobile' ? '12px' : '16px',
+                width: '100%'
+              }}
+            >
+              {/* Espaço do ícone (para alinhamento) */}
+              <div
+                style={{
+                  width: '40px', // Largura do ícone + padding (24px + 8px + 8px)
+                  flexShrink: 0
+                }}
+              />
+              
+              {/* Texto alinhado com as descrições dos features */}
+              <p
+                style={{
+                  fontFamily: 'Sora',
+                  fontWeight: 400,
+                  fontSize: screenSize === 'mobile' ? '14px' : '16px', // Desktop: 16px conforme Figma
+                  lineHeight: screenSize === 'mobile' ? '1.4285714285714286em' : '1.5em', // Desktop: 1.5em conforme Figma
+                  color: screenSize === 'mobile' ? '#FFFFFF' : '#ECECED', // Desktop: #ECECED conforme Figma
+                  margin: 0, // Reset margin
+                  textAlign: screenSize === 'mobile' ? 'center' : 'left', // Desktop: left conforme Figma
+                  wordWrap: 'break-word',
+                  overflowWrap: 'break-word',
+                  hyphens: 'auto',
+                  flex: 1
+                }}
+              >
+                Tudo isso e muito mais para acelerar seus resultados...
+              </p>
             </div>
           </div>
 
