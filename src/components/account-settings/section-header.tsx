@@ -4,7 +4,7 @@ interface SectionHeaderProps {
   title: string;
   supportingText?: string;
   showDivider?: boolean;
-  screenSize?: 'mobile' | 'desktop';
+  screenSize?: 'mobile' | 'tablet' | 'desktop';
 }
 
 export function SectionHeader({ 
@@ -18,14 +18,14 @@ export function SectionHeader({
       display: 'flex',
       flexDirection: 'column',
       alignSelf: 'stretch',
-      gap: screenSize === 'mobile' ? '20px' : '20px', // Mobile: gap 20px conforme TODO
+         gap: '20px', // Mantém 20px para todos os tamanhos
       width: '100%'
     }}>
       {/* Content */}
       <div style={{
         display: 'flex',
         alignSelf: 'stretch',
-        gap: screenSize === 'mobile' ? '12px' : '16px', // Mobile: gap menor
+         gap: screenSize === 'mobile' ? '12px' : '16px', // Mobile: gap menor, Tablet/Desktop: 16px
         width: '100%'
       }}>
         {/* Text and supporting text */}

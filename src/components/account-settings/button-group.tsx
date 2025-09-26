@@ -7,6 +7,7 @@ interface ButtonGroupProps {
   onChange: (value: string) => void;
   width?: string;
   fullWidth?: boolean;
+  screenSize?: 'mobile' | 'tablet' | 'desktop';
 }
 
 export const ButtonGroup: React.FC<ButtonGroupProps> = ({
@@ -15,7 +16,8 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = ({
   selectedValue,
   onChange,
   width = '137px',
-  fullWidth = false
+  fullWidth = false,
+  screenSize = 'desktop'
 }) => {
   const currentValue = selectedValue || value || '';
   return (

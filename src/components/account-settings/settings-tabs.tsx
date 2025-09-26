@@ -9,7 +9,7 @@ interface SettingsTabsProps {
   tabs?: Tab[];
   activeTab: string;
   onTabChange: (tabId: string) => void;
-  screenSize?: 'mobile' | 'desktop';
+  screenSize?: 'mobile' | 'tablet' | 'desktop';
 }
 
 export const SettingsTabs: React.FC<SettingsTabsProps> = ({

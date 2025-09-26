@@ -4,7 +4,7 @@ interface FormFooterProps {
   onCancel: () => void;
   onSave: () => void;
   isLoading?: boolean;
-  screenSize?: 'mobile' | 'desktop' | 'tablet';
+  screenSize?: 'mobile' | 'tablet' | 'desktop';
 }
 
 export const FormFooter: React.FC<FormFooterProps> = ({
@@ -19,9 +19,10 @@ export const FormFooter: React.FC<FormFooterProps> = ({
       flexDirection: 'column',
       justifyContent: 'flex-end',
       alignItems: 'center',
+      alignSelf: 'stretch',
       gap: '20px',
-      padding: screenSize !== 'desktop' ? '0px 16px 12px' : '0px 0px 0px', // Figma mobile/tablet: 0px 16px 12px
-      marginTop: screenSize !== 'desktop' ? '0px' : '32px', // No margin top no mobile/tablet
+      padding: screenSize === 'mobile' || screenSize === 'tablet' ? '0px 16px 12px' : '0px 0px 0px', // Mobile/Tablet: 0px 16px 12px conforme Figma
+      marginTop: screenSize === 'mobile' || screenSize === 'tablet' ? '0px' : '32px', // Mobile/Tablet: sem margin top
       width: '100%'
     }}>
       {/* Divider */}
@@ -36,36 +37,37 @@ export const FormFooter: React.FC<FormFooterProps> = ({
         display: 'flex',
         justifyContent: 'flex-end',
         alignItems: 'center',
+        alignSelf: 'stretch',
         gap: '20px', // Figma: gap 20px no content
         width: '100%'
       }}>
         {/* Actions */}
         <div style={{
           display: 'flex',
-          justifyContent: screenSize !== 'desktop' ? 'space-between' : 'flex-end',
+          justifyContent: screenSize === 'mobile' || screenSize === 'tablet' ? 'stretch' : 'flex-end',
           alignItems: 'center',
           gap: '16px', // Figma: gap 16px entre botões
-          width: '100%',
-          flex: '1'
+          width: '100%'
         }}>
           <button
             onClick={onCancel}
             disabled={isLoading}
             style={{
               display: 'flex',
-              justifyContent: 'center', // Figma: justify center
+              justifyContent: 'center',
               alignItems: 'center',
               gap: '4px',
               padding: '10px 14px',
-              backgroundColor: '#2D2D45',
+              backgroundColor: '#2D2D45', // Figma: Secondary color background
               border: 'none',
               borderRadius: '8px',
-              boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
+              boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)', // Figma: shadow-xs-skeuomorphic sem inset
               cursor: isLoading ? 'not-allowed' : 'pointer',
               transition: 'all 0.2s ease',
               opacity: isLoading ? 0.6 : 1,
-              flex: screenSize !== 'desktop' ? '1' : 'none', // Mobile/tablet: fill width
-              width: screenSize !== 'desktop' ? '100%' : 'auto'
+              flex: screenSize === 'mobile' || screenSize === 'tablet' ? '1' : 'none', // Mobile/Tablet: fill width
+              minWidth: screenSize === 'mobile' || screenSize === 'tablet' ? '0' : 'auto', // Mobile/Tablet: permite encolher igualmente
+              maxWidth: screenSize === 'mobile' || screenSize === 'tablet' ? 'none' : 'auto' // Mobile/Tablet: sem limite máximo
             }}
             onMouseEnter={(e) => {
               if (!isLoading) {
@@ -95,32 +97,33 @@ export const FormFooter: React.FC<FormFooterProps> = ({
             disabled={isLoading}
             style={{
               display: 'flex',
-              justifyContent: 'center', // Figma: justify center
+              justifyContent: 'center',
               alignItems: 'center',
               gap: '4px',
               padding: '10px 14px',
-              backgroundColor: isLoading ? '#8B4A3A' : '#C74228',
+              backgroundColor: isLoading ? '#8B4A3A' : '#F66649', // Figma: Primary color background correto
               border: '2px solid transparent',
-              backgroundImage: `linear-gradient(${isLoading ? '#8B4A3A' : '#C74228'}, ${isLoading ? '#8B4A3A' : '#C74228'}), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)`,
+              backgroundImage: `linear-gradient(${isLoading ? '#8B4A3A' : '#F66649'}, ${isLoading ? '#8B4A3A' : '#F66649'}), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)`,
               backgroundOrigin: 'border-box',
               backgroundClip: 'padding-box, border-box',
               borderRadius: '8px',
-              boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
+              boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)', // Figma: shadow-xs-skeuomorphic sem inset
               cursor: isLoading ? 'not-allowed' : 'pointer',
               transition: 'all 0.2s ease',
               opacity: isLoading ? 0.8 : 1,
-              flex: screenSize !== 'desktop' ? '1' : 'none', // Mobile/tablet: fill width
-              width: screenSize !== 'desktop' ? '100%' : 'auto'
+              flex: screenSize === 'mobile' || screenSize === 'tablet' ? '1' : 'none', // Mobile/Tablet: fill width
+              minWidth: screenSize === 'mobile' || screenSize === 'tablet' ? '0' : 'auto', // Mobile/Tablet: permite encolher igualmente
+              maxWidth: screenSize === 'mobile' || screenSize === 'tablet' ? 'none' : 'auto' // Mobile/Tablet: sem limite máximo
             }}
             onMouseEnter={(e) => {
               if (!isLoading) {
-                e.currentTarget.style.backgroundImage = 'linear-gradient(#D54A2E, #D54A2E), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)';
+                e.currentTarget.style.backgroundImage = 'linear-gradient(#F7734E, #F7734E), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)';
                 e.currentTarget.style.transform = 'translateY(-1px)';
               }
             }}
             onMouseLeave={(e) => {
               if (!isLoading) {
-                e.currentTarget.style.backgroundImage = 'linear-gradient(#C74228, #C74228), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)';
+                e.currentTarget.style.backgroundImage = 'linear-gradient(#F66649, #F66649), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)';
                 e.currentTarget.style.transform = 'translateY(0)';
               }
             }}
@@ -132,7 +135,7 @@ export const FormFooter: React.FC<FormFooterProps> = ({
               lineHeight: '1.4285714285714286em',
               color: '#FFFFFF'
             }}>
-              {isLoading ? 'Salvando...' : 'Salvar alterações'}
+                     {isLoading ? 'Salvando...' : 'Salvar alterações'}
             </span>
           </button>
         </div>

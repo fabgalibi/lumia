@@ -11,7 +11,7 @@ interface InputFieldProps {
   rows?: number;
   maxLength?: number;
   showCharCount?: boolean;
-  screenSize?: 'mobile' | 'desktop';
+  screenSize?: 'mobile' | 'tablet' | 'desktop';
   error?: boolean;
 }
 
@@ -35,8 +35,8 @@ export const InputField: React.FC<InputFieldProps> = ({
     outline: 'none',
     fontFamily: 'Sora', // Conforme Figma
     fontWeight: '400', // Text sm/md Regular
-    fontSize: screenSize === 'mobile' ? '14px' : '16px', // Mobile: 14px (sm), Desktop: 16px (md)
-    lineHeight: screenSize === 'mobile' ? '1.4285714285714286em' : '1.5em', // Mobile: sm line-height, Desktop: md
+     fontSize: screenSize === 'mobile' ? '14px' : '16px', // Mobile: 14px (sm), Tablet/Desktop: 16px (md)
+     lineHeight: screenSize === 'mobile' ? '1.4285714285714286em' : '1.5em', // Mobile: sm line-height, Tablet/Desktop: md
     color: disabled ? '#85888E' : '#CECFD2', // Figma: #CECFD2
     resize: 'none' as const,
     width: '100%'
@@ -45,10 +45,10 @@ export const InputField: React.FC<InputFieldProps> = ({
   const containerStyle = {
     display: 'flex',
     alignItems: type === 'textarea' ? 'flex-start' : 'center',
-    gap: screenSize === 'mobile' ? '6px' : '8px',
+    gap: screenSize === 'mobile' ? '6px' : '8px', // Mobile: gap menor, Tablet/Desktop: 8px
     padding: type === 'textarea' 
-      ? (screenSize === 'mobile' ? '12px 14px' : '12px 14px') 
-      : (screenSize === 'mobile' ? '8px 12px' : '10px 14px'),
+      ? (screenSize === 'mobile' ? '10px 12px' : '12px 14px') 
+      : (screenSize === 'mobile' ? '6px 10px' : '10px 14px'), // Mobile: padding ainda menor para telas pequenas
     backgroundColor: disabled ? '#22262F' : '#2D2D3B',
     border: `1px solid ${disabled ? '#22262F' : '#373A41'}`,
     borderRadius: '8px',
@@ -63,7 +63,7 @@ export const InputField: React.FC<InputFieldProps> = ({
     <div style={{
       display: 'flex',
       flexDirection: 'column',
-      gap: screenSize === 'mobile' ? '4px' : '6px' // Mobile: gap menor
+       gap: screenSize === 'mobile' ? '4px' : '6px' // Mobile: gap menor, Tablet/Desktop: 6px
     }}>
       <div style={containerStyle}>
         {icon && (

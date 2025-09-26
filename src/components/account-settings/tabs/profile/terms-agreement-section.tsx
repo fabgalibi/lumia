@@ -5,7 +5,7 @@ import { FormSection, SectionLabel, FormFieldArea } from '../../index';
 interface TermsAgreementSectionProps {
   termsAccepted: boolean;
   onTermsChange: (accepted: boolean) => void;
-  screenSize?: 'mobile' | 'desktop';
+  screenSize?: 'mobile' | 'tablet' | 'desktop';
 }
 
 export const TermsAgreementSection: React.FC<TermsAgreementSectionProps> = ({

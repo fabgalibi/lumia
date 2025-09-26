@@ -14,7 +14,7 @@ interface ProfileTabProps {
   };
   onSave?: (data: any) => Promise<void>;
   onCancel?: () => void;
-  screenSize?: 'mobile' | 'desktop';
+  screenSize?: 'mobile' | 'tablet' | 'desktop';
 }
 
 export const ProfileTab: React.FC<ProfileTabProps> = ({

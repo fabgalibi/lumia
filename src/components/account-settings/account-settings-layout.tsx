@@ -21,13 +21,13 @@ export const AccountSettingsLayout: React.FC<AccountSettingsLayoutProps> = ({
   onDeleteAccount = () => {},
   onUpdatePhoto = () => {}
 }) => {
-  const [screenSize, setScreenSize] = useState<'mobile' | 'desktop'>('desktop');
+  const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
 
   // Detectar tamanho da tela
   useEffect(() => {
     const checkScreenSize = () => {
       const width = window.innerWidth;
-      setScreenSize(width < 768 ? 'mobile' : 'desktop');
+      setScreenSize(width < 768 ? 'mobile' : width < 1024 ? 'tablet' : 'desktop');
     };
 
     checkScreenSize();
@@ -39,9 +39,9 @@ export const AccountSettingsLayout: React.FC<AccountSettingsLayoutProps> = ({
     <div style={{
       display: 'flex',
       flexDirection: 'column',
-      gap: screenSize === 'mobile' ? '20px' : '32px', // Mobile: gap 20px conforme Figma
-      padding: screenSize === 'mobile' ? '20px 16px' : '24px 32px', // Mobile: padding 20px 16px conforme Figma
-      maxWidth: '1196px',
+       gap: screenSize === 'mobile' || screenSize === 'tablet' ? '20px' : '32px', // Mobile/Tablet: gap 20px conforme Figma
+       padding: screenSize === 'mobile' ? '8px 4px' : screenSize === 'tablet' ? '12px 8px' : '16px 16px', // Padding mínimo conforme Figma
+       maxWidth: 'none', // Header e footer podem expandir totalmente
       width: '100%'
     }}>
       {/* Page Header */}
@@ -57,7 +57,7 @@ export const AccountSettingsLayout: React.FC<AccountSettingsLayoutProps> = ({
       <div style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: screenSize === 'mobile' ? '24px' : '24px' // Gap conforme Figma mobile
+         gap: screenSize === 'mobile' || screenSize === 'tablet' ? '24px' : '24px' // Gap conforme Figma mobile/tablet
       }}>
         {/* Tabs */}
         <HorizontalTabs

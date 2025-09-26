@@ -27,19 +27,40 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
     setActiveTab, 
     actions 
   } = useAccountSettings();
-  const [screenSize, setScreenSize] = useState<'mobile' | 'desktop'>('desktop');
+  const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
 
   // Detectar tamanho da tela
   useEffect(() => {
     const checkScreenSize = () => {
       const width = window.innerWidth;
-      const newScreenSize = width < 768 ? 'mobile' : 'desktop';
+      const newScreenSize = width < 768 ? 'mobile' : width < 1024 ? 'tablet' : 'desktop';
       setScreenSize(newScreenSize);
+      
+      // Limpar qualquer debug visual que possa ter ficado
+      document.body.style.borderTop = 'none';
+      document.body.style.border = 'none';
+      document.documentElement.style.borderTop = 'none';
+      document.documentElement.style.border = 'none';
     };
 
     checkScreenSize();
     window.addEventListener('resize', checkScreenSize);
     return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  // Cleanup adicional no mount para remover linha azul
+  useEffect(() => {
+    // Garantir que não há bordas debug
+    document.body.style.removeProperty('border-top');
+    document.body.style.removeProperty('border');
+    document.documentElement.style.removeProperty('border-top');
+    document.documentElement.style.removeProperty('border');
+    
+    return () => {
+      // Cleanup no unmount também
+      document.body.style.removeProperty('border-top');
+      document.body.style.removeProperty('border');
+    };
   }, []);
 
   const handleTabChange = (tabId: string) => {
@@ -94,9 +115,9 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
     <div style={{
       display: 'flex',
       flexDirection: 'column',
-      gap: '32px',
-      padding: '24px 32px',
-      maxWidth: '1196px',
+      gap: screenSize === 'mobile' || screenSize === 'tablet' ? '20px' : '32px', // Mobile/Tablet: gap 20px conforme Figma
+      padding: screenSize === 'mobile' ? '8px 4px' : screenSize === 'tablet' ? '12px 8px' : '16px 16px', // Padding mínimo conforme Figma
+      maxWidth: 'none', // Header e footer podem expandir totalmente
       width: '100%'
     }}>
 
@@ -113,7 +134,7 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
       <div style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: '24px'
+        gap: screenSize === 'mobile' ? '24px' : '24px' // Gap conforme Figma mobile
       }}>
         {/* Tabs */}
         <HorizontalTabs

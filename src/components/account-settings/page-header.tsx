@@ -6,7 +6,7 @@ interface PageHeaderProps {
   userRole: string;
   onDeleteAccount: () => void;
   onUpdatePhoto: () => void;
-  screenSize?: 'mobile' | 'desktop';
+  screenSize?: 'mobile' | 'tablet' | 'desktop';
 }
 
 export const PageHeader: React.FC<PageHeaderProps> = ({
@@ -38,10 +38,10 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
           gap: '16px',
           flex: 1
         }}>
-          {/* Avatar - Mobile: 56x56px, Desktop: 64x64px conforme Figma */}
-          <div style={{
-            width: screenSize === 'mobile' ? '56px' : '64px',
-            height: screenSize === 'mobile' ? '56px' : '64px',
+                 {/* Avatar - Mobile: 56x56px, Tablet/Desktop: 64x64px conforme Figma */}
+                 <div style={{
+                   width: screenSize === 'mobile' ? '56px' : '64px',
+                   height: screenSize === 'mobile' ? '56px' : '64px',
             borderRadius: '9999px',
             backgroundColor: '#D6B3B3',
             border: '1px solid #F48E2F',
@@ -98,13 +98,13 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
           </div>
         </div>
 
-        {/* Actions - responsivo para mobile */}
-        <div style={{
-          display: 'flex',
-          gap: '12px',
-          alignItems: 'flex-start',
-          flexDirection: screenSize === 'mobile' ? 'row-reverse' : 'row', // Mobile: ordem invertida
-          width: screenSize === 'mobile' ? '100%' : 'auto', // Desktop: auto width
+               {/* Actions - responsivo para mobile/tablet */}
+               <div style={{
+                 display: 'flex',
+                 gap: '12px',
+                 alignItems: 'flex-start',
+                 flexDirection: screenSize === 'mobile' || screenSize === 'tablet' ? 'row-reverse' : 'row', // Mobile/Tablet: ordem invertida
+                 width: screenSize === 'mobile' || screenSize === 'tablet' ? '100%' : 'auto', // Desktop: auto width
           flexShrink: 0,
           flexWrap: 'wrap'
         }}>
@@ -115,7 +115,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              padding: '10px',
+              padding: '8px',
               height: '40px',
               width: '40px',
               backgroundColor: '#3D2B2B',
@@ -138,12 +138,17 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
               e.currentTarget.style.transform = 'translateY(0)';
             }}
           >
-            <Trash01 
-              width="20" 
-              height="20" 
-              stroke="#E66B59" 
-              strokeWidth="1.6666666269302368"
-            />
+                   <Trash01
+                     width="22"
+                     height="22"
+                     stroke="#E66B59"
+                     strokeWidth="1.5"
+                     style={{
+                       transform: 'rotate(0deg)',
+                       opacity: 1,
+                       flexShrink: 0
+                     }}
+                   />
           </button>
 
           {/* Frame com botão + texto de apoio */}
@@ -153,7 +158,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
             justifyContent: 'center',
             alignItems: 'center',
             gap: '8px',
-            flex: screenSize === 'mobile' ? 1 : 'none' // Mobile: preenche o espaço disponível
+                   flex: screenSize === 'mobile' || screenSize === 'tablet' ? 1 : 'none' // Mobile/Tablet: preenche o espaço disponível
           }}>
             {/* Botão atualizar foto - com ícone + texto - 40px altura */}
             <button 
@@ -165,7 +170,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
                 gap: '4px',
                 padding: '10px 14px',
                 height: '40px',
-                width: screenSize === 'mobile' ? '100%' : '216px', // Desktop: largura fixa 216px conforme Figma
+                width: screenSize === 'mobile' || screenSize === 'tablet' ? '100%' : '216px', // Mobile/Tablet: preenche toda a largura, Desktop: largura fixa 216px conforme Figma
                 backgroundColor: '#2D2D45',
                 border: '2px solid transparent',
                 borderRadius: '8px',

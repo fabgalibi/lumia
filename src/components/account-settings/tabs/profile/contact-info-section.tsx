@@ -8,7 +8,7 @@ interface ContactInfoSectionProps {
     phone: string;
   };
   onInputChange: (field: string, value: string) => void;
-  screenSize?: 'mobile' | 'desktop';
+  screenSize?: 'mobile' | 'tablet' | 'desktop';
 }
 
 export const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({

@@ -11,7 +11,7 @@ interface PersonalInfoSectionProps {
     education: string;
   };
   onInputChange: (field: string, value: string) => void;
-  screenSize?: 'mobile' | 'desktop';
+  screenSize?: 'mobile' | 'tablet' | 'desktop';
 }
 
 export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
@@ -102,7 +102,8 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             ]}
             value={formData.isWorking}
             onChange={(value) => onInputChange('isWorking', value)}
-            fullWidth={screenSize === 'mobile'}
+            fullWidth={screenSize === 'mobile' || screenSize === 'tablet'}
+            screenSize={screenSize}
           />
         </FormFieldArea>
       </FormSection>
@@ -161,8 +162,8 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
               <option value="superior-completo">Ensino Superior (Completo)</option>
               <option value="pos-graduacao">Pós-graduação</option>
             </select>
-            {/* Ícone trailing: edit-05 no mobile, dropdown no desktop */}
-            {screenSize === 'mobile' ? (
+                   {/* Ícone trailing: edit-05 no mobile/tablet, dropdown no desktop */}
+                   {screenSize === 'mobile' || screenSize === 'tablet' ? (
               <Edit05 
                 width={16} 
                 height={16} 

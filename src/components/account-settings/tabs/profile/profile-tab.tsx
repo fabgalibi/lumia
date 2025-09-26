@@ -15,7 +15,7 @@ interface ProfileTabProps {
   };
   onSave?: (data: any) => Promise<void>;
   onCancel?: () => void;
-  screenSize?: 'mobile' | 'desktop';
+  screenSize?: 'mobile' | 'tablet' | 'desktop';
 }
 
 export const ProfileTab: React.FC<ProfileTabProps> = ({
@@ -82,8 +82,9 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
         display: 'flex',
         flexDirection: 'column',
         gap: '20px',
-        width: screenSize === 'mobile' ? '343px' : '100%', // Mobile: 343px conforme Figma
-        maxWidth: screenSize === 'mobile' ? '100%' : 'none'
+           width: '100%', // Sempre 100% para expansão completa
+        maxWidth: screenSize === 'desktop' ? 'calc(100% - 280px)' : 'none', // Desktop: alinha com início dos botões do header (216px + 12px + 40px + 12px margin)
+        margin: '0' // Sem centralização forçada
       }}>
         {/* Personal Information */}
         <PersonalInfoSection

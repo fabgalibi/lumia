@@ -3,7 +3,7 @@ import React from 'react';
 interface HorizontalTabsProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
-  screenSize?: 'mobile' | 'desktop';
+  screenSize?: 'mobile' | 'tablet' | 'desktop';
 }
 
 export function HorizontalTabs({ activeTab, onTabChange, screenSize = 'desktop' }: HorizontalTabsProps) {
@@ -25,8 +25,8 @@ export function HorizontalTabs({ activeTab, onTabChange, screenSize = 'desktop' 
     }}>
       <div style={{
         display: 'flex',
-        gap: screenSize === 'mobile' ? '8px' : '12px', // Mobile: gap menor
-        flexWrap: screenSize === 'mobile' ? 'wrap' : 'nowrap' // Mobile: permite wrap se necessário
+               gap: screenSize === 'mobile' || screenSize === 'tablet' ? '8px' : '12px', // Mobile/Tablet: gap menor
+               flexWrap: screenSize === 'mobile' || screenSize === 'tablet' ? 'wrap' : 'nowrap' // Mobile/Tablet: permite wrap se necessário
       }}>
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
