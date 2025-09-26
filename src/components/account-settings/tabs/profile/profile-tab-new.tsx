@@ -14,6 +14,7 @@ interface ProfileTabProps {
   };
   onSave?: (data: any) => Promise<void>;
   onCancel?: () => void;
+  screenSize?: 'mobile' | 'desktop';
 }
 
 export const ProfileTab: React.FC<ProfileTabProps> = ({
@@ -28,7 +29,8 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
     termsAccepted: true
   },
   onSave,
-  onCancel
+  onCancel,
+  screenSize = 'desktop'
 }) => {
   const [formData, setFormData] = useState(initialData);
   const [isLoading, setIsLoading] = useState(false);
@@ -108,33 +110,15 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
             supportingText="Escreva uma breve descrição sobre você."
           />
           <FormFieldArea>
-            <textarea
+            <InputField
+              type="textarea"
               value={formData.bio}
-              onChange={(e) => handleInputChange('bio', e.target.value)}
-              style={{
-                width: '100%',
-                height: '120px',
-                padding: '12px 14px',
-                fontFamily: 'Sora',
-                fontSize: '16px',
-                lineHeight: '1.5em',
-                color: '#CECFD2',
-                backgroundColor: '#2D2D3B',
-                border: '1px solid #373A41',
-                borderRadius: '8px',
-                resize: 'none',
-                boxSizing: 'border-box'
-              }}
+              onChange={(value) => handleInputChange('bio', value)}
               placeholder="Conte um pouco sobre você..."
+              maxLength={400}
+              showCharCount={true}
+              screenSize={screenSize}
             />
-            <p style={{
-              fontFamily: 'Sora',
-              fontSize: '14px',
-              color: '#94979C',
-              margin: '6px 0 0 0'
-            }}>
-              {formData.bio.length}/400 caracteres
-            </p>
           </FormFieldArea>
         </FormSection>
 
@@ -149,7 +133,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
               ]}
               selectedValue={formData.isWorking}
               onChange={(value) => handleInputChange('isWorking', value)}
-              width="137px"
+              fullWidth={screenSize === 'mobile'}
             />
           </FormFieldArea>
         </FormSection>

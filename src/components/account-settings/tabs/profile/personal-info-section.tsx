@@ -1,5 +1,5 @@
 import React from 'react';
-import { GraduationHat01 } from '@untitledui/icons';
+import { GraduationHat01, Edit05 } from '@untitledui/icons';
 import { FormSection, SectionLabel, FormFieldArea, InputField, ButtonGroup } from '../../index';
 
 interface PersonalInfoSectionProps {
@@ -102,6 +102,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             ]}
             value={formData.isWorking}
             onChange={(value) => onInputChange('isWorking', value)}
+            fullWidth={screenSize === 'mobile'}
           />
         </FormFieldArea>
       </FormSection>
@@ -129,14 +130,14 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            padding: '10px 14px',
-            backgroundColor: '#2D2D3B',
-            border: '1px solid #2D2D36',
+            padding: '10px 12px', // Figma: 10px 12px
+            backgroundColor: '#2D2D3B', // Figma: exato
+            border: '1px solid #373A41', // Figma: cor exata
             borderRadius: '8px',
-            boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
+            boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)', // Figma: shadow-xs
             width: '100%'
           }}>
-            <GraduationHat01 width="20" height="20" stroke="#94979C" strokeWidth="1.67" />
+            <GraduationHat01 width="20" height="20" stroke="#CECFD2" strokeWidth="1.67" />
             <select
               value={formData.education}
               onChange={(e) => onInputChange('education', e.target.value)}
@@ -146,10 +147,10 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
                 border: 'none',
                 outline: 'none',
                 fontFamily: 'Sora',
-                fontWeight: '400',
-                fontSize: '16px',
-                lineHeight: '1.5em',
-                color: '#CECFD2',
+                fontWeight: '400', // Figma: Text sm Regular
+                fontSize: '14px', // Figma: 14px
+                lineHeight: '1.4285714285714286em', // Figma: exato
+                color: '#CECFD2', // Figma: cor exata
                 appearance: 'none',
                 cursor: 'pointer'
               }}
@@ -160,9 +161,23 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
               <option value="superior-completo">Ensino Superior (Completo)</option>
               <option value="pos-graduacao">Pós-graduação</option>
             </select>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M4 6L8 10L12 6" stroke="#85888E" strokeWidth="1.33" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+            {/* Ícone trailing: edit-05 no mobile, dropdown no desktop */}
+            {screenSize === 'mobile' ? (
+              <Edit05 
+                width={16} 
+                height={16} 
+                stroke="#61656C" 
+                strokeWidth="1.33"
+                style={{ 
+                  transform: 'rotate(0deg)',
+                  opacity: 1 
+                }}
+              />
+            ) : (
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M4 6L8 10L12 6" stroke="#61656C" strokeWidth="1.33" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            )}
           </div>
         </FormFieldArea>
       </FormSection>

@@ -17,10 +17,15 @@ export const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
   screenSize = 'desktop'
 }) => {
   return (
-    <>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '20px'
+    }}>
       {/* Contact Information */}
-      <FormSection>
+      <FormSection screenSize={screenSize}>
         <SectionLabel 
+          screenSize={screenSize}
           title="Informações de contato"
           supportingText="Suas informações para entrarmos em contato com você."
         />
@@ -49,6 +54,6 @@ export const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
           </div>
         </FormFieldArea>
       </FormSection>
-    </>
+    </div>
   );
 };

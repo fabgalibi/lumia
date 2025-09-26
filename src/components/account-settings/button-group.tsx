@@ -6,6 +6,7 @@ interface ButtonGroupProps {
   selectedValue?: string;
   onChange: (value: string) => void;
   width?: string;
+  fullWidth?: boolean;
 }
 
 export const ButtonGroup: React.FC<ButtonGroupProps> = ({
@@ -13,16 +14,17 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = ({
   value,
   selectedValue,
   onChange,
-  width = '137px'
+  width = '137px',
+  fullWidth = false
 }) => {
   const currentValue = selectedValue || value || '';
   return (
     <div style={{
       display: 'flex',
-      width: width,
+      width: fullWidth ? '100%' : width,
       border: '1px solid transparent',
       borderRadius: '8px',
-      backgroundImage: 'linear-gradient(#1A1A2E, #1A1A2E), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)',
+      backgroundImage: 'linear-gradient(#2F2F4D, #2F2F4D), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)',
       backgroundOrigin: 'border-box',
       backgroundClip: 'padding-box, border-box',
       boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
