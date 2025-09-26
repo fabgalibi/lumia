@@ -3,9 +3,10 @@ import React from 'react';
 interface HorizontalTabsProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
+  screenSize?: 'mobile' | 'desktop';
 }
 
-export function HorizontalTabs({ activeTab, onTabChange }: HorizontalTabsProps) {
+export function HorizontalTabs({ activeTab, onTabChange, screenSize = 'desktop' }: HorizontalTabsProps) {
   const tabs = [
     { id: 'profile', label: 'Dados de perfil' },
     { id: 'password', label: 'Alterar senha' },
@@ -24,7 +25,8 @@ export function HorizontalTabs({ activeTab, onTabChange }: HorizontalTabsProps) 
     }}>
       <div style={{
         display: 'flex',
-        gap: '12px'
+        gap: screenSize === 'mobile' ? '8px' : '12px', // Mobile: gap menor
+        flexWrap: screenSize === 'mobile' ? 'wrap' : 'nowrap' // Mobile: permite wrap se necessário
       }}>
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;

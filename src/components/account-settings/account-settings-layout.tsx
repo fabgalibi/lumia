@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageHeader, HorizontalTabs } from './index';
 
 interface AccountSettingsLayoutProps {
@@ -21,12 +21,26 @@ export const AccountSettingsLayout: React.FC<AccountSettingsLayoutProps> = ({
   onDeleteAccount = () => {},
   onUpdatePhoto = () => {}
 }) => {
+  const [screenSize, setScreenSize] = useState<'mobile' | 'desktop'>('desktop');
+
+  // Detectar tamanho da tela
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const width = window.innerWidth;
+      setScreenSize(width < 768 ? 'mobile' : 'desktop');
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
   return (
     <div style={{
       display: 'flex',
       flexDirection: 'column',
-      gap: '32px',
-      padding: '24px 32px',
+      gap: screenSize === 'mobile' ? '20px' : '32px', // Mobile: gap 20px conforme Figma
+      padding: screenSize === 'mobile' ? '20px 16px' : '24px 32px', // Mobile: padding 20px 16px conforme Figma
       maxWidth: '1196px',
       width: '100%'
     }}>
@@ -36,18 +50,20 @@ export const AccountSettingsLayout: React.FC<AccountSettingsLayoutProps> = ({
         userRole={userRole}
         onDeleteAccount={onDeleteAccount}
         onUpdatePhoto={onUpdatePhoto}
+        screenSize={screenSize}
       />
 
       {/* Container */}
       <div style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: '24px'
+        gap: screenSize === 'mobile' ? '24px' : '24px' // Gap conforme Figma mobile
       }}>
         {/* Tabs */}
         <HorizontalTabs
           activeTab={activeTab}
           onTabChange={onTabChange}
+          screenSize={screenSize}
         />
 
         {/* Content */}

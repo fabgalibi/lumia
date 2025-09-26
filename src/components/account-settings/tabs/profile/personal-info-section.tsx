@@ -11,11 +11,13 @@ interface PersonalInfoSectionProps {
     education: string;
   };
   onInputChange: (field: string, value: string) => void;
+  screenSize?: 'mobile' | 'desktop';
 }
 
 export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
   formData,
-  onInputChange
+  onInputChange,
+  screenSize = 'desktop'
 }) => {
   return (
     <div style={{
@@ -24,8 +26,8 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
       gap: '20px'
     }}>
       {/* Username Field */}
-      <FormSection>
-        <SectionLabel title="Nome de usuário" />
+      <FormSection screenSize={screenSize}>
+        <SectionLabel screenSize={screenSize} title="Nome de usuário" screenSize={screenSize} />
         <FormFieldArea>
           <InputField
             value={formData.username}
@@ -38,7 +40,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
 
 
       {/* Bio Field */}
-      <FormSection>
+      <FormSection screenSize={screenSize}>
         <SectionLabel 
           title="Sua biografia" 
           supportingText="Escreva uma breve descrição sobre você."
@@ -89,8 +91,8 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
 
 
       {/* Working Status */}
-      <FormSection>
-        <SectionLabel title="Você está trabalhando atualmente?" />
+      <FormSection screenSize={screenSize}>
+        <SectionLabel screenSize={screenSize} title="Você está trabalhando atualmente?" />
         <FormFieldArea>
           <ButtonGroup
             options={[
@@ -105,8 +107,8 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
 
 
       {/* Birth Date */}
-      <FormSection>
-        <SectionLabel title="Data de nascimento" />
+      <FormSection screenSize={screenSize}>
+        <SectionLabel screenSize={screenSize} title="Data de nascimento" />
         <FormFieldArea>
           <InputField
             value={formData.birthDate}
@@ -118,8 +120,8 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
 
 
       {/* Education */}
-      <FormSection>
-        <SectionLabel title="Qual sua formação?" />
+      <FormSection screenSize={screenSize}>
+        <SectionLabel screenSize={screenSize} title="Qual sua formação?" />
         <FormFieldArea>
           <div style={{
             display: 'flex',

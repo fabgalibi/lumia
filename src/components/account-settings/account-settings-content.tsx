@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   PageHeader,
   HorizontalTabs,
@@ -27,6 +27,20 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
     setActiveTab, 
     actions 
   } = useAccountSettings();
+  const [screenSize, setScreenSize] = useState<'mobile' | 'desktop'>('desktop');
+
+  // Detectar tamanho da tela
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const width = window.innerWidth;
+      const newScreenSize = width < 768 ? 'mobile' : 'desktop';
+      setScreenSize(newScreenSize);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   const handleTabChange = (tabId: string) => {
     setActiveTab(tabId);
@@ -40,6 +54,7 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
             initialData={data.profile}
             onSave={actions.updateProfile}
             onCancel={() => console.log('Cancelar alterações de perfil')}
+            screenSize={screenSize}
           />
         );
       
@@ -90,6 +105,7 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
         userRole="INSS - Analista de seguro social"
         onDeleteAccount={onDeleteAccount}
         onUpdatePhoto={onUpdatePhoto}
+        screenSize={screenSize}
       />
 
       {/* Container */}
@@ -102,6 +118,7 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
         <HorizontalTabs
           activeTab={activeTab}
           onTabChange={handleTabChange}
+          screenSize={screenSize}
         />
 
         {/* Content based on active tab */}

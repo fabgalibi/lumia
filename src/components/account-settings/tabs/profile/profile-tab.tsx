@@ -15,6 +15,7 @@ interface ProfileTabProps {
   };
   onSave?: (data: any) => Promise<void>;
   onCancel?: () => void;
+  screenSize?: 'mobile' | 'desktop';
 }
 
 export const ProfileTab: React.FC<ProfileTabProps> = ({
@@ -29,7 +30,8 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
     termsAccepted: true
   },
   onSave,
-  onCancel
+  onCancel,
+  screenSize = 'desktop'
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(initialData);
@@ -78,7 +80,9 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
       <div style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: '20px'
+        gap: '20px',
+        width: screenSize === 'mobile' ? '343px' : '100%', // Mobile: 343px conforme Figma
+        maxWidth: screenSize === 'mobile' ? '100%' : 'none'
       }}>
         {/* Personal Information */}
         <PersonalInfoSection
@@ -90,6 +94,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
             education: formData.education
           }}
           onInputChange={handleInputChange}
+          screenSize={screenSize}
         />
 
         {/* Contact Information */}

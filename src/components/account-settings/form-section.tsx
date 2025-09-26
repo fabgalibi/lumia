@@ -3,18 +3,19 @@ import React from 'react';
 interface FormSectionProps {
   children: React.ReactNode;
   withDivider?: boolean;
+  screenSize?: 'mobile' | 'desktop';
 }
 
 // Componente estrutural principal que organiza seções do formulário
-export function FormSection({ children, withDivider = true }: FormSectionProps) {
+export function FormSection({ children, withDivider = true, screenSize = 'desktop' }: FormSectionProps) {
   return (
     <>
-      {/* Content section - conforme Figma: row layout, label esquerda + input direita */}
+      {/* Content section - Desktop: row layout, Mobile: column layout conforme Figma */}
       <div style={{
         display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        gap: '40px',
+        flexDirection: screenSize === 'mobile' ? 'column' : 'row',
+        alignItems: screenSize === 'mobile' ? 'stretch' : 'flex-start',
+        gap: screenSize === 'mobile' ? '12px' : '40px', // Mobile: gap 12px conforme Figma
         width: '100%'
       }}>
         {children}
@@ -37,19 +38,20 @@ interface SectionLabelProps {
   title: string;
   supportingText?: string;
   width?: number;
+  screenSize?: 'mobile' | 'desktop';
 }
 
-export function SectionLabel({ title, supportingText, width = 300 }: SectionLabelProps) {
+export function SectionLabel({ title, supportingText, width = 300, screenSize = 'desktop' }: SectionLabelProps) {
   return (
     <div style={{
       display: 'flex',
       flexDirection: 'column',
       gap: supportingText ? '6px' : '4px',
-      width: `${width}px`,
-      minWidth: `${width}px`,
-      maxWidth: `${width}px`,
-      flexShrink: 0,
-      flexGrow: 0
+      width: screenSize === 'mobile' ? '100%' : `${width}px`,
+      minWidth: screenSize === 'mobile' ? 'auto' : `${width}px`,
+      maxWidth: screenSize === 'mobile' ? '100%' : `${width}px`,
+      flexShrink: screenSize === 'mobile' ? 1 : 0,
+      flexGrow: screenSize === 'mobile' ? 0 : 0
     }}>
       {/* Title */}
       <h3 style={{

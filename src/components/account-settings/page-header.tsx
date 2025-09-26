@@ -6,13 +6,15 @@ interface PageHeaderProps {
   userRole: string;
   onDeleteAccount: () => void;
   onUpdatePhoto: () => void;
+  screenSize?: 'mobile' | 'desktop';
 }
 
 export const PageHeader: React.FC<PageHeaderProps> = ({
   userName,
   userRole,
   onDeleteAccount,
-  onUpdatePhoto
+  onUpdatePhoto,
+  screenSize = 'desktop'
 }) => {
   return (
     <div style={{
@@ -36,10 +38,10 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
           gap: '16px',
           flex: 1
         }}>
-          {/* Avatar - 64x64px conforme Figma */}
+          {/* Avatar - Mobile: 56x56px, Desktop: 64x64px conforme Figma */}
           <div style={{
-            width: '64px',
-            height: '64px',
+            width: screenSize === 'mobile' ? '56px' : '64px',
+            height: screenSize === 'mobile' ? '56px' : '64px',
             borderRadius: '9999px',
             backgroundColor: '#D6B3B3',
             border: '1px solid #F48E2F',
@@ -96,11 +98,15 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
           </div>
         </div>
 
-        {/* Actions - conforme Figma */}
+        {/* Actions - responsivo para mobile */}
         <div style={{
           display: 'flex',
           gap: '12px',
-          alignItems: 'flex-start'
+          alignItems: 'flex-start',
+          flexDirection: screenSize === 'mobile' ? 'row-reverse' : 'row', // Mobile: ordem invertida
+          width: screenSize === 'mobile' ? '100%' : 'auto', // Desktop: auto width
+          flexShrink: 0,
+          flexWrap: 'wrap'
         }}>
           {/* Botão deletar - Icon Only - 40px altura */}
           <button 
@@ -146,7 +152,8 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            gap: '8px'
+            gap: '8px',
+            flex: screenSize === 'mobile' ? 1 : 'none' // Mobile: preenche o espaço disponível
           }}>
             {/* Botão atualizar foto - com ícone + texto - 40px altura */}
             <button 
@@ -158,6 +165,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
                 gap: '4px',
                 padding: '10px 14px',
                 height: '40px',
+                width: screenSize === 'mobile' ? '100%' : '216px', // Desktop: largura fixa 216px conforme Figma
                 backgroundColor: '#2D2D45',
                 border: '2px solid transparent',
                 borderRadius: '8px',
