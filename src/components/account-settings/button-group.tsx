@@ -2,7 +2,8 @@ import React from 'react';
 
 interface ButtonGroupProps {
   options: { value?: string; id?: string; label: string }[];
-  value: string;
+  value?: string;
+  selectedValue?: string;
   onChange: (value: string) => void;
   width?: string;
 }
@@ -10,9 +11,11 @@ interface ButtonGroupProps {
 export const ButtonGroup: React.FC<ButtonGroupProps> = ({
   options,
   value,
+  selectedValue,
   onChange,
   width = '137px'
 }) => {
+  const currentValue = selectedValue || value || '';
   return (
     <div style={{
       display: 'flex',
@@ -37,7 +40,7 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = ({
               justifyContent: 'center',
               gap: '8px',
               padding: '8px 16px',
-              backgroundColor: value === optionValue ? '#2D2D45' : '#2F2F4D',
+              backgroundColor: currentValue === optionValue ? '#2D2D45' : '#2F2F4D',
               border: 'none',
               borderRight: index < options.length - 1 ? '1px solid #373A41' : 'none',
               cursor: 'pointer',
@@ -45,22 +48,22 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = ({
               transition: 'all 0.2s ease'
             }}
             onMouseEnter={(e) => {
-              if (value !== optionValue) {
+              if (currentValue !== optionValue) {
                 e.currentTarget.style.backgroundColor = '#3A3A5A';
               }
             }}
             onMouseLeave={(e) => {
-              if (value !== optionValue) {
+              if (currentValue !== optionValue) {
                 e.currentTarget.style.backgroundColor = '#2F2F4D';
               }
             }}
           >
             <span style={{
               fontFamily: 'Sora',
-              fontWeight: value === optionValue ? '600' : '400',
+              fontWeight: currentValue === optionValue ? '600' : '400',
               fontSize: '14px',
               lineHeight: '1.4285714285714286em',
-              color: value === optionValue ? '#F48E2F' : '#CECFD2',
+              color: currentValue === optionValue ? '#F48E2F' : '#CECFD2',
               transition: 'all 0.2s ease'
             }}>
               {option.label}

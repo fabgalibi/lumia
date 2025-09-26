@@ -11,7 +11,9 @@ import {
   FormField,
   InputField,
   ButtonGroup,
-  CheckboxField
+  CheckboxField,
+  SectionDivider,
+  FormFooter
 } from '@/components/account-settings';
 
 interface AccountSettingsScreenProps {
@@ -166,7 +168,7 @@ const AccountSettingsScreen: React.FC<AccountSettingsScreenProps> = () => {
                   </p>
                 </div>
               </div>
-              <div style={{ height: '1px', background: '#2C2C45', margin: '16px 0' }} />
+              <SectionDivider />
             </div>
 
             {/* Form */}
@@ -193,7 +195,7 @@ const AccountSettingsScreen: React.FC<AccountSettingsScreenProps> = () => {
                 </FormField>
               </div>
 
-              <div style={{ height: '1px', background: '#2C2C45', margin: '16px 0' }} />
+              <SectionDivider />
 
               {/* Bio Field */}
               <div style={{
@@ -217,7 +219,7 @@ const AccountSettingsScreen: React.FC<AccountSettingsScreenProps> = () => {
                 </FormField>
               </div>
 
-              <div style={{ height: '1px', background: '#2C2C45', margin: '16px 0' }} />
+              <SectionDivider />
 
               {/* Working Status */}
               <div style={{
@@ -241,7 +243,7 @@ const AccountSettingsScreen: React.FC<AccountSettingsScreenProps> = () => {
                 </FormField>
               </div>
 
-              <div style={{ height: '1px', background: '#2C2C45', margin: '16px 0' }} />
+              <SectionDivider />
 
               {/* Birth Date */}
               <div style={{
@@ -262,7 +264,7 @@ const AccountSettingsScreen: React.FC<AccountSettingsScreenProps> = () => {
                 </FormField>
               </div>
 
-              <div style={{ height: '1px', background: '#2C2C45', margin: '16px 0' }} />
+              <SectionDivider />
 
               {/* Education */}
               <div style={{
@@ -282,7 +284,7 @@ const AccountSettingsScreen: React.FC<AccountSettingsScreenProps> = () => {
                 </FormField>
               </div>
 
-              <div style={{ height: '1px', background: '#2C2C45', margin: '16px 0' }} />
+              <SectionDivider />
 
               {/* Contact Information */}
               <div style={{
@@ -318,7 +320,7 @@ const AccountSettingsScreen: React.FC<AccountSettingsScreenProps> = () => {
                 </FormField>
               </div>
 
-              <div style={{ height: '1px', background: '#2C2C45', margin: '16px 0' }} />
+              <SectionDivider />
 
               {/* Terms Agreement */}
               <CheckboxField
@@ -330,42 +332,11 @@ const AccountSettingsScreen: React.FC<AccountSettingsScreenProps> = () => {
             </div>
 
             {/* Section Footer */}
-            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '24px' }}>
-              <button
-                onClick={handleCancel}
-                style={{
-                  padding: '10px 16px',
-                  backgroundColor: '#2D2D45',
-                  color: '#CECFD2',
-                  border: '1px solid #373A41',
-                  borderRadius: '8px',
-                  fontFamily: 'Sora',
-                  fontWeight: 600,
-                  fontSize: '14px',
-                  cursor: 'pointer'
-                }}
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={handleSave}
-                disabled={isLoading}
-                style={{
-                  padding: '10px 16px',
-                  backgroundColor: '#F66649',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '8px',
-                  fontFamily: 'Sora',
-                  fontWeight: 600,
-                  fontSize: '14px',
-                  cursor: isLoading ? 'not-allowed' : 'pointer',
-                  opacity: isLoading ? 0.6 : 1
-                }}
-              >
-                {isLoading ? 'Salvando...' : 'Salvar alterações'}
-              </button>
-            </div>
+            <FormFooter
+              onCancel={handleCancel}
+              onSave={handleSave}
+              isLoading={isLoading}
+            />
           </div>
         )}
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SectionHeader, FormSection, SectionLabel, FormFieldArea, InputField, ButtonGroup } from '../../index';
+import { SectionHeader, FormSection, SectionLabel, FormFieldArea, FormFooter, InputField, ButtonGroup } from '../../index';
 
 interface ProfileTabProps {
   initialData?: {
@@ -211,42 +211,11 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
       </div>
 
       {/* Form Footer */}
-      <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '24px' }}>
-        <button
-          onClick={handleCancel}
-          style={{
-            padding: '10px 16px',
-            backgroundColor: '#2D2D45',
-            color: '#CECFD2',
-            border: '1px solid #373A41',
-            borderRadius: '8px',
-            fontFamily: 'Sora',
-            fontWeight: 600,
-            fontSize: '14px',
-            cursor: 'pointer'
-          }}
-        >
-          Cancelar
-        </button>
-        <button
-          onClick={handleSave}
-          disabled={isLoading}
-          style={{
-            padding: '10px 16px',
-            backgroundColor: '#F66649',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            fontFamily: 'Sora',
-            fontWeight: 600,
-            fontSize: '14px',
-            cursor: isLoading ? 'not-allowed' : 'pointer',
-            opacity: isLoading ? 0.6 : 1
-          }}
-        >
-          {isLoading ? 'Salvando...' : 'Salvar alterações'}
-        </button>
-      </div>
+      <FormFooter
+        onCancel={handleCancel}
+        onSave={handleSave}
+        isLoading={isLoading}
+      />
     </>
   );
 };

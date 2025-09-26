@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FormFooter } from '../../index';
 import { PasswordForm, PasswordStrengthIndicator } from './index';
 
 interface PasswordTabProps {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SectionHeader } from '../../index';
+import { SectionHeader, FormFooter } from '../../index';
 import { PersonalInfoSection, ContactInfoSection, TermsAgreementSection } from './index';
 
 interface ProfileTabProps {

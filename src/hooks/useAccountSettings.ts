@@ -77,7 +77,7 @@ export const useAccountSettings = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('profile');
 
-  const updateProfile = useCallback(async (profileData: Partial<AccountSettingsData['profile']>) => {
+  const updateProfile = useCallback(async (profileData: any) => {
     setIsLoading(true);
     try {
       // Simular API call
@@ -89,16 +89,14 @@ export const useAccountSettings = () => {
       }));
       
       console.log('Perfil atualizado:', profileData);
-      return { success: true };
     } catch (error) {
       console.error('Erro ao atualizar perfil:', error);
-      return { success: false, error };
     } finally {
       setIsLoading(false);
     }
   }, []);
 
-  const updatePassword = useCallback(async (passwordData: AccountSettingsData['password']) => {
+  const updatePassword = useCallback(async (passwordData: any) => {
     setIsLoading(true);
     try {
       // Simular API call
@@ -106,16 +104,14 @@ export const useAccountSettings = () => {
       
       // Não salvar senhas no estado local por segurança
       console.log('Senha atualizada com sucesso', passwordData);
-      return { success: true };
     } catch (error) {
       console.error('Erro ao atualizar senha:', error);
-      return { success: false, error };
     } finally {
       setIsLoading(false);
     }
   }, []);
 
-  const updateNotifications = useCallback(async (notificationData: Partial<AccountSettingsData['notifications']>) => {
+  const updateNotifications = useCallback(async (notificationData: any) => {
     setIsLoading(true);
     try {
       // Simular API call
@@ -127,16 +123,14 @@ export const useAccountSettings = () => {
       }));
       
       console.log('Notificações atualizadas:', notificationData);
-      return { success: true };
     } catch (error) {
       console.error('Erro ao atualizar notificações:', error);
-      return { success: false, error };
     } finally {
       setIsLoading(false);
     }
   }, []);
 
-  const updateContent = useCallback(async (contentData: Partial<AccountSettingsData['content']>) => {
+  const updateContent = useCallback(async (contentData: any) => {
     setIsLoading(true);
     try {
       // Simular API call
@@ -148,10 +142,8 @@ export const useAccountSettings = () => {
       }));
       
       console.log('Preferências de conteúdo atualizadas:', contentData);
-      return { success: true };
     } catch (error) {
       console.error('Erro ao atualizar preferências de conteúdo:', error);
-      return { success: false, error };
     } finally {
       setIsLoading(false);
     }

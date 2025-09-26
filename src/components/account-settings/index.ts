@@ -10,3 +10,8 @@ export { InputField } from './input-field';
 export { ButtonGroup } from './button-group';
 export { CheckboxField } from './checkbox-field';
 export { SettingsTabs } from './settings-tabs';
+export { FormFooter } from './form-footer';
+export { SectionDivider } from './section-divider';
+
+// Tabs
+export { ProfileTab, PasswordTab, NotificationsTab, ContentTab } from './tabs';

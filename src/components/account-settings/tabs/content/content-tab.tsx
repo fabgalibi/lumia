@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckboxField, ButtonGroup } from '../../index';
+import { CheckboxField, FormFooter, ButtonGroup } from '../../index';
 
 interface ContentTabProps {
   initialData?: {

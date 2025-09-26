@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckboxField } from '../../index';
+import { CheckboxField, FormFooter } from '../../index';
 
 interface NotificationsTabProps {
   initialData?: {
