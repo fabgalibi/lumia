@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail01, GraduationHat01 } from '@untitledui/icons';
+import { GraduationHat01 } from '@untitledui/icons';
 import { FormSection, SectionLabel, FormFieldArea, InputField, ButtonGroup } from '../../index';
 
 interface PersonalInfoSectionProps {
@@ -27,13 +27,14 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
     }}>
       {/* Username Field */}
       <FormSection screenSize={screenSize}>
-        <SectionLabel screenSize={screenSize} title="Nome de usuário" screenSize={screenSize} />
+        <SectionLabel screenSize={screenSize} title="Nome de usuário" />
         <FormFieldArea>
           <InputField
             value={formData.username}
             onChange={(value) => onInputChange('username', value)}
             placeholder="Max William"
             type="text"
+            screenSize={screenSize}
           />
         </FormFieldArea>
       </FormSection>
@@ -114,6 +115,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             value={formData.birthDate}
             onChange={(value) => onInputChange('birthDate', value)}
             disabled
+            screenSize={screenSize}
           />
         </FormFieldArea>
       </FormSection>

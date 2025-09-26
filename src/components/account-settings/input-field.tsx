@@ -11,6 +11,7 @@ interface InputFieldProps {
   rows?: number;
   maxLength?: number;
   showCharCount?: boolean;
+  screenSize?: 'mobile' | 'desktop';
 }
 
 export const InputField: React.FC<InputFieldProps> = ({
@@ -22,7 +23,8 @@ export const InputField: React.FC<InputFieldProps> = ({
   type = 'text',
   rows = 4,
   maxLength,
-  showCharCount = false
+  showCharCount = false,
+  screenSize = 'desktop'
 }) => {
   const inputStyle = {
     flex: 1,
@@ -30,9 +32,9 @@ export const InputField: React.FC<InputFieldProps> = ({
     border: 'none',
     outline: 'none',
     fontFamily: 'Sora', // Conforme Figma
-    fontWeight: '400', // Text md Regular
-    fontSize: '16px', // Conforme Figma
-    lineHeight: '1.5em', // Conforme Figma
+    fontWeight: '400', // Text sm/md Regular
+    fontSize: screenSize === 'mobile' ? '14px' : '16px', // Mobile: 14px (sm), Desktop: 16px (md)
+    lineHeight: screenSize === 'mobile' ? '1.4285714285714286em' : '1.5em', // Mobile: sm line-height, Desktop: md
     color: disabled ? '#85888E' : '#CECFD2', // Figma: #CECFD2
     resize: 'none' as const,
     width: '100%'
@@ -41,14 +43,16 @@ export const InputField: React.FC<InputFieldProps> = ({
   const containerStyle = {
     display: 'flex',
     alignItems: type === 'textarea' ? 'flex-start' : 'center', // Figma: center for normal inputs
-    gap: '8px', // Conforme Figma
-    padding: type === 'textarea' ? '12px 14px' : '10px 14px', // Figma: 10px 14px
+    gap: screenSize === 'mobile' ? '6px' : '8px', // Mobile: gap menor
+    padding: type === 'textarea' 
+      ? (screenSize === 'mobile' ? '10px 12px' : '12px 14px') 
+      : (screenSize === 'mobile' ? '8px 12px' : '10px 14px'), // Mobile: padding menor (size sm)
     backgroundColor: disabled ? '#22262F' : '#2D2D3B', // Figma: #2D2D3B
     border: `1px solid ${disabled ? '#22262F' : '#373A41'}`, // Figma: #373A41
     borderRadius: '8px', // Conforme Figma
     boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)', // Figma: shadow-xs
     transition: 'all 0.2s ease',
-    minHeight: type === 'textarea' ? '120px' : 'auto',
+    minHeight: type === 'textarea' ? (screenSize === 'mobile' ? '100px' : '120px') : 'auto', // Mobile: altura menor
     width: '100%'
   };
 
@@ -56,7 +60,7 @@ export const InputField: React.FC<InputFieldProps> = ({
     <div style={{
       display: 'flex',
       flexDirection: 'column',
-      gap: '6px'
+      gap: screenSize === 'mobile' ? '4px' : '6px' // Mobile: gap menor
     }}>
       <div style={containerStyle}>
         {icon && (
@@ -99,8 +103,8 @@ export const InputField: React.FC<InputFieldProps> = ({
         <span style={{
           fontFamily: 'Sora',
           fontWeight: '400',
-          fontSize: '14px',
-          lineHeight: '1.43em',
+          fontSize: screenSize === 'mobile' ? '12px' : '14px', // Mobile: 12px, Desktop: 14px
+          lineHeight: screenSize === 'mobile' ? '1.5em' : '1.43em', // Mobile: line-height ajustado
           color: '#94979C',
           textAlign: 'right'
         }}>

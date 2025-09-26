@@ -8,11 +8,13 @@ interface ContactInfoSectionProps {
     phone: string;
   };
   onInputChange: (field: string, value: string) => void;
+  screenSize?: 'mobile' | 'desktop';
 }
 
 export const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
   formData,
-  onInputChange
+  onInputChange,
+  screenSize = 'desktop'
 }) => {
   return (
     <>
@@ -34,6 +36,7 @@ export const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
               type="email"
               disabled
               icon={<Mail01 width="20" height="20" stroke="#94979C" strokeWidth="1.67" />}
+              screenSize={screenSize}
             />
             <InputField
               value={formData.phone}
@@ -41,6 +44,7 @@ export const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
               type="tel"
               disabled
               icon={<Phone width="20" height="20" stroke="#94979C" strokeWidth="1.67" />}
+              screenSize={screenSize}
             />
           </div>
         </FormFieldArea>

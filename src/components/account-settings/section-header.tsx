@@ -4,26 +4,28 @@ interface SectionHeaderProps {
   title: string;
   supportingText?: string;
   showDivider?: boolean;
+  screenSize?: 'mobile' | 'desktop';
 }
 
 export function SectionHeader({ 
   title, 
   supportingText, 
-  showDivider = true 
+  showDivider = true,
+  screenSize = 'desktop'
 }: SectionHeaderProps) {
   return (
     <div style={{
       display: 'flex',
       flexDirection: 'column',
       alignSelf: 'stretch',
-      gap: '20px',
+      gap: screenSize === 'mobile' ? '20px' : '20px', // Mobile: gap 20px conforme TODO
       width: '100%'
     }}>
       {/* Content */}
       <div style={{
         display: 'flex',
         alignSelf: 'stretch',
-        gap: '16px',
+        gap: screenSize === 'mobile' ? '12px' : '16px', // Mobile: gap menor
         width: '100%'
       }}>
         {/* Text and supporting text */}
@@ -35,11 +37,11 @@ export function SectionHeader({
           gap: '4px',
           flex: 1
         }}>
-          {/* Title - Text lg Semibold */}
+          {/* Title - Text lg Semibold (mobile e desktop mantém mesmo tamanho) */}
           <h2 style={{
             fontFamily: 'Sora',
             fontWeight: '600',
-            fontSize: '18px',
+            fontSize: '18px', // Mantém 18px em mobile e desktop
             lineHeight: '1.5555555555555556em', // 28px / 18px = 1.556
             color: '#F7F7F7',
             margin: 0,

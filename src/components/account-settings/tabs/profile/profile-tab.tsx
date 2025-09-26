@@ -74,6 +74,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
       <SectionHeader
         title="Atualize seus dados pessoais"
         supportingText="Mantenha suas informações sempre atualizadas para garantir uma experiência personalizada e segura."
+        screenSize={screenSize}
       />
       
       {/* Form */}
