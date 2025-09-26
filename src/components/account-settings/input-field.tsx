@@ -29,25 +29,27 @@ export const InputField: React.FC<InputFieldProps> = ({
     backgroundColor: 'transparent',
     border: 'none',
     outline: 'none',
-    fontFamily: 'Sora',
-    fontWeight: '400',
-    fontSize: '16px',
-    lineHeight: '1.5em',
-    color: disabled ? '#85888E' : '#CECFD2',
-    resize: 'none' as const
+    fontFamily: 'Sora', // Conforme Figma
+    fontWeight: '400', // Text md Regular
+    fontSize: '16px', // Conforme Figma
+    lineHeight: '1.5em', // Conforme Figma
+    color: disabled ? '#85888E' : '#CECFD2', // Figma: #CECFD2
+    resize: 'none' as const,
+    width: '100%'
   };
 
   const containerStyle = {
     display: 'flex',
-    alignItems: type === 'textarea' ? 'stretch' : 'center',
-    gap: '8px',
-    padding: type === 'textarea' ? '12px 14px' : '10px 14px',
-    backgroundColor: disabled ? '#22262F' : '#2D2D3B',
-    border: `1px solid ${disabled ? '#22262F' : '#373A41'}`,
-    borderRadius: '8px',
-    boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
+    alignItems: type === 'textarea' ? 'flex-start' : 'center', // Figma: center for normal inputs
+    gap: '8px', // Conforme Figma
+    padding: type === 'textarea' ? '12px 14px' : '10px 14px', // Figma: 10px 14px
+    backgroundColor: disabled ? '#22262F' : '#2D2D3B', // Figma: #2D2D3B
+    border: `1px solid ${disabled ? '#22262F' : '#373A41'}`, // Figma: #373A41
+    borderRadius: '8px', // Conforme Figma
+    boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)', // Figma: shadow-xs
     transition: 'all 0.2s ease',
-    minHeight: type === 'textarea' ? '120px' : 'auto'
+    minHeight: type === 'textarea' ? '120px' : 'auto',
+    width: '100%'
   };
 
   return (
@@ -91,15 +93,6 @@ export const InputField: React.FC<InputFieldProps> = ({
             maxLength={maxLength}
             style={inputStyle}
           />
-        )}
-        {type === 'text' && !disabled && (
-          <div style={{
-            width: '8px',
-            height: '4px',
-            borderLeft: '4px solid transparent',
-            borderRight: '4px solid transparent',
-            borderTop: '4px solid #85888E'
-          }} />
         )}
       </div>
       {showCharCount && maxLength && (

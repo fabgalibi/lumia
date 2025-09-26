@@ -37,7 +37,9 @@ const HomeScreenContent = () => {
           marginLeft: isMobile ? '0px' : `${sidebarWidth}px`
         }}
       >
-        <Header />
+        <Header 
+          title={currentContent === 'account-settings' ? 'Configurações de conta' : undefined}
+        />
         <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 overflow-x-auto overflow-y-auto">
           {currentContent === 'home' && (
             <>

@@ -70,7 +70,7 @@ export const FormFooter: React.FC<FormFooterProps> = ({
               fontFamily: 'Sora',
               fontWeight: '600',
               fontSize: '14px',
-              lineHeight: '1.43em',
+              lineHeight: '1.4285714285714286em',
               color: '#CECFD2'
             }}>
               Cancelar
@@ -86,22 +86,24 @@ export const FormFooter: React.FC<FormFooterProps> = ({
               padding: '10px 14px',
               backgroundColor: isLoading ? '#8B4A3A' : '#C74228',
               border: '2px solid transparent',
-              backgroundImage: 'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)',
+              backgroundImage: `linear-gradient(${isLoading ? '#8B4A3A' : '#C74228'}, ${isLoading ? '#8B4A3A' : '#C74228'}), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)`,
+              backgroundOrigin: 'border-box',
+              backgroundClip: 'padding-box, border-box',
               borderRadius: '8px',
-              boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
+              boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
               cursor: isLoading ? 'not-allowed' : 'pointer',
               transition: 'all 0.2s ease',
               opacity: isLoading ? 0.8 : 1
             }}
             onMouseEnter={(e) => {
               if (!isLoading) {
-                e.currentTarget.style.backgroundColor = '#D54A2E';
+                e.currentTarget.style.backgroundImage = 'linear-gradient(#D54A2E, #D54A2E), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)';
                 e.currentTarget.style.transform = 'translateY(-1px)';
               }
             }}
             onMouseLeave={(e) => {
               if (!isLoading) {
-                e.currentTarget.style.backgroundColor = '#C74228';
+                e.currentTarget.style.backgroundImage = 'linear-gradient(#C74228, #C74228), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)';
                 e.currentTarget.style.transform = 'translateY(0)';
               }
             }}
@@ -110,7 +112,7 @@ export const FormFooter: React.FC<FormFooterProps> = ({
               fontFamily: 'Sora',
               fontWeight: '600',
               fontSize: '14px',
-              lineHeight: '1.43em',
+              lineHeight: '1.4285714285714286em',
               color: '#FFFFFF'
             }}>
               {isLoading ? 'Salvando...' : 'Salvar alterações'}

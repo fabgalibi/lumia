@@ -22,12 +22,11 @@ export const AccountHeader: React.FC<AccountHeaderProps> = ({
       justifyContent: 'space-between',
       alignItems: 'center',
       gap: '728px',
-      padding: '24px 32px 24px 276px',
-      width: '1440px',
+      padding: '24px 32px 24px 32px', // Padding esquerdo menor para nome da página aparecer mais à esquerda
+      width: '100%', // Largura responsiva
+      maxWidth: '1440px',
       borderBottom: '1px solid #272737',
-      borderLeft: '1px solid #272737',
-      borderRight: '1px solid #272737',
-      borderTop: '1px solid #272737'
+      backgroundColor: '#1A1A1A' // Fundo consistente
     }}>
       {/* Title */}
       <h1 style={{

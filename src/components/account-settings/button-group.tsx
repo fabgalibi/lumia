@@ -17,8 +17,11 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = ({
     <div style={{
       display: 'flex',
       width: width,
-      border: '1px solid #373A41',
+      border: '1px solid transparent',
       borderRadius: '8px',
+      backgroundImage: 'linear-gradient(#1A1A2E, #1A1A2E), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)',
+      backgroundOrigin: 'border-box',
+      backgroundClip: 'padding-box, border-box',
       boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
       overflow: 'hidden'
     }}>
@@ -52,9 +55,9 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = ({
         >
           <span style={{
             fontFamily: 'Sora',
-            fontWeight: value === option.value ? '600' : '400',
+            fontWeight: value === option.value ? '600' : '400', // 600 = Semibold, 400 = Medium/Regular
             fontSize: '14px',
-            lineHeight: '1.43em',
+            lineHeight: '1.4285714285714286em', // Exato do Figma
             color: value === option.value ? '#F48E2F' : '#CECFD2',
             transition: 'all 0.2s ease'
           }}>
