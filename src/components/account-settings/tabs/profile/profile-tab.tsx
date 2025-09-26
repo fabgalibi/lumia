@@ -105,12 +105,14 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
             phone: formData.phone
           }}
           onInputChange={handleInputChange}
+          screenSize={screenSize}
         />
 
         {/* Terms Agreement */}
         <TermsAgreementSection
           termsAccepted={formData.termsAccepted}
           onTermsChange={(checked) => handleInputChange('termsAccepted', checked)}
+          screenSize={screenSize}
         />
       </div>
 
@@ -119,6 +121,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
         onCancel={handleCancel}
         onSave={handleSave}
         isLoading={isLoading}
+        screenSize={screenSize}
       />
     </>
   );

@@ -5,17 +5,20 @@ import { FormSection, SectionLabel, FormFieldArea } from '../../index';
 interface TermsAgreementSectionProps {
   termsAccepted: boolean;
   onTermsChange: (accepted: boolean) => void;
+  screenSize?: 'mobile' | 'desktop';
 }
 
 export const TermsAgreementSection: React.FC<TermsAgreementSectionProps> = ({
   termsAccepted,
-  onTermsChange
+  onTermsChange,
+  screenSize = 'desktop'
 }) => {
   return (
     <>
       {/* Terms Agreement */}
-      <FormSection withDivider={false}>
+      <FormSection withDivider={false} screenSize={screenSize}>
         <SectionLabel 
+          screenSize={screenSize}
           title="Concordância com os Termos de Uso"
           supportingText="Você já aceitou ao se cadastrar, mas pode revisar e confirmar sempre que desejar."
         />

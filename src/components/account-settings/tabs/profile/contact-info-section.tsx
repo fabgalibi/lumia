@@ -17,12 +17,8 @@ export const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
   screenSize = 'desktop'
 }) => {
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '20px'
-    }}>
-      {/* Contact Information */}
+    <>
+      {/* Contact Information - Uma única FormSection como no Figma */}
       <FormSection screenSize={screenSize}>
         <SectionLabel 
           screenSize={screenSize}
@@ -33,7 +29,7 @@ export const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
           <div style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: '16px'
+            gap: '16px' // Figma: 16px gap entre campos
           }}>
             <InputField
               value={formData.email}
@@ -54,6 +50,6 @@ export const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
           </div>
         </FormFieldArea>
       </FormSection>
-    </div>
+    </>
   );
 };
