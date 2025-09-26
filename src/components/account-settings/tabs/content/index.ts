@@ -1,0 +1,1 @@
+export { ContentTab } from './content-tab';

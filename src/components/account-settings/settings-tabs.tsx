@@ -6,15 +6,22 @@ interface Tab {
 }
 
 interface SettingsTabsProps {
-  tabs: Tab[];
+  tabs?: Tab[];
   activeTab: string;
   onTabChange: (tabId: string) => void;
+  screenSize?: 'mobile' | 'desktop';
 }
 
 export const SettingsTabs: React.FC<SettingsTabsProps> = ({
-  tabs,
+  tabs = [
+    { id: 'profile', label: 'Dados Pessoais' },
+    { id: 'password', label: 'Alterar senha' },
+    { id: 'notifications', label: 'Notificações' },
+    { id: 'content', label: 'Bagagem de conteúdo' }
+  ],
   activeTab,
-  onTabChange
+  onTabChange,
+  screenSize: _screenSize = 'desktop'
 }) => {
   return (
     <div style={{

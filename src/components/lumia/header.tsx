@@ -3,7 +3,12 @@ import { Timer } from "./timer";
 import { useSidebar } from "../../contexts/sidebar-context";
 import { useMainContent } from "../../contexts/main-content-context";
 
-export const Header = () => {
+interface HeaderProps {
+  title?: string;
+  subtitle?: string;
+}
+
+export const Header = ({ title, subtitle: _subtitle }: HeaderProps = {}) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [initialTime] = useState("00:00:00");
   const [isMobile, setIsMobile] = useState(false);
@@ -42,7 +47,7 @@ export const Header = () => {
         className="w-full"
         style={{
           background: 'transparent',
-          padding: '20px 16px 24px',
+          padding: '20px 16px 24px 32px', // Padding esquerdo aumentado
           borderBottom: '1px solid #272737',
           borderLeft: '1px solid #272737'
         }}
@@ -69,20 +74,24 @@ export const Header = () => {
             </button>
           )}
           
-          {/* Mensagem de boas-vindas */}
+          {/* Título da página ou mensagem de boas-vindas */}
           <h1 
             className="text-white"
             style={{ 
               fontFamily: 'Sora', 
-              fontWeight: 400, 
-              fontSize: '14px',
-              lineHeight: '1.4285714285714286em',
+              fontWeight: title ? 600 : 400, 
+              fontSize: title ? '18px' : '14px',
+              lineHeight: title ? '1.56em' : '1.4285714285714286em',
               textAlign: 'left',
               margin: 0
             }}
           >
-            Bem-vindo de volta!<br />
-            Max William
+            {title ? title : (
+              <>
+                Bem-vindo de volta!<br />
+                Max William
+              </>
+            )}
           </h1>
         </div>
 
@@ -135,7 +144,7 @@ export const Header = () => {
                 }}
               >
                 <img 
-                  src="https://www.untitledui.com/images/avatars/jay-shepard" 
+                  src="/images/account-settings/avatar-user.png" 
                   alt="Avatar do usuário" 
                   className="w-full h-full rounded-full object-cover"
                   style={{

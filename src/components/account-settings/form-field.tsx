@@ -7,6 +7,7 @@ interface FormFieldProps {
   required?: boolean;
   children: ReactNode;
   width?: string;
+  error?: string;
 }
 
 export const FormField: React.FC<FormFieldProps> = ({
@@ -14,7 +15,8 @@ export const FormField: React.FC<FormFieldProps> = ({
   supportingText,
   required = false,
   children,
-  width = '300px'
+  width = '300px',
+  error: _error
 }) => {
   return (
     <div style={{

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { 
-  Mail01, 
-  Phone, 
-  GraduationHat01
+import React, { useState, useEffect } from 'react';
+import {
+  Mail01,
+  GraduationHat01,
+  Phone
 } from '@untitledui/icons';
 import {
   PageHeader,
@@ -23,12 +23,13 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
   onDeleteAccount,
   onUpdatePhoto
 }) => {
-  const { setCurrentContent } = useMainContent();
+  const { setCurrentContent: _setCurrentContent } = useMainContent();
   const [activeTab, setActiveTab] = useState('profile');
   const [isLoading, setIsLoading] = useState(false);
+  const [screenSize, setScreenSize] = useState<'mobile' | 'desktop'>('desktop');
   const [formData, setFormData] = useState({
     username: 'Max William',
-    bio: 'Profissional apaixonado por tecnologia e design, focado em criar soluções digitais funcionais e intuitivas. Sempre em busca de novos aprendizados e desafios, com o objetivo de transformar ideias em experiências que gerem valor real para as pessoas.',
+    bio: 'Profissional apaixonado por tecnologia e design, focado em criar soluções digitais funcionais e intuitivas.',
     isWorking: 'sim',
     birthDate: '07/09/2005',
     education: 'Ensino Superior (Incompleto)',
@@ -37,14 +38,24 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
     termsAccepted: true
   });
 
-  const tabs = [
-    { id: 'profile', label: 'Dados de perfil' },
-    { id: 'password', label: 'Alterar senha' },
-    { id: 'notifications', label: 'Notificações' },
-    { id: 'content', label: 'Bagagem de conteúdo' }
-  ];
+  // Detectar tamanho da tela
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const width = window.innerWidth;
+      const newScreenSize = width < 768 ? 'mobile' : 'desktop';
+      setScreenSize(newScreenSize);
+    };
 
-  const handleInputChange = (field: string, value: string | boolean) => {
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId);
+  };
+
+  const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
@@ -54,10 +65,8 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
   const handleSave = async () => {
     setIsLoading(true);
     try {
-      // Simular salvamento
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      console.log('Salvando alterações:', formData);
-      // Implementar lógica de salvamento real
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      console.log('Dados salvos:', formData);
     } catch (error) {
       console.error('Erro ao salvar:', error);
     } finally {
@@ -66,9 +75,9 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
   };
 
   const handleCancel = () => {
-    console.log('Cancelando alterações');
-    // Implementar lógica de cancelamento
+    console.log('Cancelar alterações');
   };
+
 
   return (
     <div style={{
@@ -77,54 +86,16 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
       gap: '32px',
       padding: '24px 32px',
       maxWidth: '1196px',
-      margin: '0 auto',
       width: '100%'
     }}>
-      {/* Back Button */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-        marginBottom: '16px'
-      }}>
-        <button
-          onClick={() => setCurrentContent('home')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '8px 12px',
-            backgroundColor: 'transparent',
-            border: '1px solid #373A41',
-            borderRadius: '8px',
-            color: '#CECFD2',
-            fontFamily: 'Sora',
-            fontSize: '14px',
-            cursor: 'pointer',
-            transition: 'all 0.2s ease'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = '#2D2D3B';
-            e.currentTarget.style.borderColor = '#F48E2F';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'transparent';
-            e.currentTarget.style.borderColor = '#373A41';
-          }}
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          Voltar para o início
-        </button>
-      </div>
 
       {/* Page Header */}
       <PageHeader
-        userName="Max William"
+        userName={formData.username}
         userRole="INSS - Analista de seguro social"
         onDeleteAccount={onDeleteAccount}
         onUpdatePhoto={onUpdatePhoto}
+        screenSize={screenSize}
       />
 
       {/* Container */}
@@ -135,9 +106,9 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
       }}>
         {/* Tabs */}
         <SettingsTabs
-          tabs={tabs}
           activeTab={activeTab}
-          onTabChange={setActiveTab}
+          onTabChange={handleTabChange}
+          screenSize={screenSize}
         />
 
         {/* Content based on active tab */}
