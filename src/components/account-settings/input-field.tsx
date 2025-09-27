@@ -60,7 +60,9 @@ export const InputField: React.FC<InputFieldProps> = ({
     transition: 'all 0.2s ease',
     height: type === 'textarea' && screenSize === 'mobile' ? '200px' : 'auto',
     minHeight: type === 'textarea' && screenSize !== 'mobile' ? '120px' : 'auto',
-    width: '100%'
+    width: '100%',
+    minWidth: 0, // Permite encolhimento
+    boxSizing: 'border-box' as const // Inclui padding e border na largura
   };
 
   return (

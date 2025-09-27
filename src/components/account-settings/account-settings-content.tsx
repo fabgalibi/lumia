@@ -47,7 +47,14 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
     activeTab
   });
   
-  const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
+  const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>(() => {
+    // Inicialização síncrona
+    if (typeof window !== 'undefined') {
+      const width = window.innerWidth;
+      return width < 640 ? 'mobile' : width < 1024 ? 'tablet' : 'desktop';
+    }
+    return 'desktop';
+  });
   const [isFormLoading, setIsFormLoading] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const [currentFormData, setCurrentFormData] = useState<any>(null);
@@ -56,7 +63,7 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
   useEffect(() => {
     const checkScreenSize = () => {
       const width = window.innerWidth;
-      const newScreenSize = width < 768 ? 'mobile' : width < 1024 ? 'tablet' : 'desktop';
+      const newScreenSize = width < 640 ? 'mobile' : width < 1024 ? 'tablet' : 'desktop';
       setScreenSize(newScreenSize);
       
       // Limpar qualquer debug visual que possa ter ficado

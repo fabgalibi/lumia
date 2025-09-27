@@ -20,10 +20,11 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = ({
   screenSize = 'desktop'
 }) => {
   const currentValue = selectedValue || value || '';
+  
   return (
     <div style={{
       display: 'flex',
-      width: fullWidth ? '100%' : width,
+      width: fullWidth || screenSize === 'mobile' ? '100%' : width, // Expande apenas no mobile
       border: '1px solid transparent',
       borderRadius: '8px',
       backgroundImage: 'linear-gradient(#2F2F4D, #2F2F4D), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)',

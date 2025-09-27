@@ -81,7 +81,7 @@ export const NotificationsTab: React.FC<NotificationsTabProps> = ({
           display: 'flex',
           flexDirection: 'column',
           gap: '20px',
-          width: '100%',
+          width: screenSize === 'mobile' ? '343px' : '100%', // Largura fixa mobile conforme Figma
           maxWidth: screenSize === 'desktop' && isVeryLargeScreen ? '1000px' : 'none',
           margin: '0'
         }}>
@@ -105,7 +105,6 @@ export const NotificationsTab: React.FC<NotificationsTabProps> = ({
                   ]}
                   selectedValue={formData.platformUpdates ? 'true' : 'false'}
                   onChange={(value) => handleInputChange('platformUpdates', value === 'true')}
-                  width="137px"
                   screenSize={screenSize}
                 />
               </div>
@@ -132,7 +131,6 @@ export const NotificationsTab: React.FC<NotificationsTabProps> = ({
                   ]}
                   selectedValue={formData.mentorMessages ? 'true' : 'false'}
                   onChange={(value) => handleInputChange('mentorMessages', value === 'true')}
-                  width="137px"
                   screenSize={screenSize}
                 />
               </div>
@@ -159,7 +157,6 @@ export const NotificationsTab: React.FC<NotificationsTabProps> = ({
                   ]}
                   selectedValue={formData.newMaterial ? 'true' : 'false'}
                   onChange={(value) => handleInputChange('newMaterial', value === 'true')}
-                  width="137px"
                   screenSize={screenSize}
                 />
               </div>
@@ -186,7 +183,6 @@ export const NotificationsTab: React.FC<NotificationsTabProps> = ({
                   ]}
                   selectedValue={formData.activitiesAndSimulations ? 'true' : 'false'}
                   onChange={(value) => handleInputChange('activitiesAndSimulations', value === 'true')}
-                  width="137px"
                   screenSize={screenSize}
                 />
               </div>
@@ -213,7 +209,6 @@ export const NotificationsTab: React.FC<NotificationsTabProps> = ({
                   ]}
                   selectedValue={formData.mentorships ? 'true' : 'false'}
                   onChange={(value) => handleInputChange('mentorships', value === 'true')}
-                  width="137px"
                   screenSize={screenSize}
                 />
               </div>

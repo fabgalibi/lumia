@@ -14,11 +14,11 @@ export function FormSection({ children, withDivider = true, screenSize = 'deskto
        {/* Content section - Desktop: row layout, Mobile/Tablet: column layout */}
        <div style={{
          display: 'flex',
-         flexDirection: screenSize === 'mobile' ? 'column' : screenSize === 'tablet' ? 'column' : 'row',
-         alignItems: screenSize === 'mobile' || screenSize === 'tablet' ? 'stretch' : 'center',
-         gap: screenSize === 'mobile' ? '12px' : screenSize === 'tablet' ? '16px' : (gap === 'large' ? '64px' : gap === 'small' ? '8px' : '40px'),
+         flexDirection: screenSize === 'desktop' ? 'row' : 'column', // Apenas desktop usa row, mobile/tablet usam column
+         alignItems: screenSize === 'desktop' ? 'center' : 'stretch', // Apenas desktop usa center, mobile/tablet usam stretch
+         gap: screenSize === 'desktop' ? (gap === 'large' ? '64px' : gap === 'small' ? '8px' : '40px') : '12px', // Desktop usa gaps variáveis, mobile/tablet usam 12px
          width: '100%'
-      }}>
+       }}>
         {children}
       </div>
 
@@ -49,11 +49,11 @@ export function SectionLabel({ title, supportingText, width = 300, screenSize = 
       display: 'flex',
       flexDirection: 'column',
       gap: '4px',
-       width: screenSize === 'mobile' || screenSize === 'tablet' ? '100%' : `${width}px`,
-       minWidth: screenSize === 'mobile' || screenSize === 'tablet' ? 'auto' : `${width}px`,
-       maxWidth: screenSize === 'mobile' || screenSize === 'tablet' ? '100%' : `${width}px`,
-       flexShrink: screenSize === 'mobile' || screenSize === 'tablet' ? 1 : 0,
-       flexGrow: screenSize === 'mobile' || screenSize === 'tablet' ? 0 : 0
+       width: screenSize === 'desktop' ? `${width}px` : '100%', // Apenas desktop usa largura fixa, mobile/tablet usam 100%
+       minWidth: screenSize === 'desktop' ? `${width}px` : 'auto', // Apenas desktop usa minWidth fixa, mobile/tablet usam auto
+       maxWidth: screenSize === 'desktop' ? `${width}px` : '100%', // Apenas desktop usa maxWidth fixa, mobile/tablet usam 100%
+       flexShrink: screenSize === 'desktop' ? 0 : 1, // Apenas desktop não encolhe, mobile/tablet encolhem
+       flexGrow: screenSize === 'desktop' ? 0 : 0 // Todos não crescem
     }}>
       {/* Title */}
       <h3 style={{
@@ -105,7 +105,10 @@ export function FormFieldArea({ children, width: _width, screenSize = 'desktop' 
       display: 'flex',
       flexDirection: 'column',
       gap: '6px',
-      flex: '1' // Preenche o espaço restante (conforme Figma)
+      flex: '1', // Preenche o espaço restante (conforme Figma)
+      minWidth: 0, // Permite que o flex item encolha abaixo de seu tamanho de conteúdo
+      width: '100%', // Sempre 100% para mobile/tablet, desktop também usa flex
+      maxWidth: screenSize === 'desktop' ? '512px' : '100%' // Desktop: máximo 512px conforme Figma
     }}>
       {children}
     </div>

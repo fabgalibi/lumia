@@ -103,7 +103,6 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             ]}
             value={formData.isWorking}
             onChange={(value) => onInputChange('isWorking', value)}
-            fullWidth={screenSize === 'mobile' || screenSize === 'tablet'}
             screenSize={screenSize}
           />
         </FormFieldArea>
@@ -137,7 +136,9 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             border: '1px solid #373A41', // Figma: cor exata
             borderRadius: '8px',
             boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)', // Figma: shadow-xs
-            width: '100%'
+            width: '100%',
+            minWidth: 0, // Permite encolhimento
+            boxSizing: 'border-box' // Inclui padding e border na largura
           }}>
             <GraduationHat01 width="20" height="20" stroke="#CECFD2" strokeWidth="1.67" />
             <select

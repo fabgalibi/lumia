@@ -133,7 +133,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
               ]}
               selectedValue={formData.isWorking}
               onChange={(value) => handleInputChange('isWorking', value)}
-              fullWidth={screenSize === 'mobile'}
+              screenSize={screenSize}
             />
           </FormFieldArea>
         </FormSection>

@@ -33,7 +33,7 @@ export const AccountSettingsLayout: React.FC<AccountSettingsLayoutProps> = ({
   useEffect(() => {
     const checkScreenSize = () => {
       const width = window.innerWidth;
-      setScreenSize(width < 768 ? 'mobile' : width < 1024 ? 'tablet' : 'desktop');
+      setScreenSize(width < 640 ? 'mobile' : width < 1024 ? 'tablet' : 'desktop');
     };
 
     checkScreenSize();
@@ -47,7 +47,7 @@ export const AccountSettingsLayout: React.FC<AccountSettingsLayoutProps> = ({
       flexDirection: 'column',
       minHeight: '100vh', // Garante altura mínima da viewport
       gap: screenSize === 'mobile' || screenSize === 'tablet' ? '20px' : '32px', // Mobile/Tablet: gap 20px conforme Figma
-      padding: screenSize === 'mobile' ? '8px 4px' : screenSize === 'tablet' ? '12px 8px' : '16px 16px', // Padding mínimo conforme Figma
+      padding: screenSize === 'mobile' ? '20px 16px' : screenSize === 'tablet' ? '12px 8px' : '16px 16px', // Padding conforme Figma mobile
       maxWidth: 'none', // Header e footer podem expandir totalmente
       width: '100%'
     }}>

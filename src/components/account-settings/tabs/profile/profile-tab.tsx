@@ -32,7 +32,8 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
   },
   onSave,
   onCancel,
-  screenSize = 'desktop'
+  screenSize = 'desktop',
+  onFormDataChange
 }) => {
   // Detecta telas muito grandes (> 1400px) para aplicar maxWidth
   const [isVeryLargeScreen, setIsVeryLargeScreen] = useState(false);
