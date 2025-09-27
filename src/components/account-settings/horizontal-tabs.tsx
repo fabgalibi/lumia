@@ -1,17 +1,31 @@
 import React from 'react';
+import { Link, useLocation } from 'react-router';
 
 interface HorizontalTabsProps {
-  activeTab: string;
-  onTabChange: (tab: string) => void;
   screenSize?: 'mobile' | 'tablet' | 'desktop';
 }
 
-export function HorizontalTabs({ activeTab, onTabChange, screenSize = 'desktop' }: HorizontalTabsProps) {
+export function HorizontalTabs({ screenSize = 'desktop' }: HorizontalTabsProps) {
+  const location = useLocation();
+  
+  const getActiveTab = () => {
+    if (location.pathname === '/account-settings' || location.pathname === '/account-settings/profile') {
+      return 'profile';
+    }
+    if (location.pathname === '/account-settings/password') {
+      return 'password';
+    }
+    if (location.pathname === '/account-settings/notifications') {
+      return 'notifications';
+    }
+    return 'profile'; // default
+  };
+  
+  const activeTab = getActiveTab();
   const tabs = [
     { id: 'profile', label: 'Dados de perfil' },
     { id: 'password', label: 'Alterar senha' },
-    { id: 'notifications', label: 'Notificações' },
-    { id: 'content', label: 'Bagagem de conteúdo' }
+    { id: 'notifications', label: 'Notificações' }
   ];
 
   return (
@@ -30,11 +44,14 @@ export function HorizontalTabs({ activeTab, onTabChange, screenSize = 'desktop' 
       }}>
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
+          const getTabPath = (tabId: string) => {
+            return `/account-settings/${tabId}`;
+          };
           
           return (
-            <button
+            <Link
               key={tab.id}
-              onClick={() => onTabChange(tab.id)}
+              to={getTabPath(tab.id)}
               style={{
                 display: 'flex',
                 justifyContent: 'center',
@@ -46,7 +63,8 @@ export function HorizontalTabs({ activeTab, onTabChange, screenSize = 'desktop' 
                 border: 'none',
                 borderBottom: isActive ? '2px solid #F48E2F' : '2px solid transparent',
                 cursor: 'pointer',
-                transition: 'all 0.2s ease'
+                transition: 'all 0.2s ease',
+                textDecoration: 'none'
               }}
             >
               <span style={{
@@ -59,7 +77,7 @@ export function HorizontalTabs({ activeTab, onTabChange, screenSize = 'desktop' 
               }}>
                 {tab.label}
               </span>
-            </button>
+            </Link>
           );
         })}
       </div>

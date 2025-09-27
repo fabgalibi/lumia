@@ -1,25 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { PageHeader, HorizontalTabs } from './index';
+import { PageHeader, HorizontalTabs, FormFooter } from './index';
 
 interface AccountSettingsLayoutProps {
   children: React.ReactNode;
-  activeTab: string;
-  onTabChange: (tabId: string) => void;
   userName?: string;
   userRole?: string;
   onDeleteAccount?: () => void;
   onUpdatePhoto?: () => void;
+  // Footer props
+  onCancel?: () => void;
+  onSave?: () => void;
+  isLoading?: boolean;
+  saveButtonText?: string;
 }
 
 
 export const AccountSettingsLayout: React.FC<AccountSettingsLayoutProps> = ({
   children,
-  activeTab,
-  onTabChange,
   userName = 'Max William',
   userRole = 'INSS - Analista de seguro social',
   onDeleteAccount = () => {},
-  onUpdatePhoto = () => {}
+  onUpdatePhoto = () => {},
+  // Footer props
+  onCancel = () => {},
+  onSave = () => {},
+  isLoading = false,
+  saveButtonText = 'Salvar alterações'
 }) => {
   const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
 
@@ -39,9 +45,10 @@ export const AccountSettingsLayout: React.FC<AccountSettingsLayoutProps> = ({
     <div style={{
       display: 'flex',
       flexDirection: 'column',
-       gap: screenSize === 'mobile' || screenSize === 'tablet' ? '20px' : '32px', // Mobile/Tablet: gap 20px conforme Figma
-       padding: screenSize === 'mobile' ? '8px 4px' : screenSize === 'tablet' ? '12px 8px' : '16px 16px', // Padding mínimo conforme Figma
-       maxWidth: 'none', // Header e footer podem expandir totalmente
+      minHeight: '100vh', // Garante altura mínima da viewport
+      gap: screenSize === 'mobile' || screenSize === 'tablet' ? '20px' : '32px', // Mobile/Tablet: gap 20px conforme Figma
+      padding: screenSize === 'mobile' ? '8px 4px' : screenSize === 'tablet' ? '12px 8px' : '16px 16px', // Padding mínimo conforme Figma
+      maxWidth: 'none', // Header e footer podem expandir totalmente
       width: '100%'
     }}>
       {/* Page Header */}
@@ -53,28 +60,37 @@ export const AccountSettingsLayout: React.FC<AccountSettingsLayoutProps> = ({
         screenSize={screenSize}
       />
 
-      {/* Container */}
+      {/* Container - Flex grow para empurrar footer para baixo */}
       <div style={{
         display: 'flex',
         flexDirection: 'column',
-         gap: screenSize === 'mobile' || screenSize === 'tablet' ? '24px' : '24px' // Gap conforme Figma mobile/tablet
+        flex: 1, // Ocupa espaço restante
+        gap: screenSize === 'mobile' || screenSize === 'tablet' ? '24px' : '24px' // Gap conforme Figma mobile/tablet
       }}>
         {/* Tabs */}
         <HorizontalTabs
-          activeTab={activeTab}
-          onTabChange={onTabChange}
           screenSize={screenSize}
         />
 
-        {/* Content */}
+        {/* Content - Flex grow para empurrar footer para baixo */}
         <div style={{
           display: 'flex',
           flexDirection: 'column',
+          flex: 1, // Ocupa espaço restante, empurrando footer para baixo
           gap: '20px'
         }}>
           {children}
         </div>
       </div>
+
+      {/* Footer centralizado */}
+      <FormFooter
+        onCancel={onCancel}
+        onSave={onSave}
+        isLoading={isLoading}
+        screenSize={screenSize}
+        saveButtonText={saveButtonText}
+      />
     </div>
   );
 };

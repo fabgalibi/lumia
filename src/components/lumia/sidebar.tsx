@@ -67,7 +67,7 @@ export const Sidebar = () => {
         )
             ), 
       label: "Início", 
-      path: "/",
+      path: "/home",
       isEmoji: false 
     },
     { 
@@ -178,7 +178,10 @@ export const Sidebar = () => {
     console.log(`Navegando para: ${item.path}`);
     console.log(`Item ativo agora: ${item.label}`);
     
-    // Se for "Início", voltar para a home
+    // Navegar para o path do item
+    navigate(item.path);
+    
+    // Se for "Início", definir currentContent como 'home'
     if (item.label === "Início") {
       setCurrentContent('home');
     }

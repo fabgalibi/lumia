@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router";
 import { HomeScreen } from "@/pages/home-screen";
 import { LoginScreen } from "@/pages/login-screen";
 import { WelcomeScreen } from "@/pages/welcome-screen";
@@ -31,6 +31,9 @@ createRoot(document.getElementById("root")!).render(
                         {/* Authenticated Routes */}
                         <Route path="/home" element={<HomeScreen />} />
                         <Route path="/conclusion" element={<ConclusionScreen />} />
+                        
+                        {/* Account Settings Routes - nested dentro de HomeScreen */}
+                        <Route path="/account-settings/*" element={<HomeScreen />} />
                         
                         {/* Profile Setup Flow - Hierarchical Structure */}
                         <Route path="/profile-setup/*" element={

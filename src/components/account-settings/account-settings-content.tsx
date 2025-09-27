@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useLocation } from 'react-router';
 import {
-  PageHeader,
-  HorizontalTabs,
+  AccountSettingsLayout,
   ProfileTab,
   PasswordTab,
   NotificationsTab,
@@ -20,14 +20,37 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
   onUpdatePhoto
 }) => {
   const { setCurrentContent: _setCurrentContent } = useMainContent();
+  const location = useLocation();
   const { 
     data, 
     isLoading: _isLoading, 
-    activeTab, 
-    setActiveTab, 
     actions 
   } = useAccountSettings();
+  
+  // Detectar aba ativa baseada na URL (memoizada)
+  const activeTab = useMemo(() => {
+    if (location.pathname === '/account-settings' || location.pathname === '/account-settings/profile') {
+      return 'profile';
+    }
+    if (location.pathname === '/account-settings/password') {
+      return 'password';
+    }
+    if (location.pathname === '/account-settings/notifications') {
+      return 'notifications';
+    }
+    return 'profile'; // default
+  }, [location.pathname]);
+  
+  // Debug log
+  console.log('AccountSettingsContent Debug:', {
+    pathname: location.pathname,
+    activeTab
+  });
+  
   const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
+  const [isFormLoading, setIsFormLoading] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [currentFormData, setCurrentFormData] = useState<any>(null);
 
   // Detectar tamanho da tela
   useEffect(() => {
@@ -63,8 +86,51 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
     };
   }, []);
 
-  const handleTabChange = (tabId: string) => {
-    setActiveTab(tabId);
+  // Navegação é feita pelos Links do HorizontalTabs, não precisamos mais desta função
+
+  const handleFormDataChange = (formData: any, isValid: boolean, isLoading: boolean) => {
+    setCurrentFormData(formData);
+    setIsFormValid(isValid);
+    setIsFormLoading(isLoading);
+  };
+
+  const handleSave = async () => {
+    if (!isFormValid || !currentFormData) return;
+
+    setIsFormLoading(true);
+    try {
+      switch (activeTab) {
+        case 'profile':
+          await actions.updateProfile(currentFormData);
+          break;
+        case 'password':
+          await actions.updatePassword(currentFormData);
+          break;
+        case 'notifications':
+          await actions.updateNotifications(currentFormData);
+          break;
+        default:
+          console.log('Salvando dados:', currentFormData);
+      }
+    } catch (error) {
+      console.error('Erro ao salvar:', error);
+    } finally {
+      setIsFormLoading(false);
+    }
+  };
+
+  const handleCancel = () => {
+    console.log('Cancelando alterações');
+    // Reset form or navigate away
+  };
+
+  const getSaveButtonText = () => {
+    switch (activeTab) {
+      case 'password':
+        return 'Atualizar senha';
+      default:
+        return 'Salvar alterações';
+    }
   };
 
   const renderTabContent = () => {
@@ -76,6 +142,7 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
             onSave={actions.updateProfile}
             onCancel={() => console.log('Cancelar alterações de perfil')}
             screenSize={screenSize}
+            onFormDataChange={handleFormDataChange}
           />
         );
       
@@ -84,6 +151,8 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
           <PasswordTab
             onSave={actions.updatePassword}
             onCancel={() => console.log('Cancelar alteração de senha')}
+            screenSize={screenSize}
+            onFormDataChange={handleFormDataChange}
           />
         );
       
@@ -93,6 +162,8 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
             initialData={data.notifications}
             onSave={actions.updateNotifications}
             onCancel={() => console.log('Cancelar alterações de notificação')}
+            screenSize={screenSize}
+            onFormDataChange={handleFormDataChange}
           />
         );
       
@@ -102,6 +173,7 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
             initialData={data.content}
             onSave={actions.updateContent}
             onCancel={() => console.log('Cancelar alterações de conteúdo')}
+            onFormDataChange={handleFormDataChange}
           />
         );
       
@@ -112,46 +184,17 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
 
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      gap: screenSize === 'mobile' || screenSize === 'tablet' ? '20px' : '32px', // Mobile/Tablet: gap 20px conforme Figma
-      padding: screenSize === 'mobile' ? '8px 4px' : screenSize === 'tablet' ? '12px 8px' : '16px 16px', // Padding mínimo conforme Figma
-      maxWidth: 'none', // Header e footer podem expandir totalmente
-      width: '100%'
-    }}>
-
-      {/* Page Header */}
-      <PageHeader
-        userName={data.profile.username}
-        userRole="INSS - Analista de seguro social"
-        onDeleteAccount={onDeleteAccount}
-        onUpdatePhoto={onUpdatePhoto}
-        screenSize={screenSize}
-      />
-
-      {/* Container */}
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: screenSize === 'mobile' ? '24px' : '24px' // Gap conforme Figma mobile
-      }}>
-        {/* Tabs */}
-        <HorizontalTabs
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
-          screenSize={screenSize}
-        />
-
-        {/* Content based on active tab */}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '20px'
-        }}>
-          {renderTabContent()}
-        </div>
-      </div>
-    </div>
+    <AccountSettingsLayout
+      userName={data.profile.username}
+      userRole="INSS - Analista de seguro social"
+      onDeleteAccount={onDeleteAccount}
+      onUpdatePhoto={onUpdatePhoto}
+      onCancel={handleCancel}
+      onSave={handleSave}
+      isLoading={isFormLoading}
+      saveButtonText={getSaveButtonText()}
+    >
+      {renderTabContent()}
+    </AccountSettingsLayout>
   );
 };

@@ -58,7 +58,8 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
               onChange={(e) => onInputChange('bio', e.target.value)}
               style={{
                 width: '100%',
-                height: '130px', // Ajustado para aproximar do Figma (154px container - padding/gap)
+                maxWidth: '508px', // Figma: width 508px
+                height: '154px', // Figma: height 154px
                 padding: '12px 14px',
                 fontFamily: 'Sora',
                 fontWeight: '400',

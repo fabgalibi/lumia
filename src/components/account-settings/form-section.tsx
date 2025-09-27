@@ -39,9 +39,10 @@ interface SectionLabelProps {
   supportingText?: string;
   width?: number;
   screenSize?: 'mobile' | 'tablet' | 'desktop';
+  required?: boolean;
 }
 
-export function SectionLabel({ title, supportingText, width = 300, screenSize = 'desktop' }: SectionLabelProps) {
+export function SectionLabel({ title, supportingText, width = 300, screenSize = 'desktop', required = false }: SectionLabelProps) {
   return (
     <div style={{
       display: 'flex',
@@ -63,6 +64,14 @@ export function SectionLabel({ title, supportingText, width = 300, screenSize = 
         margin: 0
       }}>
         {title}
+        {required && (
+          <span style={{
+            color: '#C74228',
+            marginLeft: '4px'
+          }}>
+            *
+          </span>
+        )}
       </h3>
       
       {/* Supporting text */}

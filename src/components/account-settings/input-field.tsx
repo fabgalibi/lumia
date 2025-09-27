@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ReactNode } from 'react';
+import { Eye, EyeOff } from '@untitledui/icons';
 
 interface InputFieldProps {
   value: string;
@@ -28,6 +29,9 @@ export const InputField: React.FC<InputFieldProps> = ({
   screenSize = 'desktop',
   error: _error = false
 }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const isPasswordField = type === 'password';
+  const inputType = isPasswordField ? (showPassword ? 'text' : 'password') : type;
   const inputStyle = {
     flex: 1,
     backgroundColor: 'transparent',
@@ -43,9 +47,9 @@ export const InputField: React.FC<InputFieldProps> = ({
   };
 
   const containerStyle = {
+    position: 'relative' as const,
     display: 'flex',
     alignItems: type === 'textarea' ? 'flex-start' : 'center',
-    gap: screenSize === 'mobile' ? '6px' : '8px', // Mobile: gap menor, Tablet/Desktop: 8px
     padding: type === 'textarea' 
       ? (screenSize === 'mobile' ? '10px 12px' : '12px 14px') 
       : (screenSize === 'mobile' ? '6px 10px' : '10px 14px'), // Mobile: padding ainda menor para telas pequenas
@@ -71,11 +75,13 @@ export const InputField: React.FC<InputFieldProps> = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            flexShrink: 0
+            flexShrink: 0,
+            marginRight: screenSize === 'mobile' ? '6px' : '8px'
           }}>
             {icon}
           </div>
         )}
+        
         {type === 'textarea' ? (
           <textarea
             value={value}
@@ -94,14 +100,49 @@ export const InputField: React.FC<InputFieldProps> = ({
           />
         ) : (
           <input
-            type={type}
+            type={inputType}
             value={value}
             onChange={(e) => onChange(e.target.value)}
             placeholder={placeholder}
             disabled={disabled}
             maxLength={maxLength}
-            style={inputStyle}
+            style={{
+              ...inputStyle,
+              flex: 1,
+              paddingRight: isPasswordField && value ? '40px' : '0'
+            }}
           />
+        )}
+        
+        {/* Password Toggle Icon - Position Absolute */}
+        {isPasswordField && value && (
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            style={{
+              position: 'absolute',
+              right: screenSize === 'mobile' ? '10px' : '14px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '4px',
+              borderRadius: '4px',
+              width: '28px',
+              height: '28px',
+              zIndex: 1
+            }}
+          >
+            {showPassword ? (
+              <EyeOff width="20" height="20" stroke="#94979C" strokeWidth="1.67" />
+            ) : (
+              <Eye width="20" height="20" stroke="#94979C" strokeWidth="1.67" />
+            )}
+          </button>
         )}
       </div>
       {showCharCount && maxLength && (

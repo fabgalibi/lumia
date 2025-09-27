@@ -5,13 +5,15 @@ interface FormFooterProps {
   onSave: () => void;
   isLoading?: boolean;
   screenSize?: 'mobile' | 'tablet' | 'desktop';
+  saveButtonText?: string;
 }
 
 export const FormFooter: React.FC<FormFooterProps> = ({
   onCancel,
   onSave,
   isLoading = false,
-  screenSize = 'desktop'
+  screenSize = 'desktop',
+  saveButtonText = 'Salvar alterações'
 }) => {
   return (
     <div style={{
@@ -21,7 +23,7 @@ export const FormFooter: React.FC<FormFooterProps> = ({
       alignItems: 'center',
       alignSelf: 'stretch',
       gap: '20px',
-      padding: screenSize === 'mobile' || screenSize === 'tablet' ? '0px 16px 12px' : '0px 0px 0px', // Mobile/Tablet: 0px 16px 12px conforme Figma
+      padding: screenSize === 'mobile' || screenSize === 'tablet' ? '0px 0px 12px' : '0px 0px 0px', // Mobile/Tablet: sem padding lateral para botões ocuparem largura total
       marginTop: screenSize === 'mobile' || screenSize === 'tablet' ? '0px' : '32px', // Mobile/Tablet: sem margin top
       width: '100%'
     }}>
@@ -57,9 +59,9 @@ export const FormFooter: React.FC<FormFooterProps> = ({
               justifyContent: 'center',
               alignItems: 'center',
               gap: '4px',
-              padding: '10px 14px',
+              padding: '12px 16px',
               backgroundColor: '#2D2D45', // Figma: Secondary color background
-              border: 'none',
+              border: '2px solid transparent',
               borderRadius: '8px',
               boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)', // Figma: shadow-xs-skeuomorphic sem inset
               cursor: isLoading ? 'not-allowed' : 'pointer',
@@ -100,7 +102,7 @@ export const FormFooter: React.FC<FormFooterProps> = ({
               justifyContent: 'center',
               alignItems: 'center',
               gap: '4px',
-              padding: '10px 14px',
+              padding: '12px 16px',
               backgroundColor: isLoading ? '#8B4A3A' : '#F66649', // Figma: Primary color background correto
               border: '2px solid transparent',
               backgroundImage: `linear-gradient(${isLoading ? '#8B4A3A' : '#F66649'}, ${isLoading ? '#8B4A3A' : '#F66649'}), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)`,
@@ -135,7 +137,7 @@ export const FormFooter: React.FC<FormFooterProps> = ({
               lineHeight: '1.4285714285714286em',
               color: '#FFFFFF'
             }}>
-                     {isLoading ? 'Salvando...' : 'Salvar alterações'}
+                     {isLoading ? 'Salvando...' : saveButtonText}
             </span>
           </button>
         </div>

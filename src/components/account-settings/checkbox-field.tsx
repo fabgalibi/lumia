@@ -6,13 +6,15 @@ interface CheckboxFieldProps {
   onChange: (checked: boolean) => void;
   label: string;
   supportingText?: string;
+  screenSize?: 'mobile' | 'tablet' | 'desktop';
 }
 
 export const CheckboxField: React.FC<CheckboxFieldProps> = ({
   checked,
   onChange,
   label,
-  supportingText
+  supportingText,
+  screenSize = 'desktop'
 }) => {
   return (
     <div style={{

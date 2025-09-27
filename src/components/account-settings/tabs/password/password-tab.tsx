@@ -1,17 +1,31 @@
-import React, { useState } from 'react';
-import { FormFooter } from '../../index';
-import { PasswordForm, PasswordStrengthIndicator } from './index';
+import React, { useState, useEffect } from 'react';
+import { SectionHeader } from '../../index';
+import { PasswordForm } from './index';
 
 interface PasswordTabProps {
   onSave?: (data: any) => Promise<void>;
   onCancel?: () => void;
+  screenSize?: 'mobile' | 'tablet' | 'desktop';
+  onFormDataChange?: (formData: any, isValid: boolean, isLoading: boolean) => void;
 }
 
 export const PasswordTab: React.FC<PasswordTabProps> = ({
-  onSave,
-  onCancel
+  screenSize = 'desktop',
+  onFormDataChange
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  // Detecta telas muito grandes (> 1400px) para aplicar maxWidth
+  const [isVeryLargeScreen, setIsVeryLargeScreen] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsVeryLargeScreen(window.innerWidth > 1400);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+  const [isLoading] = useState(false);
   const [formData, setFormData] = useState({
     currentPassword: '',
     newPassword: '',
@@ -23,11 +37,18 @@ export const PasswordTab: React.FC<PasswordTabProps> = ({
     newPassword?: string;
     confirmPassword?: string;
   }>({});
+  const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
+    }));
+
+    // Marcar o campo como "touched" quando o usuário digitar
+    setTouched(prev => ({
+      ...prev,
+      [field]: true
     }));
 
     // Clear validation errors when user starts typing
@@ -42,126 +63,82 @@ export const PasswordTab: React.FC<PasswordTabProps> = ({
   const validateForm = () => {
     const errors: typeof validationErrors = {};
 
-    if (!formData.currentPassword) {
-      errors.currentPassword = 'Senha atual é obrigatória';
+    // Só valida campos que foram "touched" (usuário interagiu)
+    if (touched.currentPassword && !formData.currentPassword) {
+      errors.currentPassword = 'Digite sua senha atual';
     }
 
-    if (!formData.newPassword) {
-      errors.newPassword = 'Nova senha é obrigatória';
-    } else if (formData.newPassword.length < 8) {
-      errors.newPassword = 'Nova senha deve ter pelo menos 8 caracteres';
+    if (touched.newPassword && !formData.newPassword) {
+      errors.newPassword = 'Digite sua nova senha';
+    } else if (touched.newPassword && formData.newPassword.length > 0 && formData.newPassword.length < 12) {
+      errors.newPassword = 'A senha deve ter no mínimo 12 caracteres';
     }
 
-    if (!formData.confirmPassword) {
-      errors.confirmPassword = 'Confirmação de senha é obrigatória';
-    } else if (formData.newPassword !== formData.confirmPassword) {
-      errors.confirmPassword = 'Senhas não coincidem';
+    if (touched.confirmPassword && !formData.confirmPassword) {
+      errors.confirmPassword = 'Confirme sua nova senha';
+    } else if (touched.confirmPassword && formData.newPassword !== formData.confirmPassword) {
+      errors.confirmPassword = 'As senhas não coincidem';
     }
 
     setValidationErrors(errors);
-    return Object.keys(errors).length === 0;
+    
+    // Para ser válido, todos os campos devem estar preenchidos corretamente
+    const isValid = formData.currentPassword && 
+                   formData.newPassword && 
+                   formData.newPassword.length >= 12 && 
+                   formData.confirmPassword && 
+                   formData.newPassword === formData.confirmPassword;
+    
+    return Boolean(isValid);
   };
 
-  const handleSave = async () => {
-    if (!validateForm()) {
-      return;
+  // Notifica mudanças do formulário para o componente pai
+  useEffect(() => {
+    const isValid = validateForm();
+    if (onFormDataChange) {
+      onFormDataChange(formData, isValid, isLoading);
     }
-
-    setIsLoading(true);
-    try {
-      if (onSave) {
-        await onSave(formData);
-      } else {
-        // Simular salvamento
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        console.log('Salvando nova senha:', formData);
-      }
-    } catch (error) {
-      console.error('Erro ao salvar:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleCancel = () => {
-    if (onCancel) {
-      onCancel();
-    } else {
-      console.log('Cancelando alterações');
-    }
-  };
+  }, [formData, isLoading, onFormDataChange]);
 
   return (
-    <>
-      {/* Section Header */}
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      flex: 1, // Ocupa espaço disponível
+      gap: '20px'
+    }}>
+      {/* Content Area - Grows to push footer down */}
       <div style={{
         display: 'flex',
         flexDirection: 'column',
+        flex: 1, // Cresce para empurrar footer para baixo
         gap: '20px'
       }}>
+        {/* Section Header */}
+        <SectionHeader
+          title="Alterar senha"
+          supportingText="Defina uma nova senha para manter sua conta segura."
+          screenSize={screenSize}
+        />
+
+        {/* Form */}
         <div style={{
           display: 'flex',
-          gap: '16px'
+          flexDirection: 'column',
+          gap: '20px',
+          width: '100%',
+          maxWidth: screenSize === 'desktop' && isVeryLargeScreen ? 'calc(100% - 280px)' : 'none', // Só aplica em telas muito grandes
+          margin: '0'
         }}>
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '4px',
-            flex: 1
-          }}>
-            <h2 style={{
-              fontFamily: 'Sora',
-              fontWeight: '600',
-              fontSize: '18px',
-              lineHeight: '1.56em',
-              color: '#F7F7F7',
-              margin: 0
-            }}>
-              Alterar senha
-            </h2>
-            <p style={{
-              fontFamily: 'Sora',
-              fontWeight: '400',
-              fontSize: '14px',
-              lineHeight: '1.43em',
-              color: '#E9EAEB',
-              margin: 0
-            }}>
-              Mantenha sua conta segura alterando sua senha regularmente.
-            </p>
-          </div>
+          <PasswordForm
+            formData={formData}
+            onInputChange={handleInputChange}
+            validationErrors={validationErrors}
+            screenSize={screenSize}
+          />
         </div>
       </div>
 
-      {/* Form */}
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '20px'
-      }}>
-        <PasswordForm
-          formData={formData}
-          onInputChange={handleInputChange}
-          validationErrors={validationErrors}
-        />
-
-        {/* Password Strength Indicator */}
-        {formData.newPassword && (
-          <div style={{
-            width: '512px',
-            marginTop: '-16px'
-          }}>
-            <PasswordStrengthIndicator password={formData.newPassword} />
-          </div>
-        )}
-      </div>
-
-      {/* Section Footer */}
-      <FormFooter
-        onCancel={handleCancel}
-        onSave={handleSave}
-        isLoading={isLoading}
-      />
-    </>
+    </div>
   );
 };

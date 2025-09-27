@@ -1,6 +1,5 @@
 import React from 'react';
-import { Lock01 } from '@untitledui/icons';
-import { FormField, InputField } from '../../index';
+import { FormSection, SectionLabel, FormFieldArea, InputField } from '../../index';
 
 interface PasswordFormProps {
   formData: {
@@ -14,12 +13,14 @@ interface PasswordFormProps {
     newPassword?: string;
     confirmPassword?: string;
   };
+  screenSize?: 'mobile' | 'tablet' | 'desktop';
 }
 
 export const PasswordForm: React.FC<PasswordFormProps> = ({
   formData,
   onInputChange,
-  validationErrors = {}
+  validationErrors = {},
+  screenSize = 'desktop'
 }) => {
   return (
     <div style={{
@@ -28,73 +29,104 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({
       gap: '20px'
     }}>
       {/* Current Password */}
-      <div style={{
-        display: 'flex',
-        gap: '40px',
-        flexWrap: 'wrap'
-      }}>
-        <FormField
-          label="Senha atual"
+      <FormSection screenSize={screenSize}>
+        <SectionLabel 
+          title="Senha atual" 
           required
-          width="512px"
-          error={validationErrors.currentPassword}
-        >
+          screenSize={screenSize}
+        />
+        <FormFieldArea>
           <InputField
             value={formData.currentPassword}
             onChange={(value) => onInputChange('currentPassword', value)}
             type="password"
-            icon={<Lock01 width="20" height="20" stroke="#94979C" strokeWidth="1.67" />}
+            placeholder="Insira sua senha atual"
             error={!!validationErrors.currentPassword}
+            screenSize={screenSize}
           />
-        </FormField>
-      </div>
-
+          {validationErrors.currentPassword && (
+            <span style={{
+              fontFamily: 'Sora',
+              fontWeight: '400',
+              fontSize: '12px',
+              color: '#E66B59',
+              marginTop: '4px'
+            }}>
+              {validationErrors.currentPassword}
+            </span>
+          )}
+        </FormFieldArea>
+      </FormSection>
 
       {/* New Password */}
-      <div style={{
-        display: 'flex',
-        gap: '40px',
-        flexWrap: 'wrap'
-      }}>
-        <FormField
-          label="Nova senha"
+      <FormSection screenSize={screenSize}>
+        <SectionLabel 
+          title="Nova senha"
           required
-          width="512px"
-          supportingText="Mínimo de 8 caracteres, incluindo números e letras"
-          error={validationErrors.newPassword}
-        >
+          screenSize={screenSize}
+        />
+        <FormFieldArea>
           <InputField
             value={formData.newPassword}
             onChange={(value) => onInputChange('newPassword', value)}
             type="password"
-            icon={<Lock01 width="20" height="20" stroke="#94979C" strokeWidth="1.67" />}
+            placeholder="Insira sua nova senha"
             error={!!validationErrors.newPassword}
+            screenSize={screenSize}
           />
-        </FormField>
-      </div>
-
+          <span style={{
+            fontFamily: 'Sora',
+            fontWeight: '400',
+            fontSize: '12px',
+            lineHeight: '1.33em',
+            color: '#94979C',
+            marginTop: '6px'
+          }}>
+            Sua nova senha deve possui ao menos 12 caracteres.
+          </span>
+          {validationErrors.newPassword && (
+            <span style={{
+              fontFamily: 'Sora',
+              fontWeight: '400',
+              fontSize: '12px',
+              color: '#E66B59',
+              marginTop: '4px'
+            }}>
+              {validationErrors.newPassword}
+            </span>
+          )}
+        </FormFieldArea>
+      </FormSection>
 
       {/* Confirm Password */}
-      <div style={{
-        display: 'flex',
-        gap: '40px',
-        flexWrap: 'wrap'
-      }}>
-        <FormField
-          label="Confirmar nova senha"
+      <FormSection screenSize={screenSize} withDivider={false}>
+        <SectionLabel 
+          title="Confirmação de senha"
           required
-          width="512px"
-          error={validationErrors.confirmPassword}
-        >
+          screenSize={screenSize}
+        />
+        <FormFieldArea>
           <InputField
             value={formData.confirmPassword}
             onChange={(value) => onInputChange('confirmPassword', value)}
             type="password"
-            icon={<Lock01 width="20" height="20" stroke="#94979C" strokeWidth="1.67" />}
+            placeholder="Confirme sua nova senha"
             error={!!validationErrors.confirmPassword}
+            screenSize={screenSize}
           />
-        </FormField>
-      </div>
+          {validationErrors.confirmPassword && (
+            <span style={{
+              fontFamily: 'Sora',
+              fontWeight: '400',
+              fontSize: '12px',
+              color: '#E66B59',
+              marginTop: '4px'
+            }}>
+              {validationErrors.confirmPassword}
+            </span>
+          )}
+        </FormFieldArea>
+      </FormSection>
     </div>
   );
 };

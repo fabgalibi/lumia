@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import { Timer } from "./timer";
 import { useSidebar } from "../../contexts/sidebar-context";
 import { useMainContent } from "../../contexts/main-content-context";
@@ -14,6 +15,7 @@ export const Header = ({ title, subtitle: _subtitle }: HeaderProps = {}) => {
   const [isMobile, setIsMobile] = useState(false);
   const { toggleSidebar } = useSidebar();
   const { setCurrentContent } = useMainContent();
+  const navigate = useNavigate();
 
   // Detectar se é mobile
   useEffect(() => {
@@ -175,7 +177,7 @@ export const Header = ({ title, subtitle: _subtitle }: HeaderProps = {}) => {
                   <div className="py-1">
               <button
                 onClick={() => {
-                  setCurrentContent('account-settings');
+                  navigate('/account-settings');
                   setIsUserMenuOpen(false);
                 }}
                 className="w-full px-4 py-2 text-left hover:bg-gray-700/50 transition-colors cursor-pointer"
