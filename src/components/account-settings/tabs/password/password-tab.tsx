@@ -127,7 +127,7 @@ export const PasswordTab: React.FC<PasswordTabProps> = ({
           flexDirection: 'column',
           gap: '20px',
           width: '100%',
-          maxWidth: screenSize === 'desktop' && isVeryLargeScreen ? 'calc(100% - 280px)' : 'none', // Só aplica em telas muito grandes
+          maxWidth: screenSize === 'desktop' && isVeryLargeScreen ? '1000px' : 'none', // Largura máxima mais generosa
           margin: '0'
         }}>
           <PasswordForm

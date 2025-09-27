@@ -109,7 +109,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
           flexDirection: 'column',
           gap: '20px',
              width: '100%', // Sempre 100% para expansão completa
-          maxWidth: screenSize === 'desktop' && isVeryLargeScreen ? 'calc(100% - 280px)' : 'none', // Só aplica em telas muito grandes
+          maxWidth: screenSize === 'desktop' && isVeryLargeScreen ? '1000px' : 'none', // Só aplica em telas muito grandes
           margin: '0' // Sem centralização forçada
         }}>
           {/* Personal Information */}

@@ -1,33 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { SectionHeader, FormSection, SectionLabel, FormFieldArea, CheckboxField } from '../../index';
+import { SectionHeader, FormSection, SectionLabel, FormFieldArea, ButtonGroup } from '../../index';
 
 interface NotificationsTabProps {
   initialData?: {
-    emailNotifications: boolean;
-    pushNotifications: boolean;
-    smsNotifications: boolean;
-    marketingEmails: boolean;
-    securityAlerts: boolean;
-    studyReminders: boolean;
+    platformUpdates: boolean;
+    mentorMessages: boolean;
+    newMaterial: boolean;
+    activitiesAndSimulations: boolean;
+    mentorships: boolean;
   };
-  onSave?: (data: any) => Promise<void>;
-  onCancel?: () => void;
+  onFormDataChange?: (data: any, isValid: boolean, isLoading: boolean) => void;
   screenSize?: 'mobile' | 'tablet' | 'desktop';
 }
 
 export const NotificationsTab: React.FC<NotificationsTabProps> = ({
   initialData = {
-    emailNotifications: true,
-    pushNotifications: true,
-    smsNotifications: false,
-    marketingEmails: false,
-    securityAlerts: true,
-    studyReminders: true
+    platformUpdates: true,
+    mentorMessages: true,
+    newMaterial: true,
+    activitiesAndSimulations: false,
+    mentorships: false
   },
+  onFormDataChange,
   screenSize = 'desktop'
 }) => {
   // Detecta telas muito grandes (> 1400px) para aplicar maxWidth
   const [isVeryLargeScreen, setIsVeryLargeScreen] = useState(false);
+  const isLoading = false; // Notificações não têm loading state
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -38,6 +37,7 @@ export const NotificationsTab: React.FC<NotificationsTabProps> = ({
     window.addEventListener('resize', checkScreenSize);
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
+
   const [formData, setFormData] = useState(initialData);
 
   const handleInputChange = (field: string, value: boolean) => {
@@ -46,6 +46,14 @@ export const NotificationsTab: React.FC<NotificationsTabProps> = ({
       [field]: value
     }));
   };
+
+  // Comunicar mudanças do formulário para o componente pai
+  useEffect(() => {
+    if (onFormDataChange) {
+      const isValid = true; // Sempre válido para notificações
+      onFormDataChange(formData, isValid, isLoading);
+    }
+  }, [formData, isLoading, onFormDataChange]);
 
   return (
     <div style={{
@@ -59,101 +67,160 @@ export const NotificationsTab: React.FC<NotificationsTabProps> = ({
         display: 'flex',
         flexDirection: 'column',
         flex: 1,
-        gap: '20px'
+        gap: '24px'
       }}>
-      {/* Section Header */}
-      <SectionHeader
-        title="Notificações"
-        supportingText="Configure como e quando você deseja receber notificações."
-        screenSize={screenSize}
-      />
+        {/* Section Header */}
+        <SectionHeader
+          title="Notificações"
+          supportingText="Gerencie como e quando deseja receber avisos da plataforma."
+          screenSize={screenSize}
+        />
 
-      {/* Form */}
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '20px',
-        width: '100%',
-        maxWidth: screenSize === 'desktop' && isVeryLargeScreen ? 'calc(100% - 280px)' : 'none',
-        margin: '0'
-      }}>
-        {/* Email e Push Notifications */}
-        <FormSection screenSize={screenSize}>
-          <SectionLabel 
-            title="Notificações por aplicativo"
-            supportingText="Configure como você deseja ser notificado"
-            screenSize={screenSize}
-          />
-          <FormFieldArea>
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '16px'
-            }}>
-              <CheckboxField
-                checked={formData.emailNotifications}
-                onChange={(checked) => handleInputChange('emailNotifications', checked)}
-                label="Notificações por email"
-                supportingText="Receba atualizações e lembretes por email"
-                screenSize={screenSize}
-              />
-              <CheckboxField
-                checked={formData.pushNotifications}
-                onChange={(checked) => handleInputChange('pushNotifications', checked)}
-                label="Notificações push"
-                supportingText="Receba notificações instantâneas no seu dispositivo"
-                screenSize={screenSize}
-              />
-              <CheckboxField
-                checked={formData.smsNotifications}
-                onChange={(checked) => handleInputChange('smsNotifications', checked)}
-                label="Notificações por SMS"
-                supportingText="Receba alertas importantes por mensagem de texto"
-                screenSize={screenSize}
-              />
-            </div>
-          </FormFieldArea>
-        </FormSection>
+        {/* Form */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '20px',
+          width: '100%',
+          maxWidth: screenSize === 'desktop' && isVeryLargeScreen ? '1000px' : 'none',
+          margin: '0'
+        }}>
+          {/* Novidades da plataforma */}
+          <FormSection screenSize={screenSize} gap="large">
+            <SectionLabel 
+              title="Novidades da plataforma"
+              supportingText="Receba informações sobre atualizações, novas funcionalidades e melhorias."
+              screenSize={screenSize}
+            />
+            <FormFieldArea screenSize={screenSize}>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center',
+                height: screenSize === 'desktop' ? '48px' : 'auto' // Altura para centralizar verticalmente
+              }}>
+                <ButtonGroup
+                  options={[
+                    { value: 'true', label: 'Sim' },
+                    { value: 'false', label: 'Não' }
+                  ]}
+                  selectedValue={formData.platformUpdates ? 'true' : 'false'}
+                  onChange={(value) => handleInputChange('platformUpdates', value === 'true')}
+                  width="137px"
+                  screenSize={screenSize}
+                />
+              </div>
+            </FormFieldArea>
+          </FormSection>
 
-        {/* Marketing e Security */}
-        <FormSection screenSize={screenSize}>
-          <SectionLabel 
-            title="Preferências de conteúdo"
-            screenSize={screenSize}
-          />
-          <FormFieldArea>
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '16px'
-            }}>
-              <CheckboxField
-                checked={formData.marketingEmails}
-                onChange={(checked) => handleInputChange('marketingEmails', checked)}
-                label="Emails promocionais"
-                supportingText="Receba ofertas especiais e novidades sobre nossos produtos"
-                screenSize={screenSize}
-              />
-              <CheckboxField
-                checked={formData.securityAlerts}
-                onChange={(checked) => handleInputChange('securityAlerts', checked)}
-                label="Alertas de segurança"
-                supportingText="Receba notificações sobre atividades suspeitas em sua conta"
-                screenSize={screenSize}
-              />
-              <CheckboxField
-                checked={formData.studyReminders}
-                onChange={(checked) => handleInputChange('studyReminders', checked)}
-                label="Lembretes de estudo"
-                supportingText="Receba lembretes para manter sua rotina de estudos em dia"
-                screenSize={screenSize}
-              />
-            </div>
-          </FormFieldArea>
-        </FormSection>
+          {/* Mensagens do mentor */}
+          <FormSection screenSize={screenSize} gap="large">
+            <SectionLabel 
+              title="Mensagens do mentor"
+              supportingText="Seja notificado quando seu mentor enviar mensagens diretas."
+              screenSize={screenSize}
+            />
+            <FormFieldArea screenSize={screenSize}>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center',
+                height: screenSize === 'desktop' ? '48px' : 'auto'
+              }}>
+                <ButtonGroup
+                  options={[
+                    { value: 'true', label: 'Sim' },
+                    { value: 'false', label: 'Não' }
+                  ]}
+                  selectedValue={formData.mentorMessages ? 'true' : 'false'}
+                  onChange={(value) => handleInputChange('mentorMessages', value === 'true')}
+                  width="137px"
+                  screenSize={screenSize}
+                />
+              </div>
+            </FormFieldArea>
+          </FormSection>
+
+          {/* Novo material publicado */}
+          <FormSection screenSize={screenSize} gap="large">
+            <SectionLabel 
+              title="Novo material publicado"
+              supportingText="Seja notificado quando novos materiais forem publicados para você."
+              screenSize={screenSize}
+            />
+            <FormFieldArea screenSize={screenSize}>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center',
+                height: screenSize === 'desktop' ? '48px' : 'auto'
+              }}>
+                <ButtonGroup
+                  options={[
+                    { value: 'true', label: 'Sim' },
+                    { value: 'false', label: 'Não' }
+                  ]}
+                  selectedValue={formData.newMaterial ? 'true' : 'false'}
+                  onChange={(value) => handleInputChange('newMaterial', value === 'true')}
+                  width="137px"
+                  screenSize={screenSize}
+                />
+              </div>
+            </FormFieldArea>
+          </FormSection>
+
+          {/* Atividades e simulados */}
+          <FormSection screenSize={screenSize} gap="large">
+            <SectionLabel 
+              title="Atividades e simulados"
+              supportingText="Seja notificado sobre novos simulados, questões ou exercícios disponíveis."
+              screenSize={screenSize}
+            />
+            <FormFieldArea screenSize={screenSize}>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center',
+                height: screenSize === 'desktop' ? '48px' : 'auto'
+              }}>
+                <ButtonGroup
+                  options={[
+                    { value: 'true', label: 'Sim' },
+                    { value: 'false', label: 'Não' }
+                  ]}
+                  selectedValue={formData.activitiesAndSimulations ? 'true' : 'false'}
+                  onChange={(value) => handleInputChange('activitiesAndSimulations', value === 'true')}
+                  width="137px"
+                  screenSize={screenSize}
+                />
+              </div>
+            </FormFieldArea>
+          </FormSection>
+
+          {/* Mentorias */}
+          <FormSection screenSize={screenSize} gap="large" withDivider={false}>
+            <SectionLabel 
+              title="Mentorias"
+              supportingText="Seja notificado quando a data de uma mentoria agendada estiver próxima."
+              screenSize={screenSize}
+            />
+            <FormFieldArea screenSize={screenSize}>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center',
+                height: screenSize === 'desktop' ? '48px' : 'auto'
+              }}>
+                <ButtonGroup
+                  options={[
+                    { value: 'true', label: 'Sim' },
+                    { value: 'false', label: 'Não' }
+                  ]}
+                  selectedValue={formData.mentorships ? 'true' : 'false'}
+                  onChange={(value) => handleInputChange('mentorships', value === 'true')}
+                  width="137px"
+                  screenSize={screenSize}
+                />
+              </div>
+            </FormFieldArea>
+          </FormSection>
         </div>
       </div>
-
     </div>
   );
 };

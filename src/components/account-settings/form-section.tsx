@@ -4,18 +4,19 @@ interface FormSectionProps {
   children: React.ReactNode;
   withDivider?: boolean;
   screenSize?: 'mobile' | 'tablet' | 'desktop';
+  gap?: 'default' | 'large' | 'small'; // default = 40px, large = 64px, small = 32px
 }
 
 // Componente estrutural principal que organiza seções do formulário
-export function FormSection({ children, withDivider = true, screenSize = 'desktop' }: FormSectionProps) {
+export function FormSection({ children, withDivider = true, screenSize = 'desktop', gap = 'default' }: FormSectionProps) {
   return (
     <>
        {/* Content section - Desktop: row layout, Mobile/Tablet: column layout */}
        <div style={{
          display: 'flex',
          flexDirection: screenSize === 'mobile' ? 'column' : screenSize === 'tablet' ? 'column' : 'row',
-         alignItems: screenSize === 'mobile' || screenSize === 'tablet' ? 'stretch' : 'flex-start',
-         gap: screenSize === 'mobile' ? '12px' : screenSize === 'tablet' ? '16px' : '40px',
+         alignItems: screenSize === 'mobile' || screenSize === 'tablet' ? 'stretch' : 'center',
+         gap: screenSize === 'mobile' ? '12px' : screenSize === 'tablet' ? '16px' : (gap === 'large' ? '64px' : gap === 'small' ? '8px' : '40px'),
          width: '100%'
       }}>
         {children}
@@ -47,7 +48,7 @@ export function SectionLabel({ title, supportingText, width = 300, screenSize = 
     <div style={{
       display: 'flex',
       flexDirection: 'column',
-      gap: supportingText ? '6px' : '4px',
+      gap: '4px',
        width: screenSize === 'mobile' || screenSize === 'tablet' ? '100%' : `${width}px`,
        minWidth: screenSize === 'mobile' || screenSize === 'tablet' ? 'auto' : `${width}px`,
        maxWidth: screenSize === 'mobile' || screenSize === 'tablet' ? '100%' : `${width}px`,
@@ -95,16 +96,16 @@ export function SectionLabel({ title, supportingText, width = 300, screenSize = 
 interface FormFieldAreaProps {
   children: React.ReactNode;
   width?: number | string;
+  screenSize?: 'mobile' | 'tablet' | 'desktop';
 }
 
-export function FormFieldArea({ children, width: _width }: FormFieldAreaProps) {
+export function FormFieldArea({ children, width: _width, screenSize = 'desktop' }: FormFieldAreaProps) {
   return (
     <div style={{
       display: 'flex',
       flexDirection: 'column',
       gap: '6px',
-      flex: '1 1 auto',
-      minWidth: 0
+      flex: '1' // Preenche o espaço restante (conforme Figma)
     }}>
       {children}
     </div>

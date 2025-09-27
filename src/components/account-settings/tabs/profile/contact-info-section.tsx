@@ -25,7 +25,7 @@ export const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
           title="Informações de contato"
           supportingText="Suas informações para entrarmos em contato com você."
         />
-        <FormFieldArea>
+        <FormFieldArea screenSize={screenSize}>
           <div style={{
             display: 'flex',
             flexDirection: 'column',

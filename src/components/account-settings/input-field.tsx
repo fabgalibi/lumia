@@ -52,7 +52,7 @@ export const InputField: React.FC<InputFieldProps> = ({
     alignItems: type === 'textarea' ? 'flex-start' : 'center',
     padding: type === 'textarea' 
       ? (screenSize === 'mobile' ? '10px 12px' : '12px 14px') 
-      : (screenSize === 'mobile' ? '6px 10px' : '10px 14px'), // Mobile: padding ainda menor para telas pequenas
+      : (screenSize === 'mobile' ? '6px 10px' : '8px 12px'), // Padding menor para inputs normais
     backgroundColor: disabled ? '#22262F' : '#2D2D3B',
     border: `1px solid ${disabled ? '#22262F' : '#373A41'}`,
     borderRadius: '8px',

@@ -28,7 +28,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
       {/* Username Field */}
       <FormSection screenSize={screenSize}>
         <SectionLabel screenSize={screenSize} title="Nome de usuário" />
-        <FormFieldArea>
+        <FormFieldArea screenSize={screenSize}>
           <InputField
             value={formData.username}
             onChange={(value) => onInputChange('username', value)}
@@ -46,7 +46,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
           title="Sua biografia" 
           supportingText="Escreva uma breve descrição sobre você."
         />
-        <FormFieldArea>
+        <FormFieldArea screenSize={screenSize}>
           <div style={{
             display: 'flex',
             flexDirection: 'column',
@@ -58,7 +58,6 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
               onChange={(e) => onInputChange('bio', e.target.value)}
               style={{
                 width: '100%',
-                maxWidth: '508px', // Figma: width 508px
                 height: '154px', // Figma: height 154px
                 padding: '12px 14px',
                 fontFamily: 'Sora',
@@ -83,7 +82,8 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
               fontSize: '14px',
               lineHeight: '1.4285714285714286em',
               color: '#94979C',
-              textAlign: 'right'
+              textAlign: 'right',
+              alignSelf: 'flex-end' // Alinha à direita
             }}>
               {formData.bio.length}/400 caracteres
             </span>
@@ -95,7 +95,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
       {/* Working Status */}
       <FormSection screenSize={screenSize}>
         <SectionLabel screenSize={screenSize} title="Você está trabalhando atualmente?" />
-        <FormFieldArea>
+        <FormFieldArea screenSize={screenSize}>
           <ButtonGroup
             options={[
               { value: 'sim', label: 'Sim' },
@@ -113,7 +113,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
       {/* Birth Date */}
       <FormSection screenSize={screenSize}>
         <SectionLabel screenSize={screenSize} title="Data de nascimento" />
-        <FormFieldArea>
+        <FormFieldArea screenSize={screenSize}>
           <InputField
             value={formData.birthDate}
             onChange={(value) => onInputChange('birthDate', value)}
@@ -127,7 +127,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
       {/* Education */}
       <FormSection screenSize={screenSize}>
         <SectionLabel screenSize={screenSize} title="Qual sua formação?" />
-        <FormFieldArea>
+        <FormFieldArea screenSize={screenSize}>
           <div style={{
             display: 'flex',
             alignItems: 'center',

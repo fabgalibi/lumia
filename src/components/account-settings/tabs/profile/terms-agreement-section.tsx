@@ -22,7 +22,7 @@ export const TermsAgreementSection: React.FC<TermsAgreementSectionProps> = ({
           title="Concordância com os Termos de Uso"
           supportingText="Você já aceitou ao se cadastrar, mas pode revisar e confirmar sempre que desejar."
         />
-        <FormFieldArea>
+        <FormFieldArea screenSize={screenSize}>
           <div style={{
             display: 'flex',
             gap: '12px',

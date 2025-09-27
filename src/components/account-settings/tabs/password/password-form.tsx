@@ -29,13 +29,13 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({
       gap: '20px'
     }}>
       {/* Current Password */}
-      <FormSection screenSize={screenSize}>
+      <FormSection screenSize={screenSize} gap="small">
         <SectionLabel 
           title="Senha atual" 
           required
           screenSize={screenSize}
         />
-        <FormFieldArea>
+        <FormFieldArea screenSize={screenSize}>
           <InputField
             value={formData.currentPassword}
             onChange={(value) => onInputChange('currentPassword', value)}
@@ -59,13 +59,13 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({
       </FormSection>
 
       {/* New Password */}
-      <FormSection screenSize={screenSize}>
+      <FormSection screenSize={screenSize} gap="small">
         <SectionLabel 
           title="Nova senha"
           required
           screenSize={screenSize}
         />
-        <FormFieldArea>
+        <FormFieldArea screenSize={screenSize}>
           <InputField
             value={formData.newPassword}
             onChange={(value) => onInputChange('newPassword', value)}
@@ -99,13 +99,13 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({
       </FormSection>
 
       {/* Confirm Password */}
-      <FormSection screenSize={screenSize} withDivider={false}>
+      <FormSection screenSize={screenSize} gap="small" withDivider={false}>
         <SectionLabel 
           title="Confirmação de senha"
           required
           screenSize={screenSize}
         />
-        <FormFieldArea>
+        <FormFieldArea screenSize={screenSize}>
           <InputField
             value={formData.confirmPassword}
             onChange={(value) => onInputChange('confirmPassword', value)}
