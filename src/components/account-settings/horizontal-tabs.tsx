@@ -18,6 +18,9 @@ export function HorizontalTabs({ screenSize = 'desktop' }: HorizontalTabsProps) 
     if (location.pathname === '/account-settings/notifications') {
       return 'notifications';
     }
+    if (location.pathname === '/account-settings/content') {
+      return 'content';
+    }
     return 'profile'; // default
   };
   
@@ -25,7 +28,8 @@ export function HorizontalTabs({ screenSize = 'desktop' }: HorizontalTabsProps) 
   const tabs = [
     { id: 'profile', label: 'Dados de perfil' },
     { id: 'password', label: 'Alterar senha' },
-    { id: 'notifications', label: 'Notificações' }
+    { id: 'notifications', label: 'Notificações' },
+    { id: 'content', label: 'Bagagem de conteúdo' }
   ];
 
   return (

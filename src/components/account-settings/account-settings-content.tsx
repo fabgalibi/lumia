@@ -38,6 +38,9 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
     if (location.pathname === '/account-settings/notifications') {
       return 'notifications';
     }
+    if (location.pathname === '/account-settings/content') {
+      return 'content';
+    }
     return 'profile'; // default
   }, [location.pathname]);
   
@@ -116,6 +119,9 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
         case 'notifications':
           await actions.updateNotifications(currentFormData);
           break;
+        case 'content':
+          await actions.updateContent(currentFormData);
+          break;
         default:
           console.log('Salvando dados:', currentFormData);
       }
@@ -178,8 +184,7 @@ export const AccountSettingsContent: React.FC<AccountSettingsContentProps> = ({
         return (
           <ContentTab
             initialData={data.content}
-            onSave={actions.updateContent}
-            onCancel={() => console.log('Cancelar alterações de conteúdo')}
+            screenSize={screenSize}
             onFormDataChange={handleFormDataChange}
           />
         );

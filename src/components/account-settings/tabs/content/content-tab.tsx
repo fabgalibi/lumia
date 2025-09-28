@@ -1,222 +1,300 @@
-import React, { useState } from 'react';
-import { CheckboxField, FormFooter, ButtonGroup } from '../../index';
+import React, { useState, useEffect } from 'react';
+import { SectionHeader, FormSection, SectionLabel, FormFieldArea, InputField } from '../../index';
+import { Edit05, AlertCircle } from '@untitledui/icons';
 
 interface ContentTabProps {
   initialData?: {
-    studyLevel: string;
-    preferredSubjects: string[];
-    studyMode: string;
-    difficulty: string;
-    practiceTests: boolean;
-    videoLessons: boolean;
-    textMaterials: boolean;
-    audioContent: boolean;
+    studyArea: string;
+    preparation: string;
+    availability: string;
+    trajectory: string;
+    knowledge: string;
+    startDate: string;
   };
-  onSave?: (data: any) => Promise<void>;
-  onCancel?: () => void;
+  onFormDataChange?: (data: any, isValid: boolean, isLoading: boolean) => void;
+  screenSize?: 'mobile' | 'tablet' | 'desktop';
 }
 
 export const ContentTab: React.FC<ContentTabProps> = ({
   initialData = {
-    studyLevel: 'intermediario',
-    preferredSubjects: ['direito-constitucional', 'direito-administrativo'],
-    studyMode: 'mixed',
-    difficulty: 'progressive',
-    practiceTests: true,
-    videoLessons: true,
-    textMaterials: true,
-    audioContent: false
+    studyArea: 'Controle',
+    preparation: 'Pré-edital',
+    availability: 'Normal (30-39 horas semanais)',
+    trajectory: 'Ouro (2 anos e meio - 4 anos)',
+    knowledge: 'Nível 3 (Terminei teoria, mas não tenho confiança)',
+    startDate: '10/09/2025'
   },
-  onSave,
-  onCancel
+  onFormDataChange,
+  screenSize = 'desktop'
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  // Detecta telas muito grandes (> 1400px) para aplicar maxWidth
+  const [isVeryLargeScreen, setIsVeryLargeScreen] = useState(false);
+  const isLoading = false;
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsVeryLargeScreen(window.innerWidth > 1400);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
   const [formData, setFormData] = useState(initialData);
 
-  const handleInputChange = (field: string, value: string | boolean | string[]) => {
+  const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
     }));
   };
 
-  const handleSave = async () => {
-    setIsLoading(true);
-    try {
-      if (onSave) {
-        await onSave(formData);
-      } else {
-        // Simular salvamento
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        console.log('Salvando preferências de conteúdo:', formData);
-      }
-    } catch (error) {
-      console.error('Erro ao salvar:', error);
-    } finally {
-      setIsLoading(false);
+  // Comunicar mudanças do formulário para o componente pai
+  useEffect(() => {
+    if (onFormDataChange) {
+      const isValid = true; // Sempre válido para bagagem de conteúdo
+      onFormDataChange(formData, isValid, isLoading);
     }
-  };
-
-  const handleCancel = () => {
-    if (onCancel) {
-      onCancel();
-    } else {
-      console.log('Cancelando alterações');
-    }
-  };
+  }, [formData, isLoading, onFormDataChange]);
 
   return (
-    <>
-      {/* Section Header */}
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      flex: 1,
+      gap: '20px'
+    }}>
+      {/* Content Area */}
       <div style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: '20px'
+        flex: 1,
+        gap: '24px'
       }}>
+        {/* Section Header */}
+        <SectionHeader
+          title="Bagagem de conteúdo"
+          supportingText="Atualize sempre que preferir sua experiência e conhecimentos já adquiridos para personalizar sua preparação."
+          screenSize={screenSize}
+        />
+
+        {/* Form */}
         <div style={{
           display: 'flex',
-          gap: '16px'
+          flexDirection: 'column',
+          gap: '20px',
+          width: '100%',
+          maxWidth: screenSize === 'desktop' && isVeryLargeScreen ? '1000px' : 'none',
+          margin: '0'
         }}>
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '4px',
-            flex: 1
-          }}>
-            <h2 style={{
-              fontFamily: 'Sora',
-              fontWeight: '600',
-              fontSize: '18px',
-              lineHeight: '1.56em',
-              color: '#F7F7F7',
-              margin: 0
-            }}>
-              Bagagem de conteúdo
-            </h2>
-            <p style={{
-              fontFamily: 'Sora',
-              fontWeight: '400',
-              fontSize: '14px',
-              lineHeight: '1.43em',
-              color: '#E9EAEB',
-              margin: 0
-            }}>
-              Configure suas preferências de aprendizado e tipos de conteúdo.
-            </p>
-          </div>
+          {/* Área de Estudo */}
+          <FormSection screenSize={screenSize}>
+            <SectionLabel 
+              screenSize={screenSize}
+              title="Área de Estudo"
+              supportingText="Referente a área de estudo que você selecionou."
+            />
+            <FormFieldArea screenSize={screenSize}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '10px 14px',
+                backgroundColor: '#2D2D3B',
+                border: '1px solid #373A41',
+                borderRadius: '8px',
+                boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
+                width: '100%',
+                minWidth: 0,
+                boxSizing: 'border-box' as const
+              }}>
+                <span style={{
+                  fontFamily: 'Sora',
+                  fontWeight: '400',
+                  fontSize: '16px',
+                  lineHeight: '1.5em',
+                  color: '#CECFD2',
+                  flex: 1
+                }}>
+                  {formData.studyArea}
+                </span>
+                <Edit05 width="16" height="16" stroke="#85888E" strokeWidth="1.5" />
+              </div>
+            </FormFieldArea>
+          </FormSection>
+
+          {/* Preparação */}
+          <FormSection screenSize={screenSize}>
+            <SectionLabel 
+              screenSize={screenSize}
+              title="Preparação"
+              supportingText="Referente ao tipo de preparação que você selecionou."
+            />
+            <FormFieldArea screenSize={screenSize}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '10px 14px',
+                backgroundColor: '#2D2D3B',
+                border: '1px solid #373A41',
+                borderRadius: '8px',
+                boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
+                width: '100%',
+                minWidth: 0,
+                boxSizing: 'border-box' as const
+              }}>
+                <span style={{
+                  fontFamily: 'Sora',
+                  fontWeight: '400',
+                  fontSize: '16px',
+                  lineHeight: '1.5em',
+                  color: '#CECFD2',
+                  flex: 1
+                }}>
+                  {formData.preparation}
+                </span>
+                <Edit05 width="16" height="16" stroke="#85888E" strokeWidth="1.5" />
+              </div>
+            </FormFieldArea>
+          </FormSection>
+
+          {/* Disponibilidade */}
+          <FormSection screenSize={screenSize}>
+            <SectionLabel 
+              screenSize={screenSize}
+              title="Disponibilidade"
+              supportingText="Referente ao tempo de dedicação ao estudos que você selecionou."
+            />
+            <FormFieldArea screenSize={screenSize}>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px',
+                width: '100%'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '10px 14px',
+                  backgroundColor: '#2D2D3B',
+                  border: '1px solid #373A41',
+                  borderRadius: '8px',
+                  boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
+                  width: '100%',
+                  minWidth: 0,
+                  boxSizing: 'border-box' as const
+                }}>
+                  <span style={{
+                    fontFamily: 'Sora',
+                    fontWeight: '400',
+                    fontSize: '16px',
+                    lineHeight: '1.5em',
+                    color: '#CECFD2',
+                    flex: 1
+                  }}>
+                    {formData.availability}
+                  </span>
+                  <Edit05 width="16" height="16" stroke="#85888E" strokeWidth="1.5" />
+                </div>
+                
+                {/* Info com data de início */}
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '0px 12px'
+                }}>
+                  <AlertCircle width="20" height="20" stroke="#CECFD2" strokeWidth="1.5" />
+                  <span style={{
+                    fontFamily: 'Sora',
+                    fontWeight: '400',
+                    fontSize: '12px',
+                    lineHeight: '1.5em',
+                    color: '#CECFD2'
+                  }}>
+                    Iniciou em: {formData.startDate}
+                  </span>
+                </div>
+              </div>
+            </FormFieldArea>
+          </FormSection>
+
+          {/* Trajetória */}
+          <FormSection screenSize={screenSize}>
+            <SectionLabel 
+              screenSize={screenSize}
+              title="Trajetória"
+              supportingText="Referente ao tempo estudado que você selecionou."
+            />
+            <FormFieldArea screenSize={screenSize}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '10px 14px',
+                backgroundColor: '#2D2D3B',
+                border: '1px solid #373A41',
+                borderRadius: '8px',
+                boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
+                width: '100%',
+                minWidth: 0,
+                boxSizing: 'border-box' as const
+              }}>
+                <span style={{
+                  fontFamily: 'Sora',
+                  fontWeight: '400',
+                  fontSize: '16px',
+                  lineHeight: '1.5em',
+                  color: '#CECFD2',
+                  flex: 1
+                }}>
+                  {formData.trajectory}
+                </span>
+                <Edit05 width="16" height="16" stroke="#85888E" strokeWidth="1.5" />
+              </div>
+            </FormFieldArea>
+          </FormSection>
+
+          {/* Conhecimentos */}
+          <FormSection screenSize={screenSize} withDivider={false}>
+            <SectionLabel 
+              screenSize={screenSize}
+              title="Conhecimentos"
+              supportingText="Referente ao seu nível geral de conhecimentos."
+            />
+            <FormFieldArea screenSize={screenSize}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '10px 14px',
+                backgroundColor: '#2D2D3B',
+                border: '1px solid #373A41',
+                borderRadius: '8px',
+                boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
+                width: '100%',
+                minWidth: 0,
+                boxSizing: 'border-box' as const
+              }}>
+                <span style={{
+                  fontFamily: 'Sora',
+                  fontWeight: '400',
+                  fontSize: '16px',
+                  lineHeight: '1.5em',
+                  color: '#CECFD2',
+                  flex: 1
+                }}>
+                  {formData.knowledge}
+                </span>
+                <Edit05 width="16" height="16" stroke="#85888E" strokeWidth="1.5" />
+              </div>
+            </FormFieldArea>
+          </FormSection>
         </div>
       </div>
-
-      {/* Form */}
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '20px'
-      }}>
-        {/* Study Level */}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '12px'
-        }}>
-          <label style={{
-            fontFamily: 'Sora',
-            fontWeight: '600',
-            fontSize: '14px',
-            color: '#F7F7F7'
-          }}>
-            Nível de conhecimento
-          </label>
-          <ButtonGroup
-            options={[
-              { value: 'iniciante', label: 'Iniciante' },
-              { value: 'intermediario', label: 'Intermediário' },
-              { value: 'avancado', label: 'Avançado' }
-            ]}
-            value={formData.studyLevel}
-            onChange={(value) => handleInputChange('studyLevel', value)}
-          />
-        </div>
-
-
-        {/* Study Mode */}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '12px'
-        }}>
-          <label style={{
-            fontFamily: 'Sora',
-            fontWeight: '600',
-            fontSize: '14px',
-            color: '#F7F7F7'
-          }}>
-            Modo de estudo preferido
-          </label>
-          <ButtonGroup
-            options={[
-              { value: 'theory', label: 'Teoria' },
-              { value: 'practice', label: 'Prática' },
-              { value: 'mixed', label: 'Misto' }
-            ]}
-            value={formData.studyMode}
-            onChange={(value) => handleInputChange('studyMode', value)}
-          />
-        </div>
-
-
-        {/* Content Types */}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '16px'
-        }}>
-          <h3 style={{
-            fontFamily: 'Sora',
-            fontWeight: '600',
-            fontSize: '16px',
-            color: '#F7F7F7',
-            margin: 0
-          }}>
-            Tipos de conteúdo
-          </h3>
-
-          <CheckboxField
-            checked={formData.practiceTests}
-            onChange={(checked) => handleInputChange('practiceTests', checked)}
-            label="Simulados e exercícios"
-            supportingText="Pratique com questões similares às do concurso."
-          />
-
-          <CheckboxField
-            checked={formData.videoLessons}
-            onChange={(checked) => handleInputChange('videoLessons', checked)}
-            label="Videoaulas"
-            supportingText="Aprenda com professores especialistas em vídeo."
-          />
-
-          <CheckboxField
-            checked={formData.textMaterials}
-            onChange={(checked) => handleInputChange('textMaterials', checked)}
-            label="Material em texto"
-            supportingText="PDFs, resumos e material de apoio textual."
-          />
-
-          <CheckboxField
-            checked={formData.audioContent}
-            onChange={(checked) => handleInputChange('audioContent', checked)}
-            label="Conteúdo em áudio"
-            supportingText="Podcasts e aulas em áudio para estudar em movimento."
-          />
-        </div>
-      </div>
-
-      {/* Section Footer */}
-      <FormFooter
-        onCancel={handleCancel}
-        onSave={handleSave}
-        isLoading={isLoading}
-      />
-    </>
+    </div>
   );
 };
