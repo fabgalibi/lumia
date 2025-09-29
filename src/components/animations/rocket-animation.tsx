@@ -20,6 +20,7 @@ export const RocketAnimation: React.FC<RocketAnimationProps> = ({
       return;
     }
 
+    console.log('Foguetinho iniciando animação');
     // Iniciar animação
     setAnimationPhase('launching');
     

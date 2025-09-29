@@ -82,7 +82,7 @@ function CalendarContent({
         </button>
         <span
           style={{
-            fontFamily: 'Sora',
+            fontFamily: 'Inter' /* MIGRATED */,
             fontWeight: 600,
             fontSize: screenSize === 'mobile' || screenSize === 'tablet' ? '13px' : '14px',
             lineHeight: '1.4285714285714286em',
@@ -139,7 +139,7 @@ function CalendarContent({
           >
             <span
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'Inter' /* MIGRATED */,
                 fontWeight: 400,
                 fontSize: screenSize === 'mobile' || screenSize === 'tablet' ? '13px' : '14px',
                 lineHeight: '1.4285714285714286em',
@@ -199,7 +199,7 @@ function CalendarContent({
             >
               <span
                 style={{
-                  fontFamily: 'Sora',
+                  fontFamily: 'Inter' /* MIGRATED */,
                   fontWeight: isSelected ? 600 : 400,
                   fontSize: screenSize === 'mobile' || screenSize === 'tablet' ? '13px' : '14px',
                   lineHeight: '1.4285714285714286em',
@@ -230,7 +230,7 @@ function CalendarContent({
         </svg>
         <span
           style={{
-            fontFamily: 'Sora',
+            fontFamily: 'Inter' /* MIGRATED */,
             fontWeight: 400,
             fontSize: screenSize === 'mobile' || screenSize === 'tablet' ? '11px' : '12px',
             lineHeight: '1.5em',

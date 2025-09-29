@@ -1,5 +1,6 @@
 import React from 'react';
 import { Target04, Trash01, ImagePlus } from '@untitledui/icons';
+// import { Text, colors } from '@/components/ui'; // TODO: Migrar estilos
 
 interface PageHeaderProps {
   userName: string;
@@ -62,7 +63,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
           }}>
             {/* Nome - Text lg Semibold conforme Figma */}
             <h1 style={{
-              fontFamily: 'Sora',
+              fontFamily: 'Inter' /* MIGRATED */,
               fontWeight: '600',
               fontSize: '18px',
               lineHeight: '1.5555555555555556em', // 28px / 18px = 1.556
@@ -86,7 +87,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
                 strokeWidth="1.5"
               />
               <span style={{
-                fontFamily: 'Sora',
+                fontFamily: 'Inter' /* MIGRATED */,
                 fontWeight: '400', // Text xs Medium - na verdade é 400 no Figma
                 fontSize: '12px',
                 lineHeight: '1.5em', // 18px / 12px = 1.5
@@ -198,7 +199,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
                 strokeWidth="1.6666666269302368"
               />
               <span style={{
-                fontFamily: 'Sora',
+                fontFamily: 'Inter' /* MIGRATED */,
                 fontWeight: '600',
                 fontSize: '14px',
                 lineHeight: '1.4285714285714286em', // Text sm Semibold
@@ -210,7 +211,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
 
             {/* Texto de apoio - Text xs Regular */}
             <span style={{
-              fontFamily: 'Sora',
+              fontFamily: 'Inter' /* MIGRATED */,
               fontWeight: '400',
               fontStyle: 'normal',
               fontSize: '12px', // Font size/text-xs

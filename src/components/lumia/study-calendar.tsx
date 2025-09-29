@@ -52,7 +52,7 @@ export const StudyCalendar = () => {
             <h3 
               className="text-white"
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'Inter' /* MIGRATED */,
                 fontWeight: 400,
                 fontSize: '16px',
                 lineHeight: '1.26em'
@@ -108,7 +108,7 @@ export const StudyCalendar = () => {
             <span 
               className="text-gray-300"
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'Inter' /* MIGRATED */,
                 fontWeight: 400,
                 fontSize: '14px'
               }}
@@ -128,7 +128,7 @@ export const StudyCalendar = () => {
             <span 
               className="text-gray-300"
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'Inter' /* MIGRATED */,
                 fontWeight: 400,
                 fontSize: '14px'
               }}
@@ -151,7 +151,7 @@ export const StudyCalendar = () => {
                   index === 0 ? "text-white" : "text-white"
                 }`}
                 style={{
-                  fontFamily: 'Sora',
+                  fontFamily: 'Inter' /* MIGRATED */,
                   fontWeight: 400,
                   fontSize: '10px',
                   lineHeight: '1.6em',
@@ -172,7 +172,7 @@ export const StudyCalendar = () => {
                 <span 
                   className="text-white"
                   style={{
-                    fontFamily: 'Sora',
+                    fontFamily: 'Inter' /* MIGRATED */,
                     fontWeight: 400,
                     fontSize: '10px',
                     lineHeight: '1.6em'

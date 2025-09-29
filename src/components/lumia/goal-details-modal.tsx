@@ -10,6 +10,8 @@ interface GoalDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave?: (data: any) => void;
+  onCompleteGoal?: () => void;
+  onSkipGoal?: (goalName: string) => void;
   goal: {
     topic: string;
     studyType: string;
@@ -24,7 +26,7 @@ interface GoalDetailsModalProps {
   };
 }
 
-export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onClose, onSave, goal }) => {
+export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onClose, onSave, onCompleteGoal, onSkipGoal, goal }) => {
   const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
     subjects: true,
     materials: false,
@@ -80,6 +82,11 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
     if (onSave) {
       onSave({ action: 'skip', reason });
     }
+    
+    // Chamar callback para pular a meta
+    if (onSkipGoal) {
+      onSkipGoal(goal.topic);
+    }
   };
 
   const handlePerformanceSave = (data: any) => {
@@ -91,6 +98,11 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
     // Chamar callback do componente pai se fornecido
     if (onSave) {
       onSave(data);
+    }
+    
+    // Chamar callback para completar a meta
+    if (onCompleteGoal) {
+      onCompleteGoal();
     }
   };
 
@@ -264,7 +276,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
           <div className="flex flex-col gap-1 flex-1">
             <h2 
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'Inter' /* MIGRATED */,
                 fontWeight: 600,
                 fontStyle: 'SemiBold',
                 fontSize: '18px',
@@ -305,7 +317,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
               </div>
               <span 
                 style={{
-                  fontFamily: 'Sora',
+                  fontFamily: 'Inter' /* MIGRATED */,
                   fontWeight: 400,
                   fontSize: '14px',
                   lineHeight: '1.4285714285714286em',
@@ -346,7 +358,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                   <span
                     className="text-sm sm:text-base flex-shrink-0"
                     style={{
-                      fontFamily: 'Sora',
+                      fontFamily: 'Inter' /* MIGRATED */,
                       fontWeight: 400,
                       lineHeight: '1.5em',
                       color: '#F0F0F1'
@@ -393,7 +405,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                   >
                     <span 
                       style={{
-                        fontFamily: 'Sora',
+                        fontFamily: 'Inter' /* MIGRATED */,
                         fontWeight: 400,
                         fontStyle: 'Regular',
                         fontSize: '16px',
@@ -520,7 +532,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                         />
                         <span 
                           style={{
-                            fontFamily: 'Sora',
+                            fontFamily: 'Inter' /* MIGRATED */,
                             fontWeight: 400,
                             fontStyle: 'Regular',
                             fontSize: '12px', // text-xs
@@ -574,7 +586,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                 </svg>
                 <span 
                   style={{
-                    fontFamily: 'Sora',
+                    fontFamily: 'Inter' /* MIGRATED */,
                     fontWeight: 600,
                     fontSize: '14px',
                     lineHeight: '1.4285714285714286em',
@@ -603,7 +615,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                   <span 
                     className="text-sm sm:text-base"
                     style={{
-                      fontFamily: 'Sora',
+                      fontFamily: 'Inter' /* MIGRATED */,
                       fontWeight: 600,
                       lineHeight: '1.4285714285714286em',
                       color: '#FECDCA'
@@ -633,7 +645,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                   <span 
                     className="text-sm sm:text-base"
                     style={{
-                      fontFamily: 'Sora',
+                      fontFamily: 'Inter' /* MIGRATED */,
                       fontWeight: 600,
                       lineHeight: '1.4285714285714286em',
                       color: '#FFFFFF'
@@ -670,7 +682,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
               >
                 <span 
                   style={{
-                    fontFamily: 'Sora',
+                    fontFamily: 'Inter' /* MIGRATED */,
                     fontWeight: 600,
                     fontSize: '14px',
                     lineHeight: '1.4285714285714286em',
@@ -700,7 +712,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
               >
                 <span 
                   style={{
-                    fontFamily: 'Sora',
+                    fontFamily: 'Inter' /* MIGRATED */,
                     fontWeight: 600,
                     fontSize: '14px',
                     lineHeight: '1.4285714285714286em',

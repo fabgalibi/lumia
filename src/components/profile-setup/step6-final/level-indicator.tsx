@@ -156,7 +156,7 @@ export const LevelIndicator: React.FC<LevelIndicatorProps> = ({
               >
                 <span
                   style={{
-                    fontFamily: 'Sora',
+                    fontFamily: 'Inter' /* MIGRATED */,
                     fontWeight: 600,
                     fontSize: '12px',
                     color: '#FFFFFF'
@@ -170,7 +170,7 @@ export const LevelIndicator: React.FC<LevelIndicatorProps> = ({
             {/* Label do nível */}
             <span
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'Inter' /* MIGRATED */,
                 fontWeight: 400,
                 fontSize: '14px',
                 lineHeight: '1.43em',

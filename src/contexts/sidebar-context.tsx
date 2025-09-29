@@ -21,10 +21,10 @@ interface SidebarProviderProps {
 }
 
 export const SidebarProvider: React.FC<SidebarProviderProps> = ({ children }) => {
-  // Inicializar como collapsed se for mobile
+  // Inicializar como collapsed se for mobile/tablet
   const [isCollapsed, setIsCollapsed] = useState(() => {
     if (typeof window !== 'undefined') {
-      return window.innerWidth < 1024; // Mobile/tablet = collapsed
+      return window.innerWidth < 1100; // Mobile/tablet = collapsed
     }
     return false;
   });
@@ -32,9 +32,9 @@ export const SidebarProvider: React.FC<SidebarProviderProps> = ({ children }) =>
   // Ajustar automaticamente quando a tela mudar de tamanho
   useEffect(() => {
     const handleResize = () => {
-      const isMobile = window.innerWidth < 1024;
-      if (isMobile && !isCollapsed) {
-        setIsCollapsed(true); // Colapsar quando mudar para mobile
+      const isMobileOrTablet = window.innerWidth < 1100;
+      if (isMobileOrTablet && !isCollapsed) {
+        setIsCollapsed(true); // Colapsar quando mudar para mobile/tablet
       }
     };
 

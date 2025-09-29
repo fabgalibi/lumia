@@ -218,7 +218,7 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
           >
             <h2
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'Inter' /* MIGRATED */,
                 fontWeight: 600,
                 fontSize: screenSize === 'mobile' ? '16px' : '18px',
                 lineHeight: '1.56em',
@@ -230,7 +230,7 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
             </h2>
             <p
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'Inter' /* MIGRATED */,
                 fontWeight: 400,
                 fontSize: screenSize === 'mobile' ? '12px' : '14px',
                 lineHeight: '1.43em',
@@ -278,7 +278,7 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
               >
                 <span 
                   style={{
-                    fontFamily: 'Sora',
+                    fontFamily: 'Inter' /* MIGRATED */,
                     fontWeight: 400,
                     fontStyle: 'Regular',
                     fontSize: '16px',
@@ -402,7 +402,7 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
                 >
                   <span
                     style={{
-                      fontFamily: 'Sora',
+                      fontFamily: 'Inter' /* MIGRATED */,
                       fontWeight: 400,
                       fontSize: screenSize === 'mobile' ? '12px' : '14px',
                       lineHeight: '1.43em',
@@ -520,7 +520,7 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
           >
             <span
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'Inter' /* MIGRATED */,
                 fontWeight: 600,
                 fontStyle: 'SemiBold',
                 fontSize: screenSize === 'mobile' ? '12px' : '14px',
@@ -562,7 +562,7 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
           >
             <span
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'Inter' /* MIGRATED */,
                 fontWeight: 600,
                 fontStyle: 'SemiBold',
                 fontSize: screenSize === 'mobile' ? '12px' : '14px',

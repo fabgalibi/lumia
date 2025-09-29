@@ -14,13 +14,13 @@ export const Header = ({ title, subtitle: _subtitle }: HeaderProps = {}) => {
   const [initialTime] = useState("00:00:00");
   const [isMobile, setIsMobile] = useState(false);
   const { toggleSidebar } = useSidebar();
-  const { setCurrentContent } = useMainContent();
+  const { setCurrentContent: _setCurrentContent } = useMainContent();
   const navigate = useNavigate();
 
-  // Detectar se é mobile
+  // Detectar se é mobile/tablet
   useEffect(() => {
     const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
+      setIsMobile(window.innerWidth < 1100);
     };
 
     checkIsMobile();
@@ -80,7 +80,7 @@ export const Header = ({ title, subtitle: _subtitle }: HeaderProps = {}) => {
           <h1 
             className="text-white"
             style={{ 
-              fontFamily: 'Sora', 
+              fontFamily: 'Inter' /* MIGRATED */ /* TODO: Migrar para Design System */, 
               fontWeight: title ? 600 : 400, 
               fontSize: title ? '18px' : '14px',
               lineHeight: title ? '1.56em' : '1.4285714285714286em',

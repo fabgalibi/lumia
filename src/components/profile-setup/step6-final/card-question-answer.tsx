@@ -45,7 +45,7 @@ export const CardQuestionAnswer: React.FC<CardQuestionAnswerProps> = ({
         )}
         <span
           style={{
-            fontFamily: 'Sora',
+            fontFamily: 'Inter' /* MIGRATED */,
             fontWeight: 400,
             fontSize: screenSize === 'mobile' ? '14px' : '18px',
             lineHeight: screenSize === 'mobile' ? '1.43em' : '1.56em',
@@ -57,7 +57,7 @@ export const CardQuestionAnswer: React.FC<CardQuestionAnswerProps> = ({
       </div>
       <span
         style={{
-          fontFamily: 'Sora',
+          fontFamily: 'Inter' /* MIGRATED */,
           fontWeight: 600,
           fontSize: screenSize === 'mobile' ? '14px' : '18px',
           lineHeight: screenSize === 'mobile' ? '1.43em' : '1.56em',

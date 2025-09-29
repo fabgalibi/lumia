@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Text, colors } from '@/components/ui';
 
 interface SkipGoalNotificationProps {
   isVisible: boolean;
@@ -101,28 +102,19 @@ export const SkipGoalNotification: React.FC<SkipGoalNotificationProps> = ({
           {/* Text content */}
           <div className="flex-1 pr-8">
             <div className="space-y-1">
-              <h3 
-                className="text-white font-semibold"
-                style={{
-                  fontFamily: 'Sora',
-                  fontWeight: 600,
-                  fontSize: '14px',
-                  lineHeight: '1.43em'
-                }}
+              <Text
+                variant="caption"
+                weight="semibold"
+                color={colors.text.primary}
               >
                 Sua meta foi pulada!
-              </h3>
-              <p 
-                className="text-[#CECFD2]"
-                style={{
-                  fontFamily: 'Sora',
-                  fontWeight: 400,
-                  fontSize: '14px',
-                  lineHeight: '1.43em'
-                }}
+              </Text>
+              <Text
+                variant="caption"
+                color={colors.text.secondary}
               >
                 A meta "{goalName}" foi pulada dessa sprint.
-              </p>
+              </Text>
             </div>
           </div>
         </div>

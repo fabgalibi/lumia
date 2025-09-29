@@ -31,7 +31,7 @@ export const FormField: React.FC<FormFieldProps> = ({
         gap: supportingText ? '6px' : '4px'
       }}>
         <label style={{
-          fontFamily: 'Sora',
+          fontFamily: 'Inter' /* MIGRATED */,
           fontWeight: '600',
           fontSize: '14px',
           lineHeight: '1.43em',
@@ -52,7 +52,7 @@ export const FormField: React.FC<FormFieldProps> = ({
         </label>
         {supportingText && (
           <span style={{
-            fontFamily: 'Sora',
+            fontFamily: 'Inter' /* MIGRATED */,
             fontWeight: '400',
             fontSize: '14px',
             lineHeight: '1.43em',

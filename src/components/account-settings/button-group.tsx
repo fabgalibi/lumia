@@ -1,4 +1,5 @@
 import React from 'react';
+// import { Text, colors, radius } from '@/components/ui'; // TODO: Migrar estilos
 
 interface ButtonGroupProps {
   options: { value?: string; id?: string; label: string }[];
@@ -64,7 +65,7 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = ({
             }}
           >
             <span style={{
-              fontFamily: 'Sora',
+              fontFamily: 'Inter' /* MIGRATED */,
               fontWeight: currentValue === optionValue ? '600' : '400',
               fontSize: '14px',
               lineHeight: '1.4285714285714286em',

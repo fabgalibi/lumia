@@ -1,6 +1,8 @@
 import React from 'react';
-import { GraduationHat01, Edit05 } from '@untitledui/icons';
-import { FormSection, SectionLabel, FormFieldArea, InputField, ButtonGroup } from '../../index';
+import { GraduationHat01 } from '@untitledui/icons';
+import { FormSection, SectionLabel, FormFieldArea, ButtonGroup } from '../../index';
+import { Input, Select } from '@/components/ui/design-system';
+import { colors } from '@/components/ui';
 
 interface PersonalInfoSectionProps {
   formData: {
@@ -29,9 +31,9 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
       <FormSection screenSize={screenSize}>
         <SectionLabel screenSize={screenSize} title="Nome de usuário" />
         <FormFieldArea screenSize={screenSize}>
-          <InputField
+          <Input
             value={formData.username}
-            onChange={(value) => onInputChange('username', value)}
+            onChange={(value: string) => onInputChange('username', value)}
             placeholder="Max William"
             type="text"
             screenSize={screenSize}
@@ -47,47 +49,16 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
           supportingText="Escreva uma breve descrição sobre você."
         />
         <FormFieldArea screenSize={screenSize}>
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '6px',
-            width: '100%'
-          }}>
-            <textarea
-              value={formData.bio}
-              onChange={(e) => onInputChange('bio', e.target.value)}
-              style={{
-                width: '100%',
-                height: '154px', // Figma: height 154px
-                padding: '12px 14px',
-                fontFamily: 'Sora',
-                fontWeight: '400',
-                fontSize: '16px',
-                lineHeight: '1.5em',
-                color: '#CECFD2',
-                backgroundColor: '#2D2D3B',
-                border: '1px solid #373A41',
-                borderRadius: '8px',
-                boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
-                resize: 'none',
-                boxSizing: 'border-box',
-                outline: 'none'
-              }}
-              placeholder="Profissional apaixonado por tecnologia e design, focado em criar soluções digitais funcionais e intuitivas..."
-              maxLength={400}
-            />
-            <span style={{
-              fontFamily: 'Sora',
-              fontWeight: '400',
-              fontSize: '14px',
-              lineHeight: '1.4285714285714286em',
-              color: '#94979C',
-              textAlign: 'right',
-              alignSelf: 'flex-end' // Alinha à direita
-            }}>
-              {formData.bio.length}/400 caracteres
-            </span>
-          </div>
+          <Input
+            value={formData.bio}
+            onChange={(value: string) => onInputChange('bio', value)}
+            type="textarea"
+            placeholder="Profissional apaixonado por tecnologia e design, focado em criar soluções digitais funcionais e intuitivas..."
+            maxLength={400}
+            showCharCount
+            rows={5}
+            screenSize={screenSize}
+          />
         </FormFieldArea>
       </FormSection>
 
@@ -113,9 +84,9 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
       <FormSection screenSize={screenSize}>
         <SectionLabel screenSize={screenSize} title="Data de nascimento" />
         <FormFieldArea screenSize={screenSize}>
-          <InputField
+          <Input
             value={formData.birthDate}
-            onChange={(value) => onInputChange('birthDate', value)}
+            onChange={(value: string) => onInputChange('birthDate', value)}
             disabled
             screenSize={screenSize}
           />
@@ -127,61 +98,19 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
       <FormSection screenSize={screenSize}>
         <SectionLabel screenSize={screenSize} title="Qual sua formação?" />
         <FormFieldArea screenSize={screenSize}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '10px 12px', // Figma: 10px 12px
-            backgroundColor: '#2D2D3B', // Figma: exato
-            border: '1px solid #373A41', // Figma: cor exata
-            borderRadius: '8px',
-            boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)', // Figma: shadow-xs
-            width: '100%',
-            minWidth: 0, // Permite encolhimento
-            boxSizing: 'border-box' // Inclui padding e border na largura
-          }}>
-            <GraduationHat01 width="20" height="20" stroke="#CECFD2" strokeWidth="1.67" />
-            <select
-              value={formData.education}
-              onChange={(e) => onInputChange('education', e.target.value)}
-              style={{
-                flex: 1,
-                backgroundColor: 'transparent',
-                border: 'none',
-                outline: 'none',
-                fontFamily: 'Sora',
-                fontWeight: '400', // Figma: Text sm Regular
-                fontSize: '14px', // Figma: 14px
-                lineHeight: '1.4285714285714286em', // Figma: exato
-                color: '#CECFD2', // Figma: cor exata
-                appearance: 'none',
-                cursor: 'pointer'
-              }}
-            >
-              <option value="fundamental">Ensino Fundamental</option>
-              <option value="medio">Ensino Médio</option>
-              <option value="superior-incompleto">Ensino Superior (Incompleto)</option>
-              <option value="superior-completo">Ensino Superior (Completo)</option>
-              <option value="pos-graduacao">Pós-graduação</option>
-            </select>
-                   {/* Ícone trailing: edit-05 no mobile/tablet, dropdown no desktop */}
-                   {screenSize === 'mobile' || screenSize === 'tablet' ? (
-              <Edit05 
-                width={16} 
-                height={16} 
-                stroke="#61656C" 
-                strokeWidth="1.33"
-                style={{ 
-                  transform: 'rotate(0deg)',
-                  opacity: 1 
-                }}
-              />
-            ) : (
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M4 6L8 10L12 6" stroke="#61656C" strokeWidth="1.33" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            )}
-          </div>
+          <Select
+            value={formData.education}
+            onChange={(value: string) => onInputChange('education', value)}
+            options={[
+              { value: 'fundamental', label: 'Ensino Fundamental' },
+              { value: 'medio', label: 'Ensino Médio' },
+              { value: 'superior-incompleto', label: 'Ensino Superior (Incompleto)' },
+              { value: 'superior-completo', label: 'Ensino Superior (Completo)' },
+              { value: 'pos-graduacao', label: 'Pós-graduação' }
+            ]}
+            icon={<GraduationHat01 width="20" height="20" stroke={colors.text.secondary} strokeWidth="1.67" />}
+            screenSize={screenSize}
+          />
         </FormFieldArea>
       </FormSection>
     </div>

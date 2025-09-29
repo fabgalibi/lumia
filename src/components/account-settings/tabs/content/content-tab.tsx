@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { SectionHeader, FormSection, SectionLabel, FormFieldArea, InputField } from '../../index';
-import { Edit05, AlertCircle } from '@untitledui/icons';
+import { SectionHeader } from '../../index';
+import { ContentForm } from './content-form';
 
 interface ContentTabProps {
   initialData?: {
@@ -42,18 +42,39 @@ export const ContentTab: React.FC<ContentTabProps> = ({
   }, []);
 
   const [formData, setFormData] = useState(initialData);
+  const [validationErrors, setValidationErrors] = useState<{
+    studyArea?: string;
+    preparation?: string;
+    availability?: string;
+    trajectory?: string;
+    knowledge?: string;
+    startDate?: string;
+  }>({});
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
     }));
+
+    // Clear validation errors when user changes value
+    if (validationErrors[field as keyof typeof validationErrors]) {
+      setValidationErrors(prev => ({
+        ...prev,
+        [field]: undefined
+      }));
+    }
+  };
+
+  const validateForm = () => {
+    // Bagagem de conteúdo sempre é válida (campos são apenas informativos)
+    return true;
   };
 
   // Comunicar mudanças do formulário para o componente pai
   useEffect(() => {
     if (onFormDataChange) {
-      const isValid = true; // Sempre válido para bagagem de conteúdo
+      const isValid = validateForm();
       onFormDataChange(formData, isValid, isLoading);
     }
   }, [formData, isLoading, onFormDataChange]);
@@ -88,211 +109,12 @@ export const ContentTab: React.FC<ContentTabProps> = ({
           maxWidth: screenSize === 'desktop' && isVeryLargeScreen ? '1000px' : 'none',
           margin: '0'
         }}>
-          {/* Área de Estudo */}
-          <FormSection screenSize={screenSize}>
-            <SectionLabel 
-              screenSize={screenSize}
-              title="Área de Estudo"
-              supportingText="Referente a área de estudo que você selecionou."
-            />
-            <FormFieldArea screenSize={screenSize}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '10px 14px',
-                backgroundColor: '#2D2D3B',
-                border: '1px solid #373A41',
-                borderRadius: '8px',
-                boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
-                width: '100%',
-                minWidth: 0,
-                boxSizing: 'border-box' as const
-              }}>
-                <span style={{
-                  fontFamily: 'Sora',
-                  fontWeight: '400',
-                  fontSize: '16px',
-                  lineHeight: '1.5em',
-                  color: '#CECFD2',
-                  flex: 1
-                }}>
-                  {formData.studyArea}
-                </span>
-                <Edit05 width="16" height="16" stroke="#85888E" strokeWidth="1.5" />
-              </div>
-            </FormFieldArea>
-          </FormSection>
-
-          {/* Preparação */}
-          <FormSection screenSize={screenSize}>
-            <SectionLabel 
-              screenSize={screenSize}
-              title="Preparação"
-              supportingText="Referente ao tipo de preparação que você selecionou."
-            />
-            <FormFieldArea screenSize={screenSize}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '10px 14px',
-                backgroundColor: '#2D2D3B',
-                border: '1px solid #373A41',
-                borderRadius: '8px',
-                boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
-                width: '100%',
-                minWidth: 0,
-                boxSizing: 'border-box' as const
-              }}>
-                <span style={{
-                  fontFamily: 'Sora',
-                  fontWeight: '400',
-                  fontSize: '16px',
-                  lineHeight: '1.5em',
-                  color: '#CECFD2',
-                  flex: 1
-                }}>
-                  {formData.preparation}
-                </span>
-                <Edit05 width="16" height="16" stroke="#85888E" strokeWidth="1.5" />
-              </div>
-            </FormFieldArea>
-          </FormSection>
-
-          {/* Disponibilidade */}
-          <FormSection screenSize={screenSize}>
-            <SectionLabel 
-              screenSize={screenSize}
-              title="Disponibilidade"
-              supportingText="Referente ao tempo de dedicação ao estudos que você selecionou."
-            />
-            <FormFieldArea screenSize={screenSize}>
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px',
-                width: '100%'
-              }}>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '10px 14px',
-                  backgroundColor: '#2D2D3B',
-                  border: '1px solid #373A41',
-                  borderRadius: '8px',
-                  boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
-                  width: '100%',
-                  minWidth: 0,
-                  boxSizing: 'border-box' as const
-                }}>
-                  <span style={{
-                    fontFamily: 'Sora',
-                    fontWeight: '400',
-                    fontSize: '16px',
-                    lineHeight: '1.5em',
-                    color: '#CECFD2',
-                    flex: 1
-                  }}>
-                    {formData.availability}
-                  </span>
-                  <Edit05 width="16" height="16" stroke="#85888E" strokeWidth="1.5" />
-                </div>
-                
-                {/* Info com data de início */}
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '0px 12px'
-                }}>
-                  <AlertCircle width="20" height="20" stroke="#CECFD2" strokeWidth="1.5" />
-                  <span style={{
-                    fontFamily: 'Sora',
-                    fontWeight: '400',
-                    fontSize: '12px',
-                    lineHeight: '1.5em',
-                    color: '#CECFD2'
-                  }}>
-                    Iniciou em: {formData.startDate}
-                  </span>
-                </div>
-              </div>
-            </FormFieldArea>
-          </FormSection>
-
-          {/* Trajetória */}
-          <FormSection screenSize={screenSize}>
-            <SectionLabel 
-              screenSize={screenSize}
-              title="Trajetória"
-              supportingText="Referente ao tempo estudado que você selecionou."
-            />
-            <FormFieldArea screenSize={screenSize}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '10px 14px',
-                backgroundColor: '#2D2D3B',
-                border: '1px solid #373A41',
-                borderRadius: '8px',
-                boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
-                width: '100%',
-                minWidth: 0,
-                boxSizing: 'border-box' as const
-              }}>
-                <span style={{
-                  fontFamily: 'Sora',
-                  fontWeight: '400',
-                  fontSize: '16px',
-                  lineHeight: '1.5em',
-                  color: '#CECFD2',
-                  flex: 1
-                }}>
-                  {formData.trajectory}
-                </span>
-                <Edit05 width="16" height="16" stroke="#85888E" strokeWidth="1.5" />
-              </div>
-            </FormFieldArea>
-          </FormSection>
-
-          {/* Conhecimentos */}
-          <FormSection screenSize={screenSize} withDivider={false}>
-            <SectionLabel 
-              screenSize={screenSize}
-              title="Conhecimentos"
-              supportingText="Referente ao seu nível geral de conhecimentos."
-            />
-            <FormFieldArea screenSize={screenSize}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '10px 14px',
-                backgroundColor: '#2D2D3B',
-                border: '1px solid #373A41',
-                borderRadius: '8px',
-                boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
-                width: '100%',
-                minWidth: 0,
-                boxSizing: 'border-box' as const
-              }}>
-                <span style={{
-                  fontFamily: 'Sora',
-                  fontWeight: '400',
-                  fontSize: '16px',
-                  lineHeight: '1.5em',
-                  color: '#CECFD2',
-                  flex: 1
-                }}>
-                  {formData.knowledge}
-                </span>
-                <Edit05 width="16" height="16" stroke="#85888E" strokeWidth="1.5" />
-              </div>
-            </FormFieldArea>
-          </FormSection>
+          <ContentForm
+            formData={formData}
+            onInputChange={handleInputChange}
+            validationErrors={validationErrors}
+            screenSize={screenSize}
+          />
         </div>
       </div>
     </div>

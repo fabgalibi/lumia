@@ -1,5 +1,6 @@
 import React from 'react';
 import { X } from "lucide-react";
+import { Text, colors } from '@/components/ui';
 
 interface SuccessNotificationProps {
   isVisible: boolean;
@@ -114,28 +115,19 @@ export const SuccessNotification: React.FC<SuccessNotificationProps> = ({
           {/* Texto */}
           <div className="flex flex-col gap-3 flex-1" style={{ paddingTop: '2px' }}>
             <div className="flex flex-col gap-1">
-              <h3
-                style={{
-                  fontFamily: 'Sora',
-                  fontWeight: 600,
-                  fontSize: '14px',
-                  lineHeight: '1.4285714285714286em',
-                  color: '#FFFFFF'
-                }}
+              <Text
+                variant="caption"
+                weight="semibold"
+                color={colors.text.primary}
               >
                 {title}
-              </h3>
-              <p
-                style={{
-                  fontFamily: 'Sora',
-                  fontWeight: 400,
-                  fontSize: '14px',
-                  lineHeight: '1.4285714285714286em',
-                  color: '#CECFD2'
-                }}
+              </Text>
+              <Text
+                variant="caption"
+                color={colors.text.secondary}
               >
                 {goalName ? message.replace('{goalName}', goalName) : message}
-              </p>
+              </Text>
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Check } from '@untitledui/icons';
+import { Text, colors } from '@/components/ui';
 
 interface CheckboxFieldProps {
   checked: boolean;
@@ -14,7 +15,7 @@ export const CheckboxField: React.FC<CheckboxFieldProps> = ({
   onChange,
   label,
   supportingText,
-  screenSize = 'desktop'
+  screenSize: _screenSize = 'desktop'
 }) => {
   return (
     <div style={{
@@ -33,18 +34,17 @@ export const CheckboxField: React.FC<CheckboxFieldProps> = ({
           flexDirection: 'column',
           gap: '6px'
         }}>
-          <label style={{
-            fontFamily: 'Sora',
-            fontWeight: '600',
-            fontSize: '14px',
-            lineHeight: '1.43em',
-            color: '#CECFD2'
-          }}>
+          <Text
+            variant="label"
+            color={colors.text.secondary}
+            weight="semibold"
+            as="label"
+          >
             {label}
-          </label>
+          </Text>
           {supportingText && (
             <span style={{
-              fontFamily: 'Sora',
+              fontFamily: 'Inter' /* MIGRATED */,
               fontWeight: '400',
               fontSize: '14px',
               lineHeight: '1.43em',
@@ -102,7 +102,7 @@ export const CheckboxField: React.FC<CheckboxFieldProps> = ({
             flex: 1
           }}>
             <span style={{
-              fontFamily: 'Sora',
+              fontFamily: 'Inter' /* MIGRATED */,
               fontWeight: '400',
               fontSize: '16px',
               lineHeight: '1.5em',

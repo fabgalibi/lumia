@@ -33,7 +33,7 @@ export default function KnowledgeTableHeader() {
       >
         <span
           style={{
-            fontFamily: 'Sora',
+            fontFamily: 'Inter' /* MIGRATED */,
             fontWeight: 600,
             fontSize: '16px',
             lineHeight: '24px',
@@ -58,7 +58,7 @@ export default function KnowledgeTableHeader() {
         >
           <span
             style={{
-              fontFamily: 'Sora',
+              fontFamily: 'Inter' /* MIGRATED */,
               fontWeight: 500,
               fontSize: '11px',
               lineHeight: '16px',

@@ -1,6 +1,7 @@
 import React from 'react';
 import rocketIcon from "/src/assets/icons/rocket-icon.svg";
 import progressBarBg from "/src/assets/images/progress-bar-bg.png";
+import { Text, colors } from './design-system';
 
 interface ProgressBarProps {
   percentage: number;
@@ -38,6 +39,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
 
   return (
     <div 
+      data-progress-bar
       className={`rounded-lg relative overflow-hidden ${className}`}
       style={{
         background: `url(${progressBarBg})`,
@@ -65,13 +67,12 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
       <div className="relative z-10 flex items-center w-full" style={{ height }}>
         {/* Texto do percentual - posicionado sobre a barra laranja */}
         {showLabel && label && label.trim() !== '' && (
-          <span 
-            className="text-white absolute"
+          <Text
+            variant="caption"
+            color={colors.text.primary}
+            weight="regular"
             style={{
-              fontFamily: 'Sora',
-              fontWeight: 400,
-              fontSize: '14px',
-              lineHeight: '1.26em',
+              position: 'absolute',
               left: getLabelPosition(),
               top: '50%',
               transform: 'translateY(-50%)',
@@ -80,7 +81,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
             }}
           >
             {label}
-          </span>
+          </Text>
         )}
         
         {/* Foguete - posicionado na ponta da barra laranja */}

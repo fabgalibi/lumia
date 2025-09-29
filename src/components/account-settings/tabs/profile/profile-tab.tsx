@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SectionHeader } from '../../index';
-import { PersonalInfoSection, ContactInfoSection, TermsAgreementSection } from './index';
+import { ProfileForm } from './index';
 
 interface ProfileTabProps {
   initialData?: {
@@ -30,8 +30,8 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
     phone: '(47) 99953-1441',
     termsAccepted: true
   },
-  onSave,
-  onCancel,
+  onSave: _onSave,
+  onCancel: _onCancel,
   screenSize = 'desktop',
   onFormDataChange
 }) => {
@@ -48,40 +48,57 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
   const [formData, setFormData] = useState(initialData);
+  const [validationErrors, setValidationErrors] = useState<{
+    username?: string;
+    bio?: string;
+    email?: string;
+    phone?: string;
+    termsAccepted?: string;
+  }>({});
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
     }));
-  };
 
-  const handleSave = async () => {
-    setIsLoading(true);
-    try {
-      if (onSave) {
-        await onSave(formData);
-      } else {
-        // Simular salvamento
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        console.log('Salvando alterações:', formData);
-      }
-    } catch (error) {
-      console.error('Erro ao salvar:', error);
-    } finally {
-      setIsLoading(false);
+    // Clear validation errors when user starts typing
+    if (validationErrors[field as keyof typeof validationErrors]) {
+      setValidationErrors(prev => ({
+        ...prev,
+        [field]: undefined
+      }));
     }
   };
 
-  const handleCancel = () => {
-    if (onCancel) {
-      onCancel();
-    } else {
-      console.log('Cancelando alterações');
+  const validateForm = () => {
+    const errors: typeof validationErrors = {};
+
+    if (!formData.username.trim()) {
+      errors.username = 'Nome de usuário é obrigatório';
     }
+
+    if (!formData.termsAccepted) {
+      errors.termsAccepted = 'Você deve aceitar os termos';
+    }
+
+    setValidationErrors(errors);
+    
+    // Para ser válido, campos obrigatórios devem estar preenchidos
+    const isValid = formData.username.trim() && formData.termsAccepted;
+    
+    return Boolean(isValid);
   };
+
+  // Notifica mudanças do formulário para o componente pai
+  useEffect(() => {
+    const isValid = validateForm();
+    if (onFormDataChange) {
+      onFormDataChange(formData, isValid, isLoading);
+    }
+  }, [formData, isLoading, onFormDataChange]);
 
   return (
     <div style={{
@@ -109,37 +126,14 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
           display: 'flex',
           flexDirection: 'column',
           gap: '20px',
-             width: '100%', // Sempre 100% para expansão completa
-          maxWidth: screenSize === 'desktop' && isVeryLargeScreen ? '1000px' : 'none', // Só aplica em telas muito grandes
-          margin: '0' // Sem centralização forçada
+          width: '100%',
+          maxWidth: screenSize === 'desktop' && isVeryLargeScreen ? '1000px' : 'none',
+          margin: '0'
         }}>
-          {/* Personal Information */}
-          <PersonalInfoSection
-            formData={{
-              username: formData.username,
-              bio: formData.bio,
-              isWorking: formData.isWorking,
-              birthDate: formData.birthDate,
-              education: formData.education
-            }}
+          <ProfileForm
+            formData={formData}
             onInputChange={handleInputChange}
-            screenSize={screenSize}
-          />
-
-          {/* Contact Information */}
-          <ContactInfoSection
-            formData={{
-              email: formData.email,
-              phone: formData.phone
-            }}
-            onInputChange={handleInputChange}
-            screenSize={screenSize}
-          />
-
-          {/* Terms Agreement */}
-          <TermsAgreementSection
-            termsAccepted={formData.termsAccepted}
-            onTermsChange={(checked) => handleInputChange('termsAccepted', checked)}
+            validationErrors={validationErrors}
             screenSize={screenSize}
           />
         </div>

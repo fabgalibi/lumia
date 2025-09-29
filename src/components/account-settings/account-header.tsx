@@ -30,7 +30,7 @@ export const AccountHeader: React.FC<AccountHeaderProps> = ({
     }}>
       {/* Title */}
       <h1 style={{
-        fontFamily: 'Sora',
+        fontFamily: 'Inter' /* MIGRATED */,
         fontWeight: '600',
         fontSize: '18px',
         lineHeight: '1.56em',
@@ -139,7 +139,7 @@ export const AccountHeader: React.FC<AccountHeaderProps> = ({
                   backgroundColor: 'transparent',
                   border: 'none',
                   color: '#CECFD2',
-                  fontFamily: 'Sora',
+                  fontFamily: 'Inter' /* MIGRATED */,
                   fontSize: '14px',
                   textAlign: 'left',
                   cursor: 'pointer',
@@ -165,7 +165,7 @@ export const AccountHeader: React.FC<AccountHeaderProps> = ({
                   backgroundColor: 'transparent',
                   border: 'none',
                   color: '#E66B59',
-                  fontFamily: 'Sora',
+                  fontFamily: 'Inter' /* MIGRATED */,
                   fontSize: '14px',
                   textAlign: 'left',
                   cursor: 'pointer',

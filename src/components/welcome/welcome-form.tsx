@@ -78,7 +78,7 @@ export default function WelcomeForm({
           >
             <h1
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'Inter' /* MIGRATED */,
                 fontWeight: 400, // weight exato do Figma
                 fontSize: '20px', // tamanho exato do Figma
                 lineHeight: '1.5em', // lineHeight exato do Figma
@@ -100,7 +100,7 @@ export default function WelcomeForm({
             >
               <p
                 style={{
-                  fontFamily: 'Sora',
+                  fontFamily: 'Inter' /* MIGRATED */,
                   fontWeight: 400, // weight exato do Figma
                   fontSize: '18px', // tamanho exato do Figma
                   lineHeight: '1.5555555555555556em', // lineHeight exato do Figma
@@ -114,7 +114,7 @@ export default function WelcomeForm({
 
               <p
                 style={{
-                  fontFamily: 'Sora',
+                  fontFamily: 'Inter' /* MIGRATED */,
                   fontWeight: 400, // weight exato do Figma
                   fontSize: '16px', // tamanho exato do Figma
                   lineHeight: '1.5em', // lineHeight exato do Figma
@@ -140,7 +140,7 @@ export default function WelcomeForm({
           >
             <h2
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'Inter' /* MIGRATED */,
                 fontWeight: 400, // weight exato do Figma
                 fontSize: '16px', // tamanho exato do Figma
                 lineHeight: '1.5em', // lineHeight exato do Figma
@@ -264,7 +264,7 @@ function InfoCard({ icon, title, description }: InfoCardProps) {
       >
         <h3
           style={{
-            fontFamily: 'Sora',
+            fontFamily: 'Inter' /* MIGRATED */,
             fontWeight: 600, // weight exato do Figma
             fontSize: '16px', // tamanho exato do Figma
             lineHeight: '1.5em', // lineHeight exato do Figma
@@ -278,7 +278,7 @@ function InfoCard({ icon, title, description }: InfoCardProps) {
 
         <p
           style={{
-            fontFamily: 'Sora',
+            fontFamily: 'Inter' /* MIGRATED */,
             fontWeight: 400, // weight exato do Figma
             fontSize: '16px', // tamanho exato do Figma
             lineHeight: '1.5em', // lineHeight exato do Figma
@@ -331,7 +331,7 @@ function TermsCheckbox({ checked, onChange, screenSize: _ }: TermsCheckboxProps)
 
       <span
         style={{
-          fontFamily: 'Sora',
+          fontFamily: 'Inter' /* MIGRATED */,
           fontWeight: 400,
           fontSize: '16px',
           lineHeight: '1.5em',
@@ -403,7 +403,7 @@ function BackButton({ onClick, screenSize }: BackButtonProps) {
       {screenSize !== 'mobile' && (
         <span
           style={{
-            fontFamily: 'Sora',
+            fontFamily: 'Inter' /* MIGRATED */,
             fontWeight: 600,
             fontSize: '16px',
             lineHeight: '1.5em',
@@ -461,7 +461,7 @@ function PrepareProfileButton({ onClick, disabled, screenSize }: PrepareProfileB
     >
       <span
         style={{
-          fontFamily: 'Sora',
+          fontFamily: 'Inter' /* MIGRATED */,
           fontWeight: 600,
           fontSize: '16px',
           lineHeight: '1.5em',

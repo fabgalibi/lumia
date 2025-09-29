@@ -334,7 +334,7 @@ const StudyConsistencyCalendar: React.FC<StudyConsistencyCalendarProps> = ({
             key={hour}
             className="text-white flex items-center justify-center flex-shrink-0"
             style={{
-              fontFamily: 'Sora',
+              fontFamily: 'Inter' /* MIGRATED */ /* TODO: Migrar para Design System */,
               fontWeight: 400,
               fontSize: '10px',
               lineHeight: '1.6em',

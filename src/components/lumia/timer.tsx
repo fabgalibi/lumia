@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+// import { Text } from '@/components/ui'; // TODO: Migrar estilos
 
 interface TimerProps {
   initialTime?: string;
@@ -82,7 +83,7 @@ export const Timer: React.FC<TimerProps> = ({
         </div>
         <span
           style={{
-            fontFamily: 'Sora',
+            fontFamily: 'Inter' /* MIGRATED */,
             fontWeight: 600,
             fontSize: '14px',
             lineHeight: '1.4285714285714286em',

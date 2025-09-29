@@ -1,5 +1,6 @@
 import React from 'react';
-import { FormSection, SectionLabel, FormFieldArea, InputField } from '../../index';
+import { FormSection, SectionLabel, FormFieldArea, InputField, FormContainer } from '../../index';
+import { Text, colors } from '@/components/ui';
 
 interface PasswordFormProps {
   formData: {
@@ -23,11 +24,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({
   screenSize = 'desktop'
 }) => {
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '20px'
-    }}>
+    <FormContainer screenSize={screenSize}>
       {/* Current Password */}
       <FormSection screenSize={screenSize} gap="small">
         <SectionLabel 
@@ -38,23 +35,12 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({
         <FormFieldArea screenSize={screenSize}>
           <InputField
             value={formData.currentPassword}
-            onChange={(value) => onInputChange('currentPassword', value)}
+            onChange={(value: string) => onInputChange('currentPassword', value)}
             type="password"
             placeholder="Insira sua senha atual"
-            error={!!validationErrors.currentPassword}
+            error={validationErrors.currentPassword}
             screenSize={screenSize}
           />
-          {validationErrors.currentPassword && (
-            <span style={{
-              fontFamily: 'Sora',
-              fontWeight: '400',
-              fontSize: '12px',
-              color: '#E66B59',
-              marginTop: '4px'
-            }}>
-              {validationErrors.currentPassword}
-            </span>
-          )}
         </FormFieldArea>
       </FormSection>
 
@@ -68,33 +54,20 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({
         <FormFieldArea screenSize={screenSize}>
           <InputField
             value={formData.newPassword}
-            onChange={(value) => onInputChange('newPassword', value)}
+            onChange={(value: string) => onInputChange('newPassword', value)}
             type="password"
             placeholder="Insira sua nova senha"
-            error={!!validationErrors.newPassword}
+            error={validationErrors.newPassword}
             screenSize={screenSize}
           />
-          <span style={{
-            fontFamily: 'Sora',
-            fontWeight: '400',
-            fontSize: '12px',
-            lineHeight: '1.33em',
-            color: '#94979C',
-            marginTop: '6px'
-          }}>
+          <Text
+            variant="caption"
+            color={colors.text.tertiary}
+            screenSize={screenSize}
+            style={{ marginTop: '6px' }}
+          >
             Sua nova senha deve possui ao menos 12 caracteres.
-          </span>
-          {validationErrors.newPassword && (
-            <span style={{
-              fontFamily: 'Sora',
-              fontWeight: '400',
-              fontSize: '12px',
-              color: '#E66B59',
-              marginTop: '4px'
-            }}>
-              {validationErrors.newPassword}
-            </span>
-          )}
+          </Text>
         </FormFieldArea>
       </FormSection>
 
@@ -108,25 +81,14 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({
         <FormFieldArea screenSize={screenSize}>
           <InputField
             value={formData.confirmPassword}
-            onChange={(value) => onInputChange('confirmPassword', value)}
+            onChange={(value: string) => onInputChange('confirmPassword', value)}
             type="password"
             placeholder="Confirme sua nova senha"
-            error={!!validationErrors.confirmPassword}
+            error={validationErrors.confirmPassword}
             screenSize={screenSize}
           />
-          {validationErrors.confirmPassword && (
-            <span style={{
-              fontFamily: 'Sora',
-              fontWeight: '400',
-              fontSize: '12px',
-              color: '#E66B59',
-              marginTop: '4px'
-            }}>
-              {validationErrors.confirmPassword}
-            </span>
-          )}
         </FormFieldArea>
       </FormSection>
-    </div>
+    </FormContainer>
   );
 };

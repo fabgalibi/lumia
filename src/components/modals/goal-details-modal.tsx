@@ -264,7 +264,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
           <div className="flex flex-col gap-1 flex-1">
             <h2 
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'Inter' /* MIGRATED */,
                 fontWeight: 600,
                 fontStyle: 'SemiBold',
                 fontSize: '18px',
@@ -305,7 +305,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
               </div>
               <span 
                 style={{
-                  fontFamily: 'Sora',
+                  fontFamily: 'Inter' /* MIGRATED */,
                   fontWeight: 400,
                   fontSize: '14px',
                   lineHeight: '1.4285714285714286em',
@@ -346,7 +346,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                   <span
                     className="text-sm sm:text-base flex-shrink-0"
                     style={{
-                      fontFamily: 'Sora',
+                      fontFamily: 'Inter' /* MIGRATED */,
                       fontWeight: 400,
                       lineHeight: '1.5em',
                       color: '#F0F0F1'
@@ -393,7 +393,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                   >
                     <span 
                       style={{
-                        fontFamily: 'Sora',
+                        fontFamily: 'Inter' /* MIGRATED */,
                         fontWeight: 400,
                         fontStyle: 'Regular',
                         fontSize: '16px',
@@ -520,7 +520,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                         />
                         <span 
                           style={{
-                            fontFamily: 'Sora',
+                            fontFamily: 'Inter' /* MIGRATED */,
                             fontWeight: 400,
                             fontStyle: 'Regular',
                             fontSize: '12px', // text-xs
@@ -574,7 +574,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                 </svg>
                 <span 
                   style={{
-                    fontFamily: 'Sora',
+                    fontFamily: 'Inter' /* MIGRATED */,
                     fontWeight: 600,
                     fontSize: '14px',
                     lineHeight: '1.4285714285714286em',
@@ -603,7 +603,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                   <span 
                     className="text-sm sm:text-base"
                     style={{
-                      fontFamily: 'Sora',
+                      fontFamily: 'Inter' /* MIGRATED */,
                       fontWeight: 600,
                       lineHeight: '1.4285714285714286em',
                       color: '#FECDCA'
@@ -633,7 +633,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                   <span 
                     className="text-sm sm:text-base"
                     style={{
-                      fontFamily: 'Sora',
+                      fontFamily: 'Inter' /* MIGRATED */,
                       fontWeight: 600,
                       lineHeight: '1.4285714285714286em',
                       color: '#FFFFFF'
@@ -669,7 +669,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
               >
                 <span 
                   style={{
-                    fontFamily: 'Sora',
+                    fontFamily: 'Inter' /* MIGRATED */,
                     fontWeight: 600,
                     fontSize: '14px',
                     lineHeight: '1.4285714285714286em',
@@ -698,7 +698,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
               >
                 <span 
                   style={{
-                    fontFamily: 'Sora',
+                    fontFamily: 'Inter' /* MIGRATED */,
                     fontWeight: 600,
                     fontSize: '14px',
                     lineHeight: '1.4285714285714286em',

@@ -1,10 +1,10 @@
 import React from 'react';
-import { InfoCard } from '../info-card';
+import { InfoCard } from '../info-card-v2';
 import { KnowledgeIcon } from '../section-icons';
 import { KnowledgeLevelProgress } from '../knowledge-level-progress';
 import { calculateGeneralLevel } from '../data-helpers';
 import { CardKnowledgeContent } from '../card-knowledge-content';
-import { CardKnowledgeItem } from '../card-knowledge-item';
+import { CardKnowledgeItem } from '../card-knowledge-item-v2';
 
 interface KnowledgeSectionProps {
   knowledgeData: Record<string, string>;

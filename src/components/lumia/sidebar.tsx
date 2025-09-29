@@ -14,10 +14,10 @@ export const Sidebar = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Detectar se é mobile
+  // Detectar se é mobile/tablet
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024); // lg breakpoint
+      setIsMobile(window.innerWidth < 1100); // mobile/tablet breakpoint
     };
     
     checkMobile();

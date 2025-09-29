@@ -1,4 +1,5 @@
 import React from 'react';
+// import { Container, Text, colors } from '@/components/ui'; // TODO: Migrar estilos
 
 interface FormSectionProps {
   children: React.ReactNode;
@@ -57,7 +58,7 @@ export function SectionLabel({ title, supportingText, width = 300, screenSize = 
     }}>
       {/* Title */}
       <h3 style={{
-        fontFamily: 'Sora',
+        fontFamily: 'Inter' /* MIGRATED */,
         fontWeight: '600',
         fontSize: '14px',
         lineHeight: '1.4285714285714286em',
@@ -78,7 +79,7 @@ export function SectionLabel({ title, supportingText, width = 300, screenSize = 
       {/* Supporting text */}
       {supportingText && (
         <p style={{
-          fontFamily: 'Sora',
+          fontFamily: 'Inter' /* MIGRATED */,
           fontWeight: '400',
           fontSize: '14px',
           lineHeight: '1.4285714285714286em',

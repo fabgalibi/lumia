@@ -160,7 +160,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                 >
               <h1 
                 style={{
-                  fontFamily: 'Sora',
+                  fontFamily: 'Inter' /* MIGRATED */,
                   fontWeight: 600,
                       fontSize: '20px',
                       lineHeight: '1.5em',
@@ -173,7 +173,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
               </h1>
               <p 
                 style={{
-                  fontFamily: 'Sora',
+                  fontFamily: 'Inter' /* MIGRATED */,
                   fontWeight: 400,
                       fontSize: '14px',
                       lineHeight: '1.43em',
@@ -218,7 +218,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                 >
               <label 
                 style={{
-                  fontFamily: 'Sora',
+                  fontFamily: 'Inter' /* MIGRATED */,
                       fontWeight: 500,
                   fontSize: '14px',
                       color: '#FFFFFF'
@@ -236,7 +236,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                   border: '1px solid #2D2D36',
                   borderRadius: '8px',
                       padding: '8px 12px',
-                  fontFamily: 'Sora',
+                  fontFamily: 'Inter' /* MIGRATED */,
                   fontWeight: 400,
                   fontSize: '16px',
                   lineHeight: '1.5em',
@@ -259,7 +259,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                 >
               <label 
                 style={{
-                  fontFamily: 'Sora',
+                  fontFamily: 'Inter' /* MIGRATED */,
                       fontWeight: 500,
                   fontSize: '14px',
                       color: '#FFFFFF'
@@ -277,7 +277,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                       border: '1px solid #2D2D36',
                       borderRadius: '8px',
                       padding: '8px 12px',
-                      fontFamily: 'Sora',
+                      fontFamily: 'Inter' /* MIGRATED */,
                       fontWeight: 400,
                       fontSize: '16px',
                       lineHeight: '1.5em',
@@ -289,7 +289,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                   />
                   <p
                     style={{
-                      fontFamily: 'Sora',
+                      fontFamily: 'Inter' /* MIGRATED */,
                       fontWeight: 400,
                       fontSize: '14px',
                       lineHeight: '1.43em',
@@ -311,7 +311,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                   border: '2px solid rgba(255, 255, 255, 0.12)',
                   borderRadius: '8px',
                   padding: '12px 18px',
-                  fontFamily: 'Sora',
+                  fontFamily: 'Inter' /* MIGRATED */,
                   fontWeight: 600,
                   fontSize: '16px',
                   lineHeight: '1.5em',
@@ -339,7 +339,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
             >
               <p
                 style={{
-                  fontFamily: 'Sora',
+                  fontFamily: 'Inter' /* MIGRATED */,
                   fontWeight: 500,
                   fontSize: '14px',
                   lineHeight: '1.43em',
@@ -509,7 +509,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
               {/* Boas vindas! - Responsivo */}
                       <h1
                         style={{
-                          fontFamily: 'Sora',
+                          fontFamily: 'Inter' /* MIGRATED */,
                           fontWeight: 600,
                           fontSize: screenSize === 'notebook' ? '22px' : '30px',
                           lineHeight: '1.2666666666666666em',
@@ -524,7 +524,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                       {/* Descrição - Responsivo */}
                       <p
                         style={{
-                          fontFamily: 'Sora',
+                          fontFamily: 'Inter' /* MIGRATED */,
                           fontWeight: 400,
                           fontSize: screenSize === 'notebook' ? '13px' : '16px',
                           lineHeight: '1.5em',
@@ -575,7 +575,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
               >
                 <label 
                   style={{
-                    fontFamily: 'Sora',
+                    fontFamily: 'Inter' /* MIGRATED */,
                     fontWeight: 400,
                     fontSize: '14px',
                     lineHeight: '1.4285714285714286em',
@@ -610,7 +610,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                     background: 'transparent',
                     border: 'none',
                     color: '#94979C',
-                  fontFamily: 'Sora',
+                  fontFamily: 'Inter' /* MIGRATED */,
                   fontWeight: 400,
                   fontSize: '16px',
                   lineHeight: '1.5em',
@@ -653,7 +653,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
               >
                 <label 
                   style={{
-                    fontFamily: 'Sora',
+                    fontFamily: 'Inter' /* MIGRATED */,
                     fontWeight: 400,
                     fontSize: '14px',
                     lineHeight: '1.4285714285714286em',
@@ -688,7 +688,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                     background: 'transparent',
                     border: 'none',
                     color: '#94979C',
-                    fontFamily: 'Sora',
+                    fontFamily: 'Inter' /* MIGRATED */,
                     fontWeight: 400,
                     fontSize: '16px',
                     lineHeight: '1.5em',
@@ -716,7 +716,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
               <a 
                 href="#"
                 style={{
-                  fontFamily: 'Sora',
+                  fontFamily: 'Inter' /* MIGRATED */,
                   fontWeight: 400,
                   fontSize: '14px',
                   lineHeight: '1.4285714285714286em',
@@ -747,7 +747,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
               borderRadius: '8px',
               padding: '12px 18px',
               color: '#FFFFFF',
-              fontFamily: 'Sora',
+              fontFamily: 'Inter' /* MIGRATED */,
               fontWeight: 600,
               fontSize: '16px',
               lineHeight: '1.5em',

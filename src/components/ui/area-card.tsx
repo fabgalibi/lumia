@@ -1,5 +1,6 @@
 // area-card.tsx
 import React from "react";
+import { Text, colors } from './design-system';
 
 /** ===== Props públicas ===== */
 export type AreaCardProps = {
@@ -117,54 +118,37 @@ function CardContent({ title, description, image, size = 'md', isSelected = fals
       <DecorativeBackground />
 
       {/* Título da Área */}
-      <h3
+      <Text
+        variant="h4"
+        color={colors.text.primary}
+        weight="regular"
         style={{
-          fontFamily: 'Sora',
-          fontWeight: 400,
-          fontStyle: 'normal', // Regular
-          fontSize: size === 'sm' ? '20px' : '20px', // mobile: text-xl (20px), desktop: 20px (igual trajetória)
-          lineHeight: size === 'sm' ? '1.5em' : '1.5em', // mobile: text-xl line-height (1.5em), desktop: 1.5em (igual trajetória)
-          letterSpacing: '0%', // letter-spacing: 0%
-          color: '#FFFFFF',
           margin: 0,
           padding: 0,
-          textAlign: 'left',
-          verticalAlign: 'top',
           position: 'relative',
           zIndex: 1,
-          width: '100%',
-          textTransform: 'none',
-          display: 'block'
+          width: '100%'
         }}
       >
         {title}
-      </h3>
+      </Text>
 
       {/* Descrição da Área */}
-      <p
+      <Text
+        variant="caption"
+        color={colors.text.secondary}
+        weight="regular"
         style={{
-          fontFamily: 'Sora', // font-family: Sora
-          fontWeight: 400, // font-weight: 400
-          fontStyle: 'normal', // font-style: Regular
-          fontSize: '14px', // font-size: text-sm (igual trajetória)
-          lineHeight: '20px', // line-height: text-sm (20px) (igual trajetória)
-          letterSpacing: '0%', // letter-spacing: 0%
-          color: '#CECFD2', // cor correta da descrição
           margin: 0,
           padding: 0,
-          textAlign: 'left',
-          verticalAlign: 'top',
           position: 'relative',
           zIndex: 1,
-          width: '100%', // sizing: horizontal fill
-          textTransform: 'none',
-          wordWrap: 'break-word',
-          overflow: 'visible',
-          display: 'block' // garante comportamento de bloco
+          width: '100%',
+          wordWrap: 'break-word'
         }}
       >
         {description}
-      </p>
+      </Text>
 
       {/* Imagem da Área - Posicionamento conforme Figma */}
       {image && (

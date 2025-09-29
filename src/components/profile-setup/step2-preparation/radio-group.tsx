@@ -114,7 +114,7 @@ function RadioOption({
         >
           <span
             style={{
-              fontFamily: 'Sora',
+              fontFamily: 'Inter' /* MIGRATED */ /* TODO: Migrar para Design System */,
               fontWeight: 400,
               fontSize: '14px',
               lineHeight: '1.43em',

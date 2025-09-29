@@ -35,7 +35,7 @@ export default function KnowledgeTableActions({
       >
         <span
           style={{
-            fontFamily: 'Sora',
+            fontFamily: 'Inter' /* MIGRATED */,
             fontWeight: 500,
             fontSize: '14px',
             lineHeight: '20px',
@@ -64,7 +64,7 @@ export default function KnowledgeTableActions({
               backgroundColor: 'transparent',
               border: '1px solid #2C2C45',
               borderRadius: '8px',
-              fontFamily: 'Sora',
+              fontFamily: 'Inter' /* MIGRATED */,
               fontWeight: 500,
               fontSize: '12px',
               lineHeight: '16px',

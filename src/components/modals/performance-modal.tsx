@@ -89,7 +89,7 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
         >
           <h2
             style={{
-              fontFamily: 'Sora',
+              fontFamily: 'Inter' /* MIGRATED */,
               fontWeight: 600,
               fontSize: isMobile ? '16px' : '18px',
               lineHeight: '1.5em',
@@ -127,7 +127,7 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
           <div className="flex flex-col" style={{ gap: isMobile ? '12px' : '12px' }}>
             <h3
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'Inter' /* MIGRATED */,
                 fontWeight: 600,
                 fontSize: isMobile ? '14px' : '16px',
                 lineHeight: '1.4285714285714286em',
@@ -142,7 +142,7 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
               <div className="flex flex-col gap-1.5 flex-1 min-w-0">
                 <label
                   style={{
-                    fontFamily: 'Sora',
+                    fontFamily: 'Inter' /* MIGRATED */,
                     fontWeight: 400,
                     fontSize: '14px',
                     lineHeight: '1.4285714285714286em',
@@ -172,7 +172,7 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
                     step="1"
                     className="flex-1 bg-transparent border-none outline-none"
                     style={{
-                      fontFamily: 'Sora',
+                      fontFamily: 'Inter' /* MIGRATED */,
                       fontWeight: 400,
                       fontSize: '16px',
                       lineHeight: '1.5em',
@@ -192,7 +192,7 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
               <div className="flex flex-col gap-1.5 flex-1 min-w-0">
                 <label
                   style={{
-                    fontFamily: 'Sora',
+                    fontFamily: 'Inter' /* MIGRATED */,
                     fontWeight: 400,
                     fontSize: '14px',
                     lineHeight: '1.4285714285714286em',
@@ -222,7 +222,7 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
                     step="1"
                     className="flex-1 bg-transparent border-none outline-none"
                     style={{
-                      fontFamily: 'Sora',
+                      fontFamily: 'Inter' /* MIGRATED */,
                       fontWeight: 400,
                       fontSize: '16px',
                       lineHeight: '1.5em',
@@ -244,7 +244,7 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
           <div className="flex flex-col" style={{ gap: isMobile ? '12px' : '12px' }}>
             <h3
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'Inter' /* MIGRATED */,
                 fontWeight: 600,
                 fontSize: isMobile ? '14px' : '16px',
                 lineHeight: '1.4285714285714286em',
@@ -259,7 +259,7 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
               <div className="flex flex-col gap-1.5 flex-1 min-w-0">
                 <label
                   style={{
-                    fontFamily: 'Sora',
+                    fontFamily: 'Inter' /* MIGRATED */,
                     fontWeight: 400,
                     fontSize: '14px',
                     lineHeight: '1.4285714285714286em',
@@ -289,7 +289,7 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
                     step="1"
                     className="flex-1 bg-transparent border-none outline-none"
                     style={{
-                      fontFamily: 'Sora',
+                      fontFamily: 'Inter' /* MIGRATED */,
                       fontWeight: 400,
                       fontSize: '16px',
                       lineHeight: '1.5em',
@@ -309,7 +309,7 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
               <div className="flex flex-col gap-1.5 flex-1 min-w-0">
                 <label
                   style={{
-                    fontFamily: 'Sora',
+                    fontFamily: 'Inter' /* MIGRATED */,
                     fontWeight: 400,
                     fontSize: '14px',
                     lineHeight: '1.4285714285714286em',
@@ -339,7 +339,7 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
                     step="1"
                     className="flex-1 bg-transparent border-none outline-none"
                     style={{
-                      fontFamily: 'Sora',
+                      fontFamily: 'Inter' /* MIGRATED */,
                       fontWeight: 400,
                       fontSize: '16px',
                       lineHeight: '1.5em',
@@ -399,7 +399,7 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
             >
               <span
                 style={{
-                  fontFamily: 'Sora',
+                  fontFamily: 'Inter' /* MIGRATED */,
                   fontWeight: 600,
                   fontSize: '14px',
                   lineHeight: '1.4285714285714286em',
@@ -425,7 +425,7 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
             >
               <span
                 style={{
-                  fontFamily: 'Sora',
+                  fontFamily: 'Inter' /* MIGRATED */,
                   fontWeight: 600,
                   fontSize: '14px',
                   lineHeight: '1.4285714285714286em',

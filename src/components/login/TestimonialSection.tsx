@@ -120,7 +120,7 @@ export const TestimonialSection: React.FC<TestimonialSectionProps> = ({ isMobile
         <p 
           className="text-[#F0F0F1] text-left m-0"
           style={{
-            fontFamily: 'Sora',
+            fontFamily: 'Inter' /* MIGRATED */,
             fontWeight: 600,
             fontSize: screenSize === 'notebook' ? '14px' : '24px',
             lineHeight: '1.33em',
@@ -133,7 +133,7 @@ export const TestimonialSection: React.FC<TestimonialSectionProps> = ({ isMobile
         <p 
           className="text-[#F0F0F1] text-left m-0"
           style={{
-            fontFamily: 'Sora',
+            fontFamily: 'Inter' /* MIGRATED */,
             fontWeight: 400,
             fontSize: screenSize === 'notebook' ? '11px' : '18px',
             lineHeight: '1.56em',
@@ -157,7 +157,7 @@ export const TestimonialSection: React.FC<TestimonialSectionProps> = ({ isMobile
         <p 
           className="text-white text-left m-0"
           style={{
-            fontFamily: 'Sora',
+            fontFamily: 'Inter' /* MIGRATED */,
             fontWeight: 600,
             fontSize: screenSize === 'notebook' ? '14px' : '24px',
             lineHeight: screenSize === 'notebook' ? '1.33em' : '1.33em',
@@ -169,7 +169,7 @@ export const TestimonialSection: React.FC<TestimonialSectionProps> = ({ isMobile
         <p 
           className="text-white text-left m-0"
           style={{
-            fontFamily: 'Sora',
+            fontFamily: 'Inter' /* MIGRATED */,
             fontWeight: 400,
             fontSize: screenSize === 'notebook' ? '11px' : '18px',
             lineHeight: screenSize === 'notebook' ? '1.56em' : '1.56em'
@@ -193,7 +193,7 @@ export const TestimonialSection: React.FC<TestimonialSectionProps> = ({ isMobile
           <p 
             className="text-left text-[#D9D9D9] m-0"
             style={{
-              fontFamily: 'Sora',
+              fontFamily: 'Inter' /* MIGRATED */,
               fontWeight: 400,
               fontSize: screenSize === 'notebook' ? '11px' : '16px',
               lineHeight: screenSize === 'notebook' ? '1.3em' : '1.5em'

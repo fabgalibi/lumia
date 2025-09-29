@@ -56,7 +56,7 @@ export default function KnowledgeTableRow({
       >
         <span
           style={{
-            fontFamily: 'Sora',
+            fontFamily: 'Inter' /* MIGRATED */,
             fontWeight: 500,
             fontSize: '16px',
             lineHeight: '24px',
@@ -68,7 +68,7 @@ export default function KnowledgeTableRow({
         </span>
         <span
           style={{
-            fontFamily: 'Sora',
+            fontFamily: 'Inter' /* MIGRATED */,
             fontWeight: 400,
             fontSize: '14px',
             lineHeight: '20px',

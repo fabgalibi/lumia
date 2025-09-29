@@ -17,7 +17,7 @@ export default function KnowledgeHeader({ }: KnowledgeHeaderProps) {
     >
       <h1
         style={{
-          fontFamily: 'Sora',
+          fontFamily: 'Inter' /* MIGRATED */,
           fontWeight: 600,
           fontSize: '20px',
           lineHeight: '28px',
@@ -30,7 +30,7 @@ export default function KnowledgeHeader({ }: KnowledgeHeaderProps) {
       </h1>
       <p
         style={{
-          fontFamily: 'Sora',
+          fontFamily: 'Inter' /* MIGRATED */,
           fontWeight: 400,
           fontSize: '14px',
           lineHeight: '20px',

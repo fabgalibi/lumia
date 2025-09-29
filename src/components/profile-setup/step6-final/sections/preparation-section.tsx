@@ -1,5 +1,5 @@
 import React from 'react';
-import { InfoCard } from '../info-card';
+import { InfoCard } from '../info-card-v2';
 import { PreparationIcon } from '../section-icons';
 import { getPreparationTypeName } from '../data-helpers';
 import { CardContent } from '../card-content';

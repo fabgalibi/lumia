@@ -70,7 +70,7 @@ export default function ProfileFooter({
           >
             <span
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'Inter' /* MIGRATED */,
                 fontWeight: 400,
                 fontSize: '12px', // Text xs Medium
                 lineHeight: '1.5em',
@@ -82,7 +82,7 @@ export default function ProfileFooter({
             </span>
             <span
               style={{
-                fontFamily: 'Sora',
+                fontFamily: 'Inter' /* MIGRATED */,
                 fontWeight: 600,
                 fontSize: '14px', // Text sm Semibold
                 lineHeight: '1.43em',
@@ -187,7 +187,7 @@ function BackButton({ onClick, screenSize, text }: BackButtonProps) {
       {screenSize !== 'mobile' && (
         <span
           style={{
-            fontFamily: 'Sora', // fontFamily do Figma
+            fontFamily: 'Inter' /* MIGRATED */, // fontFamily do Figma
             fontWeight: 600, // Text md Semibold - weight do Figma
             fontSize: '16px', // Text md Semibold - fontSize do Figma
             lineHeight: '1.5em', // Text md Semibold - lineHeight do Figma
@@ -235,7 +235,7 @@ function StepIndicator({ currentStep, totalSteps, stepTitle }: StepIndicatorProp
       >
         <span
           style={{
-            fontFamily: 'Sora', // fontFamily do Figma
+            fontFamily: 'Inter' /* MIGRATED */, // fontFamily do Figma
             fontWeight: 400, // Text sm Medium - weight do Figma
             fontSize: '14px', // Text sm Medium - fontSize do Figma
             lineHeight: '1.4285714285714286em', // Text sm Medium - lineHeight do Figma
@@ -250,7 +250,7 @@ function StepIndicator({ currentStep, totalSteps, stepTitle }: StepIndicatorProp
         
         <span
           style={{
-            fontFamily: 'Sora', // fontFamily do Figma
+            fontFamily: 'Inter' /* MIGRATED */, // fontFamily do Figma
             fontWeight: 600, // Text md Semibold - weight do Figma
             fontSize: '16px', // Text md Semibold - fontSize do Figma
             lineHeight: '1.5em', // Text md Semibold - lineHeight do Figma
@@ -313,7 +313,7 @@ function NextButton({ onClick, text, disabled, screenSize }: NextButtonProps) {
       {screenSize !== 'mobile' && (
         <span
           style={{
-            fontFamily: 'Sora',
+            fontFamily: 'Inter' /* MIGRATED */,
             fontWeight: 600, // weight exato do Figma
             fontSize: '16px', // tamanho exato do Figma
             lineHeight: '1.5em', // lineHeight exato do Figma

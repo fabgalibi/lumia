@@ -17,22 +17,19 @@ export interface AccountSettingsData {
     confirmPassword: string;
   };
   notifications: {
-    emailNotifications: boolean;
-    pushNotifications: boolean;
-    smsNotifications: boolean;
-    marketingEmails: boolean;
-    securityAlerts: boolean;
-    studyReminders: boolean;
+    platformUpdates: boolean;
+    mentorMessages: boolean;
+    newMaterial: boolean;
+    activitiesAndSimulations: boolean;
+    mentorships: boolean;
   };
   content: {
-    studyLevel: string;
-    preferredSubjects: string[];
-    studyMode: string;
-    difficulty: string;
-    practiceTests: boolean;
-    videoLessons: boolean;
-    textMaterials: boolean;
-    audioContent: boolean;
+    studyArea: string;
+    preparation: string;
+    availability: string;
+    trajectory: string;
+    knowledge: string;
+    startDate: string;
   };
 }
 
@@ -53,22 +50,19 @@ const initialData: AccountSettingsData = {
     confirmPassword: ''
   },
   notifications: {
-    emailNotifications: true,
-    pushNotifications: true,
-    smsNotifications: false,
-    marketingEmails: false,
-    securityAlerts: true,
-    studyReminders: true
+    platformUpdates: true,
+    mentorMessages: true,
+    newMaterial: true,
+    activitiesAndSimulations: false,
+    mentorships: false
   },
   content: {
-    studyLevel: 'intermediario',
-    preferredSubjects: ['direito-constitucional', 'direito-administrativo'],
-    studyMode: 'mixed',
-    difficulty: 'progressive',
-    practiceTests: true,
-    videoLessons: true,
-    textMaterials: true,
-    audioContent: false
+    studyArea: 'Controle',
+    preparation: 'Pré-edital',
+    availability: 'Normal (30-39 horas semanais)',
+    trajectory: 'Ouro (2 anos e meio - 4 anos)',
+    knowledge: 'Nível 3 (Terminei teoria, mas não tenho confiança)',
+    startDate: '10/09/2025'
   }
 };
 

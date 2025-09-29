@@ -85,7 +85,7 @@ const LevelIcon: React.FC<{ number: number; isActive: boolean }> = ({ number, is
     >
       <span
         style={{
-          fontFamily: 'Sora',
+          fontFamily: 'Inter' /* MIGRATED */,
           fontWeight: 600,
           fontSize: '14px',
           color: '#FFFFFF',
@@ -159,7 +159,7 @@ export const KnowledgeLevelProgress: React.FC<KnowledgeLevelProgressProps> = ({
                    {(screenSize === 'notebook' || screenSize === 'desktop') && (
                      <span
                        style={{
-                         fontFamily: 'Sora',
+                         fontFamily: 'Inter' /* MIGRATED */,
                          fontWeight: 400,
                          fontSize: '14px',
                          lineHeight: '1.43em',

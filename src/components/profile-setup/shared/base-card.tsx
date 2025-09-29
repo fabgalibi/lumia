@@ -212,7 +212,7 @@ export default function BaseCard({
         {/* Título */}
         <h3
           style={{
-            fontFamily: 'Sora',
+            fontFamily: 'Inter' /* MIGRATED */,
             fontWeight: 400,
             fontStyle: 'Regular',
             fontSize: titleStyle?.fontSize || '20px', // Font size/text-xl conforme especificações
@@ -233,7 +233,7 @@ export default function BaseCard({
         {/* Descrição */}
         <p
           style={{
-            fontFamily: 'Sora',
+            fontFamily: 'Inter' /* MIGRATED */,
             fontWeight: 400,
             fontStyle: 'Regular',
             fontSize: '14px', // Font size/text-sm conforme especificações

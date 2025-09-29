@@ -14,9 +14,9 @@ import { MainContentProvider, useMainContent } from "@/contexts/main-content-con
 const HomeScreenContent = () => {
   const { progress } = useSprint();
   const { sidebarWidth } = useSidebar();
-  const { currentContent } = useMainContent();
+  const { } = useMainContent();
   const location = useLocation();
-  const [isMobile, setIsMobile] = useState(false);
+  const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
   
   // Lógica simplificada baseada na URL
   const isAccountSettingsRoute = location.pathname.startsWith('/account-settings');
@@ -25,24 +25,29 @@ const HomeScreenContent = () => {
   const handleDeleteAccount = useCallback(() => console.log('Deletar conta'), []);
   const handleUpdatePhoto = useCallback(() => console.log('Atualizar foto'), []);
   
-  // Debug logs
-  console.log('HomeScreen Debug:', {
-    pathname: location.pathname,
-    currentContent,
-    isAccountSettingsRoute
-  });
 
-  // Detectar se é mobile
+  // Detectar tamanho da tela
+  const checkScreenSize = useCallback(() => {
+    const width = window.innerWidth;
+    
+    let newScreenSize: 'mobile' | 'tablet' | 'desktop';
+    if (width < 768) {
+      newScreenSize = 'mobile';
+    } else if (width < 1100) {
+      newScreenSize = 'tablet';
+    } else {
+      newScreenSize = 'desktop';
+    }
+    
+    setScreenSize(newScreenSize);
+  }, [screenSize]);
+
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024); // lg breakpoint
-    };
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
     
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, [checkScreenSize]);
   
   return (
     <div className="min-h-screen flex overflow-hidden" style={{ background: 'rgba(25, 25, 35, 1)' }}>
@@ -50,7 +55,7 @@ const HomeScreenContent = () => {
       <div 
         className="flex-1 flex flex-col min-w-0 overflow-hidden pt-6 transition-all duration-300"
         style={{ 
-          marginLeft: isMobile ? '0px' : `${sidebarWidth}px`
+          marginLeft: screenSize === 'mobile' ? '0px' : screenSize === 'tablet' ? '0px' : `${sidebarWidth}px`
         }}
       >
         <Header 
@@ -62,7 +67,7 @@ const HomeScreenContent = () => {
               <StatsCards />
               <SprintSection externalProgress={progress} />
               <StudyConsistencyCalendar />
-              <GoalsTable />
+              <GoalsTable screenSize={screenSize} />
             </>
           )}
           {isAccountSettingsRoute && (

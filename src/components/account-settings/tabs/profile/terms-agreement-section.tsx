@@ -72,7 +72,7 @@ export const TermsAgreementSection: React.FC<TermsAgreementSectionProps> = ({
               flex: 1
             }}>
               <span style={{
-                fontFamily: 'Sora',
+                fontFamily: 'Inter' /* MIGRATED */,
                 fontWeight: '400',
                 fontSize: '16px',
                 lineHeight: '1.5em',

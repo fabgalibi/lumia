@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Container, Text, Button, Input, colors } from '@/components/ui/design-system';
 
 interface SkipGoalModalProps {
   isOpen: boolean;
@@ -38,9 +39,15 @@ export const SkipGoalModal: React.FC<SkipGoalModalProps> = ({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-[100] pointer-events-none">
-      <div 
-        className="relative bg-[#252532] rounded-xl shadow-2xl overflow-hidden pointer-events-auto"
-        style={{ width: '512px' }}
+      <Container
+        background={colors.bg.primary}
+        borderRadius="xl"
+        direction="column"
+        style={{ 
+          width: '512px',
+          pointerEvents: 'auto',
+          boxShadow: '0px 3px 3px -1.5px rgba(255, 255, 255, 0), 0px 8px 8px -4px rgba(255, 255, 255, 0), 0px 20px 24px -4px rgba(255, 255, 255, 0)'
+        }}
       >
         {/* Background pattern decorative */}
         <div className="absolute -top-30 -left-30 w-84 h-84 opacity-10">
@@ -48,18 +55,22 @@ export const SkipGoalModal: React.FC<SkipGoalModalProps> = ({
         </div>
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-[#272737]" style={{ borderBottomWidth: '1.5px' }}>
-          <h2 
-            className="text-[#F7F7F7] font-semibold"
-            style={{
-              fontFamily: 'Sora',
-              fontWeight: 600,
-              fontSize: '18px',
-              lineHeight: '1.56em'
-            }}
+        <Container
+          direction="row"
+          justify="space-between"
+          align="center"
+          padding={6}
+          style={{ 
+            borderBottom: `1.5px solid ${colors.border.secondary}`
+          }}
+        >
+          <Text
+            variant="h3"
+            weight="semibold"
+            color={colors.text.primary}
           >
             Pular meta
-          </h2>
+          </Text>
           
           <button
             onClick={handleClose}
@@ -81,100 +92,49 @@ export const SkipGoalModal: React.FC<SkipGoalModalProps> = ({
               />
             </svg>
           </button>
-        </div>
-
+        </Container>
 
         {/* Content */}
-        <div className="px-6 py-0" style={{ height: '220px' }}>
-          <div className="h-full flex flex-col gap-5">
-            {/* Textarea Field */}
-            <div className="flex-1 flex flex-col gap-1.5">
-              <label 
-                className="text-[#CECFD2] font-medium"
-                style={{
-                  fontFamily: 'DM Sans',
-                  fontWeight: 500,
-                  fontSize: '14px',
-                  lineHeight: '1.43em'
-                }}
-              >
-                Antes de prosseguir, insira abaixo o motivo para você estar pulando essa meta.
-              </label>
-              
-              <div className="flex-1 relative">
-                <textarea
-                  value={reason}
-                  onChange={(e) => setReason(e.target.value)}
-                  placeholder="Digite o motivo"
-                  maxLength={250}
-                  className="w-full h-full resize-none bg-[#2D2D3B] border border-[#373A41] rounded-lg text-[#85888E] placeholder-[#85888E] focus:outline-none focus:ring-2 focus:ring-[#C74228] focus:border-transparent"
-                  style={{
-                    fontFamily: 'DM Sans',
-                    fontWeight: 400,
-                    fontSize: '16px',
-                    lineHeight: '1.5em',
-                    padding: '12px 14px'
-                  }}
-                />
-              </div>
-              
-              <div 
-                className="text-[#94979C] text-left"
-                style={{
-                  fontFamily: 'Sora',
-                  fontWeight: 400,
-                  fontSize: '14px',
-                  lineHeight: '1.43em'
-                }}
-              >
-                {reason.length}/250 caracteres.
-              </div>
-            </div>
-          </div>
-        </div>
+        <Container direction="column" gap={6} padding={6}>
+          <Container direction="column" gap={2}>
+            <Text
+              variant="caption"
+              color={colors.text.tertiary}
+            >
+              Conte-nos o motivo pelo qual você deseja pular esta meta. Isso nos ajudará a melhorar sua experiência.
+            </Text>
+          </Container>
 
-        {/* Footer */}
-        <div className="flex flex-col items-center gap-5 pb-5">
-          {/* Divider */}
-          <div className="w-full h-px bg-[#22262F]"></div>
-          
+          <Input
+            type="textarea"
+            value={reason}
+            onChange={(value: string) => setReason(value)}
+            placeholder="Digite o motivo (opcional)..."
+            rows={4}
+            maxLength={500}
+            showCharCount
+          />
+
           {/* Actions */}
-          <div className="flex justify-end items-center gap-3 px-6 w-full" style={{ gap: '12px' }}>
-            <button
+          <Container direction="row" justify="flex-end" gap={3}>
+            <Button
+              variant="secondary"
               onClick={handleClose}
-              className="bg-[#2D2D45] text-[#CECFD2] rounded-lg font-semibold hover:bg-[#3D3D55] transition-colors"
-              style={{
-                fontFamily: 'Sora',
-                fontWeight: 600,
-                fontSize: '14px',
-                lineHeight: '1.43em',
-                padding: '10px 14px',
-                boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)'
-              }}
+              disabled={isSubmitting}
             >
               Cancelar
-            </button>
+            </Button>
             
-            <button
+            <Button
+              variant="danger"
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="bg-[#C74228] text-white rounded-lg font-semibold hover:bg-[#D55238] disabled:opacity-50 disabled:cursor-not-allowed transition-colors relative"
-              style={{
-                fontFamily: 'Sora',
-                fontWeight: 600,
-                fontSize: '14px',
-                lineHeight: '1.43em',
-                padding: '10px 14px',
-                border: '2px solid',
-                borderImage: 'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%) 1',
-                boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)'
-              }}
             >
-              {isSubmitting ? 'Processando...' : 'Prosseguir'}
-            </button>
-          </div>
-        </div>
-      </div>
+              {isSubmitting ? 'Pulando...' : 'Pular meta'}
+            </Button>
+          </Container>
+        </Container>
+      </Container>
     </div>
   );
 };
