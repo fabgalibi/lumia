@@ -69,7 +69,6 @@ export const DisplayField: React.FC<DisplayFieldProps> = ({
         direction="row"
         align="center"
         gap={2}
-        padding={{ mobile: 3, desktop: 4 }}
         background={disabled ? colors.bg.secondary : colors.bg.elevated}
         border={`1px solid ${error ? colors.border.error : (disabled ? colors.bg.secondary : colors.border.primary)}`}
         borderRadius="md"
@@ -79,6 +78,8 @@ export const DisplayField: React.FC<DisplayFieldProps> = ({
         style={{
           cursor: onClick ? 'pointer' : 'default',
           transition: 'all 0.2s ease',
+          minHeight: '40px',
+          padding: '8px 16px',
         }}
         onMouseEnter={(e: React.MouseEvent) => {
           if (onClick && !disabled) {

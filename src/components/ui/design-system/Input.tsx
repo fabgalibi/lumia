@@ -59,6 +59,7 @@ export const Input: React.FC<InputProps> = ({
     zIndex: 1,
     position: 'relative',
     pointerEvents: 'auto',
+    padding: '0',
   };
 
 
@@ -66,16 +67,18 @@ export const Input: React.FC<InputProps> = ({
     display: 'flex',
     alignItems: type === 'textarea' ? 'flex-start' : 'center',
     padding: type === 'textarea' 
-      ? (screenSize === 'mobile' ? spacing[3] : spacing[4])
-      : (screenSize === 'mobile' ? `${spacing[2]} ${spacing[3]}` : `${spacing[2]} ${spacing[4]}`),
+      ? (screenSize === 'mobile' ? '12px' : '16px')
+      : '8px 16px',
     backgroundColor: disabled ? colors.bg.secondary : colors.bg.elevated,
     border: `1px solid ${hasError ? colors.border.error : (disabled ? colors.bg.secondary : colors.border.primary)}`,
     borderRadius: radius.md,
     boxShadow: shadows.sm,
     transition: 'all 0.2s ease',
-    minHeight: type === 'textarea' ? (screenSize === 'mobile' ? '140px' : '120px') : '40px',
-    height: type === 'textarea' ? 'auto' : '40px',
-    width: '100%',
+    minHeight: type === 'textarea' ? (screenSize === 'mobile' ? '140px' : '120px') : '44px',
+    height: type === 'textarea' ? 'auto' : '44px',
+    width: type === 'textarea' ? '100%' : '512px',
+    minWidth: type === 'textarea' ? 'auto' : '400px',
+    maxWidth: type === 'textarea' ? '100%' : '512px',
     boxSizing: 'border-box',
   };
 
@@ -134,7 +137,7 @@ export const Input: React.FC<InputProps> = ({
           <div
             style={{ 
               flexShrink: 0,
-              margin: screenSize === 'mobile' ? spacing[1] : spacing[2],
+              margin: '0',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
