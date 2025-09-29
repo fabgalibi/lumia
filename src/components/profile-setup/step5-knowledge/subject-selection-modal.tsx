@@ -169,9 +169,9 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
         bottom: 0,
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         display: 'flex',
-        alignItems: screenSize === 'mobile' ? 'flex-end' : (isExpanded ? 'center' : 'flex-end'),
-        justifyContent: screenSize === 'mobile' ? 'center' : (isExpanded ? 'center' : 'flex-end'),
-        padding: screenSize === 'mobile' ? '0' : (isExpanded ? '0' : '0 24px 0 0'),
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        padding: screenSize === 'mobile' ? '20px' : '40px',
         zIndex: 9999
       }}
       onClick={onClose}
@@ -180,11 +180,11 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
         style={{
           backgroundColor: '#202028',
           border: '1px solid #272737',
-          borderRadius: screenSize === 'mobile' ? '16px 16px 0 0' : '16px',
+          borderRadius: '16px',
           width: screenSize === 'mobile' ? '100%' : (isExpanded ? '1360px' : '617px'),
-          height: screenSize === 'mobile' ? '80vh' : '944px',
+          height: screenSize === 'mobile' ? 'calc(100vh - 40px)' : 'calc(100vh - 80px)',
           maxWidth: screenSize === 'mobile' ? '100%' : (isExpanded ? '1360px' : '617px'),
-          maxHeight: screenSize === 'mobile' ? '80vh' : '944px',
+          maxHeight: screenSize === 'mobile' ? 'calc(100vh - 40px)' : 'calc(100vh - 80px)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-end',
@@ -335,7 +335,7 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
             padding: screenSize === 'mobile' ? '16px' : '24px',
             flex: 1,
             overflowY: 'auto',
-            height: screenSize === 'mobile' ? 'calc(80vh - 120px)' : 'calc(944px - 200px)',
+            minHeight: 0,
             position: 'relative'
           }}
         >

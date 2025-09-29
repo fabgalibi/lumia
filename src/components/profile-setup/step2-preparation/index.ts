@@ -2,6 +2,7 @@
 export { default as PreparationTypeCard } from './preparation-type-card';
 export { default as RadioGroup } from './radio-group';
 export { default as TextareaField } from './textarea-field-v2';
+export { PreparationSelectionContent } from './preparation-selection-content';
 
 export type { PreparationTypeCardProps } from './preparation-type-card';
 export type { RadioGroupProps } from './radio-group';

@@ -2,6 +2,7 @@
 export { default as StudyTimeCard } from './study-time-card';
 export { default as StartDateCard } from './start-date-card';
 export { default as CustomDatePicker } from './custom-date-picker';
+export { AvailabilitySelectionContent } from './availability-selection-content';
 
 export type { StudyTimeCardProps } from './study-time-card';
 export type { StartDateCardProps } from './start-date-card';

@@ -12,6 +12,7 @@ interface DisplayFieldProps {
   screenSize?: ScreenSize;
   disabled?: boolean;
   error?: string;
+  clickable?: boolean;
 }
 
 /**
@@ -38,7 +39,8 @@ export const DisplayField: React.FC<DisplayFieldProps> = ({
   onClick,
   screenSize = 'desktop',
   disabled = false,
-  error
+  error,
+  clickable = true
 }) => {
   return (
     <Container gap={2} screenSize={screenSize}>
@@ -76,18 +78,18 @@ export const DisplayField: React.FC<DisplayFieldProps> = ({
         onClick={onClick}
         screenSize={screenSize}
         style={{
-          cursor: onClick ? 'pointer' : 'default',
+          cursor: (onClick && clickable && !disabled) ? 'pointer' : 'default',
           transition: 'all 0.2s ease',
           minHeight: '40px',
           padding: '8px 16px',
         }}
         onMouseEnter={(e: React.MouseEvent) => {
-          if (onClick && !disabled) {
+          if (onClick && clickable && !disabled) {
             (e.currentTarget as HTMLElement).style.backgroundColor = colors.border.primary;
           }
         }}
         onMouseLeave={(e: React.MouseEvent) => {
-          if (onClick && !disabled) {
+          if (onClick && clickable && !disabled) {
             (e.currentTarget as HTMLElement).style.backgroundColor = colors.bg.elevated;
           }
         }}
@@ -109,7 +111,7 @@ export const DisplayField: React.FC<DisplayFieldProps> = ({
         </Text>
         
         {/* Edit Icon */}
-        {showEditIcon && !disabled && (
+        {showEditIcon && !disabled && clickable && (
           <Edit05 
             width="16" 
             height="16" 

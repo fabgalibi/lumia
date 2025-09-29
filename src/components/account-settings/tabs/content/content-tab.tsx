@@ -17,8 +17,8 @@ interface ContentTabProps {
 
 export const ContentTab: React.FC<ContentTabProps> = ({
   initialData = {
-    studyArea: 'Controle',
-    preparation: 'Pré-edital',
+    studyArea: 'controle',
+    preparation: 'pre-edital',
     availability: 'Normal (30-39 horas semanais)',
     trajectory: 'Ouro (2 anos e meio - 4 anos)',
     knowledge: 'Nível 3 (Terminei teoria, mas não tenho confiança)',

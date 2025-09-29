@@ -57,11 +57,19 @@ const initialData: AccountSettingsData = {
     mentorships: false
   },
   content: {
-    studyArea: 'Controle',
-    preparation: 'Pré-edital',
-    availability: 'Normal (30-39 horas semanais)',
-    trajectory: 'Ouro (2 anos e meio - 4 anos)',
-    knowledge: 'Nível 3 (Terminei teoria, mas não tenho confiança)',
+    studyArea: 'controle',
+    preparation: 'pre-edital',
+    availability: 'normal',
+    trajectory: 'ouro',
+    knowledge: {
+      'etica': 'finished',
+      'direito-admin': 'started',
+      'legislacao-prev': 'never',
+      'direito': 'polishing',
+      'administracao': 'finished',
+      'pericia-medica': 'never',
+      'direito-const': 'started'
+    },
     startDate: '10/09/2025'
   }
 };

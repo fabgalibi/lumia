@@ -39,7 +39,7 @@ export default function KnowledgeHeader({ }: KnowledgeHeaderProps) {
           opacity: 0.9
         }}
       >
-        Informe atentamente seu nível atual de conhecimento, pois seu planejamento será elaborado a partir desses dados. Se você estudou a disciplina há muito tempo e já não domina o conteúdo, recomendamos selecionar a opção "Nunca estudei".
+        Informe atentamente seu nível atual de conhecimento, pois seu planejamento será elaborado a partir desses dados. Se você estudou a disciplina há muito tempo e já não domina o conteúdo, recomendamos selecionar a opção "Nunca estudei". Assim, você terá a oportunidade de revisitar a teoria, caso seja necessário.
       </p>
     </div>
   );
