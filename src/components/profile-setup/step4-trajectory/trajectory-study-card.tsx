@@ -44,7 +44,7 @@ export default function TrajectoryStudyCard({
         { 
           position: 'right', 
           top: '-122px',
-          leftPosition: '32px'
+          rightPosition: '0px' // Alinhado à direita
         }
       ]}
       imageSize={{

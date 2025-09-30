@@ -157,11 +157,11 @@ function CardContent({ title, description, image, size = 'md', isSelected = fals
           alt={title}
           style={{
             position: 'absolute',
-            top: size === 'sm' ? '12px' : '16px', // mobile: 12px, desktop: 16px
-            right: size === 'sm' ? '16px' : '16px', // mobile: 16px da direita, desktop: 16px da direita
-            left: size === 'sm' ? 'auto' : 'auto', // mobile: auto, desktop: auto
-            width: size === 'sm' ? '96px' : '120px', // mobile: 96px, desktop: 120px
-            height: size === 'sm' ? '96px' : '120px', // mobile: 96px, desktop: 120px
+            top: size === 'sm' ? '16px' : '16px', // 16px conforme Figma
+            right: size === 'sm' ? '16px' : '16px', // 16px da direita conforme Figma
+            left: size === 'sm' ? 'auto' : 'auto',
+            width: size === 'sm' ? '104px' : '132px', // mobile: 104px, desktop: 132px - tamanho equilibrado
+            height: size === 'sm' ? '104px' : '132px', // mobile: 104px, desktop: 132px - tamanho equilibrado
             objectFit: 'contain', // contain para evitar distorção
             zIndex: 0, // atrás dos textos
             background: 'transparent',
@@ -186,85 +186,70 @@ function DecorativeBackground() {
     <div
       style={{
         position: 'absolute',
-        top: '-122px', // posição Y exata do Figma
-        left: '32px', // posição X exata do Figma  
-        width: '336px', // dimensão exata do Figma
-        height: '336px',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        overflow: 'hidden',
         pointerEvents: 'none',
         zIndex: 0
       }}
     >
-      {/* SVG do Grid com Mask exato do Figma */}
+      {/* SVG unificado - grid contínuo alinhado à direita */}
       <svg 
-        width="336" 
+        width="100%" 
         height="336" 
-        viewBox="0 0 336 336" 
+        viewBox="0 0 800 336" 
         fill="none" 
         xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="xMaxYMid slice"
         style={{
           position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%'
+          top: '-122px',
+          left: '10%',
+          right: 0,
+          minWidth: '90%'
         }}
       >
         <defs>
-          <radialGradient 
-            id={`paint0_radial_grid_${uniqueId}`}
-            cx="0" 
-            cy="0" 
-            r="1" 
-            gradientUnits="userSpaceOnUse" 
-            gradientTransform="translate(168 168) rotate(90) scale(168 168)"
-          >
-            <stop stopColor="#000000" stopOpacity="1"/>
-            <stop offset="1" stopColor="#000000" stopOpacity="0"/>
+          <radialGradient id={`paint0_radial_${uniqueId}`} cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(650 100) rotate(90) scale(250 250)">
+            <stop stopOpacity="1"/>
+            <stop offset="0.7" stopOpacity="0.3"/>
+            <stop offset="1" stopOpacity="0"/>
           </radialGradient>
-          <clipPath id={`clip0_grid_${uniqueId}`}>
-            <rect width="336" height="336" fill="white"/>
-          </clipPath>
         </defs>
-        
-        <mask id={`mask0_grid_${uniqueId}`} style={{maskType: 'alpha'}} maskUnits="userSpaceOnUse" x="0" y="0" width="336" height="336">
-          <rect width="336" height="336" fill={`url(#paint0_radial_grid_${uniqueId})`}/>
+        <mask id={`mask0_${uniqueId}`} style={{maskType:'alpha'}} maskUnits="userSpaceOnUse" x="0" y="0" width="800" height="336">
+          <rect width="800" height="336" fill={`url(#paint0_radial_${uniqueId})`}/>
         </mask>
-        
-        <g mask={`url(#mask0_grid_${uniqueId})`}>
-          <g clipPath={`url(#clip0_grid_${uniqueId})`}>
-            {/* Linhas Verticais */}
-            <line x1="0.5" y1="0" x2="0.5" y2="336" stroke="#22262F"/>
-            <line x1="24.5" y1="0" x2="24.5" y2="336" stroke="#22262F"/>
-            <line x1="48.5" y1="0" x2="48.5" y2="336" stroke="#22262F"/>
-            <line x1="72.5" y1="0" x2="72.5" y2="336" stroke="#22262F"/>
-            <line x1="96.5" y1="0" x2="96.5" y2="336" stroke="#22262F"/>
-            <line x1="120.5" y1="0" x2="120.5" y2="336" stroke="#22262F"/>
-            <line x1="144.5" y1="0" x2="144.5" y2="336" stroke="#22262F"/>
-            <line x1="168.5" y1="0" x2="168.5" y2="336" stroke="#22262F"/>
-            <line x1="192.5" y1="0" x2="192.5" y2="336" stroke="#22262F"/>
-            <line x1="216.5" y1="0" x2="216.5" y2="336" stroke="#22262F"/>
-            <line x1="240.5" y1="0" x2="240.5" y2="336" stroke="#22262F"/>
-            <line x1="264.5" y1="0" x2="264.5" y2="336" stroke="#22262F"/>
-            <line x1="288.5" y1="0" x2="288.5" y2="336" stroke="#22262F"/>
-            <line x1="312.5" y1="0" x2="312.5" y2="336" stroke="#22262F"/>
-            <line x1="336.5" y1="0" x2="336.5" y2="336" stroke="#22262F"/>
-            
-            {/* Linhas Horizontais */}
-            <line y1="0.5" x2="336" y2="0.5" stroke="#22262F"/>
-            <line y1="24.5" x2="336" y2="24.5" stroke="#22262F"/>
-            <line y1="48.5" x2="336" y2="48.5" stroke="#22262F"/>
-            <line y1="72.5" x2="336" y2="72.5" stroke="#22262F"/>
-            <line y1="96.5" x2="336" y2="96.5" stroke="#22262F"/>
-            <line y1="120.5" x2="336" y2="120.5" stroke="#22262F"/>
-            <line y1="144.5" x2="336" y2="144.5" stroke="#22262F"/>
-            <line y1="168.5" x2="336" y2="168.5" stroke="#22262F"/>
-            <line y1="192.5" x2="336" y2="192.5" stroke="#22262F"/>
-            <line y1="216.5" x2="336" y2="216.5" stroke="#22262F"/>
-            <line y1="240.5" x2="336" y2="240.5" stroke="#22262F"/>
-            <line y1="264.5" x2="336" y2="264.5" stroke="#22262F"/>
-            <line y1="288.5" x2="336" y2="288.5" stroke="#22262F"/>
-            <line y1="312.5" x2="336" y2="312.5" stroke="#22262F"/>
-            <line y1="336.5" x2="336" y2="336.5" stroke="#22262F"/>
+        <g mask={`url(#mask0_${uniqueId})`}>
+          {/* Linhas verticais - padrão repetido a cada 24px */}
+          <g>
+            {Array.from({ length: 35 }, (_, i) => (
+              <line 
+                key={`v-${i}`}
+                x1={0.5 + i * 24} 
+                y1="0" 
+                x2={0.5 + i * 24} 
+                y2="336" 
+                stroke="#22262F" 
+                strokeWidth="1"
+              />
+            ))}
+          </g>
+          
+          {/* Linhas horizontais - padrão repetido a cada 24px */}
+          <g>
+            {Array.from({ length: 15 }, (_, i) => (
+              <line 
+                key={`h-${i}`}
+                x1="0" 
+                y1={0.5 + i * 24} 
+                x2="800" 
+                y2={0.5 + i * 24} 
+                stroke="#22262F" 
+                strokeWidth="1"
+              />
+            ))}
           </g>
         </g>
       </svg>

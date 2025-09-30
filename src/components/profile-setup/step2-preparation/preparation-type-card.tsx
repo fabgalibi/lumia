@@ -41,8 +41,8 @@ export default function PreparationTypeCard({
       }
       grids={[{ 
         position: 'right', 
-        top: '-105.6px',  // y: -105.6px conforme Figma
-        leftPosition: screenSize === 'desktop' ? '370px' : screenSize === 'mobile' ? '31.6px' : '120px' // x: 370px desktop, 31.6px mobile conforme Figma
+        top: '-122px',  // Posicionamento conforme Figma
+        rightPosition: '0px' // Alinhado à direita
       }]}
       minHeight={{ 
         mobile: '140px', // Altura menor para mobile

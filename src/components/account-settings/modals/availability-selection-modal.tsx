@@ -58,6 +58,11 @@ export const AvailabilitySelectionModal: React.FC<AvailabilitySelectionModalProp
     onClose();
   };
 
+  // Verificar se pode salvar - deve ter studyTime e se tiver data-especifica, deve ter a data
+  const canSave = !!availabilityData.selectedStudyTime && 
+                  !!availabilityData.selectedStartDate &&
+                  (availabilityData.selectedStartDate !== 'data-especifica' || !!availabilityData.selectedDate);
+
   // Converter screenSize para o formato esperado pelo componente original
   const convertScreenSize = (size: 'mobile' | 'tablet' | 'desktop'): 'mobile' | 'tablet' | 'notebook' | 'desktop' => {
     if (size === 'tablet') return 'notebook';
@@ -72,14 +77,14 @@ export const AvailabilitySelectionModal: React.FC<AvailabilitySelectionModalProp
       subtitle="Referente ao tempo de dedicação ao estudos que você selecionou."
       onSave={handleSave}
       onCancel={handleCancel}
-      canSave={!!availabilityData.selectedStudyTime}
+      canSave={canSave}
     >
       <AvailabilitySelectionContent
         availabilityData={availabilityData}
         onAvailabilityDataChange={handleAvailabilityDataChange}
         screenSize={convertScreenSize(screenSize)}
         showTitles={true}
-        showStartDateSection={false}
+        showStartDateSection={true}
       />
     </ModalWrapper>
   );

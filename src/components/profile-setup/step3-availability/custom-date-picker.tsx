@@ -12,6 +12,7 @@ interface CalendarContentProps {
   dayNames: string[];
   days: Date[];
   screenSize: 'mobile' | 'tablet' | 'notebook' | 'desktop';
+  isInModal: boolean;
 }
 
 function CalendarContent({
@@ -23,7 +24,8 @@ function CalendarContent({
   isDateAvailable,
   dayNames,
   days,
-  screenSize
+  screenSize,
+  isInModal
 }: CalendarContentProps) {
   const previousMonth = () => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
@@ -45,17 +47,18 @@ function CalendarContent({
       style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: screenSize === 'mobile' || screenSize === 'tablet' ? '8px' : '12px'
+        gap: screenSize === 'mobile' || screenSize === 'tablet' ? '12px' : '12px'
       }}
     >
       {/* Header do Mês */}
       <div
         style={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           alignItems: 'center',
           width: '100%',
-          gap: screenSize === 'mobile' || screenSize === 'tablet' ? '32px' : '57px'
+          gap: screenSize === 'mobile' || screenSize === 'tablet' ? '16px' : '57px',
+          position: 'relative'
         }}
       >
         <button
@@ -64,31 +67,33 @@ function CalendarContent({
             background: 'transparent',
             border: 'none',
             cursor: 'pointer',
-            padding: '6px',
-            borderRadius: '6px',
+            padding: isInModal ? '8px' : '6px',
+            borderRadius: isInModal ? '8px' : '6px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            width: screenSize === 'mobile' || screenSize === 'tablet' ? '28px' : '32px',
-            height: screenSize === 'mobile' || screenSize === 'tablet' ? '28px' : '32px',
+            width: isInModal ? '40px' : '28px',
+            height: isInModal ? '40px' : '28px',
             transition: 'background-color 0.3s ease'
           }}
           onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
         >
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12.5 15L7.5 10L12.5 5" stroke="#A4A7AE" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg width={isInModal ? '24' : '20'} height={isInModal ? '24' : '20'} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 18L9 12L15 6" stroke="#F7F7F7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </button>
         <span
           style={{
-            fontFamily: 'Inter' /* MIGRATED */,
+            fontFamily: 'Sora',
             fontWeight: 600,
-            fontSize: screenSize === 'mobile' || screenSize === 'tablet' ? '13px' : '14px',
-            lineHeight: '1.4285714285714286em',
+            fontSize: isInModal ? '18px' : '14px', // Font size/text-sm (14px)
+            lineHeight: isInModal ? '1.5' : '20px', // Line height/text-sm (20px)
+            letterSpacing: '0%',
             color: '#F7F7F7',
             textAlign: 'center',
-            whiteSpace: 'nowrap'
+            whiteSpace: 'nowrap',
+            flex: 1
           }}
         >
           {formattedMonth} de {formattedYear}
@@ -99,20 +104,20 @@ function CalendarContent({
             background: 'transparent',
             border: 'none',
             cursor: 'pointer',
-            padding: '6px',
-            borderRadius: '6px',
+            padding: isInModal ? '8px' : '6px',
+            borderRadius: isInModal ? '8px' : '6px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            width: screenSize === 'mobile' || screenSize === 'tablet' ? '28px' : '32px',
-            height: screenSize === 'mobile' || screenSize === 'tablet' ? '28px' : '32px',
+            width: isInModal ? '40px' : '28px',
+            height: isInModal ? '40px' : '28px',
             transition: 'background-color 0.3s ease'
           }}
           onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
         >
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M7.5 15L12.5 10L7.5 5" stroke="#A4A7AE" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg width={isInModal ? '24' : '20'} height={isInModal ? '24' : '20'} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 18L15 12L9 6" stroke="#F7F7F7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </button>
       </div>
@@ -122,16 +127,17 @@ function CalendarContent({
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(7, 1fr)',
-          gap: '0px',
-          width: '100%'
+          gap: isInModal ? '4px' : '0px',
+          width: '100%',
+          marginBottom: '0'
         }}
       >
         {dayNames.map((day, index) => (
           <div
             key={index}
             style={{
-              width: screenSize === 'mobile' || screenSize === 'tablet' ? '36px' : '40px',
-              height: screenSize === 'mobile' || screenSize === 'tablet' ? '36px' : '40px',
+              width: isInModal ? '44px' : '40px',
+              height: isInModal ? '44px' : '40px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -139,11 +145,12 @@ function CalendarContent({
           >
             <span
               style={{
-                fontFamily: 'Inter' /* MIGRATED */,
-                fontWeight: 400,
-                fontSize: screenSize === 'mobile' || screenSize === 'tablet' ? '13px' : '14px',
-                lineHeight: '1.4285714285714286em',
-                color: '#F7F7F7',
+                fontFamily: 'Sora',
+                fontWeight: 600,
+                fontSize: '14px', // Font size/text-sm
+                lineHeight: '20px', // Line height/text-sm
+                letterSpacing: '0%',
+                color: '#CECFD2',
                 textAlign: 'center'
               }}
             >
@@ -158,7 +165,7 @@ function CalendarContent({
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(7, 1fr)',
-          gap: '0px',
+          gap: isInModal ? '4px' : '0px',
           width: '100%'
         }}
       >
@@ -174,13 +181,13 @@ function CalendarContent({
               key={index}
               onClick={() => !isDisabled && handleDateClick(day)}
               style={{
-                width: screenSize === 'mobile' || screenSize === 'tablet' ? '36px' : '40px',
-                height: screenSize === 'mobile' || screenSize === 'tablet' ? '36px' : '40px',
+                width: isInModal ? '44px' : '40px',
+                height: isInModal ? '44px' : '40px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                background: isSelected ? '#F66649' : 'transparent',
-                borderRadius: '9999px',
+                background: isSelected ? (isInModal ? '#D9572D' : '#F66649') : 'transparent',
+                borderRadius: isInModal ? '8px' : '6px',
                 border: 'none',
                 cursor: isDisabled ? 'not-allowed' : 'pointer',
                 transition: 'background-color 0.3s ease',
@@ -199,10 +206,11 @@ function CalendarContent({
             >
               <span
                 style={{
-                  fontFamily: 'Inter' /* MIGRATED */,
+                  fontFamily: 'Sora',
                   fontWeight: isSelected ? 600 : 400,
-                  fontSize: screenSize === 'mobile' || screenSize === 'tablet' ? '13px' : '14px',
-                  lineHeight: '1.4285714285714286em',
+                  fontSize: isInModal ? '16px' : '14px', // Font size/text-sm (14px) desktop
+                  lineHeight: isInModal ? '1.5' : '20px', // Line height/text-sm (20px) desktop
+                  letterSpacing: '0%',
                   color: isDisabled ? '#85888E' : '#F7F7F7',
                   textAlign: 'center'
                 }}
@@ -215,32 +223,34 @@ function CalendarContent({
       </div>
 
       {/* Aviso de datas disponíveis */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: screenSize === 'mobile' || screenSize === 'tablet' ? '6px' : '8px',
-          marginTop: screenSize === 'mobile' || screenSize === 'tablet' ? '8px' : '12px'
-        }}
-      >
-        <svg width={screenSize === 'mobile' || screenSize === 'tablet' ? '18' : '20'} height={screenSize === 'mobile' || screenSize === 'tablet' ? '18' : '20'} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10 18.3333C14.6024 18.3333 18.3333 14.6024 18.3333 10C18.3333 5.39763 14.6024 1.66667 10 1.66667C5.39763 1.66667 1.66667 5.39763 1.66667 10C1.66667 14.6024 5.39763 18.3333 10 18.3333Z" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M10 6.66667V10" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M10 13.3333H10.0083" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-        <span
+      {!isInModal && (
+        <div
           style={{
-            fontFamily: 'Inter' /* MIGRATED */,
-            fontWeight: 400,
-            fontSize: screenSize === 'mobile' || screenSize === 'tablet' ? '11px' : '12px',
-            lineHeight: '1.5em',
-            color: '#FFFFFF',
-            textAlign: 'left'
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            marginTop: '12px'
           }}
         >
-          Datas disponíveis: entre 05 à 17/10/2025
-        </span>
-      </div>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 18.3333C14.6024 18.3333 18.3333 14.6024 18.3333 10C18.3333 5.39763 14.6024 1.66667 10 1.66667C5.39763 1.66667 1.66667 5.39763 1.66667 10C1.66667 14.6024 5.39763 18.3333 10 18.3333Z" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M10 6.66667V10" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M10 13.3333H10.0083" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span
+            style={{
+              fontFamily: 'Inter',
+              fontWeight: 400,
+              fontSize: '12px',
+              lineHeight: '1.5em',
+              color: '#FFFFFF',
+              textAlign: 'left'
+            }}
+          >
+            Datas disponíveis: entre 05 à 17/10/2025
+          </span>
+        </div>
+      )}
     </div>
   );
 }
@@ -250,10 +260,11 @@ export type CustomDatePickerProps = {
   selectedDate: Date | undefined;
   onDateSelect: (date: Date) => void;
   screenSize: "mobile" | "tablet" | "notebook" | "desktop";
+  isInModal?: boolean; // Flag para indicar se está dentro de um modal
 };
 
 /** ===== Componente DatePicker customizado baseado no Figma ===== */
-export default function CustomDatePicker({ selectedDate, onDateSelect, screenSize }: CustomDatePickerProps) {
+export default function CustomDatePicker({ selectedDate, onDateSelect, screenSize, isInModal = false }: CustomDatePickerProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date(2025, 8, 1)); // Começa em Setembro de 2025
 
   // Gerar dias do calendário
@@ -271,7 +282,7 @@ export default function CustomDatePicker({ selectedDate, onDateSelect, screenSiz
     const days = [];
     const current = new Date(startDate);
     
-    for (let i = 0; i < 42; i++) { // 6 semanas * 7 dias
+    for (let i = 0; i < 35; i++) { // 5 semanas * 7 dias
       days.push(new Date(current));
       current.setDate(current.getDate() + 1);
     }
@@ -299,15 +310,15 @@ export default function CustomDatePicker({ selectedDate, onDateSelect, screenSiz
   return (
     <div
       style={{
-        width: screenSize === 'mobile' || screenSize === 'tablet' ? '100%' : '328px',
+        width: isInModal ? '100%' : '328px',
         maxWidth: '100%',
-        background: '#272737', // Background conforme Figma
-        border: '1px solid #2C2C45', // Border conforme Figma
-        borderRadius: screenSize === 'mobile' || screenSize === 'tablet' ? '12px' : '16px', // Border radius responsivo
+        background: isInModal ? 'transparent' : 'rgba(39, 39, 55, 1)',
+        border: isInModal ? 'none' : '1px solid #2C2C45',
+        borderRadius: isInModal ? '0' : '12px',
         display: 'flex',
         flexDirection: 'column',
-        gap: screenSize === 'mobile' || screenSize === 'tablet' ? '8px' : '12px', // Gap responsivo
-        padding: screenSize === 'mobile' || screenSize === 'tablet' ? '16px 20px' : '20px 24px' // Padding responsivo
+        gap: '12px',
+        padding: isInModal ? '0' : '20px 24px'
       }}
     >
       <CalendarContent 
@@ -320,6 +331,7 @@ export default function CustomDatePicker({ selectedDate, onDateSelect, screenSiz
         dayNames={dayNames}
         days={generateCalendar().days}
         screenSize={screenSize}
+        isInModal={isInModal}
       />
     </div>
   );

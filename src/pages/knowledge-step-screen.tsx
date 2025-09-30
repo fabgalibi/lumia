@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ProfileLayout, KnowledgeTable, KnowledgeHeader } from '@/components/profile-setup';
+import { ProfileLayout, KnowledgeSelectionContent } from '@/components/profile-setup';
 import { useProfileSetup } from '@/contexts/profile-setup-context';
 
 
@@ -65,17 +65,15 @@ export default function KnowledgeStepScreen() {
       nextButtonText="Prosseguir para etapa 6"
     >
       {(screenSize) => (
-        <>
-          <KnowledgeHeader screenSize={screenSize} />
-          <KnowledgeTable
-            subjects={subjects}
-            knowledgeData={knowledgeData}
-            selectedTopics={selectedTopics}
-            onLevelChange={handleLevelChange}
-            onSelectSubjects={handleSelectSubjects}
-            screenSize={screenSize}
-          />
-        </>
+        <KnowledgeSelectionContent
+          subjects={subjects}
+          knowledgeData={knowledgeData}
+          selectedTopics={selectedTopics}
+          onLevelChange={handleLevelChange}
+          onSelectSubjects={handleSelectSubjects}
+          screenSize={screenSize}
+          showTitles={true}
+        />
       )}
     </ProfileLayout>
   );

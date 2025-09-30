@@ -79,7 +79,21 @@ export type BaseCardProps = {
     fontSize?: string;
     lineHeight?: string;
     fontWeight?: number;
+    fontFamily?: string;
   };
+  descriptionStyle?: {
+    fontSize?: string;
+    lineHeight?: string;
+    fontWeight?: number;
+    fontFamily?: string;
+  };
+  gap?: string | {
+    mobile: string;
+    tablet: string;
+    notebook: string;
+    desktop: string;
+  }; // espaçamento entre título e descrição
+  justifyContent?: 'flex-start' | 'flex-end' | 'center'; // alinhamento vertical do conteúdo
 };
 
 /** ===== Componente BaseCard reutilizável ===== */
@@ -114,6 +128,9 @@ export default function BaseCard({
     desktop: '100%'
   },
   titleStyle,
+  descriptionStyle,
+  gap = '12px', // default 12px
+  justifyContent = 'flex-end', // default flex-end
   minWidth
 }: BaseCardProps) {
   
@@ -130,9 +147,14 @@ export default function BaseCard({
   const currentContentPadding = screenSize === 'mobile' ? contentPadding.mobile : 
                                screenSize === 'tablet' ? contentPadding.tablet :
                                screenSize === 'notebook' ? contentPadding.notebook : contentPadding.desktop;
-  const currentDescriptionWidth = screenSize === 'mobile' ? descriptionWidth.mobile : 
-                                 screenSize === 'tablet' ? descriptionWidth.tablet :
-                                 screenSize === 'notebook' ? descriptionWidth.notebook : descriptionWidth.desktop;
+  const currentDescriptionWidth = screenSize === 'mobile' ? descriptionWidth.mobile :
+                                  screenSize === 'tablet' ? descriptionWidth.tablet :
+                                  screenSize === 'notebook' ? descriptionWidth.notebook : descriptionWidth.desktop;
+  
+  const currentGap = typeof gap === 'string' ? gap :
+                     screenSize === 'mobile' ? gap.mobile :
+                     screenSize === 'tablet' ? gap.tablet :
+                     screenSize === 'notebook' ? gap.notebook : gap.desktop;
   const currentMinWidth = minWidth ? (
     typeof minWidth === 'string' ? minWidth :
     screenSize === 'mobile' ? minWidth.mobile : 
@@ -175,9 +197,9 @@ export default function BaseCard({
         style={{
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'flex-end',
+          justifyContent: justifyContent,
           alignSelf: 'stretch',
-          gap: screenSize === 'mobile' ? '8px' : '12px', // gap mobile 8px conforme Figma, desktop 12px conforme especificação
+          gap: currentGap, // gap responsivo
           padding: currentContentPadding,
           background: '#0B1219',
           borderRadius: '6px',
@@ -208,7 +230,7 @@ export default function BaseCard({
             ...(currentImagePos.transform ? { transform: currentImagePos.transform } : {}),
             width: currentImageSize,
             height: currentImageSize,
-            zIndex: 3
+            zIndex: 2
           }}
         >
           <img
@@ -226,8 +248,8 @@ export default function BaseCard({
         {/* Título */}
         <h3
           style={{
-            fontFamily: 'Inter' /* MIGRATED */,
-            fontWeight: 400,
+            fontFamily: titleStyle?.fontFamily || 'Inter' /* MIGRATED */,
+            fontWeight: titleStyle?.fontWeight || 400,
             fontStyle: 'Regular',
             fontSize: titleStyle?.fontSize || '20px', // Font size/text-xl conforme especificações
             lineHeight: titleStyle?.lineHeight || '1.5em', // Line height/text-xl conforme especificações
@@ -236,7 +258,7 @@ export default function BaseCard({
             margin: 0,
             textAlign: 'left',
             position: 'relative',
-            zIndex: 4,
+            zIndex: 3,
             width: screenSize === 'mobile' ? '100%' : screenSize === 'tablet' ? 'calc(100% - 80px)' : 'calc(100% - 160px)', // mobile: 100%, tablet/desktop: deixa espaço para imagem
             maxWidth: '100%'
           }}
@@ -247,17 +269,17 @@ export default function BaseCard({
         {/* Descrição */}
         <p
           style={{
-            fontFamily: 'Inter' /* MIGRATED */,
-            fontWeight: 400,
+            fontFamily: descriptionStyle?.fontFamily || 'Inter' /* MIGRATED */,
+            fontWeight: descriptionStyle?.fontWeight || 400,
             fontStyle: 'Regular',
-            fontSize: '14px', // Font size/text-sm conforme especificações
-            lineHeight: '1.4285714285714286em', // Line height/text-sm conforme especificações
+            fontSize: descriptionStyle?.fontSize || '14px', // Font size/text-sm conforme especificações
+            lineHeight: descriptionStyle?.lineHeight || '1.4285714285714286em', // Line height/text-sm conforme especificações
             letterSpacing: '0%', // letter-spacing: 0% conforme especificações
             color: '#FFFFFF',
             margin: 0,
             textAlign: 'left',
             position: 'relative',
-            zIndex: 4,
+            zIndex: 3,
             width: currentDescriptionWidth, // usar o valor passado via props
             maxWidth: '100%'
           }}

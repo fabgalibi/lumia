@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import StudyTimeCard from './study-time-card';
 import StartDateCard from './start-date-card';
+import { CustomDatePicker } from '@/components/profile-setup';
+import { DatePickerModal } from './date-picker-modal';
 import { ScreenSize } from '@/components/ui/design-system';
 
 interface AvailabilityData {
@@ -62,7 +64,8 @@ export const AvailabilitySelectionContent: React.FC<AvailabilitySelectionContent
   showTitles = true,
   showStartDateSection = true
 }) => {
-  const { selectedStudyTime, selectedStartDate } = availabilityData;
+  const { selectedStudyTime, selectedStartDate, selectedDate } = availabilityData;
+  const [isDatePickerModalOpen, setIsDatePickerModalOpen] = useState(false);
 
   const handleStudyTimeChange = (timeId: string) => {
     onAvailabilityDataChange({ selectedStudyTime: timeId });
@@ -70,6 +73,15 @@ export const AvailabilitySelectionContent: React.FC<AvailabilitySelectionContent
 
   const handleStartDateChange = (dateId: string) => {
     onAvailabilityDataChange({ selectedStartDate: dateId });
+    
+    // No mobile, abrir modal do calendário quando selecionar "data-especifica"
+    if (dateId === 'data-especifica' && screenSize === 'mobile') {
+      setIsDatePickerModalOpen(true);
+    }
+  };
+
+  const handleDateSelect = (date: Date | undefined) => {
+    onAvailabilityDataChange({ selectedDate: date });
   };
 
   return (
@@ -188,8 +200,37 @@ export const AvailabilitySelectionContent: React.FC<AvailabilitySelectionContent
               />
             ))}
           </div>
+
+          {/* Date Picker - Aparece quando "data específica" está selecionada (apenas desktop) */}
+          {selectedStartDate === 'data-especifica' && screenSize !== 'mobile' && (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                gap: '8px',
+                width: '328px', // width conforme Figma (não é mobile aqui)
+                maxWidth: '100%'
+              }}
+            >
+              <CustomDatePicker
+                selectedDate={selectedDate}
+                onDateSelect={handleDateSelect}
+                screenSize={screenSize}
+              />
+            </div>
+          )}
         </div>
       )}
+
+      {/* Modal do Date Picker para Mobile */}
+      <DatePickerModal
+        isOpen={isDatePickerModalOpen}
+        onClose={() => setIsDatePickerModalOpen(false)}
+        selectedDate={selectedDate}
+        onDateSelect={handleDateSelect}
+        screenSize={screenSize}
+      />
     </>
   );
 };

@@ -44,11 +44,7 @@ export default function StudyTimeCard({
       grids={[
         { 
           position: 'left', 
-          leftPosition: screenSize === 'mobile' || screenSize === 'tablet' ? '32px' : '46.6px' // Grid 1: x: 46.6px conforme Figma desktop
-        },
-        { 
-          position: 'right', 
-          leftPosition: screenSize === 'mobile' || screenSize === 'tablet' ? '207px' : '191px' // Grid 2: x: 191px conforme Figma desktop
+          top: '-99px' // Posicionamento conforme Figma
         }
       ]}
       minHeight={{ mobile: '140px', tablet: '140px', notebook: '160px', desktop: '180px' }}
@@ -65,6 +61,28 @@ export default function StudyTimeCard({
         notebook: '88px 16px 24px', // padding intermediário para notebook
         desktop: '96px 16px 24px'
       }}
+      titleStyle={{
+        fontFamily: 'Sora', // font-family: Sora conforme Figma
+        fontSize: screenSize === 'mobile' ? '20px' : 
+                  screenSize === 'tablet' ? '22px' : 
+                  screenSize === 'notebook' ? '23px' : '24px', // Font size/display-xs (24px) desktop, text-xl (20px) mobile
+        lineHeight: screenSize === 'mobile' ? '30px' : 
+                    screenSize === 'tablet' ? '31px' : 
+                    screenSize === 'notebook' ? '31.5px' : '32px', // Line height progressivo
+        fontWeight: 400
+      }}
+      descriptionStyle={{
+        fontFamily: 'Sora', // font-family: Sora conforme Figma
+        fontSize: screenSize === 'mobile' ? '14px' : '14px', // Font size/text-sm (14px)
+        lineHeight: screenSize === 'mobile' ? '20px' : '20px', // Line height/text-sm (20px)
+        fontWeight: 400
+      }}
+      gap={
+        screenSize === 'mobile' ? '12px' : 
+        screenSize === 'tablet' ? '16px' : 
+        '16px' // gap: 16px conforme Figma
+      }
+      justifyContent="flex-start" // Alinhamento no topo
     />
   );
 }
