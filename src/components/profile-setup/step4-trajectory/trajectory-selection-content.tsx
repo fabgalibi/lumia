@@ -85,8 +85,8 @@ export const TrajectorySelectionContent: React.FC<TrajectorySelectionContentProp
               fontFamily: 'Sora',
               fontWeight: 400,
               fontStyle: 'Regular',
-              fontSize: '20px', // Font size/text-xl
-              lineHeight: '1.5em', // Line height/text-xl
+              fontSize: screenSize === 'mobile' ? '16px' : '20px', // Font size/text-md para mobile
+              lineHeight: screenSize === 'mobile' ? '1.5em' : '1.5em', // Line height/text-md para mobile
               letterSpacing: '0%',
               color: '#FFFFFF',
               margin: 0,
@@ -101,8 +101,12 @@ export const TrajectorySelectionContent: React.FC<TrajectorySelectionContentProp
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '8px',
+            gridTemplateColumns: screenSize === 'mobile' 
+              ? '1fr' 
+              : screenSize === 'tablet' 
+              ? 'repeat(2, 1fr)' 
+              : 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: screenSize === 'mobile' ? '12px' : '8px',
             width: '100%',
             justifyContent: 'start' // alinha cards à esquerda
           }}

@@ -33,30 +33,46 @@ export default function PreparationTypeCard({
       onClick={onClick}
       screenSize={screenSize}
       // Customizações específicas do PreparationTypeCard conforme Figma
-      width={screenSize === 'mobile' || screenSize === 'tablet' ? '100%' : '660px'} // card mais largo: 660px
+      width="100%" // Largura responsiva
+      minWidth={
+        screenSize === 'mobile' ? '100%' : 
+        screenSize === 'tablet' ? '100%' : 
+        '644px' // Largura mínima 644px para desktop/notebook
+      }
       grids={[{ 
         position: 'right', 
         top: '-105.6px',  // y: -105.6px conforme Figma
-        leftPosition: screenSize === 'mobile' || screenSize === 'tablet' ? '120px' : '370px' // x: 370px conforme Figma (usar left para posição absoluta)
+        leftPosition: screenSize === 'desktop' ? '370px' : screenSize === 'mobile' ? '31.6px' : '120px' // x: 370px desktop, 31.6px mobile conforme Figma
       }]}
-      minHeight={{ mobile: '140px', tablet: '140px', notebook: '160px', desktop: '180px' }}
+      minHeight={{ 
+        mobile: '140px', // Altura menor para mobile
+        tablet: '160px', // Altura intermediária para tablet
+        notebook: '172px', // Altura conforme especificação para notebook
+        desktop: '172px' // height: 172px conforme especificação para desktop
+      }}
       contentPadding={{
-        mobile: '82px 16px 24px',
-        tablet: '82px 16px 24px',
-        notebook: '48px 16px 24px',
-        desktop: '24px 16px 24px 24px' // padding conforme Figma: 24px 16px 24px 24px
+        mobile: '82px 16px 24px', // padding: 82px 16px 24px conforme Figma mobile
+        tablet: '20px 14px 20px 20px', // Padding intermediário para tablet
+        notebook: '24px 16px 24px 24px', // Padding conforme especificação para notebook
+        desktop: '24px 16px 24px 24px' // padding: 24px 16px 24px 24px conforme especificação para desktop
+      }}
+      imageSize={{ 
+        mobile: '96px', // 96x96px conforme Figma mobile
+        tablet: '60px', 
+        notebook: '70px', 
+        desktop: '138px' // 138x138px conforme Figma
       }}
       imagePosition={{
-        mobile: { top: '12px', right: '16px' },
+        mobile: { top: '12px', left: '219px' }, // x: 219px, y: 12px conforme Figma mobile
         tablet: { top: '12px', right: '16px' },
-        notebook: { top: '11px', left: '450px' },
-        desktop: { top: '11.4px', left: '510px' } // x: 510px, y: 11.4px conforme Figma
+        notebook: { top: '11px', right: '16px' },
+        desktop: { top: '11.4px', right: '16px' } // Alinhada à direita
       }}
       descriptionWidth={{
-        mobile: '100%',
-        tablet: '100%',
-        notebook: '100%',
-        desktop: '503px' // width: 503px conforme Figma
+        mobile: '100%', // Ocupa toda a largura no mobile conforme Figma
+        tablet: 'calc(100% - 80px)', // Deixa espaço para a imagem à direita
+        notebook: 'calc(100% - 90px)', // Deixa espaço para a imagem à direita
+        desktop: 'calc(100% - 160px)' // Deixa espaço para a imagem à direita
       }}
     />
   );

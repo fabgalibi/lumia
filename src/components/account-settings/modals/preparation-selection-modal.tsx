@@ -68,7 +68,8 @@ export const PreparationSelectionModal: React.FC<PreparationSelectionModalProps>
     <ModalWrapper
       isOpen={isOpen}
       onClose={onClose}
-      title="Selecionar Tipo de Preparação"
+      title="Preparação"
+      subtitle="Referente ao tipo de preparação que você selecionou."
       onSave={handleSave}
       onCancel={handleCancel}
       canSave={!!preparationData.selectedPreparationType}

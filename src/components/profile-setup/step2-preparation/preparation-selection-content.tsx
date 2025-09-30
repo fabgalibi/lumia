@@ -38,6 +38,8 @@ export const PreparationSelectionContent: React.FC<PreparationSelectionContentPr
   screenSize = 'desktop',
   showTitles = true
 }) => {
+  // Lógica inteligente para determinar se deve usar coluna única
+  const shouldUseSingleColumn = screenSize === 'mobile' || screenSize === 'tablet';
   const { selectedPreparationType, temConcursoEspecifico, concursoEspecifico } = preparationData;
 
   const handlePreparationTypeChange = (typeId: string) => {
@@ -60,7 +62,7 @@ export const PreparationSelectionContent: React.FC<PreparationSelectionContentPr
           display: 'flex',
           flexDirection: 'column',
           alignSelf: 'stretch',
-          gap: screenSize === 'mobile' ? '16px' : '24px',
+          gap: '20px', // Aumentado para dar mais respiro entre seções
           width: '100%',
           height: 'fit-content'
         }}
@@ -87,12 +89,13 @@ export const PreparationSelectionContent: React.FC<PreparationSelectionContentPr
         {/* Cards de Preparação */}
         <div
           style={{
-            display: 'flex',
-            flexDirection: screenSize === 'mobile' ? 'column' : 'row',
-            justifyContent: screenSize === 'mobile' ? 'center' : 'flex-start',
-            alignItems: screenSize === 'mobile' ? 'center' : 'flex-start',
-            alignSelf: 'stretch',
-            gap: '8px'
+            display: 'grid',
+            gridTemplateColumns: shouldUseSingleColumn
+              ? '1fr' // Coluna única para mobile e tablet
+              : 'repeat(auto-fit, minmax(644px, 1fr))', // Grid responsivo com largura mínima 644px
+            gap: '12px', // gap: 12px conforme especificação
+            width: '100%',
+            justifyContent: 'start'
           }}
         >
           {preparationTypes.map((type) => (
@@ -116,10 +119,11 @@ export const PreparationSelectionContent: React.FC<PreparationSelectionContentPr
           display: 'flex',
           flexDirection: 'column',
           alignSelf: 'stretch',
-          gap: screenSize === 'mobile' ? '16px' : '24px',
+          gap: '30px', // Aumentado para dar mais respiro
           width: '100%',
           height: 'auto',
-          maxHeight: 'none'
+          maxHeight: 'none',
+          marginTop: '20px' // Margem superior para separar dos cards
         }}
       >
         {/* Título */}
@@ -149,7 +153,7 @@ export const PreparationSelectionContent: React.FC<PreparationSelectionContentPr
             display: 'flex',
             flexDirection: 'column',
             alignSelf: 'stretch',
-            gap: screenSize === 'mobile' ? '24px' : '20px',
+            gap: '40px', // Aumentado para dar mais respiro
             padding: '0px 8px',
             flex: 1
           }}

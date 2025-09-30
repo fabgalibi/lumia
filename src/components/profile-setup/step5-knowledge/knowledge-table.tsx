@@ -480,8 +480,12 @@ export default function KnowledgeTable({
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-        gap: '16px',
+        gridTemplateColumns: screenSize === 'mobile' 
+          ? '1fr' 
+          : screenSize === 'tablet' 
+          ? 'repeat(2, 1fr)' 
+          : 'repeat(auto-fit, minmax(300px, 1fr))',
+        gap: screenSize === 'mobile' ? '12px' : '16px',
         width: '100%',
         padding: '0'
       }}
@@ -491,10 +495,10 @@ export default function KnowledgeTable({
         <div
           key={subject.id}
           style={{
-            backgroundColor: 'rgba(39, 39, 56, 1)',
+            backgroundColor: 'rgba(37, 37, 50, 1)',
             border: '1px solid rgba(44, 44, 69, 1)',
-            borderRadius: '12px',
-            padding: '20px',
+            borderRadius: '8px',
+            padding: '16px',
             boxShadow: '0 1px 3px rgba(0, 0, 0, 0.12)',
             width: '100%',
             minHeight: 'fit-content'
@@ -503,7 +507,7 @@ export default function KnowledgeTable({
           {/* Subject Header */}
           <div
             style={{
-              marginBottom: '20px'
+              marginBottom: '16px'
             }}
           >
             <h3
@@ -515,7 +519,7 @@ export default function KnowledgeTable({
                 letterSpacing: '-1%',
                 color: 'rgba(240, 240, 241, 1)',
                 margin: 0,
-                marginBottom: '4px'
+                marginBottom: '8px'
               }}
             >
               {subject.name}
@@ -550,8 +554,8 @@ export default function KnowledgeTable({
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '6px',
-                marginBottom: '16px'
+                gap: '8px',
+                marginBottom: '20px'
               }}
             >
             {[
@@ -565,27 +569,18 @@ export default function KnowledgeTable({
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '10px',
+                  gap: '12px',
                   cursor: 'pointer',
-                  padding: '10px',
-                  borderRadius: '8px',
+                  padding: '12px',
+                  borderRadius: '6px',
                   backgroundColor: 'transparent',
                   border: 'none',
                   transition: 'all 0.2s ease'
                 }}
               >
-                <input
-                  type="radio"
-                  name={`subject-${subject.id}`}
-                  value={level.id}
+                <CustomRadioButton
                   checked={knowledgeData[subject.id] === level.id}
-                  onChange={() => onLevelChange(subject.id, level.id as any)}
-                  style={{
-                    width: '20px',
-                    height: '20px',
-                    accentColor: '#F66649',
-                    cursor: 'pointer'
-                  }}
+                  onClick={() => onLevelChange(subject.id, level.id as any)}
                 />
                 <span
                   style={{
@@ -607,7 +602,7 @@ export default function KnowledgeTable({
           {/* Action Button */}
       <div
         style={{
-              paddingTop: '16px'
+              paddingTop: '0px'
           }}
         >
           <button
@@ -615,12 +610,12 @@ export default function KnowledgeTable({
               disabled={knowledgeData[subject.id] === 'never'}
             style={{
                 width: '100%',
-                padding: '10px 14px',
+                padding: '12px 16px',
                 backgroundColor: knowledgeData[subject.id] === 'never' 
                   ? 'rgba(47, 47, 65, 1)' 
                   : 'rgba(45, 45, 69, 1)',
               border: 'none',
-                borderRadius: '8px',
+                borderRadius: '6px',
               fontFamily: 'Inter',
                 fontWeight: 500,
               fontSize: '14px',

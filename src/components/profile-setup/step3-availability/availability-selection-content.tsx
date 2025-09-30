@@ -80,7 +80,7 @@ export const AvailabilitySelectionContent: React.FC<AvailabilitySelectionContent
           display: 'flex',
           flexDirection: 'column',
           alignSelf: 'stretch',
-          gap: screenSize === 'mobile' ? '16px' : '32px',
+          gap: screenSize === 'mobile' ? '24px' : '40px', // Gap menor no mobile
           width: '100%',
           height: 'fit-content'
         }}
@@ -91,9 +91,9 @@ export const AvailabilitySelectionContent: React.FC<AvailabilitySelectionContent
             style={{
               fontFamily: 'Sora',
               fontWeight: 400,
-              fontStyle: 'normal',
-              fontSize: '20px',
-              lineHeight: '1.5em',
+              fontStyle: 'Regular',
+              fontSize: screenSize === 'mobile' ? '16px' : '20px', // Font size/text-md para mobile
+              lineHeight: screenSize === 'mobile' ? '1.5em' : '1.5em', // Line height/text-md para mobile
               letterSpacing: '0%',
               color: '#FFFFFF',
               margin: 0,
@@ -107,12 +107,13 @@ export const AvailabilitySelectionContent: React.FC<AvailabilitySelectionContent
         {/* Cards de Tempo de Estudo */}
         <div
           style={{
-            display: 'flex',
-            flexDirection: screenSize === 'mobile' ? 'column' : 'row',
-            justifyContent: screenSize === 'mobile' ? 'center' : 'flex-start',
-            alignItems: screenSize === 'mobile' ? 'center' : 'flex-start',
-            alignSelf: 'stretch',
-            gap: '8px'
+            display: 'grid',
+            gridTemplateColumns: screenSize === 'mobile'
+              ? '1fr' // Coluna única para mobile
+              : 'repeat(auto-fit, minmax(432px, 1fr))', // Grid com largura mínima conforme Figma
+            gap: screenSize === 'mobile' ? '16px' : '10px', // Gap conforme Figma: 10px
+            width: '100%',
+            justifyContent: 'start'
           }}
         >
           {studyTimeOptions.map((option) => (
@@ -137,9 +138,10 @@ export const AvailabilitySelectionContent: React.FC<AvailabilitySelectionContent
             display: 'flex',
             flexDirection: 'column',
             alignSelf: 'stretch',
-            gap: screenSize === 'mobile' ? '16px' : '32px',
+            gap: screenSize === 'mobile' ? '24px' : '40px', // Gap menor no mobile
             width: '100%',
-            height: 'fit-content'
+            height: 'fit-content',
+            marginTop: screenSize === 'mobile' ? '16px' : '20px' // Margem menor no mobile
           }}
         >
           {/* Título */}
@@ -148,9 +150,9 @@ export const AvailabilitySelectionContent: React.FC<AvailabilitySelectionContent
               style={{
                 fontFamily: 'Sora',
                 fontWeight: 400,
-                fontStyle: 'normal',
-                fontSize: '20px',
-                lineHeight: '1.5em',
+                fontStyle: 'Regular',
+                fontSize: screenSize === 'mobile' ? '16px' : '20px', // Font size/text-md para mobile
+                lineHeight: screenSize === 'mobile' ? '1.5em' : '1.5em', // Line height/text-md para mobile
                 letterSpacing: '0%',
                 color: '#FFFFFF',
                 margin: 0,
@@ -164,12 +166,13 @@ export const AvailabilitySelectionContent: React.FC<AvailabilitySelectionContent
           {/* Cards de Data de Início */}
           <div
             style={{
-              display: 'flex',
-              flexDirection: screenSize === 'mobile' ? 'column' : 'row',
-              justifyContent: screenSize === 'mobile' ? 'center' : 'flex-start',
-              alignItems: screenSize === 'mobile' ? 'center' : 'flex-start',
-              alignSelf: 'stretch',
-              gap: '8px'
+              display: 'grid',
+              gridTemplateColumns: screenSize === 'mobile'
+                ? '1fr' // Coluna única para mobile
+                : 'repeat(auto-fit, minmax(432px, 1fr))', // Grid com largura mínima conforme Figma
+              gap: screenSize === 'mobile' ? '16px' : '10px', // Gap conforme Figma: 10px
+              width: '100%',
+              justifyContent: 'start'
             }}
           >
             {startDateOptions.map((option) => (

@@ -17,6 +17,12 @@ export type BaseCardProps = {
     notebook: string;
     desktop: string;
   }; // default: screenSize === 'mobile' ? '100%' : '437px'
+  minWidth?: string | {
+    mobile: string;
+    tablet: string;
+    notebook: string;
+    desktop: string;
+  }; // largura mínima para evitar encolhimento
   minHeight?: {
     mobile: string;
     tablet: string;
@@ -107,7 +113,8 @@ export default function BaseCard({
     notebook: 'auto',
     desktop: '100%'
   },
-  titleStyle
+  titleStyle,
+  minWidth
 }: BaseCardProps) {
   
   // cardWidth removido - Grid controla a largura
@@ -126,6 +133,12 @@ export default function BaseCard({
   const currentDescriptionWidth = screenSize === 'mobile' ? descriptionWidth.mobile : 
                                  screenSize === 'tablet' ? descriptionWidth.tablet :
                                  screenSize === 'notebook' ? descriptionWidth.notebook : descriptionWidth.desktop;
+  const currentMinWidth = minWidth ? (
+    typeof minWidth === 'string' ? minWidth :
+    screenSize === 'mobile' ? minWidth.mobile : 
+    screenSize === 'tablet' ? minWidth.tablet :
+    screenSize === 'notebook' ? minWidth.notebook : minWidth.desktop
+  ) : undefined;
 
   return (
     <div
@@ -137,6 +150,7 @@ export default function BaseCard({
         padding: '8px',
         width: '100%', // Grid controla a largura
         maxWidth: '100%',
+        minWidth: currentMinWidth,
         background: isSelected 
           ? 'linear-gradient(-68deg, rgba(19, 11, 1, 1) 0%, rgba(66, 76, 95, 0) 80%)' // Selected gradient
           : 'transparent',
@@ -163,7 +177,7 @@ export default function BaseCard({
           flexDirection: 'column',
           justifyContent: 'flex-end',
           alignSelf: 'stretch',
-          gap: screenSize === 'mobile' ? '4px' : '12px', // gap mobile 4px, desktop 12px conforme Figma
+          gap: screenSize === 'mobile' ? '8px' : '12px', // gap mobile 8px conforme Figma, desktop 12px conforme especificação
           padding: currentContentPadding,
           background: '#0B1219',
           borderRadius: '6px',
@@ -223,7 +237,7 @@ export default function BaseCard({
             textAlign: 'left',
             position: 'relative',
             zIndex: 4,
-            width: screenSize === 'mobile' || screenSize === 'tablet' ? '191px' : '100%', // textos preenchem toda a largura disponível
+            width: screenSize === 'mobile' ? '100%' : screenSize === 'tablet' ? 'calc(100% - 80px)' : 'calc(100% - 160px)', // mobile: 100%, tablet/desktop: deixa espaço para imagem
             maxWidth: '100%'
           }}
         >

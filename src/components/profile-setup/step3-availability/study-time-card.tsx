@@ -32,8 +32,15 @@ export default function StudyTimeCard({
       isSelected={isSelected}
       onClick={onClick}
       screenSize={screenSize}
-      // Customizações específicas do StudyTimeCard conforme Figma mobile e desktop
-      width={screenSize === 'mobile' || screenSize === 'tablet' ? '100%' : '437px'} // width padrão: 437px
+      // Customizações específicas do StudyTimeCard conforme Figma
+      width="100%" // Largura responsiva
+      minWidth={
+        screenSize === 'mobile' ? '100%' : 
+        '432px' // Largura conforme Figma: 432px
+      }
+      minHeight="200px" // Altura conforme Figma: 200px
+      contentPadding="8px" // Padding conforme Figma: 8px
+      borderRadius="8px" // Border radius conforme Figma: 8px
       grids={[
         { 
           position: 'left', 
@@ -47,10 +54,10 @@ export default function StudyTimeCard({
       minHeight={{ mobile: '140px', tablet: '140px', notebook: '160px', desktop: '180px' }}
       imageSize={{ mobile: '108px', tablet: '108px', notebook: '135px', desktop: '162px' }} // imagem responsiva conforme tamanho de tela
       imagePosition={{
-        mobile: { top: '8px', right: '16px' }, // posição mobile conforme Figma
-        tablet: { top: '8px', right: '16px' }, // mesmo que mobile
-        notebook: { top: '7px', left: '200px' }, // posição intermediária para notebook
-        desktop: { top: '7px', left: '243px' } // x: 243px, y: 7px conforme Figma desktop
+        mobile: { top: '8px', right: '8px' }, // Alinhada à direita com padding do card
+        tablet: { top: '8px', right: '8px' }, // Alinhada à direita com padding do card
+        notebook: { top: '8px', right: '8px' }, // Alinhada à direita com padding do card
+        desktop: { top: '8px', right: '8px' } // Alinhada à direita com padding do card
       }}
       contentPadding={{
         mobile: '82px 16px 24px', // padding mobile conforme Figma

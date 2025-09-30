@@ -64,7 +64,8 @@ export const TrajectorySelectionModal: React.FC<TrajectorySelectionModalProps> =
     <ModalWrapper
       isOpen={isOpen}
       onClose={onClose}
-      title="Selecionar Trajetória"
+      title="Trajetória"
+      subtitle="Referente ao tempo estudado que você selecionou."
       onSave={handleSave}
       onCancel={handleCancel}
       canSave={!!(trajectoryData.studyTime && trajectoryData.isWorking)}

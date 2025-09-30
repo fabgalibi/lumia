@@ -68,7 +68,8 @@ export const AvailabilitySelectionModal: React.FC<AvailabilitySelectionModalProp
     <ModalWrapper
       isOpen={isOpen}
       onClose={onClose}
-      title="Selecionar Disponibilidade"
+      title="Disponibilidade"
+      subtitle="Referente ao tempo de dedicação ao estudos que você selecionou."
       onSave={handleSave}
       onCancel={handleCancel}
       canSave={!!availabilityData.selectedStudyTime}

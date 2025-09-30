@@ -40,7 +40,7 @@ export default function TextareaField({
 
   return (
     <Container
-      gap={2}
+      gap={3} // gap: 12px para dar mais respiro entre textarea e texto de caracteres
       flex={screenSize === 'mobile' ? 0 : 1}
       width="100%"
       height={screenSize === 'mobile' ? '200px' : 'auto'}

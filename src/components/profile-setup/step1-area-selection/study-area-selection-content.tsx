@@ -84,8 +84,12 @@ export const StudyAreaSelectionContent: React.FC<StudyAreaSelectionContentProps>
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: '8px',
+          gridTemplateColumns: screenSize === 'mobile' 
+            ? '1fr' 
+            : screenSize === 'tablet' 
+            ? 'repeat(2, 1fr)' 
+            : 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: screenSize === 'mobile' ? '12px' : '8px',
           width: '100%',
           justifyContent: 'start'
         }}

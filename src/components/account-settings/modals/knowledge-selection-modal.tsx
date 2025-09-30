@@ -163,7 +163,8 @@ export const KnowledgeSelectionModal: React.FC<KnowledgeSelectionModalProps> = (
     <ModalWrapper
       isOpen={isOpen}
       onClose={onClose}
-      title="Selecionar Conhecimentos"
+      title="Conhecimentos"
+      subtitle="Referente ao seu nível geral de conhecimentos."
       onSave={handleSave}
       onCancel={handleCancel}
       canSave={Object.keys(knowledgeData).length > 0}

@@ -201,7 +201,7 @@ export const SubjectSelectionModal: React.FC<SubjectSelectionModalProps> = ({
             alignSelf: 'stretch',
             gap: screenSize === 'mobile' ? '12px' : '16px',
             padding: screenSize === 'mobile' ? '20px 16px 16px 20px' : '24px 16px 16px 24px',
-            backgroundColor: '#252532',
+            backgroundColor: 'rgba(37, 37, 50, 1)',
             borderBottom: '1.5px solid #272737',
             borderTopLeftRadius: screenSize === 'mobile' ? '16px' : '16px',
             borderTopRightRadius: screenSize === 'mobile' ? '16px' : '16px'

@@ -52,7 +52,8 @@ export const StudyAreaSelectionModal: React.FC<StudyAreaSelectionModalProps> = (
     <ModalWrapper
       isOpen={isOpen}
       onClose={onClose}
-      title="Selecionar Área de Estudo"
+      title="Área de estudo"
+      subtitle="Referente a área de estudo que você selecionou."
       onSave={handleSave}
       onCancel={handleCancel}
       canSave={!!selectedAreaId}

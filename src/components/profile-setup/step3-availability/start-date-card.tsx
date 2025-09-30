@@ -32,8 +32,15 @@ export default function StartDateCard({
       isSelected={isSelected}
       onClick={onClick}
       screenSize={screenSize}
-      // Customizações específicas do StartDateCard conforme Figma mobile
-      width={screenSize === 'mobile' || screenSize === 'tablet' ? '100%' : '660px'} // card largo: 660px
+      // Customizações específicas do StartDateCard conforme Figma
+      width="100%" // Largura responsiva
+      minWidth={
+        screenSize === 'mobile' ? '100%' : 
+        '432px' // Largura conforme Figma: 432px
+      }
+      minHeight="200px" // Altura conforme Figma: 200px
+      contentPadding="8px" // Padding conforme Figma: 8px
+      borderRadius="8px" // Border radius conforme Figma: 8px
       grids={[
         { 
           position: 'right', 
@@ -44,10 +51,10 @@ export default function StartDateCard({
       minHeight={{ mobile: '140px', tablet: '140px', notebook: '160px', desktop: '180px' }}
       imageSize={{ mobile: '108px', tablet: '108px', notebook: '130px', desktop: '146px' }} // imagem responsiva conforme tamanho de tela
       imagePosition={{
-        mobile: { top: '8px', left: '207px' }, // x: 207px conforme Figma mobile
-        tablet: { top: '8px', left: '207px' }, // mesmo que mobile
-        notebook: { top: '10px', left: '350px' }, // posição intermediária para notebook
-        desktop: { top: '13px', left: '495px' } // x: 495px conforme Figma desktop
+        mobile: { top: '8px', right: '8px' }, // Alinhada à direita com padding do card
+        tablet: { top: '8px', right: '8px' }, // Alinhada à direita com padding do card
+        notebook: { top: '8px', right: '8px' }, // Alinhada à direita com padding do card
+        desktop: { top: '8px', right: '8px' } // Alinhada à direita com padding do card
       }}
       contentPadding={{
         mobile: '72px 16px 24px', // padding mobile conforme Figma
