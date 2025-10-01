@@ -7,6 +7,7 @@ import StudyConsistencyCalendar from "@/components/lumia/study-consistency-calen
 import { GoalsTable } from "@/components/lumia/goals-table";
 import { Sidebar } from "@/components/lumia/sidebar";
 import { AccountSettingsContent } from "@/components/account-settings";
+import { RankingContent } from "@/components/ranking";
 import { NotificationsModal } from "@/components/notifications";
 import { SprintProvider, useSprint } from "@/contexts/sprint-context";
 import { SidebarProvider, useSidebar } from "@/contexts/sidebar-context";
@@ -23,6 +24,7 @@ const HomeScreenContent = () => {
   
   // Lógica simplificada baseada na URL
   const isAccountSettingsRoute = location.pathname.startsWith('/account-settings');
+  const isRankingRoute = location.pathname.startsWith('/ranking');
   
   // Funções memoizadas para evitar re-criação
   const handleDeleteAccount = useCallback(() => console.log('Deletar conta'), []);
@@ -62,10 +64,10 @@ const HomeScreenContent = () => {
         }}
       >
         <Header 
-          title={isAccountSettingsRoute ? 'Configurações de conta' : undefined}
+          title={isAccountSettingsRoute ? 'Configurações de conta' : isRankingRoute ? 'Ranking' : undefined}
         />
         <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 overflow-x-auto overflow-y-auto">
-          {!isAccountSettingsRoute && (
+          {!isAccountSettingsRoute && !isRankingRoute && (
             <>
               <StatsCards />
               <SprintSection externalProgress={progress} />
@@ -79,6 +81,7 @@ const HomeScreenContent = () => {
               onUpdatePhoto={handleUpdatePhoto}
             />
           )}
+          {isRankingRoute && <RankingContent />}
         </main>
       </div>
       

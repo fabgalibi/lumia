@@ -32,8 +32,9 @@ createRoot(document.getElementById("root")!).render(
                         <Route path="/home" element={<HomeScreen />} />
                         <Route path="/conclusion" element={<ConclusionScreen />} />
                         
-                        {/* Account Settings Routes - nested dentro de HomeScreen */}
+                        {/* Nested routes dentro de HomeScreen */}
                         <Route path="/account-settings/*" element={<HomeScreen />} />
+                        <Route path="/ranking" element={<HomeScreen />} />
                         
                         {/* Profile Setup Flow - Hierarchical Structure */}
                         <Route path="/profile-setup/*" element={
