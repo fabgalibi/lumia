@@ -10,110 +10,52 @@ export const PodiumThirdPlaceSvg: React.FC = () => {
       xmlns="http://www.w3.org/2000/svg"
       style={{ display: 'block' }}
     >
-      <line
-        y1="-0.901288"
-        x2="84.4511"
-        y2="-0.901288"
-        transform="matrix(0.467161 0.884172 -0.815867 0.57824 157.044 1.35938)"
-        stroke="white"
-        strokeWidth="1.80258"
-      />
-      <line
-        y1="-0.901288"
-        x2="84.4511"
-        y2="-0.901288"
-        transform="matrix(0.467161 0.884172 -0.815867 0.57824 157.044 1.35938)"
-        stroke="url(#paint2_linear_14610_23175)"
-        strokeWidth="1.80258"
-      />
-      <path
-        d="M196.473 74.0465L165.5 260"
-        stroke="white"
-        strokeWidth="1.80258"
-      />
-      <path
-        d="M196.473 74.0465L165.5 260"
-        stroke="url(#paint3_linear_14610_23175)"
-        strokeWidth="1.80258"
-      />
-      <line
-        x1="158.969"
-        y1="1.1464"
-        x2="21.3673"
-        y2="1.1464"
-        stroke="white"
-        strokeWidth="1.80258"
-      />
-      <line
-        x1="158.969"
-        y1="1.1464"
-        x2="21.3673"
-        y2="1.1464"
-        stroke="url(#paint4_linear_14610_23175)"
-        strokeWidth="1.80258"
-      />
-      <line
-        x1="197.459"
-        y1="74.7011"
-        x2="14.6316"
-        y2="74.7011"
-        stroke="white"
-        strokeWidth="1.80258"
-      />
-      <line
-        x1="197.459"
-        y1="74.7011"
-        x2="14.6316"
-        y2="74.7011"
-        stroke="url(#paint5_linear_14610_23175)"
-        strokeWidth="1.80258"
-      />
       <defs>
-        <linearGradient
-          id="paint2_linear_14610_23175"
-          x1="0"
-          y1="0.5"
-          x2="84.4511"
-          y2="0.5"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stopColor="#C74228" />
-          <stop offset="1" stopColor="#C74228" />
+        <linearGradient id="third_top_fill" x1="87.6646" y1="126.425" x2="87.6646" y2="31.8367" gradientUnits="userSpaceOnUse">
+          <stop offset="0.0887564" stopColor="#111521"/>
+          <stop offset="1" stopColor="#181C2A"/>
         </linearGradient>
-        <linearGradient
-          id="paint3_linear_14610_23175"
-          x1="210.197"
-          y1="-12.2606"
-          x2="111.135"
-          y2="181.358"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop offset="0.349361" stopColor="#C74228" />
+        <linearGradient id="third_front_fill" x1="93.4573" y1="73.0283203" x2="93.4573" y2="184.375" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#181D2B"/>
+          <stop offset="0.454412" stopColor="#0F1118"/>
+          <stop offset="1" stopColor="#0E0F15"/>
+        </linearGradient>
+        <linearGradient id="third_border" x1="0" y1="0" x2="0" y2="261" gradientUnits="userSpaceOnUse">
+          <stop offset="0.35" stopColor="#C74228" />
           <stop offset="1" stopColor="#060A12" />
         </linearGradient>
-        <linearGradient
-          id="paint4_linear_14610_23175"
-          x1="131.54"
-          y1="-2.51658e+07"
-          x2="21.3674"
-          y2="-2.51658e+07"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stopColor="#C74228" />
-          <stop offset="1" stopColor="#C74228" />
+        {/* Máscara de fade para a base */}
+        <linearGradient id="third_fade" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+          <stop offset="0" stopColor="white" stopOpacity="1"/>
+          <stop offset="0.7" stopColor="white" stopOpacity="1"/>
+          <stop offset="1" stopColor="white" stopOpacity="0"/>
         </linearGradient>
-        <linearGradient
-          id="paint5_linear_14610_23175"
-          x1="197.459"
-          y1="73.2998"
-          x2="14.6316"
-          y2="73.2998"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stopColor="#C74228" />
-          <stop offset="1" stopColor="#C74228" />
-        </linearGradient>
+        <mask id="third_mask">
+          <rect x="0" y="0" width="202" height="261" fill="url(#third_fade)"/>
+        </mask>
       </defs>
+
+      <g mask="url(#third_mask)">
+        {/* TOPO - offset x: 15px conforme Figma */}
+        <g transform="translate(15, 1.11)">
+          <path 
+            d="M6.73575 0H143.375L181.384 72.44H0L6.73575 0Z" 
+            fill="url(#third_top_fill)"
+            stroke="url(#third_border)"
+            strokeWidth="1.8"
+          />
+        </g>
+
+        {/* FRENTE - offset x: 0px, y: 75.78px conforme Figma */}
+        <g transform="translate(0, 75.78)">
+          <path 
+            d="M14.9149 0H195.337L165.026 184.97H0L14.9149 0Z" 
+            fill="url(#third_front_fill)"
+            stroke="url(#third_border)"
+            strokeWidth="1.8"
+          />
+        </g>
+      </g>
     </svg>
   );
 };

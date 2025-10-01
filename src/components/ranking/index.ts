@@ -1,5 +1,4 @@
 export { RankingPodium } from './ranking-podium';
-export type { RankingPodiumProps, PodiumUser } from './ranking-podium';
 
 export { RankingRenewalTimer } from './ranking-renewal-timer';
 export type { RankingRenewalTimerProps } from './ranking-renewal-timer';

@@ -1,29 +1,8 @@
 import React from 'react';
 import { RankingPodium, RankingRenewalTimer, RankingTable } from '@/components/ranking';
-import type { PodiumUser, RankingUser } from '@/components/ranking';
+import type { RankingUser } from '@/components/ranking';
 
 export const RankingContent: React.FC = () => {
-  // Mock data - Top 3
-  const podiumData: { first: PodiumUser; second: PodiumUser; third: PodiumUser } = {
-    first: {
-      name: 'Juliana C******o',
-      initials: 'JC',
-      percentage: 92,
-      position: 1
-    },
-    second: {
-      name: 'Ana B****** S*****',
-      initials: 'AB',
-      percentage: 85,
-      position: 2
-    },
-    third: {
-      name: 'Lucas S*****z',
-      initials: 'LS',
-      percentage: 76,
-      position: 3
-    }
-  };
 
   // Mock data - Ranking table
   const rankingData: RankingUser[] = [
@@ -76,9 +55,29 @@ export const RankingContent: React.FC = () => {
     <div
       style={{
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        paddingBottom: '60px',
+        backgroundColor: 'rgba(25, 25, 35, 1)',
+        minHeight: '100vh'
       }}
     >
+      {/* Frame de blur inferior com gradiente */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '400px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '100%',
+          maxWidth: '1200px',
+          height: '400px',
+          background: 'radial-gradient(ellipse at center, rgba(25, 25, 35, 0.6) 0%, rgba(16, 16, 22, 0) 70%)',
+          filter: 'blur(80px)',
+          zIndex: 0,
+          pointerEvents: 'none'
+        }}
+      />
+
       {/* Background Pattern */}
       <div
         style={{
@@ -87,22 +86,25 @@ export const RankingContent: React.FC = () => {
           left: '50%',
           transform: 'translateX(-50%)',
           width: '701px',
-          height: '525.64px',
+          height: '800px',
           pointerEvents: 'none',
-          zIndex: 0,
+          zIndex: 1,
           overflow: 'hidden'
         }}
       >
-        {/* Mask container */}
+        {/* Mask container - Gradiente radial que cria o efeito de máscara */}
         <div
           style={{
             position: 'absolute',
             left: '19.6px',
             top: '-137.16px',
-            width: '662.8px',
-            height: '662.8px',
-            background: 'radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%)',
-            mixBlendMode: 'multiply'
+            width: '662.7971191406275px',
+            height: '662.7971191406275px',
+            background: 'radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.015) 30%, rgba(0, 0, 0, 0) 60%)',
+            mixBlendMode: 'multiply',
+            opacity: 0.6,
+            filter: 'blur(20px)',
+            zIndex: 2
           }}
         />
 
@@ -113,10 +115,10 @@ export const RankingContent: React.FC = () => {
             left: '-90.86px',
             top: '-137.16px',
             width: '883.73px',
-            height: '662.8px'
+            height: '1000px'
           }}
         >
-          {/* Vertical lines */}
+          {/* Grid pattern com linhas */}
           <svg
             style={{
               position: 'absolute',
@@ -126,23 +128,23 @@ export const RankingContent: React.FC = () => {
               height: '100%'
             }}
             width="884"
-            height="663"
-            viewBox="0 0 884 663"
+            height="1000"
+            viewBox="0 0 884 1000"
             fill="none"
             preserveAspectRatio="none"
           >
             <defs>
-              <pattern id="grid-vertical-ranking" width="36.822" height="662.8" patternUnits="userSpaceOnUse">
-                <line x1="0" y1="0" x2="0" y2="662.8" stroke="#22262F" strokeWidth="0.4603" />
+              <pattern id="grid-vertical-ranking" width="36.822" height="1000" patternUnits="userSpaceOnUse">
+                <line x1="0" y1="0" x2="0" y2="1000" stroke="#22262F" strokeWidth="0.46" opacity="0.8" />
               </pattern>
               <pattern id="grid-horizontal-ranking" width="883.73" height="36.822" patternUnits="userSpaceOnUse">
-                <line x1="0" y1="0" x2="883.73" y2="0" stroke="#22262F" strokeWidth="0.4603" />
+                <line x1="0" y1="0" x2="883.73" y2="0" stroke="#22262F" strokeWidth="0.46" opacity="0.8" />
               </pattern>
             </defs>
             {/* Vertical lines */}
-            <rect width="883.73" height="662.8" fill="url(#grid-vertical-ranking)" />
+            <rect width="883.73" height="1000" fill="url(#grid-vertical-ranking)" />
             {/* Horizontal lines */}
-            <rect width="883.73" height="662.8" fill="url(#grid-horizontal-ranking)" />
+            <rect width="883.73" height="1000" fill="url(#grid-horizontal-ranking)" />
           </svg>
         </div>
       </div>
@@ -151,7 +153,7 @@ export const RankingContent: React.FC = () => {
       <div
         style={{
           position: 'relative',
-          zIndex: 1,
+          zIndex: 2,
           maxWidth: '1376px',
           margin: '0 auto'
         }}
@@ -162,12 +164,8 @@ export const RankingContent: React.FC = () => {
         </div>
 
         {/* Podium */}
-        <div style={{ marginBottom: '60px' }}>
-          <RankingPodium
-            firstPlace={podiumData.first}
-            secondPlace={podiumData.second}
-            thirdPlace={podiumData.third}
-          />
+        <div style={{ marginBottom: '-20px' }}>
+          <RankingPodium />
         </div>
 
         {/* Ranking Table */}
