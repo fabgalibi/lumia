@@ -210,6 +210,9 @@ export const NotificationsModal: React.FC<NotificationsModalProps> = ({
             title="Deste mês"
             notifications={thisMonthNotifications}
           />
+          
+          {/* Spacer para garantir scroll completo */}
+          <div style={{ height: '40px', flexShrink: 0 }} />
         </div>
 
         {/* Pagination */}
