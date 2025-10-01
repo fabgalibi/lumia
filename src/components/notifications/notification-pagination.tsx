@@ -54,17 +54,19 @@ export const NotificationPagination: React.FC<NotificationPaginationProps> = ({
           onClick={onPrevious}
           disabled={isPreviousDisabled}
           style={{
+            width: '89px',
+            height: '36px',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             gap: '4px',
-            padding: '8px 12px',
+            padding: '12px 16px',
             backgroundColor: '#22262F',
             border: '1px solid #22262F',
             borderRadius: '8px',
             cursor: isPreviousDisabled ? 'not-allowed' : 'pointer',
-            boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
-            opacity: isPreviousDisabled ? 0.5 : 1
+            opacity: isPreviousDisabled ? 0.5 : 1,
+            outline: 'none'
           }}
         >
           <span style={{
@@ -72,7 +74,7 @@ export const NotificationPagination: React.FC<NotificationPaginationProps> = ({
             fontWeight: 600,
             fontSize: '14px',
             lineHeight: '1.4285714285714286em',
-            color: '#85888E',
+            color: '#CECFD2',
             padding: '0px 2px'
           }}>
             Anterior
@@ -84,21 +86,24 @@ export const NotificationPagination: React.FC<NotificationPaginationProps> = ({
           onClick={onNext}
           disabled={isNextDisabled}
           style={{
+            width: '88px',
+            height: '36px',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             gap: '4px',
-            padding: '8px 12px',
-            backgroundColor: '#F66649',
-            background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%), #F66649',
+            padding: '12px 16px',
+            backgroundColor: '#C74228',
+            background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%), #C74228',
             border: '2px solid transparent',
-            backgroundImage: 'linear-gradient(#F66649, #F66649), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)',
+            backgroundImage: 'linear-gradient(#C74228, #C74228), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)',
             backgroundOrigin: 'border-box',
             backgroundClip: 'padding-box, border-box',
             borderRadius: '8px',
             cursor: isNextDisabled ? 'not-allowed' : 'pointer',
-            boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
-            opacity: isNextDisabled ? 0.5 : 1
+            boxShadow: '0px 1px 2px 0px rgba(16, 24, 40, 0.05)',
+            opacity: isNextDisabled ? 0.5 : 1,
+            outline: 'none'
           }}
         >
           <span style={{

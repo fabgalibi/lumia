@@ -1,8 +1,12 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useSidebar } from '@/contexts/sidebar-context';
 import { NotificationHeader } from './notification-header';
 import { NotificationSection } from './notification-section';
 import { NotificationPagination } from './notification-pagination';
+import { Overlay } from './overlay';
+import { Divider } from './divider';
+import { EmptyState } from './empty-state';
+import { mockNotifications, organizeNotificationsByPeriod } from './mock-data';
 import type { NotificationItemProps } from './notification-item';
 
 export interface NotificationsModalProps {
@@ -16,96 +20,25 @@ export const NotificationsModal: React.FC<NotificationsModalProps> = ({
 }) => {
   const { sidebarWidth } = useSidebar();
   const [currentPage, setCurrentPage] = useState(1);
-  const [notifications, setNotifications] = useState<NotificationItemProps[]>([
-    // De hoje
-    {
-      type: 'user',
-      title: 'Fernanda Costa',
-      subtitle: '2 minutos atrás',
-      description: 'Adicionou um anexo com questões comentadas em Legislação Previdenciária',
-      highlightedText: 'Legislação Previdenciária',
-      isUnread: true,
-      avatar: '/images/notifications/avatar-fernanda-65fd5c.png',
-      attachment: {
-        name: 'LP-Questoescomentadas.pdf',
-        size: '720 KB',
-        fileType: 'PDF'
-      }
-    },
-    {
-      type: 'system',
-      title: 'Atualização de conteúdo',
-      subtitle: '10 minutos atrás',
-      description: 'O simulado de Raciocínio Lógico foi atualizado com novas questões e já está liberado para você praticar!',
-      highlightedText: 'Raciocínio Lógico',
-      isUnread: false,
-      icon: 'indent'
-    },
-    // Desta semana
-    {
-      type: 'system',
-      title: 'Lembrete de estudo',
-      subtitle: '20 de agosto',
-      description: 'Você tem materiais novos não visualizados em sua sprint. Organize sua rotina e aproveite o conteúdo!',
-      highlightedText: 'sprint',
-      isUnread: false,
-      icon: 'alert-circle'
-    },
-    {
-      type: 'system',
-      title: 'Reforço na sua trilha',
-      subtitle: '18 de agosto',
-      description: 'Foi adicionada uma aula bônus sobre técnicas de memorização. Pode ser o diferencial na sua preparação!',
-      highlightedText: 'técnicas de memorização',
-      isUnread: false,
-      icon: 'indent'
-    },
-    // Deste mês
-    {
-      type: 'system',
-      title: 'Parabéns pelo progresso!',
-      subtitle: '13 de agosto',
-      description: 'Você concluiu 70% da sua trilha de estudos. Continue assim, você está cada vez mais perto de concluir!',
-      isUnread: false,
-      icon: 'star'
-    },
-    {
-      type: 'user',
-      title: 'João Pedro',
-      subtitle: '12 de agosto',
-      description: 'Adicionou um anexo com informações importantes em Contabilidade.',
-      highlightedText: 'Contabilidade',
-      isUnread: false,
-      avatar: '/images/notifications/avatar-joao-pedro-611fc0.png',
-      attachment: {
-        name: 'observacoes-contabilidade.txt',
-        size: '720 KB',
-        fileType: 'TXT'
-      }
-    },
-    {
-      type: 'system',
-      title: 'Mentoria 8/08',
-      subtitle: '04 de agosto',
-      description: 'Sua mentoria com Ana Beatriz está chegando! Você será lembrado novamente dez minutos antes da mentoria.',
-      highlightedText: 'Ana Beatriz',
-      isUnread: false,
-      icon: 'calendar'
-    }
-  ]);
+  const [notifications, setNotifications] = useState<NotificationItemProps[]>(mockNotifications);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile screen size
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Organize notifications by time period
-  const { todayNotifications, thisWeekNotifications, thisMonthNotifications } = useMemo(() => {
-    const today = notifications.slice(0, 2); // Fernanda Costa e Atualização de conteúdo
-    const thisWeek = notifications.slice(2, 4); // Lembrete de estudo e Reforço na trilha
-    const thisMonth = notifications.slice(4); // Parabéns, João Pedro e Mentoria
-
-    return {
-      todayNotifications: today,
-      thisWeekNotifications: thisWeek,
-      thisMonthNotifications: thisMonth
-    };
-  }, [notifications]);
+  const { todayNotifications, thisWeekNotifications, thisMonthNotifications } = useMemo(
+    () => organizeNotificationsByPeriod(notifications),
+    [notifications]
+  );
 
   const handleMarkAllAsRead = () => {
     setNotifications(prev => prev.map(n => ({ ...n, isUnread: false })));
@@ -123,105 +56,106 @@ export const NotificationsModal: React.FC<NotificationsModalProps> = ({
     }
   };
 
+  const hasNotifications = notifications.length > 0;
+
   if (!isOpen) return null;
 
   return (
     <>
-      {/* Overlay - Não cobre o sidebar */}
-      <div
-        onClick={onClose}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: `${sidebarWidth}px`,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          zIndex: 999
-        }}
-      />
+      {/* Overlay - Não cobre o sidebar no desktop, cobre tudo no mobile */}
+      <Overlay onClick={onClose} leftOffset={isMobile ? 0 : sidebarWidth} />
 
-      {/* Modal - Colado no sidebar */}
+      {/* Modal */}
       <div style={{
         position: 'fixed',
         top: 0,
-        left: `${sidebarWidth}px`,
-        width: `min(505px, calc(100vw - ${sidebarWidth}px))`,
+        left: isMobile ? 0 : `${sidebarWidth}px`,
+        width: isMobile ? '100%' : `min(505px, calc(100vw - ${sidebarWidth}px))`,
         maxWidth: '100%',
         height: '100vh',
-        backgroundColor: '#2D2D45',
-        borderRadius: '0px 16px 16px 0px',
+        backgroundColor: isMobile ? '#252532' : '#2D2D45',
+        borderRadius: isMobile ? 0 : '0px 16px 16px 0px',
         display: 'flex',
         flexDirection: 'column',
-        padding: '24px 20px 20px 24px',
-        gap: '16px',
+        padding: isMobile ? 0 : '24px 20px 20px 24px',
+        gap: isMobile ? 0 : '16px',
         zIndex: 1000,
         boxShadow: '0px 20px 24px -4px rgba(0, 0, 0, 0.08), 0px 8px 8px -4px rgba(0, 0, 0, 0.03)',
         overflow: 'hidden',
         boxSizing: 'border-box'
       }}>
         {/* Header */}
-        <NotificationHeader onMarkAllAsRead={handleMarkAllAsRead} />
+        <NotificationHeader 
+          onMarkAllAsRead={handleMarkAllAsRead} 
+          onBack={isMobile ? onClose : undefined}
+          isMobile={isMobile}
+        />
 
         {/* Content with sections */}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '18px',
-          flex: '1 1 0',
-          overflowY: 'auto',
-          overflowX: 'hidden',
-          alignSelf: 'stretch',
-          minHeight: 0,
-          maxHeight: '100%',
-          paddingRight: '4px',
-          WebkitOverflowScrolling: 'touch'
-        }}>
-          {/* Today section */}
-          <NotificationSection
-            title="De hoje"
-            notifications={todayNotifications}
-          />
-
-          {/* Divider */}
+        {hasNotifications ? (
           <div style={{
-            width: '100%',
-            height: '1px',
-            backgroundColor: '#424257',
-            flexShrink: 0
-          }} />
+            display: 'flex',
+            flexDirection: 'column',
+            gap: isMobile ? '20px' : '20px',
+            flex: '1 1 0',
+            overflowY: 'auto',
+            overflowX: 'hidden',
+            alignSelf: 'stretch',
+            minHeight: 0,
+            maxHeight: '100%',
+            padding: isMobile ? '20px 20px 20px 16px' : 0,
+            paddingRight: isMobile ? '16px' : '4px',
+            WebkitOverflowScrolling: 'touch'
+          }}>
+            {/* Today section */}
+            {todayNotifications.length > 0 && (
+              <>
+                <NotificationSection
+                  title="De hoje"
+                  notifications={todayNotifications}
+                  isMobile={isMobile}
+                />
+                <Divider />
+              </>
+            )}
 
-          {/* This week section */}
-          <NotificationSection
-            title="Desta semana"
-            notifications={thisWeekNotifications}
+            {/* This week section */}
+            {thisWeekNotifications.length > 0 && (
+              <>
+                <NotificationSection
+                  title="Desta semana"
+                  notifications={thisWeekNotifications}
+                  isMobile={isMobile}
+                />
+                <Divider />
+              </>
+            )}
+
+            {/* This month section */}
+            {thisMonthNotifications.length > 0 && (
+              <NotificationSection
+                title="Deste mês"
+                notifications={thisMonthNotifications}
+                isMobile={isMobile}
+              />
+            )}
+            
+            {/* Spacer para garantir scroll completo */}
+            <div style={{ height: '20px', flexShrink: 0 }} />
+          </div>
+        ) : (
+          <EmptyState />
+        )}
+
+        {/* Pagination - só exibe no desktop se houver notificações */}
+        {hasNotifications && !isMobile && (
+          <NotificationPagination
+            currentPage={currentPage}
+            totalPages={10}
+            onPrevious={handlePrevious}
+            onNext={handleNext}
           />
-
-          {/* Divider */}
-          <div style={{
-            width: '100%',
-            height: '1px',
-            backgroundColor: '#424257',
-            flexShrink: 0
-          }} />
-
-          {/* This month section */}
-          <NotificationSection
-            title="Deste mês"
-            notifications={thisMonthNotifications}
-          />
-          
-          {/* Spacer para garantir scroll completo */}
-          <div style={{ height: '40px', flexShrink: 0 }} />
-        </div>
-
-        {/* Pagination */}
-        <NotificationPagination
-          currentPage={currentPage}
-          totalPages={10}
-          onPrevious={handlePrevious}
-          onNext={handleNext}
-        />
+        )}
       </div>
     </>
   );

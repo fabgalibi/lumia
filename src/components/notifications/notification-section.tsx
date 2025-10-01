@@ -4,25 +4,27 @@ import { NotificationItem, NotificationItemProps } from './notification-item';
 export interface NotificationSectionProps {
   title: string;
   notifications: NotificationItemProps[];
+  isMobile?: boolean;
 }
 
 export const NotificationSection: React.FC<NotificationSectionProps> = ({
   title,
-  notifications
+  notifications,
+  isMobile = false
 }) => {
   return (
     <div style={{
       display: 'flex',
       flexDirection: 'column',
-      gap: '14px',
+      gap: isMobile ? '16px' : '16px',
       width: '100%',
       alignSelf: 'stretch'
     }}>
       {/* Section title */}
       <h2 style={{
         fontFamily: 'Sora',
-        fontWeight: 500,
-        fontSize: '16px',
+        fontWeight: 400,
+        fontSize: isMobile ? '14px' : '16px',
         lineHeight: '1.5em',
         color: '#FFFFFF',
         margin: 0,
@@ -35,7 +37,7 @@ export const NotificationSection: React.FC<NotificationSectionProps> = ({
       <div style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: '18px',
+        gap: '24px',
         width: '100%',
         alignSelf: 'stretch'
       }}>
