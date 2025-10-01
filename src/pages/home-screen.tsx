@@ -7,14 +7,17 @@ import StudyConsistencyCalendar from "@/components/lumia/study-consistency-calen
 import { GoalsTable } from "@/components/lumia/goals-table";
 import { Sidebar } from "@/components/lumia/sidebar";
 import { AccountSettingsContent } from "@/components/account-settings";
+import { NotificationsModal } from "@/components/notifications";
 import { SprintProvider, useSprint } from "@/contexts/sprint-context";
 import { SidebarProvider, useSidebar } from "@/contexts/sidebar-context";
 import { MainContentProvider, useMainContent } from "@/contexts/main-content-context";
+import { NotificationsModalProvider, useNotificationsModal } from "@/contexts/notifications-modal-context";
 
 const HomeScreenContent = () => {
   const { progress } = useSprint();
   const { sidebarWidth } = useSidebar();
   const { } = useMainContent();
+  const { isOpen: isNotificationsOpen, closeModal: closeNotifications } = useNotificationsModal();
   const location = useLocation();
   const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
   
@@ -78,6 +81,9 @@ const HomeScreenContent = () => {
           )}
         </main>
       </div>
+      
+      {/* Notifications Modal */}
+      <NotificationsModal isOpen={isNotificationsOpen} onClose={closeNotifications} />
     </div>
   );
 };
@@ -87,7 +93,9 @@ export const HomeScreen = () => {
     <SprintProvider>
       <SidebarProvider>
         <MainContentProvider>
-          <HomeScreenContent />
+          <NotificationsModalProvider>
+            <HomeScreenContent />
+          </NotificationsModalProvider>
         </MainContentProvider>
       </SidebarProvider>
     </SprintProvider>

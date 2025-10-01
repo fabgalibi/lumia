@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useSidebar } from "@/contexts/sidebar-context";
 import { useMainContent } from "@/contexts/main-content-context";
+import { useNotificationsModal } from "@/contexts/notifications-modal-context";
 import { LogoutModal } from "@/components/modals/logout-modal";
 
 export const Sidebar = () => {
   const navigate = useNavigate();
   const { isCollapsed, toggleSidebar } = useSidebar();
   const { setCurrentContent } = useMainContent();
+  const { openModal: openNotificationsModal, closeModal: closeNotificationsModal } = useNotificationsModal();
   const [showTexts, setShowTexts] = useState(true);
   const [activeItem, setActiveItem] = useState("Início");
   const [isLogoutHovered, setIsLogoutHovered] = useState(false);
@@ -177,6 +179,15 @@ export const Sidebar = () => {
     setActiveItem(item.label);
     console.log(`Navegando para: ${item.path}`);
     console.log(`Item ativo agora: ${item.label}`);
+    
+    // Se for notificações, abrir modal ao invés de navegar
+    if (item.label === "Notificações") {
+      openNotificationsModal();
+      return;
+    }
+    
+    // Fechar modal de notificações ao navegar para outra página
+    closeNotificationsModal();
     
     // Navegar para o path do item
     navigate(item.path);
@@ -348,7 +359,8 @@ export const Sidebar = () => {
                     justifyContent: isMobile ? 'flex-start' : (isCollapsed ? 'center' : 'flex-start'),
                     opacity: isCollapsed ? 1 : 1,
                     transform: isCollapsed ? 'scale(1)' : 'scale(1)',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    position: 'relative'
                   }}
                   onMouseEnter={(e) => {
                     if (activeItem !== item.label) {
@@ -361,8 +373,20 @@ export const Sidebar = () => {
                     }
                   }}
                 >
-                  <div className="w-8 h-8 flex items-center justify-center">
+                  <div className="w-8 h-8 flex items-center justify-center" style={{ position: 'relative' }}>
                     <item.icon />
+                    {/* Notification badge */}
+                    {item.label === "Notificações" && (
+                      <div style={{
+                        position: 'absolute',
+                        top: '4px',
+                        right: '4px',
+                        width: '8px',
+                        height: '8px',
+                        backgroundColor: '#E6483D',
+                        borderRadius: '360px'
+                      }} />
+                    )}
                   </div>
                   {!isCollapsed && showTexts && (
                     <span 

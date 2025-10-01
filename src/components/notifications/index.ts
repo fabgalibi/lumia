@@ -1,2 +1,12 @@
 export { SuccessNotification } from './success-notification';
 export { SkipGoalNotification } from './skip-goal-notification';
+export { NotificationItem } from './notification-item';
+export { NotificationSection } from './notification-section';
+export { NotificationHeader } from './notification-header';
+export { NotificationPagination } from './notification-pagination';
+export { NotificationsModal } from './notifications-modal';
+export type { NotificationItemProps } from './notification-item';
+export type { NotificationSectionProps } from './notification-section';
+export type { NotificationHeaderProps } from './notification-header';
+export type { NotificationPaginationProps } from './notification-pagination';
+export type { NotificationsModalProps } from './notifications-modal';
