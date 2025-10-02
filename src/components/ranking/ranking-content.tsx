@@ -83,35 +83,19 @@ export const RankingContent: React.FC = () => {
           top: '0px',
           left: '50%',
           transform: 'translateX(-50%)',
-          width: '701px',
-          height: '800px',
+          width: '883.73px',
+          height: '1000px',
           pointerEvents: 'none',
           zIndex: 1,
-          overflow: 'hidden'
+          overflow: 'visible'
         }}
       >
-        {/* Mask container - Gradiente radial que cria o efeito de máscara */}
-        <div
-          style={{
-            position: 'absolute',
-            left: '19.6px',
-            top: '-137.16px',
-            width: '662.7971191406275px',
-            height: '662.7971191406275px',
-            background: 'radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.015) 0%, rgba(0, 0, 0, 0.008) 30%, rgba(0, 0, 0, 0) 60%)',
-            mixBlendMode: 'multiply',
-            opacity: 0.4,
-            filter: 'blur(25px)',
-            zIndex: 2
-          }}
-        />
-
         {/* Grid content */}
         <div
           style={{
             position: 'absolute',
-            left: '-90.86px',
-            top: '-137.16px',
+            left: '0',
+            top: '0',
             width: '883.73px',
             height: '1000px'
           }}
@@ -138,11 +122,22 @@ export const RankingContent: React.FC = () => {
               <pattern id="grid-horizontal-ranking" width="883.73" height="36.822" patternUnits="userSpaceOnUse">
                 <line x1="0" y1="0" x2="883.73" y2="0" stroke="#22262F" strokeWidth="0.46" opacity="0.8" />
               </pattern>
+              {/* Máscara radial para fade em todas as direções */}
+              <radialGradient id="grid-fade-mask" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="white" stopOpacity="1" />
+                <stop offset="70%" stopColor="white" stopOpacity="1" />
+                <stop offset="100%" stopColor="white" stopOpacity="0" />
+              </radialGradient>
+              <mask id="grid-mask">
+                <rect width="883.73" height="1000" fill="url(#grid-fade-mask)" />
+              </mask>
             </defs>
-            {/* Vertical lines */}
-            <rect width="883.73" height="1000" fill="url(#grid-vertical-ranking)" />
-            {/* Horizontal lines */}
-            <rect width="883.73" height="1000" fill="url(#grid-horizontal-ranking)" />
+            <g mask="url(#grid-mask)">
+              {/* Vertical lines */}
+              <rect width="883.73" height="1000" fill="url(#grid-vertical-ranking)" />
+              {/* Horizontal lines */}
+              <rect width="883.73" height="1000" fill="url(#grid-horizontal-ranking)" />
+            </g>
           </svg>
         </div>
       </div>
@@ -151,12 +146,12 @@ export const RankingContent: React.FC = () => {
       <div
         style={{
           position: 'absolute',
-          top: '550px',
+          top: '440px',
           left: '-1000px',
           right: '-1000px',
-          height: '600px',
-          background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.25) 3%, rgba(0, 0, 0, 0.3) 8%, rgba(0, 0, 0, 0.35) 12%, rgba(0, 0, 0, 0.4) 20%, rgba(0, 0, 0, 0.5) 35%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.75) 70%, rgba(0, 0, 0, 0.85) 100%)',
-          filter: 'blur(80px)',
+          bottom: '0px',
+          background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(16, 16, 22, 1) 5%, rgba(16, 16, 22, 1) 100%)',
+          filter: 'blur(25px)',
           zIndex: 1,
           pointerEvents: 'none'
         }}
@@ -169,6 +164,7 @@ export const RankingContent: React.FC = () => {
           zIndex: 2,
           maxWidth: '1132px',
           margin: '0 auto',
+          paddingTop: '32px',
           paddingLeft: '32px',
           paddingRight: '32px',
           paddingBottom: '0',
@@ -176,7 +172,7 @@ export const RankingContent: React.FC = () => {
         }}
       >
         {/* Renewal Timer */}
-        <div style={{ marginBottom: '20px', marginLeft: '-32px', marginRight: '-32px' }}>
+        <div style={{ marginBottom: '8px', marginLeft: '-32px', marginRight: '-32px' }}>
           <RankingRenewalTimer />
         </div>
 
@@ -186,7 +182,7 @@ export const RankingContent: React.FC = () => {
         </div>
 
         {/* Ranking Table */}
-        <div style={{ position: 'relative', margin: '0', padding: '0', marginBottom: '0' }}>
+        <div style={{ position: 'relative', margin: '0', padding: '0', marginBottom: '20px' }}>
           <RankingTable users={rankingData} currentUserId={984} />
         </div>
       </div>

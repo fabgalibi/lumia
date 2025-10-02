@@ -43,7 +43,6 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
             padding: '12px 20px',
             width: '140px',
             backgroundColor: '#2D2D45',
-            borderRight: '1px solid #2C2C45'
           }}
         >
           <span
@@ -60,7 +59,7 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
           {/* Ícone de ordenação */}
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
             <path
-              d="M6 3L8.5 5.5M6 3L3.5 5.5M6 3V9M6 9L8.5 6.5M6 9L3.5 6.5"
+              d="M3.5 7.5L6 10L8.5 7.5M3.5 4.5L6 2L8.5 4.5"
               stroke="#85888E"
               strokeWidth="1.5"
               strokeLinecap="round"
@@ -78,7 +77,6 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
             padding: '12px 20px',
             flex: 1,
             backgroundColor: '#2D2D45',
-            borderRight: '1px solid #2C2C45'
           }}
         >
           <span
@@ -95,7 +93,7 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
           {/* Ícone de ordenação */}
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
             <path
-              d="M6 3L8.5 5.5M6 3L3.5 5.5M6 3V9M6 9L8.5 6.5M6 9L3.5 6.5"
+              d="M3.5 7.5L6 10L8.5 7.5M3.5 4.5L6 2L8.5 4.5"
               stroke="#85888E"
               strokeWidth="1.5"
               strokeLinecap="round"
@@ -109,7 +107,6 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '12px',
             padding: '12px 20px',
             flex: 1,
             backgroundColor: '#2D2D45'
@@ -147,7 +144,6 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
                 alignItems: 'center',
                 padding: '16px 24px',
                 width: '140px',
-                borderRight: user.isCurrentUser ? 'none' : '1px solid #2C2C45'
               }}
             >
               <div
@@ -183,11 +179,11 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
                   }}
                 >
                   <path
-                    d="M8 12L8 4M8 4L4 8M8 4L12 8"
-                    stroke={user.trend === 'up' ? '#079455' : '#D92D20'}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M0.823205 15.1391C0.433412 15.5289 0.777603 16.1599 1.36023 16.16L15.2639 16.1802C15.8466 16.1803 16.1908 15.5493 15.8009 15.1594L8.84866 8.20747C8.59383 7.95263 8.17794 7.95263 7.9231 8.20747L0.823205 15.1391Z"
+                    fill={user.trend === 'up' ? '#079455' : '#D92D20'}
+                    transform="translate(0, -4.08)"
                   />
                 </svg>
               </div>
@@ -201,7 +197,6 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
                 gap: '12px',
                 padding: '16px 20px',
                 flex: 1,
-                borderRight: user.isCurrentUser ? 'none' : '1px solid #2C2C45'
               }}
             >
               {/* Avatar */}
@@ -210,7 +205,6 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
                   width: '40px',
                   height: '40px',
                   backgroundColor: '#22262F',
-                  border: '1.5px solid #F48E2F',
                   borderRadius: '50%',
                   display: 'flex',
                   justifyContent: 'center',

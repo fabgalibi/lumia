@@ -19,7 +19,7 @@ export const Podium: React.FC<PodiumProps> = ({ data }) => {
         position: 'relative',
         width: '633.77px',
         height: '412.22px',
-        margin: '60px auto 0'
+        margin: '20px auto 0px'
       }}
     >
       {/* Pódios SVG */}
@@ -80,7 +80,8 @@ export const Podium: React.FC<PodiumProps> = ({ data }) => {
           zIndex: 4,
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap'
+          whiteSpace: 'nowrap',
+         color: '#FFFFFF'
         }}
       >
         <span
@@ -105,18 +106,20 @@ export const Podium: React.FC<PodiumProps> = ({ data }) => {
           width: '147px',
           textAlign: 'center',
           zIndex: 4,
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap'
+          color: '#FFFFFF'
         }}
       >
         <span
+          className="podium-name-ellipsis"
           style={{
             fontFamily: 'Sora',
             fontWeight: 400,
             fontSize: '16px',
             lineHeight: '1.58em',
-            color: '#FFFFFF'
+            display: 'block',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
           }}
         >
           {podiumData.first.name}

@@ -39,6 +39,18 @@ body {
     font-kerning: normal;
 }
 
+/* Fix podium name ellipsis color */
+.podium-name-ellipsis {
+    color: rgb(255, 255, 255) !important;
+    -webkit-text-fill-color: rgb(255, 255, 255) !important;
+}
+
+.podium-name-ellipsis::before,
+.podium-name-ellipsis::after {
+    color: rgb(255, 255, 255) !important;
+    -webkit-text-fill-color: rgb(255, 255, 255) !important;
+}
+
 /* Hide the default expand arrow on Safari.  */
 details summary::-webkit-details-marker {
     display: none;

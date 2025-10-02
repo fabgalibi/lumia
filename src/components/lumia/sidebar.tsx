@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { useSidebar } from "@/contexts/sidebar-context";
 import { useMainContent } from "@/contexts/main-content-context";
 import { useNotificationsModal } from "@/contexts/notifications-modal-context";
@@ -7,6 +7,7 @@ import { LogoutModal } from "@/components/modals/logout-modal";
 
 export const Sidebar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { isCollapsed, toggleSidebar } = useSidebar();
   const { setCurrentContent } = useMainContent();
   const { openModal: openNotificationsModal, closeModal: closeNotificationsModal } = useNotificationsModal();
@@ -27,6 +28,24 @@ export const Sidebar = () => {
     
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Detectar rota atual e definir item ativo automaticamente
+  useEffect(() => {
+    const currentPath = location.pathname;
+    
+    if (currentPath === '/home' || currentPath === '/') {
+      setActiveItem("Início");
+    } else if (currentPath.startsWith('/account-settings')) {
+      setActiveItem("Configurações");
+    } else if (currentPath.startsWith('/ranking')) {
+      setActiveItem("Ranking");
+    } else if (currentPath.startsWith('/tutoriais')) {
+      setActiveItem("Tutoriais");
+    } else {
+      // Para outras rotas, manter o item atual ou definir como "Início"
+      setActiveItem("Início");
+    }
+  }, [location.pathname]);
 
   // No mobile, o sidebar deve iniciar fechado independente do estado do contexto
   const isSidebarOpen = isMobile ? !isCollapsed : !isCollapsed;
