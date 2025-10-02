@@ -1,10 +1,14 @@
 import React from 'react';
 
-export const ThirdPlaceSvg: React.FC = () => {
+interface ThirdPlaceSvgProps {
+  scale?: number;
+}
+
+export const ThirdPlaceSvg: React.FC<ThirdPlaceSvgProps> = ({ scale = 1 }) => {
   return (
     <svg
-      width="202"
-      height="261"
+      width={202 * scale}
+      height={261 * scale}
       viewBox="0 0 202 261"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -53,6 +57,11 @@ export const ThirdPlaceSvg: React.FC = () => {
             fill="url(#third_front_fill)"
             stroke="url(#third_border)"
             strokeWidth="1.8"
+          />
+          {/* Cobertura da borda inferior */}
+          <path 
+            d="M0 184.97L202 184.97L202 186.97L0 186.97Z" 
+            fill="url(#third_front_fill)"
           />
         </g>
       </g>

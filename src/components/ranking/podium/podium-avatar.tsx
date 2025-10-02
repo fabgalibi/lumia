@@ -2,7 +2,8 @@ import React from 'react';
 
 interface PodiumAvatarProps {
   initials: string;
-  size?: string; // Tamanho customizado (opcional, padrão: 86.52px)
+  size?: string; // Tamanho customizado (opcional, padrão: 104.55px)
+  scale?: number; // Escala para responsividade (opcional, padrão: 1)
 }
 
 /**
@@ -11,7 +12,8 @@ interface PodiumAvatarProps {
  */
 export const PodiumAvatar: React.FC<PodiumAvatarProps> = ({ 
   initials, 
-  size = '86.52px' 
+  size = '104.55px',
+  scale = 1
 }) => {
   return (
     <div
@@ -19,8 +21,8 @@ export const PodiumAvatar: React.FC<PodiumAvatarProps> = ({
         width: size,
         height: size,
         background: '#22262F',
-        border: '0.9px solid rgba(255, 255, 255, 0.12)',
-        borderRadius: '8px',
+        border: `${0.901 * scale}px solid rgba(255, 255, 255, 0.12)`,
+        borderRadius: `${8 * scale}px`,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
@@ -30,8 +32,8 @@ export const PodiumAvatar: React.FC<PodiumAvatarProps> = ({
         style={{
           fontFamily: 'Inter',
           fontWeight: 600,
-          fontSize: '36px',
-          lineHeight: '1.22em',
+          fontSize: `${36 * scale}px`,
+          lineHeight: '1.222em',
           letterSpacing: '-2%',
           color: '#94979C',
           textAlign: 'center'

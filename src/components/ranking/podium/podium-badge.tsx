@@ -4,6 +4,7 @@ interface PodiumBadgeProps {
   position: '1º' | '2º' | '3º';
   backgroundColor: string;
   iconColor?: string; // Cor do troféu (opcional, padrão: #585858)
+  scale?: number; // Escala para responsividade (opcional, padrão: 1)
 }
 
 /**
@@ -13,7 +14,8 @@ interface PodiumBadgeProps {
 export const PodiumBadge: React.FC<PodiumBadgeProps> = ({
   position,
   backgroundColor,
-  iconColor = '#585858'
+  iconColor = '#585858',
+  scale = 1
 }) => {
   return (
     <div
@@ -21,22 +23,22 @@ export const PodiumBadge: React.FC<PodiumBadgeProps> = ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '7px'
+        gap: `${7 * scale}px`
       }}
     >
       <div
         style={{
           background: backgroundColor,
-          borderRadius: '6px',
-          padding: '8px',
+          borderRadius: `${6 * scale}px`,
+          padding: `${8 * scale}px`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          width: '38px',
-          height: '38px'
+          width: `${38 * scale}px`,
+          height: `${38 * scale}px`
         }}
       >
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <svg width={22 * scale} height={22 * scale} viewBox="0 0 22 22" fill="none">
           <path
             d="M6.80352 18.1962C7.55575 16.3296 9.08782 14.8954 11 14.8954C12.9122 14.8954 14.4443 16.3296 15.1965 18.1962C15.4362 18.791 15.3874 19.4197 15.1528 19.9119C14.9264 20.3871 14.454 20.8538 13.7878 20.8538L8.21221 20.8538C7.54604 20.8538 7.07364 20.3871 6.84717 19.9119C6.61257 19.4197 6.56384 18.791 6.80352 18.1962Z"
             fill={iconColor}
@@ -59,7 +61,7 @@ export const PodiumBadge: React.FC<PodiumBadgeProps> = ({
         style={{
           fontFamily: 'Sora',
           fontWeight: 400,
-          fontSize: '12px',
+          fontSize: `${12 * scale}px`,
           lineHeight: '1.5em',
           color: '#FFFFFF',
           whiteSpace: 'nowrap'

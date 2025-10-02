@@ -13,9 +13,10 @@ export interface RankingUser {
 export interface RankingTableProps {
   users: RankingUser[];
   currentUserId?: number;
+  screenSize?: 'mobile' | 'tablet' | 'desktop';
 }
 
-export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId }) => {
+export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId, screenSize = 'desktop' }) => {
   return (
     <div
       style={{
@@ -23,7 +24,7 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
         flexDirection: 'column',
         backgroundColor: '#252532',
         border: '1px solid #2C2C45',
-        borderRadius: '16px',
+        borderRadius: screenSize === 'mobile' ? '8px' : '16px',
         overflow: 'hidden'
       }}
     >
@@ -39,9 +40,9 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '12px',
-            padding: '12px 20px',
-            width: '140px',
+            gap: screenSize === 'mobile' ? '4px' : '12px',
+            padding: screenSize === 'mobile' ? '12px 8px' : '12px 20px',
+            width: screenSize === 'mobile' ? '60px' : '140px',
             backgroundColor: '#2D2D45',
           }}
         >
@@ -49,7 +50,7 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
             style={{
               fontFamily: 'Inter',
               fontWeight: 600,
-              fontSize: '12px',
+              fontSize: screenSize === 'mobile' ? '10px' : '12px',
               lineHeight: '1.5em',
               color: '#F0F0F1'
             }}
@@ -83,7 +84,7 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
             style={{
               fontFamily: 'Inter',
               fontWeight: 600,
-              fontSize: '12px',
+              fontSize: screenSize === 'mobile' ? '10px' : '12px',
               lineHeight: '1.5em',
               color: '#F0F0F1'
             }}
@@ -107,8 +108,9 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
           style={{
             display: 'flex',
             alignItems: 'center',
-            padding: '12px 20px',
-            flex: 1,
+            padding: screenSize === 'mobile' ? '12px 8px' : '12px 20px',
+            width: screenSize === 'mobile' ? '80px' : 'auto',
+            flex: screenSize === 'mobile' ? 'none' : 1,
             backgroundColor: '#2D2D45'
           }}
         >
@@ -116,12 +118,12 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
             style={{
               fontFamily: 'Inter',
               fontWeight: 600,
-              fontSize: '12px',
+              fontSize: screenSize === 'mobile' ? '10px' : '12px',
               lineHeight: '1.5em',
               color: '#F0F0F1'
             }}
           >
-            Desempenho (%)
+            {screenSize === 'mobile' ? 'Desemp.' : 'Desempenho (%)'}
           </span>
         </div>
       </div>
@@ -142,8 +144,8 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                padding: '16px 24px',
-                width: '140px',
+                padding: screenSize === 'mobile' ? '16px 8px' : '16px 24px',
+                width: screenSize === 'mobile' ? '60px' : '140px',
               }}
             >
               <div
@@ -158,7 +160,7 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
                   style={{
                     fontFamily: 'Inter',
                     fontWeight: 600,
-                    fontSize: '20px',
+                    fontSize: screenSize === 'mobile' ? '16px' : '20px',
                     lineHeight: '1.5em',
                     color: '#F0F0F1',
                     textAlign: 'center',
@@ -202,8 +204,8 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
               {/* Avatar */}
               <div
                 style={{
-                  width: '40px',
-                  height: '40px',
+                  width: screenSize === 'mobile' ? '32px' : '40px',
+                  height: screenSize === 'mobile' ? '32px' : '40px',
                   backgroundColor: '#22262F',
                   borderRadius: '50%',
                   display: 'flex',
@@ -225,7 +227,7 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
                   style={{
                     fontFamily: 'Inter',
                     fontWeight: 600,
-                    fontSize: '16px',
+                    fontSize: screenSize === 'mobile' ? '14px' : '16px',
                     lineHeight: '1.5em',
                     color: '#94979C',
                     textAlign: 'center'
@@ -240,7 +242,7 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
                 style={{
                   fontFamily: 'Inter',
                   fontWeight: 400,
-                  fontSize: '14px',
+                  fontSize: screenSize === 'mobile' ? '12px' : '14px',
                   lineHeight: '1.43em',
                   letterSpacing: '-0.5%',
                   color: '#F0F0F1'
@@ -255,15 +257,16 @@ export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                padding: '16px 20px',
-                flex: 1
+                padding: screenSize === 'mobile' ? '16px 8px' : '16px 20px',
+                width: screenSize === 'mobile' ? '80px' : 'auto',
+                flex: screenSize === 'mobile' ? 'none' : 1
               }}
             >
               <span
                 style={{
                   fontFamily: 'Inter',
                   fontWeight: 400,
-                  fontSize: '14px',
+                  fontSize: screenSize === 'mobile' ? '12px' : '14px',
                   lineHeight: '1.43em',
                   letterSpacing: '-0.5%',
                   color: '#F0F0F1'

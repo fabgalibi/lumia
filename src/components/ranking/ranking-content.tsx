@@ -1,10 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Podium } from './podium';
 import { RankingRenewalTimer } from './ranking-renewal-timer';
 import { RankingTable } from './ranking-table';
 import type { RankingUser } from './ranking-table';
 
 export const RankingContent: React.FC = () => {
+  const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
+
+  // Detectar tamanho da tela
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const width = window.innerWidth;
+      
+      if (width < 768) {
+        setScreenSize('mobile');
+      } else if (width < 1100) {
+        setScreenSize('tablet');
+      } else {
+        setScreenSize('desktop');
+      }
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   // Mock data - Ranking table
   const rankingData: RankingUser[] = [
@@ -73,7 +94,8 @@ export const RankingContent: React.FC = () => {
         position: 'relative',
         backgroundColor: 'rgba(25, 25, 35, 1)',
         overflow: 'hidden',
-        paddingBottom: '0'
+        paddingBottom: '0',
+        padding: screenSize === 'mobile' ? '16px' : '0px'
       }}
     >
       {/* Background Pattern */}
@@ -143,47 +165,67 @@ export const RankingContent: React.FC = () => {
       </div>
 
       {/* Efeito de vinheta ao redor da tabela - background */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '440px',
-          left: '-1000px',
-          right: '-1000px',
-          bottom: '0px',
-          background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(16, 16, 22, 1) 5%, rgba(16, 16, 22, 1) 100%)',
-          filter: 'blur(25px)',
-          zIndex: 1,
-          pointerEvents: 'none'
-        }}
-      />
+      {screenSize !== 'mobile' && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '440px',
+            left: '-1000px',
+            right: '-1000px',
+            bottom: '0px',
+            background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(16, 16, 22, 1) 5%, rgba(16, 16, 22, 1) 100%)',
+            filter: 'blur(25px)',
+            zIndex: 1,
+            pointerEvents: 'none'
+          }}
+        />
+      )}
 
       {/* Content */}
       <div
         style={{
           position: 'relative',
           zIndex: 2,
-          maxWidth: '1132px',
+          maxWidth: screenSize === 'mobile' ? '100%' : screenSize === 'desktop' ? 'calc(100% - 64px)' : '1132px',
           margin: '0 auto',
-          paddingTop: '32px',
-          paddingLeft: '32px',
-          paddingRight: '32px',
+          paddingTop: screenSize === 'mobile' ? '16px' : '32px',
+          paddingLeft: screenSize === 'mobile' ? '24px' : '32px',
+          paddingRight: screenSize === 'mobile' ? '24px' : '32px',
           paddingBottom: '0',
           marginBottom: '0'
         }}
       >
         {/* Renewal Timer */}
-        <div style={{ marginBottom: '8px', marginLeft: '-32px', marginRight: '-32px' }}>
+        <div style={{ 
+          marginBottom: '8px', 
+          marginLeft: screenSize === 'mobile' ? '-24px' : '-32px', 
+          marginRight: screenSize === 'mobile' ? '-24px' : '-32px' 
+        }}>
           <RankingRenewalTimer />
         </div>
 
         {/* Podium */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginLeft: '-32px', marginRight: '-32px' }}>
-          <Podium />
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          marginLeft: screenSize === 'mobile' ? '-24px' : '-32px', 
+          marginRight: screenSize === 'mobile' ? '-24px' : '-32px',
+          marginBottom: screenSize === 'mobile' ? '16px' : '20px'
+        }}>
+          <Podium screenSize={screenSize} />
         </div>
 
         {/* Ranking Table */}
-        <div style={{ position: 'relative', margin: '0', padding: '0', marginBottom: '20px' }}>
-          <RankingTable users={rankingData} currentUserId={984} />
+        <div style={{ 
+          position: 'relative', 
+          margin: '0', 
+          padding: '0', 
+          marginTop: screenSize === 'mobile' ? '-10px' : '-20px',
+          marginBottom: screenSize === 'mobile' ? '16px' : '20px',
+          marginLeft: screenSize === 'mobile' ? '-24px' : screenSize === 'desktop' ? '-16px' : '0px',
+          marginRight: screenSize === 'mobile' ? '-24px' : screenSize === 'desktop' ? '-16px' : '0px'
+        }}>
+          <RankingTable users={rankingData} currentUserId={984} screenSize={screenSize} />
         </div>
       </div>
     </div>

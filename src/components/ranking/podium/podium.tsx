@@ -9,73 +9,173 @@ import type { PodiumData } from './podium-types';
 
 interface PodiumProps {
   data?: PodiumData;
+  screenSize?: 'mobile' | 'tablet' | 'desktop';
 }
 
-export const Podium: React.FC<PodiumProps> = ({ data }) => {
+export const Podium: React.FC<PodiumProps> = ({ data, screenSize = 'desktop' }) => {
   const podiumData = data || PODIUM_MOCK_DATA;
+  
+  // Função para calcular o fator de escala baseado no tamanho da tela
+  const getScaleFactor = () => {
+    switch (screenSize) {
+      case 'mobile': return 0.7;
+      case 'tablet': return 0.85;
+      case 'desktop': return 1;
+      default: return 1;
+    }
+  };
+  
+  // Função para calcular a escala dos badges (todos iguais no desktop)
+  const getBadgeScale = () => {
+    const baseScale = getScaleFactor();
+    // No desktop, todos os badges têm o mesmo tamanho (38px)
+    return baseScale;
+  };
+
+  // Função para calcular a escala dos avatares (2º lugar é o primeiro lugar - maior)
+  const getAvatarScale = (position: '1º' | '2º' | '3º') => {
+    const baseScale = getScaleFactor();
+    switch (position) {
+      case '1º': return baseScale * 0.83; // 17% menor que o normal (86.52px vs 104.55px)
+      case '2º': return baseScale * 1.0; // Tamanho normal (104.55px - primeiro lugar)
+      case '3º': return baseScale * 0.83; // 17% menor que o normal (86.52px vs 104.55px)
+      default: return baseScale;
+    }
+  };
+  
+  const scaleFactor = getScaleFactor();
   return (
     <div
       style={{
         position: 'relative',
-        width: '633.77px',
-        height: '412.22px',
-        margin: '20px auto 0px'
+        width: '100%',
+        height: screenSize === 'mobile' ? 'calc(412.22px * 0.7)' : screenSize === 'tablet' ? 'calc(412.22px * 0.85)' : '412.22px',
+        margin: '20px auto 0px',
+        display: 'flex',
+        justifyContent: 'center',
+        maxWidth: screenSize === 'mobile' ? '400px' : screenSize === 'tablet' ? '600px' : '633.77px'
       }}
     >
-      {/* Pódios SVG */}
-      {/* 3º Lugar - Direita (atrás) */}
-      <div style={{ position: 'absolute', left: '432px', top: '151.25px', zIndex: 1 }}>
-        <ThirdPlaceSvg />
+      <div
+        style={{
+          position: 'relative',
+          width: `calc(633.77px * ${scaleFactor})`,
+          height: `calc(412.22px * ${scaleFactor})`,
+          margin: '0 auto',
+          transform: screenSize === 'mobile' ? 'translateX(-20px)' : screenSize === 'tablet' ? 'translateX(-10px)' : 'none'
+        }}
+      >
+        {/* Pódios SVG */}
+        {/* 3º Lugar - Direita (atrás) */}
+      <div style={{ 
+        position: 'absolute', 
+        left: `calc(432px * ${scaleFactor})`, 
+        top: `calc(151.25px * ${scaleFactor})`, 
+        zIndex: 1 
+      }}>
+        <ThirdPlaceSvg scale={scaleFactor} />
       </div>
 
       {/* 1º Lugar - Centro (meio) */}
-      <div style={{ position: 'absolute', left: '0px', top: '118.7px', zIndex: 2 }}>
-        <FirstPlaceSvg />
+      <div style={{ 
+        position: 'absolute', 
+        left: '0px', 
+        top: `calc(118.7px * ${scaleFactor})`, 
+        zIndex: 2 
+      }}>
+        <FirstPlaceSvg scale={scaleFactor} />
       </div>
 
       {/* 2º Lugar - Esquerda (frente) */}
-      <div style={{ position: 'absolute', left: '198px', top: '59.49px', zIndex: 3 }}>
-        <SecondPlaceSvg />
+      <div style={{ 
+        position: 'absolute', 
+        left: `calc(198px * ${scaleFactor})`, 
+        top: `calc(59.49px * ${scaleFactor})`, 
+        zIndex: 3 
+      }}>
+        <SecondPlaceSvg scale={scaleFactor} />
       </div>
 
       {/* Elementos posicionados de forma absoluta */}
       {/* Avatar 2º lugar */}
-      <div style={{ position: 'absolute', left: '275.79px', top: '0px', zIndex: 4 }}>
-        <PodiumAvatar initials={podiumData.second.initials} size="104.55px" />
+      <div style={{ 
+        position: 'absolute', 
+        left: `calc(275.79px * ${scaleFactor})`, 
+        top: '0px', 
+        zIndex: 4 
+      }}>
+        <PodiumAvatar 
+          initials={podiumData.second.initials} 
+          size={`calc(104.55px * ${getAvatarScale('2º')})`} 
+          scale={getAvatarScale('2º')}
+        />
       </div>
 
       {/* Avatar 1º lugar */}
-      <div style={{ position: 'absolute', left: '72.1px', top: '77.24px', zIndex: 4 }}>
-        <PodiumAvatar initials={podiumData.first.initials} />
+      <div style={{ 
+        position: 'absolute', 
+        left: `calc(72.1px * ${scaleFactor})`, 
+        top: `calc(77.24px * ${scaleFactor})`, 
+        zIndex: 4 
+      }}>
+        <PodiumAvatar 
+          initials={podiumData.first.initials} 
+          size={`calc(104.55px * ${getAvatarScale('1º')})`} 
+          scale={getAvatarScale('1º')}
+        />
       </div>
 
       {/* Avatar 3º lugar */}
-      <div style={{ position: 'absolute', left: '485.79px', top: '111.59px', zIndex: 4 }}>
-        <PodiumAvatar initials={podiumData.third.initials} />
+      <div style={{ 
+        position: 'absolute', 
+        left: `calc(485.79px * ${scaleFactor})`, 
+        top: `calc(111.59px * ${scaleFactor})`, 
+        zIndex: 4 
+      }}>
+        <PodiumAvatar 
+          initials={podiumData.third.initials} 
+          size={`calc(104.55px * ${getAvatarScale('3º')})`} 
+          scale={getAvatarScale('3º')}
+        />
       </div>
 
       {/* Badge 2º lugar */}
-      <div style={{ position: 'absolute', left: '86px', top: '216px', zIndex: 5 }}>
-        <PodiumBadge position="2º" backgroundColor="#CDCDCD" />
+      <div style={{ 
+        position: 'absolute', 
+        left: `calc(86px * ${scaleFactor})`, 
+        top: `calc(216px * ${scaleFactor})`, 
+        zIndex: 5 
+      }}>
+        <PodiumBadge position="2º" backgroundColor="#CDCDCD" scale={getBadgeScale()} />
       </div>
 
       {/* Badge 1º lugar */}
-      <div style={{ position: 'absolute', left: '304px', top: '161px', zIndex: 5 }}>
-        <PodiumBadge position="1º" backgroundColor="#FFD365" />
+      <div style={{ 
+        position: 'absolute', 
+        left: `calc(304px * ${scaleFactor})`, 
+        top: `calc(161px * ${scaleFactor})`, 
+        zIndex: 5 
+      }}>
+        <PodiumBadge position="1º" backgroundColor="#FFD365" scale={getBadgeScale()} />
       </div>
 
       {/* Badge 3º lugar */}
-      <div style={{ position: 'absolute', left: '505px', top: '245px', zIndex: 5 }}>
-        <PodiumBadge position="3º" backgroundColor="#B38A48" iconColor="#CACACA" />
+      <div style={{ 
+        position: 'absolute', 
+        left: `calc(505px * ${scaleFactor})`, 
+        top: `calc(245px * ${scaleFactor})`, 
+        zIndex: 5 
+      }}>
+        <PodiumBadge position="3º" backgroundColor="#B38A48" iconColor="#CACACA" scale={getBadgeScale()} />
       </div>
 
       {/* Nome 2º lugar */}
       <div
         style={{
           position: 'absolute',
-          left: '243px',
-          top: '253px',
-          width: '170px',
+          left: `calc(243px * ${scaleFactor})`,
+          top: `calc(253px * ${scaleFactor})`,
+          width: `calc(170px * ${scaleFactor})`,
           textAlign: 'center',
           zIndex: 4,
           overflow: 'hidden',
@@ -88,7 +188,7 @@ export const Podium: React.FC<PodiumProps> = ({ data }) => {
           style={{
             fontFamily: 'Sora',
             fontWeight: 400,
-            fontSize: '18px',
+            fontSize: `calc(18px * ${scaleFactor})`,
             lineHeight: '1.5em',
             color: '#FFFFFF'
           }}
@@ -101,9 +201,9 @@ export const Podium: React.FC<PodiumProps> = ({ data }) => {
       <div
         style={{
           position: 'absolute',
-          left: '52px',
-          top: '304px',
-          width: '147px',
+          left: `calc(52px * ${scaleFactor})`,
+          top: `calc(304px * ${scaleFactor})`,
+          width: `calc(147px * ${scaleFactor})`,
           textAlign: 'center',
           zIndex: 4,
           color: '#FFFFFF'
@@ -114,7 +214,7 @@ export const Podium: React.FC<PodiumProps> = ({ data }) => {
           style={{
             fontFamily: 'Sora',
             fontWeight: 400,
-            fontSize: '16px',
+            fontSize: `calc(16px * ${scaleFactor})`,
             lineHeight: '1.58em',
             display: 'block',
             overflow: 'hidden',
@@ -130,9 +230,9 @@ export const Podium: React.FC<PodiumProps> = ({ data }) => {
       <div
         style={{
           position: 'absolute',
-          left: '456px',
-          top: '332px',
-          width: '130px',
+          left: `calc(456px * ${scaleFactor})`,
+          top: `calc(332px * ${scaleFactor})`,
+          width: `calc(130px * ${scaleFactor})`,
           textAlign: 'center',
           zIndex: 4,
           overflow: 'hidden',
@@ -144,7 +244,7 @@ export const Podium: React.FC<PodiumProps> = ({ data }) => {
           style={{
             fontFamily: 'Sora',
             fontWeight: 400,
-            fontSize: '16px',
+            fontSize: `calc(16px * ${scaleFactor})`,
             lineHeight: '1.58em',
             color: '#FFFFFF'
           }}
@@ -157,8 +257,8 @@ export const Podium: React.FC<PodiumProps> = ({ data }) => {
       <div
         style={{
           position: 'absolute',
-          left: '110px',
-          top: '335px',
+          left: `calc(110px * ${scaleFactor})`,
+          top: `calc(335px * ${scaleFactor})`,
           zIndex: 4
         }}
       >
@@ -166,7 +266,7 @@ export const Podium: React.FC<PodiumProps> = ({ data }) => {
           style={{
             fontFamily: 'Sora',
             fontWeight: 600,
-            fontSize: '14px',
+            fontSize: `calc(14px * ${scaleFactor})`,
             lineHeight: '1.5em',
             color: '#F7F7F7'
           }}
@@ -179,8 +279,8 @@ export const Podium: React.FC<PodiumProps> = ({ data }) => {
       <div
         style={{
           position: 'absolute',
-          left: '311px',
-          top: '287px',
+          left: `calc(311px * ${scaleFactor})`,
+          top: `calc(287px * ${scaleFactor})`,
           zIndex: 4
         }}
       >
@@ -188,7 +288,7 @@ export const Podium: React.FC<PodiumProps> = ({ data }) => {
           style={{
             fontFamily: 'Sora',
             fontWeight: 600,
-            fontSize: '16px',
+            fontSize: `calc(16px * ${scaleFactor})`,
             lineHeight: '1.58em',
             color: '#F7F7F7'
           }}
@@ -201,8 +301,8 @@ export const Podium: React.FC<PodiumProps> = ({ data }) => {
       <div
         style={{
           position: 'absolute',
-          left: '507px',
-          top: '364px',
+          left: `calc(507px * ${scaleFactor})`,
+          top: `calc(364px * ${scaleFactor})`,
           zIndex: 4
         }}
       >
@@ -210,7 +310,7 @@ export const Podium: React.FC<PodiumProps> = ({ data }) => {
           style={{
             fontFamily: 'Sora',
             fontWeight: 600,
-            fontSize: '13px',
+            fontSize: `calc(13px * ${scaleFactor})`,
             lineHeight: '1.66em',
             color: '#F7F7F7'
           }}
@@ -225,8 +325,8 @@ export const Podium: React.FC<PodiumProps> = ({ data }) => {
           position: 'absolute',
           left: 0,
           top: 0,
-          width: '633.77px',
-          height: '412.22px',
+          width: screenSize === 'mobile' ? 'calc(633.77px * 0.7)' : '633.77px',
+          height: screenSize === 'mobile' ? 'calc(412.22px * 0.7)' : '412.22px',
           pointerEvents: 'none',
           zIndex: 4
         }}
@@ -305,6 +405,7 @@ export const Podium: React.FC<PodiumProps> = ({ data }) => {
           strokeWidth="0.9"
         />
       </svg>
+      </div>
     </div>
   );
 };

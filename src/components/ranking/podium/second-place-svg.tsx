@@ -1,10 +1,14 @@
 import React from 'react';
 
-export const SecondPlaceSvg: React.FC = () => {
+interface SecondPlaceSvgProps {
+  scale?: number;
+}
+
+export const SecondPlaceSvg: React.FC<SecondPlaceSvgProps> = ({ scale = 1 }) => {
   return (
     <svg
-      width="260"
-      height="353"
+      width={260 * scale}
+      height={353 * scale}
       viewBox="0 0 260 353"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
