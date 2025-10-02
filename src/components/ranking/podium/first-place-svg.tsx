@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const PodiumFirstPlaceSvg: React.FC = () => {
+export const FirstPlaceSvg: React.FC = () => {
   return (
     <svg
       width="228"
@@ -27,8 +27,8 @@ export const PodiumFirstPlaceSvg: React.FC = () => {
         {/* Máscara de fade para a base */}
         <linearGradient id="first_fade" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
           <stop offset="0" stopColor="white" stopOpacity="1"/>
-          <stop offset="0.7" stopColor="white" stopOpacity="1"/>
-          <stop offset="1" stopColor="white" stopOpacity="0"/>
+          <stop offset="0.85" stopColor="white" stopOpacity="1"/>
+          <stop offset="1" stopColor="white" stopOpacity="0.3"/>
         </linearGradient>
         <mask id="first_mask">
           <rect x="0" y="0" width="228" height="293" fill="url(#first_fade)"/>
@@ -55,3 +55,4 @@ export const PodiumFirstPlaceSvg: React.FC = () => {
     </svg>
   );
 };
+

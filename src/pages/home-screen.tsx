@@ -58,7 +58,7 @@ const HomeScreenContent = () => {
     <div className="min-h-screen flex overflow-hidden" style={{ background: 'rgba(25, 25, 35, 1)' }}>
       <Sidebar />
       <div 
-        className="flex-1 flex flex-col min-w-0 overflow-hidden pt-6 transition-all duration-300"
+        className={`flex-1 flex flex-col min-w-0 overflow-hidden ${isRankingRoute ? '' : 'pt-6'} transition-all duration-300`}
         style={{ 
           marginLeft: screenSize === 'mobile' ? '0px' : screenSize === 'tablet' ? '0px' : `${sidebarWidth}px`
         }}
@@ -66,7 +66,7 @@ const HomeScreenContent = () => {
         <Header 
           title={isAccountSettingsRoute ? 'Configurações de conta' : isRankingRoute ? 'Ranking' : undefined}
         />
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 overflow-x-auto overflow-y-auto">
+        <main className={`flex-1 ${isRankingRoute ? '' : 'p-4 sm:p-6 lg:p-8'} space-y-4 sm:space-y-6 overflow-x-auto overflow-y-auto`}>
           {!isAccountSettingsRoute && !isRankingRoute && (
             <>
               <StatsCards />

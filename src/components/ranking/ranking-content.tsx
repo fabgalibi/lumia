@@ -1,6 +1,8 @@
 import React from 'react';
-import { RankingPodium, RankingRenewalTimer, RankingTable } from '@/components/ranking';
-import type { RankingUser } from '@/components/ranking';
+import { Podium } from './podium';
+import { RankingRenewalTimer } from './ranking-renewal-timer';
+import { RankingTable } from './ranking-table';
+import type { RankingUser } from './ranking-table';
 
 export const RankingContent: React.FC = () => {
 
@@ -48,6 +50,20 @@ export const RankingContent: React.FC = () => {
       initials: 'CL',
       percentage: 55,
       trend: 'down'
+    },
+    {
+      position: 9,
+      name: 'Rafael S****** O******a',
+      initials: 'RS',
+      percentage: 52,
+      trend: 'up'
+    },
+    {
+      position: 10,
+      name: 'Marina C****** F*****s',
+      initials: 'MC',
+      percentage: 48,
+      trend: 'down'
     }
   ];
 
@@ -55,29 +71,11 @@ export const RankingContent: React.FC = () => {
     <div
       style={{
         position: 'relative',
-        overflow: 'hidden',
-        paddingBottom: '60px',
         backgroundColor: 'rgba(25, 25, 35, 1)',
-        minHeight: '100vh'
+        overflow: 'hidden',
+        paddingBottom: '0'
       }}
     >
-      {/* Frame de blur inferior com gradiente */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '400px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '100%',
-          maxWidth: '1200px',
-          height: '400px',
-          background: 'radial-gradient(ellipse at center, rgba(25, 25, 35, 0.6) 0%, rgba(16, 16, 22, 0) 70%)',
-          filter: 'blur(80px)',
-          zIndex: 0,
-          pointerEvents: 'none'
-        }}
-      />
-
       {/* Background Pattern */}
       <div
         style={{
@@ -100,10 +98,10 @@ export const RankingContent: React.FC = () => {
             top: '-137.16px',
             width: '662.7971191406275px',
             height: '662.7971191406275px',
-            background: 'radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.015) 30%, rgba(0, 0, 0, 0) 60%)',
+            background: 'radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.015) 0%, rgba(0, 0, 0, 0.008) 30%, rgba(0, 0, 0, 0) 60%)',
             mixBlendMode: 'multiply',
-            opacity: 0.6,
-            filter: 'blur(20px)',
+            opacity: 0.4,
+            filter: 'blur(25px)',
             zIndex: 2
           }}
         />
@@ -149,27 +147,46 @@ export const RankingContent: React.FC = () => {
         </div>
       </div>
 
+      {/* Efeito de vinheta ao redor da tabela - background */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '550px',
+          left: '-1000px',
+          right: '-1000px',
+          height: '600px',
+          background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.25) 3%, rgba(0, 0, 0, 0.3) 8%, rgba(0, 0, 0, 0.35) 12%, rgba(0, 0, 0, 0.4) 20%, rgba(0, 0, 0, 0.5) 35%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.75) 70%, rgba(0, 0, 0, 0.85) 100%)',
+          filter: 'blur(80px)',
+          zIndex: 1,
+          pointerEvents: 'none'
+        }}
+      />
+
       {/* Content */}
       <div
         style={{
           position: 'relative',
           zIndex: 2,
-          maxWidth: '1376px',
-          margin: '0 auto'
+          maxWidth: '1132px',
+          margin: '0 auto',
+          paddingLeft: '32px',
+          paddingRight: '32px',
+          paddingBottom: '0',
+          marginBottom: '0'
         }}
       >
         {/* Renewal Timer */}
-        <div style={{ marginBottom: '40px' }}>
+        <div style={{ marginBottom: '20px', marginLeft: '-32px', marginRight: '-32px' }}>
           <RankingRenewalTimer />
         </div>
 
         {/* Podium */}
-        <div style={{ marginBottom: '-20px' }}>
-          <RankingPodium />
+        <div style={{ display: 'flex', justifyContent: 'center', marginLeft: '-32px', marginRight: '-32px' }}>
+          <Podium />
         </div>
 
         {/* Ranking Table */}
-        <div style={{ marginBottom: '40px' }}>
+        <div style={{ position: 'relative', margin: '0', padding: '0', marginBottom: '0' }}>
           <RankingTable users={rankingData} currentUserId={984} />
         </div>
       </div>
