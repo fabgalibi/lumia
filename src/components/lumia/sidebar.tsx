@@ -39,7 +39,7 @@ export const Sidebar = () => {
       setActiveItem("Configurações");
     } else if (currentPath.startsWith('/ranking')) {
       setActiveItem("Ranking");
-    } else if (currentPath.startsWith('/tutoriais')) {
+    } else if (currentPath.startsWith('/tutorials')) {
       setActiveItem("Tutoriais");
     } else {
       // Para outras rotas, manter o item atual ou definir como "Início"
@@ -189,7 +189,7 @@ export const Sidebar = () => {
         )
       ), 
       label: "Tutoriais", 
-      path: "/tutoriais",
+      path: "/tutorials",
       isEmoji: false 
     },
   ];

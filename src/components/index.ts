@@ -12,3 +12,6 @@ export * from './notifications';
 
 // Animation Components
 export * from './animations';
+
+// Tutorial Components
+export * from './tutorials';
