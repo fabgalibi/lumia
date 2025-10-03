@@ -24,7 +24,9 @@ const MessagesHeader: React.FC = () => {
         background: 'transparent',
         padding: '20px 32px 24px 32px',
         borderBottom: '1px solid #272737',
-        borderLeft: '1px solid #272737'
+        borderLeft: '1px solid #272737',
+        width: '100%',
+        boxSizing: 'border-box'
       }}
     >
       <div className="flex items-center justify-between w-full" style={{ gap: '25px' }}>

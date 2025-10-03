@@ -95,10 +95,7 @@ const MessagesContent: React.FC = () => {
       style={{
         backgroundColor: '#191923',
         minHeight: '100vh',
-        padding: '24px 32px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start'
+        overflowX: 'hidden'
       }}
     >
       {/* Header específico para mensagens */}
@@ -107,13 +104,16 @@ const MessagesContent: React.FC = () => {
       {/* Content principal */}
       <div
         style={{
-          width: '100%',
+          width: 'calc(100% - 64px)',
           height: '912px',
           display: 'flex',
           borderRadius: '12px',
           overflow: 'hidden',
           boxShadow: '0px 1px 2px -1px rgba(255, 255, 255, 0), 0px 1px 3px 0px rgba(255, 255, 255, 0)',
-          marginTop: '10px'
+          marginTop: '10px',
+          marginLeft: '32px',
+          marginRight: '32px',
+          boxSizing: 'border-box'
         }}
       >
       {/* Sidebar */}
