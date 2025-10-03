@@ -36,6 +36,7 @@ createRoot(document.getElementById("root")!).render(
                         <Route path="/account-settings/*" element={<HomeScreen />} />
                         <Route path="/ranking" element={<HomeScreen />} />
                         <Route path="/tutorials" element={<HomeScreen />} />
+                        <Route path="/messages" element={<HomeScreen />} />
                         
                         {/* Profile Setup Flow - Hierarchical Structure */}
                         <Route path="/profile-setup/*" element={

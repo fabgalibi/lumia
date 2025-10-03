@@ -9,6 +9,7 @@ import { Sidebar } from "@/components/lumia/sidebar";
 import { AccountSettingsContent } from "@/components/account-settings";
 import { RankingContent } from "@/components/ranking";
 import { TutorialsContent } from "@/components/tutorials";
+import MessagesContent from "@/components/messages/messages-content";
 import { NotificationsModal } from "@/components/notifications";
 import { SprintProvider, useSprint } from "@/contexts/sprint-context";
 import { SidebarProvider, useSidebar } from "@/contexts/sidebar-context";
@@ -27,6 +28,7 @@ const HomeScreenContent = () => {
   const isAccountSettingsRoute = location.pathname.startsWith('/account-settings');
   const isRankingRoute = location.pathname.startsWith('/ranking');
   const isTutorialsRoute = location.pathname.startsWith('/tutorials');
+  const isMessagesRoute = location.pathname.startsWith('/messages');
   
   // Funções memoizadas para evitar re-criação
   const handleDeleteAccount = useCallback(() => console.log('Deletar conta'), []);
@@ -65,11 +67,13 @@ const HomeScreenContent = () => {
           marginLeft: screenSize === 'mobile' ? '0px' : screenSize === 'tablet' ? '0px' : `${sidebarWidth}px`
         }}
       >
-        <Header 
-          title={isAccountSettingsRoute ? 'Configurações de conta' : isRankingRoute ? 'Ranking' : isTutorialsRoute ? 'Tutoriais' : undefined}
-        />
-        <main className={`flex-1 ${isRankingRoute || isTutorialsRoute ? '' : 'p-4 sm:p-6 lg:p-8'} space-y-4 sm:space-y-6 overflow-x-auto overflow-y-auto`}>
-          {!isAccountSettingsRoute && !isRankingRoute && !isTutorialsRoute && (
+        {!isMessagesRoute && (
+          <Header 
+            title={isAccountSettingsRoute ? 'Configurações de conta' : isRankingRoute ? 'Ranking' : isTutorialsRoute ? 'Tutoriais' : undefined}
+          />
+        )}
+        <main className={`flex-1 ${isRankingRoute || isTutorialsRoute || isMessagesRoute ? '' : 'p-4 sm:p-6 lg:p-8'} space-y-4 sm:space-y-6 overflow-x-auto overflow-y-auto`}>
+          {!isAccountSettingsRoute && !isRankingRoute && !isTutorialsRoute && !isMessagesRoute && (
             <>
               <StatsCards />
               <SprintSection externalProgress={progress} />
@@ -85,6 +89,7 @@ const HomeScreenContent = () => {
           )}
           {isRankingRoute && <RankingContent />}
           {isTutorialsRoute && <TutorialsContent />}
+          {isMessagesRoute && <MessagesContent />}
         </main>
       </div>
       
