@@ -1,8 +1,11 @@
 export { TutorialsContent } from './tutorials-content';
 export { SearchSection } from './search-section';
 export { HelpSection } from './help-section';
+export { SearchHelpCarousel } from './search-help-carousel';
 export { ContinueWatchingSection } from './continue-watching-section';
 export { TutorialCard, type TutorialCardProps } from './tutorial-card';
 export { TutorialCardComplete, type TutorialCardCompleteProps } from './tutorial-card-complete';
 export { TutorialCardMain } from './tutorial-card-main';
 export { TutorialsGrid } from './tutorials-grid';
+export { TutorialsCarousel } from './tutorials-carousel';
+export { ContinueWatchingCarousel } from './continue-watching-carousel';

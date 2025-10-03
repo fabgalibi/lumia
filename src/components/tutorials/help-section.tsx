@@ -6,30 +6,48 @@ interface HelpSectionProps {
 }
 
 export const HelpSection: React.FC<HelpSectionProps> = ({ className = '' }) => {
+  const [isDesktop, setIsDesktop] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkDesktop = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
+
   return (
-    <div 
-      className={`relative rounded-xl overflow-hidden ${className}`}
-      style={{
-        width: '100%',
-        minWidth: '280px',
-        height: '218px',
-        background: '#2D2D45',
-        border: '1px solid rgba(255, 255, 255, 0.12)',
-        borderRadius: '12px',
-        padding: '24px 20px 24px 24px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '12px'
-      }}
-    >
-      {/* Header */}
+        <div
+          className={`relative rounded-xl overflow-hidden ${className}`}
+          style={{
+            width: isDesktop ? '100%' : '100%',
+            maxWidth: isDesktop ? '600px' : '100%',
+            minWidth: isDesktop ? '400px' : '100%',
+            height: isDesktop ? '218px' : '266px',
+            background: '#2D2D45',
+            border: isDesktop ? '1px solid transparent' : '1px solid rgba(255, 255, 255, 0.12)',
+            backgroundImage: isDesktop ? 'linear-gradient(#2D2D45, #2D2D45), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)' : 'none',
+            backgroundOrigin: isDesktop ? 'border-box' : 'initial',
+            backgroundClip: isDesktop ? 'padding-box, border-box' : 'initial',
+            borderRadius: '12px',
+            padding: isDesktop ? '24px 20px 24px 24px' : '16px 16px 20px 16px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: isDesktop ? '12px' : '0',
+            justifyContent: isDesktop ? 'flex-start' : 'space-between',
+            opacity: 1
+          }}
+        >
+      {/* Header - desktop: ícone esquerda, botão direita */}
       <div 
         style={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: isDesktop ? 'space-between' : 'flex-start',
           alignItems: 'center',
           width: '100%',
-          gap: '16px'
+          gap: isDesktop ? '16px' : '0'
         }}
       >
         {/* Ícone de ajuda */}
@@ -38,8 +56,6 @@ export const HelpSection: React.FC<HelpSectionProps> = ({ className = '' }) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            width: '56px',
-            height: '56px',
             background: '#232332',
             border: '1px solid #323251',
             borderRadius: '206px',
@@ -55,42 +71,44 @@ export const HelpSection: React.FC<HelpSectionProps> = ({ className = '' }) => {
             }}
           />
         </div>
-        
-        {/* Botão */}
-        <button 
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: '4px',
-            padding: '10px 0px',
-            background: 'transparent',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer'
-          }}
-        >
-          <span 
+
+        {/* Botão - só aparece no desktop */}
+        {isDesktop && (
+          <button
             style={{
-              fontFamily: 'var(--font-sora)',
-              fontSize: '14px',
-              fontWeight: '600',
-              lineHeight: '20px',
-              color: '#F66649',
-              padding: '0px 2px'
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '4px',
+              padding: '10px 0px',
+              background: 'transparent',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer'
             }}
           >
-            Ir para central
-          </span>
-          <ArrowUpRight 
-            style={{
-              width: '20px',
-              height: '20px',
-              color: '#F66649',
-              strokeWidth: '1.67px'
-            }}
-          />
-        </button>
+            <span
+              style={{
+                fontFamily: 'Sora',
+                fontSize: '14px',
+                fontWeight: '600',
+                lineHeight: '1.4285714285714286em',
+                color: '#F66649',
+                padding: '0px 2px'
+              }}
+            >
+              Ir para central
+            </span>
+            <ArrowUpRight
+              style={{
+                width: '20px',
+                height: '20px',
+                color: '#F66649',
+                strokeWidth: '1.67px'
+              }}
+            />
+          </button>
+        )}
       </div>
       
       {/* Content */}
@@ -98,37 +116,86 @@ export const HelpSection: React.FC<HelpSectionProps> = ({ className = '' }) => {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
           width: '100%',
-          gap: '6px'
+          gap: '12px'
         }}
       >
-        <h3 
+        {/* Text Content */}
+        <div 
           style={{
-            fontFamily: 'var(--font-sora)',
-            fontSize: '18px',
-            fontWeight: '600',
-            lineHeight: '28px',
-            color: '#FFFFFF',
-            width: '100%',
-            textAlign: 'left'
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '6px',
+            width: '100%'
           }}
         >
-          Possui alguma dúvida?
-        </h3>
-        <p 
-          style={{
-            fontFamily: 'var(--font-sora)',
-            fontSize: '14px',
-            fontWeight: '400',
-            lineHeight: '20px',
-            color: '#FFFFFF',
-            width: '100%',
-            textAlign: 'left'
-          }}
-        >
-          Acesse a central de ajuda ou fale com nosso time para resolver qualquer questão em poucos cliques.
-        </p>
+          <h3 
+            style={{
+              fontFamily: 'Sora',
+              fontWeight: '600',
+              fontSize: isDesktop ? '18px' : '16px', // Text lg Semibold no desktop
+              lineHeight: isDesktop ? '1.5555555555555556em' : '1.5em', // Line height/text-lg no desktop
+              color: '#FFFFFF',
+              width: '100%',
+              textAlign: 'left'
+            }}
+          >
+            Possui alguma dúvida?
+          </h3>
+          <p 
+            style={{
+              fontFamily: 'Sora',
+              fontWeight: '400',
+              fontSize: '14px', // Text sm Regular em ambos
+              lineHeight: '1.4285714285714286em',
+              color: '#FFFFFF',
+              width: '100%',
+              textAlign: 'left'
+            }}
+          >
+            Acesse a central de ajuda ou fale com nosso time para resolver qualquer questão em poucos cliques.
+          </p>
+        </div>
+        
+        {/* Button - só aparece no mobile */}
+        {!isDesktop && (
+          <button 
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '4px',
+              padding: '10px 0px',
+              background: 'transparent',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              alignSelf: 'flex-start'
+            }}
+          >
+            <span 
+              style={{
+                fontFamily: 'Sora',
+                fontWeight: '600',
+                fontSize: '14px',
+                lineHeight: '1.4285714285714286em',
+                color: '#F66649',
+                padding: '0px 2px'
+              }}
+            >
+              Ir para central
+            </span>
+            <ArrowUpRight 
+              style={{
+                width: '20px',
+                height: '20px',
+                color: '#F66649',
+                strokeWidth: '1.67px'
+              }}
+            />
+          </button>
+        )}
       </div>
     </div>
   );

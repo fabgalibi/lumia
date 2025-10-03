@@ -18,23 +18,22 @@ export const TutorialCardMain: React.FC<TutorialCardMainProps> = ({
   className = ''
 }) => {
   return (
-    <div 
-      className={className}
-      style={{
-        width: '265px',
-        height: '296px',
-        background: '#252532',
-        borderRadius: '8px',
-        border: '1px solid',
-        borderImageSource: 'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)',
-        borderImageSlice: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        overflow: 'hidden',
-        position: 'relative'
-      }}
-    >
+      <div 
+        className={`${className} rounded-lg`}
+        style={{
+          width: className.includes('w-full') ? '100%' : '265px',
+          height: '296px',
+          background: '#252532',
+          borderRadius: '8px',
+          border: '1px solid rgba(255, 255, 255, 0.12)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          overflow: 'hidden',
+          position: 'relative',
+          boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 -1px 0 rgba(255, 255, 255, 0.06)'
+        }}
+      >
       {/* Image section */}
       <div 
         style={{
@@ -43,7 +42,9 @@ export const TutorialCardMain: React.FC<TutorialCardMainProps> = ({
           background: '#414151',
           backgroundImage: `url(${image})`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center'
+          backgroundPosition: 'center',
+          borderTopLeftRadius: '8px',
+          borderTopRightRadius: '8px'
         }}
       />
       

@@ -19,7 +19,7 @@ export const TutorialsGrid: React.FC<TutorialsGridProps> = ({
 }) => {
   return (
     <div 
-      className={className}
+      className={`${className} overflow-x-auto lg:overflow-visible`}
       style={{
         display: 'flex',
         flexDirection: 'row',
@@ -29,16 +29,26 @@ export const TutorialsGrid: React.FC<TutorialsGridProps> = ({
         gap: '24px'
       }}
     >
-      {tutorials.map((tutorial) => (
-        <TutorialCardMain
-          key={tutorial.id}
-          id={tutorial.id}
-          title={tutorial.title}
-          description={tutorial.description}
-          image={tutorial.thumbnail}
-          isWatched={tutorial.isWatched}
-        />
-      ))}
+      <div 
+        className="flex gap-6 lg:flex-wrap lg:gap-6"
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '24px'
+        }}
+      >
+        {tutorials.map((tutorial) => (
+          <TutorialCardMain
+            key={tutorial.id}
+            id={tutorial.id}
+            title={tutorial.title}
+            description={tutorial.description}
+            image={tutorial.thumbnail}
+            isWatched={tutorial.isWatched}
+            className="flex-shrink-0 lg:flex-shrink"
+          />
+        ))}
+      </div>
     </div>
   );
 };

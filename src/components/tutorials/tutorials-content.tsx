@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { SearchSection } from './search-section';
 import { HelpSection } from './help-section';
+import { SearchHelpCarousel } from './search-help-carousel';
 import { ContinueWatchingSection } from './continue-watching-section';
 import { Tabs } from '@/components/ui/design-system';
 import { TutorialCard } from './tutorial-card';
 import { TutorialsGrid } from './tutorials-grid';
+import { TutorialsCarousel } from './tutorials-carousel';
+import { ContinueWatchingCarousel } from './continue-watching-carousel';
 
 interface TutorialsContentProps {
   className?: string;
@@ -12,6 +15,25 @@ interface TutorialsContentProps {
 
 export const TutorialsContent: React.FC<TutorialsContentProps> = ({ className = '' }) => {
   const [activeTab, setActiveTab] = useState('todos');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Funções de busca
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    // Aqui você pode implementar a lógica de busca
+    console.log('Busca realizada:', query);
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setSearchQuery(suggestion);
+    // Filtrar por categoria baseada na sugestão
+    if (suggestion === 'Primeiros passos') {
+      setActiveTab('primeiros-passos');
+    } else if (suggestion === 'Funções principais') {
+      setActiveTab('funcionalidades');
+    }
+    console.log('Sugestão clicada:', suggestion);
+  };
 
   // Dados das abas
   const tabs = [
@@ -289,28 +311,69 @@ export const TutorialsContent: React.FC<TutorialsContentProps> = ({ className = 
     return tutorialsByCategory[activeTab as keyof typeof tutorialsByCategory] || tutorialsByCategory.todos;
   };
 
-  return (
-    <div className={`min-h-screen bg-[#191923] w-full ${className}`}>
-      <div className="w-full px-4 lg:px-8 space-y-6 lg:space-y-8">
+      return (
+        <div className={`min-h-screen bg-[#191923] w-full ${className}`}>
+            <div
+              className="w-full py-12 px-2 lg:px-8"
+              style={{
+                gap: '32px',
+                display: 'flex',
+                flexDirection: 'column'
+              }}
+            >
         {/* Seção superior: Busca e Ajuda */}
-        <div className="flex flex-col lg:flex-row items-stretch gap-4 lg:gap-6 w-full">
-          <div className="flex-1 max-w-4xl">
-            <SearchSection className="w-full h-[218px]" />
+        <div>
+          {/* Mobile: Carousel de busca e ajuda */}
+          <div className="lg:hidden">
+            <SearchHelpCarousel 
+              onSearch={handleSearch}
+              onSuggestionClick={handleSuggestionClick}
+            />
           </div>
-          <div className="w-full lg:w-[340px] lg:flex-shrink-0">
-            <HelpSection className="w-full h-[218px]" />
-          </div>
+          
+              {/* Desktop: Layout lado a lado */}
+              <div
+                className="hidden lg:flex flex-row items-center w-full"
+                style={{
+                  gap: '24px',
+                  alignItems: 'stretch',
+                  justifyContent: 'stretch'
+                }}
+              >
+              <SearchSection
+                className="flex-[2]"
+                onSearch={handleSearch}
+                onSuggestionClick={handleSuggestionClick}
+              />
+              <HelpSection className="flex-1" />
+              </div>
         </div>
 
-        {/* Seção Continue Assistindo */}
-        <div className="w-full">
-          <ContinueWatchingSection />
-        </div>
+            {/* Seção Continue Assistindo */}
+            <div className="w-full lg:mx-[-35px]" style={{ overflow: 'visible' }}>
+              {/* Mobile Carousel */}
+              <div className="lg:hidden">
+                <ContinueWatchingCarousel />
+              </div>
+              {/* Tablet and Desktop Layout */}
+              <div className="hidden lg:block" style={{ overflow: 'visible' }}>
+                <ContinueWatchingSection />
+              </div>
+            </div>
 
-        {/* Seção de Tutoriais */}
-        <div className="w-full space-y-6">
+            {/* Seção de Tutoriais */}
+            <div 
+              className="w-full"
+              style={{
+                gap: '24px',
+                display: 'flex',
+                flexDirection: 'column',
+                paddingLeft: '8px'
+              }}
+            >
           {/* Cabeçalho com abas */}
           <div 
+            className="flex flex-col lg:flex-row lg:items-end gap-4 lg:gap-6"
             style={{
               display: 'flex',
               flexDirection: 'row',
@@ -340,7 +403,14 @@ export const TutorialsContent: React.FC<TutorialsContentProps> = ({ className = 
           </div>
 
           {/* Grid de tutoriais */}
-          <TutorialsGrid tutorials={getCurrentTutorials()} />
+          {/* Mobile Carousel */}
+          <div className="lg:hidden">
+            <TutorialsCarousel tutorials={getCurrentTutorials()} />
+          </div>
+          {/* Desktop Grid */}
+          <div className="hidden lg:block">
+            <TutorialsGrid tutorials={getCurrentTutorials()} />
+          </div>
         </div>
       </div>
     </div>

@@ -78,6 +78,42 @@ export const ContinueWatchingSection: React.FC<ContinueWatchingSectionProps> = (
     },
     {
       id: '11',
+      title: 'Personalizando configurações avançadas',
+      image: '/images/tutorials/tutorial-card-3-9956fd.png',
+      progress: 23
+    },
+    {
+      id: '12',
+      title: 'Exportando dados e relatórios',
+      image: '/images/tutorials/tutorial-card-4-259fa6.png',
+      progress: 67
+    },
+    {
+      id: '13',
+      title: 'Integrando com ferramentas externas',
+      image: '/images/tutorials/tutorial-card-1.png',
+      progress: 89
+    },
+    {
+      id: '14',
+      title: 'Otimizando performance do sistema',
+      image: '/images/tutorials/tutorial-card-2.png',
+      progress: 156
+    },
+    {
+      id: '15',
+      title: 'Gerenciando permissões de usuário',
+      image: '/images/tutorials/tutorial-card-3-9956fd.png',
+      progress: 45
+    },
+    {
+      id: '16',
+      title: 'Configurando backup automático',
+      image: '/images/tutorials/tutorial-card-4-259fa6.png',
+      progress: 78
+    },
+    {
+      id: '11',
       title: 'Configurando lembretes de estudo',
       image: '/images/tutorials/tutorial-card-3-9956fd.png',
       progress: 67
@@ -87,29 +123,58 @@ export const ContinueWatchingSection: React.FC<ContinueWatchingSectionProps> = (
       title: 'Utilizando filtros avançados',
       image: '/images/tutorials/tutorial-card-4-259fa6.png',
       progress: 45
+    },
+    {
+      id: '17',
+      title: 'Criando grupos de estudo personalizados',
+      image: '/images/tutorials/tutorial-card-1.png',
+      progress: 23
+    },
+    {
+      id: '18',
+      title: 'Configurando alertas de prazo',
+      image: '/images/tutorials/tutorial-card-2.png',
+      progress: 89
     }
   ];
 
-  // Calcular cards visíveis baseado na largura da tela
-  const getCardsPerView = () => {
-    if (typeof window !== 'undefined') {
-      const width = window.innerWidth;
-      // Considerando header de 240px + gaps
-      const availableWidth = width - 240 - 32; // 32px para gaps
-      const cardWidth = 249 + 16; // 249px card + 16px gap
-      const maxCards = Math.floor(availableWidth / cardWidth);
-      
-      return Math.max(1, Math.min(maxCards, 6)); // Entre 1 e 6 cards
-    }
-    return 4; // Default
-  };
+          // Calcular cards visíveis baseado na largura da tela
+          const getCardsPerView = () => {
+            if (typeof window !== 'undefined') {
+              const width = window.innerWidth;
+              
+              // Header width conforme Figma - sempre 268px para desktop
+              let headerWidth = 268;
+              if (width < 1024) {
+                headerWidth = Math.min(width * 0.25, 200); // Mobile/tablet: header menor
+              }
+              
+              // Usar toda a largura disponível até o fim da tela
+              const availableWidth = width - headerWidth; // Sem gap, usar toda largura
+              const cardWidth = 249; // Apenas a largura do card
+              
+              // Sempre mostrar cards parciais até o fim da tela
+              // Usar Math.ceil para incluir cards parciais
+              return Math.ceil(availableWidth / cardWidth);
+            }
+            return 4; // Default para desktop
+          };
 
-  const [cardsPerView, setCardsPerView] = useState(getCardsPerView());
+  // Calcular dinamicamente quantos cards cabem na tela
+  const initialCardsPerView = typeof window !== 'undefined' ? getCardsPerView() : 4;
+  const initialIsDesktop = typeof window !== 'undefined' ? window.innerWidth >= 1024 : false;
   
-  // Atualizar cardsPerView quando a janela for redimensionada
+  const [cardsPerView, setCardsPerView] = useState(initialCardsPerView);
+  const [isDesktop, setIsDesktop] = useState(initialIsDesktop);
+  
+  // Atualizar cardsPerView e isDesktop quando a janela for redimensionada
   React.useEffect(() => {
     const handleResize = () => {
-      setCardsPerView(getCardsPerView());
+      const width = window.innerWidth;
+      const newCardsPerView = getCardsPerView(); // Calcular dinamicamente
+      const newIsDesktop = width >= 1024; // Usar 1024px como breakpoint para desktop
+      setCardsPerView(newCardsPerView);
+      setIsDesktop(newIsDesktop);
     };
     
     window.addEventListener('resize', handleResize);
@@ -118,6 +183,7 @@ export const ContinueWatchingSection: React.FC<ContinueWatchingSectionProps> = (
 
   const maxIndex = Math.max(0, tutorials.length - cardsPerView);
   const visibleTutorials = tutorials.slice(currentIndex, currentIndex + cardsPerView);
+  
 
   const handlePrevious = () => {
     setCurrentIndex(prev => Math.max(0, prev - 1));
@@ -127,42 +193,45 @@ export const ContinueWatchingSection: React.FC<ContinueWatchingSectionProps> = (
     setCurrentIndex(prev => Math.min(maxIndex, prev + 1));
   };
   return (
-    <div 
-      className={className}
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        gap: '16px',
-        alignItems: 'stretch',
-        width: '100%'
-      }}
-    >
+        <div 
+          className={`${className} w-full`}
+          style={{
+            display: 'flex',
+            flexDirection: isDesktop ? 'row' : 'column',
+            gap: isDesktop ? '12px' : '24px',
+            alignItems: isDesktop ? 'flex-start' : 'stretch',
+            width: '100%',
+            padding: isDesktop ? '0 0' : '12px 16px',
+            overflowX: 'visible'
+          }}
+        >
       {/* Header Section */}
       <div 
         style={{
           display: 'flex',
-          flexDirection: 'column',
-          gap: '16px',
-          width: '240px',
-          minWidth: '180px',
-          flexShrink: 0
+          flexDirection: isDesktop ? 'column' : 'row',
+          gap: isDesktop ? '20px' : '12px',
+          alignItems: isDesktop ? 'flex-start' : 'stretch',
+          width: isDesktop ? '268px' : '100%',
+          flexShrink: 0,
+          paddingLeft: isDesktop ? '35px' : '0'
         }}
       >
         <div 
           style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: '8px',
-            width: '100%'
+            gap: isDesktop ? '8px' : '6px',
+            width: '100%',
+            flex: isDesktop ? 'none' : 1
           }}
         >
           <h2 
             style={{
               fontFamily: 'Sora',
               fontWeight: '600',
-              fontStyle: 'normal',
-              fontSize: '18px',
-              lineHeight: '24px',
+              fontSize: isDesktop ? '20px' : '16px', // Menor no tablet
+              lineHeight: '1.5em',
               letterSpacing: '0%',
               color: '#FFFFFF',
               width: '100%'
@@ -174,9 +243,8 @@ export const ContinueWatchingSection: React.FC<ContinueWatchingSectionProps> = (
             style={{
               fontFamily: 'Sora',
               fontWeight: '400',
-              fontStyle: 'normal',
-              fontSize: '12px',
-              lineHeight: '18px',
+              fontSize: isDesktop ? '14px' : '12px', // Menor no tablet
+              lineHeight: '1.4285714285714286em',
               letterSpacing: '0%',
               color: '#F0F0F1',
               width: '100%'
@@ -186,119 +254,120 @@ export const ContinueWatchingSection: React.FC<ContinueWatchingSectionProps> = (
           </p>
         </div>
         
-        {/* Navigation buttons */}
-        <div 
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            gap: '12px'
-          }}
-        >
-          <button 
-            onClick={handlePrevious}
-            disabled={currentIndex === 0}
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '32px',
-              height: '32px',
-              background: '#2D2D45',
-              border: 'none',
-              borderRadius: '6px',
-              padding: '6px',
-              cursor: currentIndex === 0 ? 'not-allowed' : 'pointer',
-              opacity: currentIndex === 0 ? 0.5 : 1
-            }}
-          >
-            <div
-              style={{
-                width: '20px',
-                height: '20px',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                opacity: 1
-              }}
-            >
-              <img 
-                src="/images/tutorials/chevron-left-icon.svg"
-                alt="Previous"
-                style={{
-                  width: '5px',
-                  height: '10px',
-                  filter: 'brightness(0) saturate(100%) invert(58%) sepia(7%) saturate(1138%) hue-rotate(202deg) brightness(95%) contrast(89%)'
-                }}
-              />
-            </div>
+                {/* Navigation buttons */}
+                <div 
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: '12px',
+                    flexShrink: 0
+                  }}
+                >
+                <button 
+                  onClick={handlePrevious}
+                  disabled={currentIndex === 0}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '32px',
+                    height: '32px',
+                    background: currentIndex === 0 ? '#212130' : '#2D2D45',
+                    border: 'none',
+                    borderRadius: '6px',
+                    padding: '6px',
+                    cursor: currentIndex === 0 ? 'not-allowed' : 'pointer',
+                    opacity: 1
+                  }}
+                >
+                <div
+                  style={{
+                    width: '20px',
+                    height: '20px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    opacity: 1
+                  }}
+                >
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.5 15L7.5 10L12.5 5" stroke="#94979C" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
           </button>
-          <button 
-            onClick={handleNext}
-            disabled={currentIndex >= maxIndex}
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '32px',
-              height: '32px',
-              background: '#2D2D45',
-              border: 'none',
-              borderRadius: '6px',
-              padding: '6px',
-              cursor: currentIndex >= maxIndex ? 'not-allowed' : 'pointer',
-              opacity: currentIndex >= maxIndex ? 0.5 : 1
-            }}
-          >
-            <div
-              style={{
-                width: '20px',
-                height: '20px',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                opacity: 1
-              }}
-            >
-              <img 
-                src="/images/tutorials/chevron-right-icon.svg"
-                alt="Next"
+              <button 
+                onClick={handleNext}
+                disabled={currentIndex >= maxIndex}
                 style={{
-                  width: '5px',
-                  height: '10px',
-                  filter: 'brightness(0) saturate(100%) invert(53%) sepia(3%) saturate(1352%) hue-rotate(202deg) brightness(93%) contrast(89%)'
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '32px',
+                  height: '32px',
+                  background: currentIndex >= maxIndex ? '#212130' : '#2D2D45',
+                  border: 'none',
+                  borderRadius: '6px',
+                  padding: '6px',
+                  cursor: currentIndex >= maxIndex ? 'not-allowed' : 'pointer',
+                  opacity: 1
                 }}
-              />
-            </div>
+              >
+                <div
+                  style={{
+                    width: '20px',
+                    height: '20px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    opacity: 1
+                  }}
+                >
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.5 15L12.5 10L7.5 5" stroke="#85888E" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
           </button>
         </div>
       </div>
       
-          {/* Tutorial cards */}
-          <div 
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '16px',
-              width: '100%',
-              flex: 1,
-              overflow: 'hidden'
-            }}
-          >
+              {/* Tutorial cards */}
+              <div 
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: isDesktop ? 'flex-start' : 'center',
+                  gap: '12px',
+                  flex: 1,
+                  overflow: 'visible',
+                  width: '100%',
+                  paddingLeft: isDesktop ? '0' : '16px',
+                  paddingRight: '0',
+                  overflowX: 'visible'
+                }}
+              >
         {visibleTutorials.map((tutorial) => (
-          <div 
-            key={tutorial.id}
-            style={{
-              background: '#252532',
-              borderRadius: '8px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              width: '249px',
-              minWidth: '249px',
-              flexShrink: 0
-            }}
-          >
+              <div 
+                key={tutorial.id}
+                className="rounded-lg"
+                style={{
+                  background: '#252532',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignSelf: 'stretch',
+                  width: '249px',
+                  height: '250px',
+                  minWidth: '249px',
+                  flexShrink: 0,
+                  opacity: 1,
+                  overflow: 'hidden',
+                  position: 'relative',
+                  boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 -1px 0 rgba(255, 255, 255, 0.06)'
+                }}
+              >
             {/* Image section */}
             <div 
               style={{
@@ -307,7 +376,11 @@ export const ContinueWatchingSection: React.FC<ContinueWatchingSectionProps> = (
                 background: '#414151',
                 backgroundImage: `url(${tutorial.image})`,
                 backgroundSize: 'cover',
-                backgroundPosition: 'center'
+                backgroundPosition: 'center',
+                borderTopLeftRadius: '8px',
+                borderTopRightRadius: '8px',
+                borderBottomLeftRadius: '0px',
+                borderBottomRightRadius: '0px'
               }}
             />
             
@@ -321,7 +394,7 @@ export const ContinueWatchingSection: React.FC<ContinueWatchingSectionProps> = (
             >
               <div 
                 style={{
-                  width: `${tutorial.progress}px`,
+                  width: `${Math.min(tutorial.progress, 249)}px`,
                   height: '6px',
                   background: '#FDB022',
                   borderRadius: '0px 16px 16px 0px'
@@ -357,7 +430,8 @@ export const ContinueWatchingSection: React.FC<ContinueWatchingSectionProps> = (
                 style={{
                   display: 'flex',
                   gap: '16px',
-                  width: '100%'
+                  width: '100%',
+                  alignItems: 'stretch'
                 }}
               >
                 <button 
@@ -372,6 +446,7 @@ export const ContinueWatchingSection: React.FC<ContinueWatchingSectionProps> = (
                     border: '1px solid #C74228',
                     borderRadius: '8px',
                     flex: 1,
+                    height: '40px',
                     boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
                     cursor: 'pointer',
                     transition: 'all 0.2s ease'
@@ -410,6 +485,7 @@ export const ContinueWatchingSection: React.FC<ContinueWatchingSectionProps> = (
                     border: '1px solid #C74228',
                     borderRadius: '8px',
                     padding: '10px',
+                    flexShrink: 0,
                     boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
                     cursor: 'pointer',
                     transition: 'all 0.2s ease'
@@ -429,7 +505,7 @@ export const ContinueWatchingSection: React.FC<ContinueWatchingSectionProps> = (
                     style={{
                       width: '20px',
                       height: '20px',
-                      filter: 'brightness(0) saturate(100%) invert(86%) sepia(8%) saturate(437%) hue-rotate(202deg) brightness(93%) contrast(86%)'
+                      filter: 'brightness(0) saturate(100%) invert(81%) sepia(6%) saturate(409%) hue-rotate(202deg) brightness(96%) contrast(88%)'
                     }}
                   />
                 </button>
