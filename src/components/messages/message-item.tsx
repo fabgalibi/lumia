@@ -116,7 +116,11 @@ const MessageItem: React.FC<MessageItemProps> = ({
         color: '#94979C',
         lineHeight: '1.4285714285714286em',
         fontFamily: 'Sora',
-        whiteSpace: 'pre-line'
+        whiteSpace: 'pre-line',
+        overflow: 'hidden',
+        display: '-webkit-box',
+        WebkitLineClamp: 2,
+        WebkitBoxOrient: 'vertical'
       }}
     >
       {lastMessage}
