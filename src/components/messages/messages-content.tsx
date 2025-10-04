@@ -136,10 +136,10 @@ const MessagesContent: React.FC = () => {
             borderRight: window.innerWidth < 768 ? 'none' : '1px solid #2C2C45',
             borderLeft: '1px solid #2C2C45',
             borderBottom: '1px solid #2C2C45',
-            borderTopLeftRadius: '16px',
-            borderTopRightRadius: window.innerWidth < 768 ? '16px' : '0px',
-            borderBottomLeftRadius: '16px',
-            borderBottomRightRadius: window.innerWidth < 768 ? '16px' : '0px',
+            borderTopLeftRadius: window.innerWidth < 768 ? '16px' : '16px',
+            borderTopRightRadius: window.innerWidth < 768 ? '0px' : '0px',
+            borderBottomLeftRadius: window.innerWidth < 768 ? '0px' : '16px',
+            borderBottomRightRadius: window.innerWidth < 768 ? '0px' : '0px',
             display: 'flex',
             flexDirection: 'column',
             flexShrink: 0,
@@ -151,6 +151,7 @@ const MessagesContent: React.FC = () => {
           <MessagesSearch 
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
+            onNewMessage={() => setIsModalOpen(true)}
           />
           
           {/* Lista de mensagens */}

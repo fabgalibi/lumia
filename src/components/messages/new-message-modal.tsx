@@ -47,6 +47,18 @@ const mockMentors: Mentor[] = [
 const NewMessageModal: React.FC<NewMessageModalProps> = ({ isOpen, onClose }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [mentors, setMentors] = useState<Mentor[]>(mockMentors);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detectar se é mobile
+  React.useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
 
   const handleMentorSelect = (mentorId: string) => {
     setMentors(prev => 
@@ -78,18 +90,23 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ isOpen, onClose }) =>
         zIndex: 1000
       }}
     >
-      <div
-        style={{
-          width: '532px',
-          backgroundColor: '#202028',
-          border: '1px solid #2C2C45',
-          borderRadius: '12px',
-          boxShadow: '0px 3px 3px -1.5px rgba(255, 255, 255, 0), 0px 8px 8px -4px rgba(255, 255, 255, 0), 0px 20px 24px -4px rgba(255, 255, 255, 0)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center'
-        }}
-      >
+        <div
+          style={{
+            width: isMobile ? '100%' : '532px',
+            backgroundColor: '#202028',
+            border: '1px solid #2C2C45',
+            borderRadius: isMobile ? '12px 12px 0px 0px' : '12px',
+            boxShadow: '0px 3px 3px -1.5px rgba(255, 255, 255, 0), 0px 8px 8px -4px rgba(255, 255, 255, 0), 0px 20px 24px -4px rgba(255, 255, 255, 0)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            position: isMobile ? 'fixed' : 'relative',
+            bottom: isMobile ? '0' : 'auto',
+            left: isMobile ? '0' : 'auto',
+            right: isMobile ? '0' : 'auto',
+            maxHeight: isMobile ? 'calc(100vh - 178px)' : 'none'
+          }}
+        >
         {/* Header */}
         <div
           style={{
@@ -106,15 +123,17 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ isOpen, onClose }) =>
               alignItems: 'center',
               alignSelf: 'stretch',
               gap: '12px',
-              padding: '24px 24px 0px',
+              padding: isMobile ? '24px 16px 16px' : '24px 24px 0px',
               minHeight: '48px'
             }}
           >
             {/* Featured icon */}
             <div
               style={{
-                width: '48px',
-                height: '48px',
+                width: isMobile ? '40px' : '48px',
+                height: isMobile ? '40px' : '48px',
+                backgroundColor: '#2F3239',
+                borderRadius: '9999px',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -122,23 +141,37 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ isOpen, onClose }) =>
               }}
             >
               <svg
-                width="48"
-                height="48"
-                viewBox="0 0 48 48"
+                width={isMobile ? "20" : "48"}
+                height={isMobile ? "20" : "48"}
+                viewBox={isMobile ? "0 0 20 20" : "0 0 48 48"}
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path
-                  d="M0 24C0 10.7452 10.7452 0 24 0C37.2548 0 48 10.7452 48 24C48 37.2548 37.2548 48 24 48C10.7452 48 0 37.2548 0 24Z"
-                  fill="#2F3239"
-                />
-                <path
-                  d="M24 25.5V19.5M21 22.5H27M19 30V32.3355C19 32.8684 19 33.1348 19.1092 33.2716C19.2042 33.3906 19.3483 33.4599 19.5005 33.4597C19.6756 33.4595 19.8837 33.2931 20.2998 32.9602L22.6852 31.0518C23.1725 30.662 23.4162 30.4671 23.6875 30.3285C23.9282 30.2055 24.1844 30.1156 24.4492 30.0613C24.7477 30 25.0597 30 25.6837 30H28.2C29.8802 30 30.7202 30 31.362 29.673C31.9265 29.3854 32.3854 28.9265 32.673 28.362C33 27.7202 33 26.8802 33 25.2V19.8C33 18.1198 33 17.2798 32.673 16.638C32.3854 16.0735 31.9265 15.6146 31.362 15.327C30.7202 15 29.8802 15 28.2 15H19.8C18.1198 15 17.2798 15 16.638 15.327C16.0735 15.6146 15.6146 16.0735 15.327 16.638C15 17.2798 15 18.1198 15 19.8V26C15 26.93 15 27.395 15.1022 27.7765C15.3796 28.8117 16.1883 29.6204 17.2235 29.8978C17.605 30 18.07 30 19 30Z"
-                  stroke="#ECECED"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
+                {isMobile ? (
+                  <>
+                    <path
+                      d="M10 10.25V5.25M7.5 7.75H12.5M5.33333 14V15.9463C5.33333 16.3903 5.33333 16.6123 5.42436 16.7263C5.50352 16.8255 5.62356 16.8832 5.75045 16.8831C5.89636 16.8829 6.06973 16.7442 6.41646 16.4668L8.40434 14.8765C8.81043 14.5517 9.0135 14.3892 9.2396 14.2737C9.4402 14.1712 9.6537 14.0963 9.8743 14.051C10.1231 14 10.3831 14 10.9031 14H13C14.4001 14 15.1002 14 15.635 13.7275C16.1054 13.4878 16.4878 13.1054 16.7275 12.635C17 12.1002 17 11.4001 17 10V5.5C17 4.09987 17 3.3998 16.7275 2.86502C16.4878 2.39462 16.1054 2.01217 15.635 1.77248C15.1002 1.5 14.4001 1.5 13 1.5H6C4.59987 1.5 3.8998 1.5 3.36502 1.77248C2.89462 2.01217 2.51217 2.39462 2.27248 2.86502C2 3.3998 2 4.09987 2 5.5V10.6667C2 11.4416 2 11.8291 2.08519 12.147C2.31635 13.0098 2.99022 13.6836 3.85295 13.9148C4.17087 14 4.55836 14 5.33333 14Z"
+                      stroke="#ECECED"
+                      strokeWidth="1.66667"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <path
+                      d="M0 24C0 10.7452 10.7452 0 24 0C37.2548 0 48 10.7452 48 24C48 37.2548 37.2548 48 24 48C10.7452 48 0 37.2548 0 24Z"
+                      fill="#2F3239"
+                    />
+                    <path
+                      d="M24 25.5V19.5M21 22.5H27M19 30V32.3355C19 32.8684 19 33.1348 19.1092 33.2716C19.2042 33.3906 19.3483 33.4599 19.5005 33.4597C19.6756 33.4595 19.8837 33.2931 20.2998 32.9602L22.6852 31.0518C23.1725 30.662 23.4162 30.4671 23.6875 30.3285C23.9282 30.2055 24.1844 30.1156 24.4492 30.0613C24.7477 30 25.0597 30 25.6837 30H28.2C29.8802 30 30.7202 30 31.362 29.673C31.9265 29.3854 32.3854 28.9265 32.673 28.362C33 27.7202 33 26.8802 33 25.2V19.8C33 18.1198 33 17.2798 32.673 16.638C32.3854 16.0735 31.9265 15.6146 31.362 15.327C30.7202 15 29.8802 15 28.2 15H19.8C18.1198 15 17.2798 15 16.638 15.327C16.0735 15.6146 15.6146 16.0735 15.327 16.638C15 17.2798 15 18.1198 15 19.8V26C15 26.93 15 27.395 15.1022 27.7765C15.3796 28.8117 16.1883 29.6204 17.2235 29.8978C17.605 30 18.07 30 19 30Z"
+                      stroke="#ECECED"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </>
+                )}
               </svg>
             </div>
 
@@ -170,10 +203,10 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ isOpen, onClose }) =>
               onClick={onClose}
               style={{
                 position: 'absolute',
-                right: '12px',
-                top: '12px',
-                width: '44px',
-                height: '44px',
+                right: isMobile ? '16px' : '12px',
+                top: isMobile ? '16px' : '12px',
+                width: isMobile ? '40px' : '44px',
+                height: isMobile ? '40px' : '44px',
                 backgroundColor: 'transparent',
                 border: 'none',
                 borderRadius: '8px',
@@ -184,16 +217,16 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ isOpen, onClose }) =>
               }}
             >
               <svg
-                width="24"
-                height="24"
+                width={isMobile ? "20" : "24"}
+                height={isMobile ? "20" : "24"}
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   d="M18 6L6 18M6 6L18 18"
-                  stroke="#85888E"
-                  strokeWidth="2"
+                  stroke="#F0F0F1"
+                  strokeWidth="1.66667"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
@@ -210,16 +243,16 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ isOpen, onClose }) =>
           />
         </div>
 
-        {/* Content */}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignSelf: 'stretch',
-            gap: '16px',
-            padding: '0px 24px'
-          }}
-        >
+          {/* Content */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignSelf: 'stretch',
+              gap: isMobile ? '20px' : '16px',
+              padding: isMobile ? '0px 16px' : '0px 24px'
+            }}
+          >
           {/* Search input */}
           <div
             style={{
@@ -278,15 +311,15 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ isOpen, onClose }) =>
         </div>
 
         {/* Suggestions */}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignSelf: 'stretch',
-            gap: '16px',
-            padding: '0px 24px'
-          }}
-        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignSelf: 'stretch',
+              gap: '16px',
+              padding: isMobile ? '0px 16px' : '0px 24px'
+            }}
+          >
           <div
             style={{
               fontFamily: 'Sora',
@@ -305,10 +338,11 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ isOpen, onClose }) =>
               flexDirection: 'column',
               alignSelf: 'stretch',
               gap: '12px',
-              maxHeight: '292px',
+              maxHeight: isMobile ? '292px' : '292px',
               overflowY: 'auto',
               scrollbarWidth: 'thin',
-              scrollbarColor: '#535372 #1D1D2E'
+              scrollbarColor: '#535372 #1D1D2E',
+              paddingBottom: isMobile ? '180px' : '0px'
             }}
           >
             {filteredMentors.map((mentor) => (
@@ -437,7 +471,7 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ isOpen, onClose }) =>
               display: 'flex',
               alignSelf: 'stretch',
               gap: '12px',
-              padding: '0px 24px 24px'
+              padding: isMobile ? '0px 16px 16px' : '0px 24px 24px'
             }}
           >
             <button
