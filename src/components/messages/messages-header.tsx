@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { UserMenu } from '@/components/lumia/user-menu';
 import { useSidebar } from '../../contexts/sidebar-context';
+import NewMessageModal from './new-message-modal';
 
-const MessagesHeader: React.FC = () => {
+interface MessagesHeaderProps {
+  onNewMessage?: () => void;
+}
+
+const MessagesHeader: React.FC<MessagesHeaderProps> = ({ onNewMessage }) => {
   const [isMobile, setIsMobile] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { toggleSidebar } = useSidebar();
 
   // Detectar se é mobile/tablet
@@ -69,21 +75,25 @@ const MessagesHeader: React.FC = () => {
 
         {/* Lado direito - Botão Nova Mensagem + Menu + Avatar */}
         <div className="flex items-center" style={{ gap: '16px' }}>
-          {/* Botão Nova Mensagem */}
-          <button
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              gap: isMobile ? '0px' : '4px',
-              padding: isMobile ? '10px' : '10px 14px',
-              backgroundColor: '#C74228',
-              border: '2px solid rgba(255, 255, 255, 0.12)',
-              borderRadius: '8px',
-              boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05)',
-              cursor: 'pointer'
-            }}
-          >
+                 {/* Botão Nova Mensagem */}
+                 <button
+                   onClick={() => {
+                     setIsModalOpen(true);
+                     onNewMessage?.();
+                   }}
+                   style={{
+                     display: 'flex',
+                     justifyContent: 'center',
+                     alignItems: 'center',
+                     gap: isMobile ? '0px' : '4px',
+                     padding: isMobile ? '10px' : '10px 14px',
+                     backgroundColor: '#C74228',
+                     border: '2px solid rgba(255, 255, 255, 0.12)',
+                     borderRadius: '8px',
+                     boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05)',
+                     cursor: 'pointer'
+                   }}
+                 >
             <svg
               width="20"
               height="20"
@@ -123,12 +133,18 @@ const MessagesHeader: React.FC = () => {
             )}
           </button>
 
-          {/* User Menu Component */}
-          <UserMenu />
-        </div>
-      </div>
-    </header>
-  );
-};
+               {/* User Menu Component */}
+               <UserMenu />
+             </div>
+           </div>
 
-export default MessagesHeader;
+           {/* Modal */}
+           <NewMessageModal
+             isOpen={isModalOpen}
+             onClose={() => setIsModalOpen(false)}
+           />
+         </header>
+       );
+     };
+
+     export default MessagesHeader;

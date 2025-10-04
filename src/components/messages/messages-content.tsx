@@ -3,6 +3,7 @@ import MessagesHeader from './messages-header';
 import MessagesSearch from './messages-search';
 import MessagesList from './messages-list';
 import MessagesEmptyState from './messages-empty-state';
+import NewMessageModal from './new-message-modal';
 
 interface MessageItem {
   id: string;
@@ -84,6 +85,7 @@ const mockMessages: MessageItem[] = [
 const MessagesContent: React.FC = () => {
   const [selectedMessage, setSelectedMessage] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const filteredMessages = mockMessages.filter(message =>
     message.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -98,8 +100,8 @@ const MessagesContent: React.FC = () => {
         overflowX: 'hidden'
       }}
     >
-      {/* Header específico para mensagens */}
-      <MessagesHeader />
+             {/* Header específico para mensagens */}
+             <MessagesHeader onNewMessage={() => setIsModalOpen(true)} />
       
             {/* Content principal */}
             <div
@@ -184,11 +186,17 @@ const MessagesContent: React.FC = () => {
                          <p style={{ color: '#FFFFFF' }}>Conversa selecionada: {selectedMessage}</p>
                        </div>
                      ) : (
-                       <MessagesEmptyState />
+                       <MessagesEmptyState onNewMessage={() => setIsModalOpen(true)} />
                      )}
                    </div>
                  )}
       </div>
+
+      {/* Modal */}
+      <NewMessageModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };

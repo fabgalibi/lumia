@@ -1,6 +1,10 @@
 import React from 'react';
 
-const MessagesEmptyState: React.FC = () => (
+interface MessagesEmptyStateProps {
+  onNewMessage?: () => void;
+}
+
+const MessagesEmptyState: React.FC<MessagesEmptyStateProps> = ({ onNewMessage }) => (
   <div
     style={{
       display: 'flex',
@@ -96,22 +100,23 @@ const MessagesEmptyState: React.FC = () => (
         </p>
       </div>
       
-      {/* Botão */}
-            <button
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: '4px',
-                padding: '10px 20px',
-                backgroundColor: '#C74228',
-                border: '2px solid rgba(255, 255, 255, 0.12)',
-                borderRadius: '8px',
-                boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05)',
-                cursor: 'pointer',
-                fontFamily: 'Sora'
-              }}
-            >
+             {/* Botão */}
+             <button
+               onClick={onNewMessage}
+               style={{
+                 display: 'flex',
+                 justifyContent: 'center',
+                 alignItems: 'center',
+                 gap: '4px',
+                 padding: '10px 20px',
+                 backgroundColor: '#C74228',
+                 border: '2px solid rgba(255, 255, 255, 0.12)',
+                 borderRadius: '8px',
+                 boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05)',
+                 cursor: 'pointer',
+                 fontFamily: 'Sora'
+               }}
+             >
         <svg
           width="20"
           height="20"
