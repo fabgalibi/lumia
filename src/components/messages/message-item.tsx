@@ -21,32 +21,35 @@ const MessageItem: React.FC<MessageItemProps> = ({
   hasUnread,
   isSelected, 
   onClick 
-}) => (
+}) => {
+  const isMobile = window.innerWidth < 768;
+
+  return (
   <div
     onClick={onClick}
     style={{
       display: 'flex',
       flexDirection: 'column',
       gap: '12px',
-      padding: '16px 24px 16px 12px',
+      padding: isMobile ? '16px 16px 16px 12px' : '16px 24px 16px 12px',
       borderBottom: '1px solid #22262F',
       cursor: 'pointer',
-      backgroundColor: isSelected ? '#252532' : 'transparent'
+      backgroundColor: isSelected ? '#252532' : 'transparent',
+      alignItems: 'stretch'
     }}
   >
     <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
-        {/* Dot indicador de mensagem não lida */}
-        {hasUnread && (
-          <div
-            style={{
-              width: '8px',
-              height: '8px',
-              backgroundColor: '#F66649',
-              borderRadius: '5px'
-            }}
-          />
-        )}
+        {/* Dot indicador de mensagem não lida - sempre ocupa espaço */}
+        <div
+          style={{
+            width: '8px',
+            height: '8px',
+            backgroundColor: hasUnread ? '#F66649' : 'transparent',
+            borderRadius: '5px',
+            flexShrink: 0
+          }}
+        />
         
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           {/* Avatar */}
@@ -58,7 +61,8 @@ const MessageItem: React.FC<MessageItemProps> = ({
               backgroundImage: `url(${avatar})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              position: 'relative'
+              position: 'relative',
+              flexShrink: 0
             }}
           >
             {/* Indicador online */}
@@ -100,7 +104,8 @@ const MessageItem: React.FC<MessageItemProps> = ({
           fontWeight: '400',
           color: '#CECFD2',
           lineHeight: '1.5em',
-          fontFamily: 'Sora'
+          fontFamily: 'Sora',
+          flexShrink: 0
         }}
       >
         {time}
@@ -116,16 +121,20 @@ const MessageItem: React.FC<MessageItemProps> = ({
         color: '#94979C',
         lineHeight: '1.4285714285714286em',
         fontFamily: 'Sora',
-        whiteSpace: 'pre-line',
+        textAlign: 'left',
         overflow: 'hidden',
         display: '-webkit-box',
         WebkitLineClamp: 2,
-        WebkitBoxOrient: 'vertical'
+        WebkitBoxOrient: 'vertical',
+        textOverflow: 'ellipsis',
+        wordBreak: 'break-word',
+        alignSelf: 'stretch'
       }}
     >
       {lastMessage}
     </div>
   </div>
-);
+  );
+};
 
 export default MessageItem;

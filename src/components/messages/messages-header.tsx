@@ -9,7 +9,7 @@ const MessagesHeader: React.FC = () => {
   // Detectar se é mobile/tablet
   useEffect(() => {
     const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 1100);
+      setIsMobile(window.innerWidth < 768);
     };
 
     checkIsMobile();
@@ -22,7 +22,7 @@ const MessagesHeader: React.FC = () => {
       className="w-full"
       style={{
         background: 'transparent',
-        padding: '20px 32px 24px 32px',
+        padding: isMobile ? '20px 16px 24px 16px' : '20px 32px 24px 32px',
         borderBottom: '1px solid #272737',
         borderLeft: '1px solid #272737',
         width: '100%',
@@ -75,8 +75,8 @@ const MessagesHeader: React.FC = () => {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              gap: '4px',
-              padding: '10px 14px',
+              gap: isMobile ? '0px' : '4px',
+              padding: isMobile ? '10px' : '10px 14px',
               backgroundColor: '#C74228',
               border: '2px solid rgba(255, 255, 255, 0.12)',
               borderRadius: '8px',
@@ -99,26 +99,28 @@ const MessagesHeader: React.FC = () => {
                 strokeLinejoin="round"
               />
             </svg>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: '0px 2px'
-              }}
-            >
-              <span
+            {!isMobile && (
+              <div
                 style={{
-                  fontFamily: 'Sora',
-                  fontWeight: '600',
-                  fontSize: '14px',
-                  lineHeight: '1.4285714285714286em',
-                  color: '#F0F0F1'
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  padding: '0px 2px'
                 }}
               >
-                Nova mensagem
-              </span>
-            </div>
+                <span
+                  style={{
+                    fontFamily: 'Sora',
+                    fontWeight: '600',
+                    fontSize: '14px',
+                    lineHeight: '1.4285714285714286em',
+                    color: '#F0F0F1'
+                  }}
+                >
+                  Nova mensagem
+                </span>
+              </div>
+            )}
           </button>
 
           {/* User Menu Component */}

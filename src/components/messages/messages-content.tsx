@@ -101,44 +101,48 @@ const MessagesContent: React.FC = () => {
       {/* Header específico para mensagens */}
       <MessagesHeader />
       
-      {/* Content principal */}
+            {/* Content principal */}
             <div
               style={{
-                width: 'calc(100% - 64px)',
-                height: 'calc(100vh - 120px)',
-                maxHeight: '800px',
-                minHeight: '600px',
+                width: window.innerWidth < 768 ? 'calc(100% - 32px)' : 'calc(100% - 64px)',
+                height: window.innerWidth < 768 ? 'calc(100vh - 100px)' : 'calc(100vh - 120px)',
+                maxHeight: window.innerWidth < 768 ? 'none' : 'calc(100vh - 120px)',
+                minHeight: window.innerWidth < 768 ? '600px' : 'calc(100vh - 120px)',
                 display: 'flex',
+                flexDirection: window.innerWidth < 768 ? 'column' : 'row',
                 borderRadius: '12px',
                 overflow: 'hidden',
                 boxShadow: '0px 1px 2px -1px rgba(255, 255, 255, 0), 0px 1px 3px 0px rgba(255, 255, 255, 0)',
                 marginTop: '10px',
-                marginLeft: '32px',
-                marginRight: '32px',
+                marginLeft: window.innerWidth < 768 ? '16px' : '32px',
+                marginRight: window.innerWidth < 768 ? '16px' : '32px',
                 boxSizing: 'border-box',
-                '@media (max-width: 768px)': {
-                  width: 'calc(100% - 32px)',
-                  marginLeft: '16px',
-                  marginRight: '16px',
-                  height: 'calc(100vh - 100px)',
-                  flexDirection: 'column'
-                }
+                padding: window.innerWidth < 768 ? '16px 5px 16px 5px' : '18px 5px',
+                gap: '0px'
               }}
             >
         {/* Sidebar */}
         <div
           style={{
-            width: '424px',
-            minWidth: '300px',
-            maxWidth: '424px',
+            width: window.innerWidth < 768 ? '100%' : '360px',
+            minWidth: window.innerWidth < 768 ? '100%' : '360px',
+            maxWidth: window.innerWidth < 768 ? '100%' : '360px',
+            height: window.innerWidth < 768 ? 'calc(100vh - 200px)' : '100%',
+            maxHeight: window.innerWidth < 768 ? 'calc(100vh - 200px)' : '100%',
             backgroundColor: '#1D1D2E',
             borderTop: '1px solid #2C2C45',
-            borderRight: '1px solid #2C2C45',
+            borderRight: window.innerWidth < 768 ? 'none' : '1px solid #2C2C45',
+            borderLeft: '1px solid #2C2C45',
             borderBottom: '1px solid #2C2C45',
             borderTopLeftRadius: '16px',
+            borderTopRightRadius: window.innerWidth < 768 ? '16px' : '0px',
+            borderBottomLeftRadius: '16px',
+            borderBottomRightRadius: window.innerWidth < 768 ? '16px' : '0px',
             display: 'flex',
             flexDirection: 'column',
-            flexShrink: 0
+            flexShrink: 0,
+            overflow: 'hidden',
+            marginRight: window.innerWidth < 768 ? '0px' : '0px'
           }}
         >
           {/* Header com busca */}
@@ -155,33 +159,35 @@ const MessagesContent: React.FC = () => {
           />
         </div>
         
-        {/* Content area */}
-        <div
-          style={{
-            flex: 1,
-            minWidth: '300px',
-            backgroundColor: '#1D1D2E',
-            borderTop: '1px solid #2C2C45',
-            borderRight: '1px solid #2C2C45',
-            borderBottom: '1px solid #2C2C45',
-            borderTopRightRadius: '12px',
-            borderBottomRightRadius: '16px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '20px 32px 40px 32px',
-            overflow: 'auto'
-          }}
-        >
-          {selectedMessage ? (
-            <div>
-              {/* Aqui seria implementada a conversa específica */}
-              <p style={{ color: '#FFFFFF' }}>Conversa selecionada: {selectedMessage}</p>
-            </div>
-          ) : (
-            <MessagesEmptyState />
-          )}
-        </div>
+                 {/* Content area */}
+                 {window.innerWidth >= 768 && (
+                   <div
+                     style={{
+                       flex: 1,
+                       minWidth: '300px',
+                       backgroundColor: '#1D1D2E',
+                       borderTop: '1px solid #2C2C45',
+                       borderRight: '1px solid #2C2C45',
+                       borderBottom: '1px solid #2C2C45',
+                       borderTopRightRadius: '12px',
+                       borderBottomRightRadius: '16px',
+                       display: 'flex',
+                       justifyContent: 'center',
+                       alignItems: 'center',
+                       padding: '20px 32px 40px 32px',
+                       overflow: 'auto'
+                     }}
+                   >
+                     {selectedMessage ? (
+                       <div>
+                         {/* Aqui seria implementada a conversa específica */}
+                         <p style={{ color: '#FFFFFF' }}>Conversa selecionada: {selectedMessage}</p>
+                       </div>
+                     ) : (
+                       <MessagesEmptyState />
+                     )}
+                   </div>
+                 )}
       </div>
     </div>
   );
