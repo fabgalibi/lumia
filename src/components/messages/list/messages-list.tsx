@@ -1,18 +1,9 @@
 import React from 'react';
 import MessageItem from './message-item';
-
-interface MessageItemData {
-  id: string;
-  name: string;
-  avatar: string;
-  isOnline: boolean;
-  lastMessage: string;
-  time: string;
-  hasUnread: boolean;
-}
+import { MessageItem as MessageItemType } from '../../../data/messages';
 
 interface MessagesListProps {
-  messages: MessageItemData[];
+  messages: MessageItemType[];
   selectedMessage: string | null;
   onMessageSelect: (id: string) => void;
 }

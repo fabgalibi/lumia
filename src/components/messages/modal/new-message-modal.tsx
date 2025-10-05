@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 interface NewMessageModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onStartChat: (mentorId: string) => void;
 }
 
 interface Mentor {
@@ -15,28 +16,28 @@ interface Mentor {
 
 const mockMentors: Mentor[] = [
   {
-    id: '1',
+    id: '8',
     name: 'Gabriel Fernandes',
     avatar: '/images/messages/modal-avatar-gabriel-fernandes-5e5d17.png',
     isOnline: true,
     isSelected: false
   },
   {
-    id: '2',
+    id: '9',
     name: 'Isabela Rocha',
     avatar: '/images/messages/modal-avatar-isabela-rocha.png',
     isOnline: true,
-    isSelected: true
+    isSelected: false
   },
   {
-    id: '3',
+    id: '10',
     name: 'Mateus Carvalho',
     avatar: '/images/messages/modal-avatar-mateus-carvalho.png',
     isOnline: false,
     isSelected: false
   },
   {
-    id: '4',
+    id: '11',
     name: 'Larissa Gomes',
     avatar: '/images/messages/modal-avatar-larissa-gomes-49d31f.png',
     isOnline: true,
@@ -44,7 +45,7 @@ const mockMentors: Mentor[] = [
   }
 ];
 
-const NewMessageModal: React.FC<NewMessageModalProps> = ({ isOpen, onClose }) => {
+const NewMessageModal: React.FC<NewMessageModalProps> = ({ isOpen, onClose, onStartChat }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [mentors, setMentors] = useState<Mentor[]>(mockMentors);
   const [isMobile, setIsMobile] = useState(false);
@@ -67,6 +68,14 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ isOpen, onClose }) =>
         isSelected: mentor.id === mentorId
       }))
     );
+  };
+
+  const handleStartChat = () => {
+    const selectedMentor = mentors.find(mentor => mentor.isSelected);
+    if (selectedMentor) {
+      onStartChat(selectedMentor.id);
+      onClose();
+    }
   };
 
   const filteredMentors = mentors.filter(mentor =>
@@ -475,6 +484,7 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ isOpen, onClose }) =>
             }}
           >
             <button
+              onClick={handleStartChat}
               style={{
                 display: 'flex',
                 justifyContent: 'center',

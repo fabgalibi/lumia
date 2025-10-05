@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { UserMenu } from '@/components/lumia/user-menu';
 import { useSidebar } from '../../contexts/sidebar-context';
-import NewMessageModal from './new-message-modal';
 
 interface MessagesHeaderProps {
   onNewMessage?: () => void;
@@ -9,7 +8,6 @@ interface MessagesHeaderProps {
 
 const MessagesHeader: React.FC<MessagesHeaderProps> = ({ onNewMessage }) => {
   const [isMobile, setIsMobile] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const { toggleSidebar } = useSidebar();
 
   // Detectar se é mobile/tablet
@@ -79,7 +77,6 @@ const MessagesHeader: React.FC<MessagesHeaderProps> = ({ onNewMessage }) => {
                  {!isMobile && (
                    <button
                      onClick={() => {
-                       setIsModalOpen(true);
                        onNewMessage?.();
                      }}
                      style={{
@@ -138,11 +135,6 @@ const MessagesHeader: React.FC<MessagesHeaderProps> = ({ onNewMessage }) => {
                </div>
            </div>
 
-           {/* Modal */}
-           <NewMessageModal
-             isOpen={isModalOpen}
-             onClose={() => setIsModalOpen(false)}
-           />
          </header>
        );
      };
