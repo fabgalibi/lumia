@@ -84,7 +84,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'flex-end',
-            gap: '12px',
+            gap: '4px',
             padding: '8px 16px 12px'
           }}
         >
@@ -93,7 +93,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px'
+              gap: '2px'
             }}
           >
             <button

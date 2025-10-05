@@ -10,9 +10,10 @@ interface MessagesChatProps {
   contactAvatar: string;
   isOnline: boolean;
   contactId: string;
+  onBack?: () => void;
 }
 
-const MessagesChat: React.FC<MessagesChatProps> = ({ contactName, contactAvatar, isOnline, contactId }) => {
+const MessagesChat: React.FC<MessagesChatProps> = ({ contactName, contactAvatar, isOnline, contactId, onBack }) => {
   const [messages, setMessages] = useState<ChatMessageType[]>(mockChatMessages[contactId] || []);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -52,13 +53,13 @@ const MessagesChat: React.FC<MessagesChatProps> = ({ contactName, contactAvatar,
       style={{
         display: 'flex',
         flexDirection: 'column',
-        height: '100%',
+        height: window.innerWidth < 768 ? '100vh' : '100%',
         backgroundColor: '#1D1D2E',
-        borderTop: '1px solid #2C2C45',
-        borderRight: '1px solid #2C2C45',
-        borderBottom: '1px solid #2C2C45',
-        borderTopRightRadius: '12px',
-        borderBottomRightRadius: '16px',
+        borderTop: window.innerWidth < 768 ? 'none' : '1px solid #2C2C45',
+        borderRight: window.innerWidth < 768 ? 'none' : '1px solid #2C2C45',
+        borderBottom: window.innerWidth < 768 ? 'none' : '1px solid #2C2C45',
+        borderTopRightRadius: window.innerWidth < 768 ? '0px' : '12px',
+        borderBottomRightRadius: window.innerWidth < 768 ? '0px' : '16px',
         overflow: 'hidden'
       }}
     >
@@ -67,6 +68,7 @@ const MessagesChat: React.FC<MessagesChatProps> = ({ contactName, contactAvatar,
         contactName={contactName}
         contactAvatar={contactAvatar}
         isOnline={isOnline}
+        onBack={onBack}
       />
 
       {/* Área de Mensagens */}

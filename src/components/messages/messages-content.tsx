@@ -82,55 +82,62 @@ const MessagesContent: React.FC = () => {
         overflowX: 'hidden'
       }}
     >
-             {/* Header específico para mensagens */}
-             <MessagesHeader 
-               onNewMessage={() => setIsModalOpen(true)}
-             />
+             {/* Header específico para mensagens - Escondido no mobile quando conversa selecionada */}
+             {!(window.innerWidth < 768 && selectedMessage) && (
+               <MessagesHeader 
+                 onNewMessage={() => setIsModalOpen(true)}
+               />
+             )}
       
             {/* Content principal */}
             <div
               style={{
-                width: window.innerWidth < 768 ? 'calc(100% - 32px)' : 'calc(100% - 64px)',
-                height: window.innerWidth < 768 ? 'calc(100vh - 100px)' : 'calc(100vh - 120px)',
-                maxHeight: window.innerWidth < 768 ? 'none' : 'calc(100vh - 120px)',
-                minHeight: window.innerWidth < 768 ? '600px' : 'calc(100vh - 120px)',
+                width: window.innerWidth < 768 && selectedMessage ? '100vw' : window.innerWidth < 768 ? 'calc(100% - 32px)' : 'calc(100% - 64px)',
+                height: window.innerWidth < 768 && selectedMessage ? '100vh' : window.innerWidth < 768 ? 'calc(100vh - 100px)' : 'calc(100vh - 120px)',
+                maxHeight: window.innerWidth < 768 && selectedMessage ? '100vh' : window.innerWidth < 768 ? 'none' : 'calc(100vh - 120px)',
+                minHeight: window.innerWidth < 768 && selectedMessage ? '100vh' : window.innerWidth < 768 ? '600px' : 'calc(100vh - 120px)',
                 display: 'flex',
                 flexDirection: window.innerWidth < 768 ? 'column' : 'row',
-                borderRadius: '12px',
+                borderRadius: window.innerWidth < 768 && selectedMessage ? '0px' : '12px',
                 overflow: 'hidden',
-                boxShadow: '0px 1px 2px -1px rgba(255, 255, 255, 0), 0px 1px 3px 0px rgba(255, 255, 255, 0)',
-                marginTop: '10px',
-                marginLeft: window.innerWidth < 768 ? '16px' : '32px',
-                marginRight: window.innerWidth < 768 ? '16px' : '32px',
+                boxShadow: window.innerWidth < 768 && selectedMessage ? 'none' : '0px 1px 2px -1px rgba(255, 255, 255, 0), 0px 1px 3px 0px rgba(255, 255, 255, 0)',
+                marginTop: window.innerWidth < 768 && selectedMessage ? '0px' : '10px',
+                marginLeft: window.innerWidth < 768 && selectedMessage ? '0px' : window.innerWidth < 768 ? '16px' : '32px',
+                marginRight: window.innerWidth < 768 && selectedMessage ? '0px' : window.innerWidth < 768 ? '16px' : '32px',
                 boxSizing: 'border-box',
-                padding: window.innerWidth < 768 ? '16px 5px 16px 5px' : '18px 5px',
-                gap: '0px'
+                padding: window.innerWidth < 768 && selectedMessage ? '0px' : window.innerWidth < 768 ? '16px 5px 16px 5px' : '18px 5px',
+                gap: '0px',
+                position: window.innerWidth < 768 && selectedMessage ? 'fixed' : 'relative',
+                top: window.innerWidth < 768 && selectedMessage ? '0' : 'auto',
+                left: window.innerWidth < 768 && selectedMessage ? '0' : 'auto',
+                zIndex: window.innerWidth < 768 && selectedMessage ? '1000' : 'auto'
               }}
             >
-        {/* Sidebar */}
-        <div
-          style={{
-            width: window.innerWidth < 768 ? '100%' : '360px',
-            minWidth: window.innerWidth < 768 ? '100%' : '360px',
-            maxWidth: window.innerWidth < 768 ? '100%' : '360px',
-            height: window.innerWidth < 768 ? 'calc(100vh - 200px)' : '100%',
-            maxHeight: window.innerWidth < 768 ? 'calc(100vh - 200px)' : '100%',
-            backgroundColor: '#1D1D2E',
-            borderTop: '1px solid #2C2C45',
-            borderRight: window.innerWidth < 768 ? 'none' : '1px solid #2C2C45',
-            borderLeft: '1px solid #2C2C45',
-            borderBottom: '1px solid #2C2C45',
-            borderTopLeftRadius: window.innerWidth < 768 ? '16px' : '16px',
-            borderTopRightRadius: window.innerWidth < 768 ? '0px' : '0px',
-            borderBottomLeftRadius: window.innerWidth < 768 ? '0px' : '16px',
-            borderBottomRightRadius: window.innerWidth < 768 ? '0px' : '0px',
-            display: 'flex',
-            flexDirection: 'column',
-            flexShrink: 0,
-            overflow: 'hidden',
-            marginRight: window.innerWidth < 768 ? '0px' : '0px'
-          }}
-        >
+        {/* Sidebar - Escondido no mobile quando conversa selecionada */}
+        {!(window.innerWidth < 768 && selectedMessage) && (
+          <div
+            style={{
+              width: window.innerWidth < 768 ? '100%' : '360px',
+              minWidth: window.innerWidth < 768 ? '100%' : '360px',
+              maxWidth: window.innerWidth < 768 ? '100%' : '360px',
+              height: window.innerWidth < 768 ? 'calc(100vh - 200px)' : '100%',
+              maxHeight: window.innerWidth < 768 ? 'calc(100vh - 200px)' : '100%',
+              backgroundColor: '#1D1D2E',
+              borderTop: '1px solid #2C2C45',
+              borderRight: window.innerWidth < 768 ? 'none' : '1px solid #2C2C45',
+              borderLeft: '1px solid #2C2C45',
+              borderBottom: '1px solid #2C2C45',
+              borderTopLeftRadius: window.innerWidth < 768 ? '16px' : '16px',
+              borderTopRightRadius: window.innerWidth < 768 ? '0px' : '0px',
+              borderBottomLeftRadius: window.innerWidth < 768 ? '0px' : '16px',
+              borderBottomRightRadius: window.innerWidth < 768 ? '0px' : '0px',
+              display: 'flex',
+              flexDirection: 'column',
+              flexShrink: 0,
+              overflow: 'hidden',
+              marginRight: window.innerWidth < 768 ? '0px' : '0px'
+            }}
+          >
           {/* Header com busca */}
           <MessagesSearch 
             searchQuery={searchQuery}
@@ -144,14 +151,16 @@ const MessagesContent: React.FC = () => {
             selectedMessage={selectedMessage}
             onMessageSelect={setSelectedMessage}
           />
-        </div>
+          </div>
+        )}
         
                  {/* Content area */}
-                 {window.innerWidth >= 768 && (
+                 {/* Chat area - Desktop sempre visível, Mobile apenas quando conversa selecionada */}
+                 {(window.innerWidth >= 768 || selectedMessage) && (
                    <div
                      style={{
                        flex: 1,
-                       minWidth: '300px',
+                       minWidth: window.innerWidth < 768 ? '100%' : '300px',
                        display: 'flex',
                        flexDirection: 'column'
                      }}
@@ -162,6 +171,7 @@ const MessagesContent: React.FC = () => {
                          contactAvatar={getSelectedMentor()?.avatar || ''}
                          isOnline={getSelectedMentor()?.isOnline || false}
                          contactId={selectedMessage}
+                         onBack={() => setSelectedMessage(null)}
                        />
                      ) : (
                        <div
