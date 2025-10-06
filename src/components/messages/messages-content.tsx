@@ -5,6 +5,7 @@ import { MessagesList } from './list';
 import MessagesEmptyState from './messages-empty-state';
 import { MessagesChat } from './chat';
 import NewMessageModal from './modal/new-message-modal';
+import ProfileView from './profile/profile-view';
 import { mockMessages } from '../../data/messages';
 
 // Mentores disponíveis para nova conversa
@@ -40,6 +41,7 @@ const MessagesContent: React.FC = () => {
   const [selectedMessage, setSelectedMessage] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
 
   const handleStartChat = React.useCallback((mentorId: string) => {
     setSelectedMessage(mentorId);
@@ -149,7 +151,10 @@ const MessagesContent: React.FC = () => {
           <MessagesList 
             messages={filteredMessages}
             selectedMessage={selectedMessage}
-            onMessageSelect={setSelectedMessage}
+            onMessageSelect={(id) => {
+              setSelectedMessage(id);
+              setShowProfile(false); // Fechar perfil quando selecionar mensagem
+            }}
           />
           </div>
         )}
@@ -166,13 +171,24 @@ const MessagesContent: React.FC = () => {
                      }}
                    >
                      {selectedMessage ? (
-                       <MessagesChat
-                         contactName={getSelectedMentor()?.name || 'Contato'}
-                         contactAvatar={getSelectedMentor()?.avatar || ''}
-                         isOnline={getSelectedMentor()?.isOnline || false}
-                         contactId={selectedMessage}
-                         onBack={() => setSelectedMessage(null)}
-                       />
+                       showProfile ? (
+                         <ProfileView
+                           contactName={getSelectedMentor()?.name || 'Contato'}
+                           contactAvatar={getSelectedMentor()?.avatar || ''}
+                           isOnline={getSelectedMentor()?.isOnline || false}
+                           onClose={() => setShowProfile(false)}
+                           onStartChat={handleStartChat}
+                         />
+                       ) : (
+                         <MessagesChat
+                           contactName={getSelectedMentor()?.name || 'Contato'}
+                           contactAvatar={getSelectedMentor()?.avatar || ''}
+                           isOnline={getSelectedMentor()?.isOnline || false}
+                           contactId={selectedMessage}
+                           onBack={() => setSelectedMessage(null)}
+                           onViewProfile={() => setShowProfile(true)}
+                         />
+                       )
                      ) : (
                        <div
                          style={{

@@ -124,3 +124,44 @@ input[type="search"]::-webkit-search-cancel-button {
     -moz-user-select: text !important;
     -ms-user-select: text !important;
 }
+
+/* Profile Background Responsivo */
+.profile-background {
+    background-image: url('/images/profile/profile-background-desktop.png') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    aspect-ratio: 772 / 148 !important; /* Proporção da imagem desktop */
+    min-height: 148px !important;
+}
+
+/* Mobile: versão otimizada para telas pequenas */
+@media (max-width: 768px) {
+    .profile-background {
+        background-image: url('./images/profile/profile-background-mobile.png') !important;
+        background-size: cover !important;
+        aspect-ratio: 750 / 240 !important; /* Proporção da imagem mobile */
+        min-height: 120px !important;
+    }
+    
+    .profile-container {
+        margin-top: -24px !important;
+    }
+}
+
+/* Media Item Hover Effects */
+.media-item:hover .download-icon {
+    opacity: 1 !important;
+}
+
+.media-item:hover .media-content {
+    padding-right: 40px !important;
+}
+
+.media-item:hover {
+    background-color: rgba(40, 40, 60, 1) !important;
+}
+
+.media-item {
+    cursor: pointer;
+}

@@ -5,9 +5,10 @@ interface ChatHeaderProps {
   contactAvatar: string;
   isOnline: boolean;
   onBack?: () => void;
+  onViewProfile?: () => void;
 }
 
-const ChatHeader: React.FC<ChatHeaderProps> = ({ contactName, contactAvatar, isOnline, onBack }) => {
+const ChatHeader: React.FC<ChatHeaderProps> = ({ contactName, contactAvatar, isOnline, onBack, onViewProfile }) => {
   return (
     <div
       style={{
@@ -159,6 +160,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ contactName, contactAvatar, isO
         onMouseLeave={(e) => {
           e.currentTarget.style.backgroundColor = '#2D2D45';
         }}
+        onClick={onViewProfile}
       >
         <span
           style={{

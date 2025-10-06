@@ -4,6 +4,7 @@ import ChatHeader from './chat-header';
 import ChatMessage from './chat-message';
 import ChatInput from './chat-input';
 import ChatDivider from './chat-divider';
+// import ProfileView from '../profile/profile-view';
 
 interface MessagesChatProps {
   contactName: string;
@@ -11,11 +12,12 @@ interface MessagesChatProps {
   isOnline: boolean;
   contactId: string;
   onBack?: () => void;
+  onViewProfile?: () => void;
 }
 
-const MessagesChat: React.FC<MessagesChatProps> = ({ contactName, contactAvatar, isOnline, contactId, onBack }) => {
+const MessagesChat: React.FC<MessagesChatProps> = ({ contactName, contactAvatar, isOnline, contactId, onBack, onViewProfile }) => {
   const [messages, setMessages] = useState<ChatMessageType[]>(mockChatMessages[contactId] || []);
-  const [isMobile, setIsMobile] = useState(false);
+  // const [isMobile, setIsMobile] = useState(false);
 
   // Atualizar mensagens quando o contato mudar
   useEffect(() => {
@@ -23,15 +25,15 @@ const MessagesChat: React.FC<MessagesChatProps> = ({ contactName, contactAvatar,
   }, [contactId]);
 
   // Detectar se é mobile
-  useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+  // useEffect(() => {
+  //   const checkIsMobile = () => {
+  //     setIsMobile(window.innerWidth < 768);
+  //   };
 
-    checkIsMobile();
-    window.addEventListener('resize', checkIsMobile);
-    return () => window.removeEventListener('resize', checkIsMobile);
-  }, []);
+  //   checkIsMobile();
+  //   window.addEventListener('resize', checkIsMobile);
+  //   return () => window.removeEventListener('resize', checkIsMobile);
+  // }, []);
 
   const handleSendMessage = (messageText: string) => {
     if (messageText.trim()) {
@@ -69,6 +71,7 @@ const MessagesChat: React.FC<MessagesChatProps> = ({ contactName, contactAvatar,
         contactAvatar={contactAvatar}
         isOnline={isOnline}
         onBack={onBack}
+        onViewProfile={onViewProfile}
       />
 
       {/* Área de Mensagens */}
@@ -182,7 +185,8 @@ const MessagesChat: React.FC<MessagesChatProps> = ({ contactName, contactAvatar,
       {/* Input de Mensagem */}
       <ChatInput onSendMessage={handleSendMessage} />
 
-      <style jsx>{`
+
+      <style>{`
         @keyframes typing {
           0%, 60%, 100% {
             transform: translateY(0);
