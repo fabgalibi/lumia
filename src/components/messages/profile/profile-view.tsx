@@ -20,29 +20,92 @@ const ProfileView: React.FC<ProfileViewProps> = ({
   onClose,
   onStartChat
 }) => {
+  const isMobile = window.innerWidth < 768;
+
   return (
     <div
+      className={isMobile ? 'profile-view-mobile' : ''}
       style={{
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
         height: '100%',
-        backgroundColor: '#1D1D2E',
-        borderTop: '1px solid #2C2C45',
-        borderRight: '1px solid #2C2C45',
-        borderBottom: '1px solid #2C2C45',
-        borderTopRightRadius: '12px',
-        borderBottomRightRadius: '16px',
+        backgroundColor: isMobile ? '#191923' : '#1D1D2E',
+        borderTop: isMobile ? 'none' : '1px solid #2C2C45',
+        borderRight: isMobile ? 'none' : '1px solid #2C2C45',
+        borderBottom: isMobile ? 'none' : '1px solid #2C2C45',
+        borderTopRightRadius: isMobile ? '0px' : '12px',
+        borderBottomRightRadius: isMobile ? '0px' : '16px',
         overflow: 'hidden'
       }}
     >
-      {/* Header com título e botão fechar */}
-      <ProfileHeader 
-        contactName={contactName}
-        contactAvatar={contactAvatar}
-        isOnline={isOnline}
-        onClose={onClose}
-      />
+      {/* Header Mobile */}
+      {isMobile ? (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px',
+            backgroundColor: '#252532'
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '16px 16px 0px'
+            }}
+          >
+            <button
+              onClick={onClose}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '24px',
+                height: '24px',
+                backgroundColor: 'transparent',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 18L9 12L15 6" stroke="#ECECED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            
+            <h2
+              style={{
+                fontFamily: 'Sora',
+                fontWeight: 600,
+                fontSize: '16px',
+                lineHeight: '1.5em',
+                color: '#F7F7F7',
+                margin: 0
+              }}
+            >
+              Ver perfil
+            </h2>
+          </div>
+          
+          {/* Divisor */}
+          <div
+            style={{
+              width: '100%',
+              height: '1px',
+              backgroundColor: '#22262F'
+            }}
+          />
+        </div>
+      ) : (
+        <ProfileHeader 
+          contactName={contactName}
+          contactAvatar={contactAvatar}
+          isOnline={isOnline}
+          onClose={onClose}
+        />
+      )}
 
       {/* Conteúdo Scrollável */}
       <div
@@ -50,7 +113,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({
           flex: 1,
           overflowY: 'auto',
           scrollbarWidth: 'thin',
-          scrollbarColor: '#2C2C45 #1D1D2E'
+          scrollbarColor: isMobile ? '#535372 #191923' : '#2C2C45 #1D1D2E'
         }}
       >
         {/* Seção do perfil com avatar, nome e status */}
@@ -59,8 +122,8 @@ const ProfileView: React.FC<ProfileViewProps> = ({
             display: 'flex',
             flexDirection: 'column',
             gap: '-32px',
-            backgroundColor: '#1D1D2E',
-            padding: '0 24px'
+            backgroundColor: isMobile ? '#191923' : '#1D1D2E',
+            padding: isMobile ? '0' : '0 24px'
           }}
         >
           {/* Background Image */}
@@ -79,7 +142,8 @@ const ProfileView: React.FC<ProfileViewProps> = ({
               display: 'flex',
               flexDirection: 'column',
               gap: '16px',
-              marginTop: '-32px'
+              marginTop: '-32px',
+              padding: isMobile ? '0 16px' : '0'
             }}
             className="profile-container"
           >
@@ -250,22 +314,22 @@ const ProfileView: React.FC<ProfileViewProps> = ({
           </div>
         </div>
         {/* Biografia */}
-        <div style={{ padding: '24px 24px 0 24px' }}>
+        <div style={{ padding: isMobile ? '20px 16px 0 16px' : '24px 24px 0 24px' }}>
           <ProfileAboutSection />
         </div>
 
         {/* Informações de Contato */}
-        <div style={{ padding: '0 24px' }}>
+        <div style={{ padding: isMobile ? '0 16px' : '0 24px' }}>
           <ProfileInfoSection contactName={contactName} />
         </div>
 
         {/* Disponibilidade */}
-        <div style={{ padding: '0 24px' }}>
+        <div style={{ padding: isMobile ? '0 16px' : '0 24px' }}>
           <ProfileAvailabilitySection />
         </div>
 
         {/* Conteúdos de Mídia */}
-        <div style={{ padding: '0 24px 24px 24px' }}>
+        <div style={{ padding: isMobile ? '0 16px 20px 16px' : '0 24px 24px 24px' }}>
           <ProfileMediaSection />
         </div>
       </div>

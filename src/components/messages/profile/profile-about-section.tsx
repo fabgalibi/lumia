@@ -1,14 +1,16 @@
 import React from 'react';
 
 const ProfileAboutSection: React.FC = () => {
+  const isMobile = window.innerWidth < 768;
+
   return (
-    <div style={{ marginBottom: '24px' }}>
+    <div style={{ marginBottom: isMobile ? '20px' : '24px' }}>
       <h3
         style={{
           fontFamily: 'Sora',
-          fontWeight: 400,
-          fontSize: '16px',
-          lineHeight: '1.5em',
+          fontWeight: 600,
+          fontSize: '14px',
+          lineHeight: '1.43em',
           color: '#F7F7F7',
           margin: '0 0 4px 0'
         }}

@@ -49,14 +49,16 @@ interface ProfileInfoSectionProps {
 }
 
 const ProfileInfoSection: React.FC<ProfileInfoSectionProps> = ({ contactName }) => {
+  const isMobile = window.innerWidth < 768;
+
   return (
-    <div style={{ marginBottom: '24px' }}>
+    <div style={{ marginBottom: isMobile ? '20px' : '24px' }}>
       <h3
         style={{
           fontFamily: 'Sora',
-          fontWeight: 400,
-          fontSize: '16px',
-          lineHeight: '1.5em',
+          fontWeight: 600,
+          fontSize: '14px',
+          lineHeight: '1.43em',
           color: '#F7F7F7',
           margin: '0 0 12px 0'
         }}
@@ -64,7 +66,7 @@ const ProfileInfoSection: React.FC<ProfileInfoSectionProps> = ({ contactName }) 
         Informações de contato
       </h3>
 
-      <div style={{ display: 'flex', flexDirection: 'row', gap: '20px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <InfoItem
           label="Email"
           value="anabeatriz074@gmail.com"

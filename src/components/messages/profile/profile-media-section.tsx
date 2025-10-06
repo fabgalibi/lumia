@@ -7,6 +7,8 @@ interface MediaItemProps {
 }
 
 const MediaItem: React.FC<MediaItemProps> = ({ title, size, type }) => {
+  const isMobile = window.innerWidth < 768;
+  
   const getFileIcon = () => {
     switch (type) {
       case 'pdf':
@@ -205,7 +207,7 @@ const MediaItem: React.FC<MediaItemProps> = ({ title, size, type }) => {
         backgroundColor: 'rgba(41, 41, 56, 1)',
         borderRadius: '12px',
         border: '1px solid #22262F',
-        width: '230px',
+        width: isMobile ? '100%' : '230px',
         flexShrink: 0,
         position: 'relative',
         transition: 'background-color 0.2s ease'
@@ -290,8 +292,10 @@ const ProfileMediaSection: React.FC = () => {
     { title: 'Tech design requirements.pdf', size: '2.5MB', type: 'docx' as const }
   ];
 
+  const isMobile = window.innerWidth < 768;
+
   return (
-    <div style={{ marginBottom: '24px' }}>
+    <div style={{ marginBottom: isMobile ? '20px' : '24px' }}>
       <h3
         style={{
           fontFamily: 'Sora',
@@ -309,7 +313,7 @@ const ProfileMediaSection: React.FC = () => {
         style={{
           display: 'flex',
           flexWrap: 'wrap',
-          gap: '16px'
+          gap: isMobile ? '12px' : '16px'
         }}
       >
         {mediaItems.map((item, index) => (

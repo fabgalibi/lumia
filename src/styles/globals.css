@@ -142,10 +142,18 @@ input[type="search"]::-webkit-search-cancel-button {
         background-size: cover !important;
         aspect-ratio: 750 / 240 !important; /* Proporção da imagem mobile */
         min-height: 120px !important;
+        max-height: 120px !important; /* Altura máxima para evitar overflow */
+        height: 120px !important; /* Altura fixa conforme Figma */
     }
     
     .profile-container {
-        margin-top: -24px !important;
+        margin-top: -32px !important; /* Ajuste para sobreposição do avatar */
+    }
+    
+    /* Garantir que o container principal não cause overflow */
+    .profile-view-mobile {
+        height: 100vh !important;
+        overflow: hidden !important;
     }
 }
 
@@ -164,4 +172,15 @@ input[type="search"]::-webkit-search-cancel-button {
 
 .media-item {
     cursor: pointer;
+}
+
+/* Mobile: Download icon sempre visível */
+@media (max-width: 768px) {
+    .media-item .download-icon {
+        opacity: 1 !important;
+    }
+    
+    .media-item .media-content {
+        padding-right: 40px !important;
+    }
 }
