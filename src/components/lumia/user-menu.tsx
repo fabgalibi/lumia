@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
+import { useAuth } from "../../contexts/auth-context";
 
 export const UserMenu: React.FC = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   // Fechar menu quando clicar fora
   useEffect(() => {
@@ -99,8 +101,8 @@ export const UserMenu: React.FC = () => {
             <button
               onClick={() => {
                 setIsUserMenuOpen(false);
-                // Aqui você pode adicionar a lógica de logout
-                console.log('Logout');
+                logout();
+                navigate('/login');
               }}
               className="w-full text-left px-4 py-2 text-[#F7F7F7] hover:bg-[#333346] transition-colors duration-200"
               style={{ cursor: 'pointer' }}

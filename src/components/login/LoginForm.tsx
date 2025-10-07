@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { useAuth } from '../../contexts/auth-context';
 
 interface LoginFormProps {
   isMobile: boolean;
@@ -7,6 +8,7 @@ interface LoginFormProps {
 
 export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
   const navigate = useNavigate();
+  const { login, isLoading, error } = useAuth();
   const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'notebook' | 'desktop'>('desktop');
 
   useEffect(() => {
@@ -27,14 +29,27 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
     window.addEventListener('resize', checkScreenSize);
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [localError, setLocalError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login attempt:', { email, password });
-    // Navegar para a home
-    navigate('/home');
+    setLocalError(null);
+
+    console.log('🔐 Tentando login com:', { email, password });
+
+    try {
+      await login({ email, password });
+      console.log('✅ Login bem-sucedido!');
+      // Login bem-sucedido, navegar para a home
+      navigate('/home');
+    } catch (err: any) {
+      console.error('❌ Erro no login:', err);
+      // Erro já está sendo tratado no contexto
+      setLocalError(err.message || 'Erro ao fazer login. Verifique suas credenciais.');
+    }
   };
 
 
@@ -43,8 +58,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
       className="flex items-center justify-center"
       style={{
         padding: isMobile ? '0' : '0',
-        width: isMobile ? '100%' : screenSize === 'notebook' ? '350px' : '510px',
-        height: isMobile ? '100%' : screenSize === 'notebook' ? '600px' : '832px'
+        width: '100%',
+        height: isMobile ? '100%' : 'clamp(500px, 90vh, 832px)'
       }}
     >
       <div 
@@ -52,13 +67,14 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
         style={{
           background: isMobile ? 'transparent' : 'transparent',
           borderRadius: '12px',
-          padding: isMobile ? '0' : screenSize === 'notebook' ? '24px 20px' : '0',
-          maxWidth: isMobile ? '100%' : screenSize === 'notebook' ? '350px' : '510px',
-          height: isMobile ? '100%' : screenSize === 'notebook' ? '600px' : '832px',
+          padding: isMobile ? '0' : screenSize === 'notebook' ? '1vh 1vw' : '0',
+          maxWidth: '100%',
+          height: '100%',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: isMobile ? '24px' : screenSize === 'notebook' ? '32px' : '24px'
+          justifyContent: 'center',
+          gap: isMobile ? '24px' : screenSize === 'notebook' ? 'clamp(16px, 2vh, 32px)' : 'clamp(20px, 2.5vh, 24px)'
         }}
       >
         {/* Mobile Layout */}
@@ -198,6 +214,24 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                 width: '100%'
               }}
             >
+              {/* Error Message */}
+              {(error || localError) && (
+                <div
+                  style={{
+                    background: 'rgba(239, 68, 68, 0.1)',
+                    border: '1px solid rgba(239, 68, 68, 0.3)',
+                    borderRadius: '8px',
+                    padding: '12px 16px',
+                    fontFamily: 'Sora',
+                    fontSize: '14px',
+                    color: '#EF4444',
+                    textAlign: 'center'
+                  }}
+                >
+                  {error || localError}
+                </div>
+              )}
+
               {/* Form Fields */}
               <div 
                 style={{
@@ -306,8 +340,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
               {/* Login Button */}
               <button
                 type="submit"
+                disabled={isLoading}
                 style={{
-                  background: '#C74228',
+                  background: isLoading ? '#8B2E1C' : '#C74228',
                   border: '2px solid rgba(255, 255, 255, 0.12)',
                   borderRadius: '8px',
                   padding: '12px 18px',
@@ -317,11 +352,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                   lineHeight: '1.5em',
                   color: '#FFFFFF',
                   width: '100%',
-                  cursor: 'pointer',
-                  boxShadow: '0px 1px 2px 0px rgba(10, 13, 18, 0.05), inset 0px -2px 0px 0px rgba(10, 13, 18, 0.05), inset 0px 0px 0px 1px rgba(10, 13, 18, 0.18)'
+                  cursor: isLoading ? 'not-allowed' : 'pointer',
+                  boxShadow: '0px 1px 2px 0px rgba(10, 13, 18, 0.05), inset 0px -2px 0px 0px rgba(10, 13, 18, 0.05), inset 0px 0px 0px 1px rgba(10, 13, 18, 0.18)',
+                  opacity: isLoading ? 0.7 : 1,
+                  transition: 'all 0.2s ease'
                 }}
               >
-                Acessar conta
+                {isLoading ? 'Entrando...' : 'Acessar conta'}
               </button>
 
             </form>
@@ -406,7 +443,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: screenSize === 'notebook' ? '20px' : '32px',
+                gap: screenSize === 'notebook' ? 'clamp(16px, 2vh, 24px)' : 'clamp(20px, 3vh, 32px)',
                 width: '100%'
               }}
             >
@@ -416,11 +453,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
               <div
                 style={{
                   position: 'absolute',
-                  top: '-204px',
+                  top: 'clamp(-150px, -15vh, -204px)',
                   left: '50%',
                   transform: 'translateX(-50%)',
-                  width: screenSize === 'notebook' ? '300px' : '400px',
-                  height: '200px',
+                  width: screenSize === 'notebook' ? 'clamp(250px, 25vw, 300px)' : 'clamp(300px, 30vw, 400px)',
+                  height: 'clamp(150px, 15vh, 200px)',
                   background: `
                     radial-gradient(
                       ellipse at center,
@@ -440,8 +477,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                 src="/images/lumia-logo-icon-only.png"
                 alt="Lumia Logo"
                 style={{
-                  width: screenSize === 'notebook' ? '56px' : '76px',
-                  height: screenSize === 'notebook' ? '56px' : '76px',
+                  width: screenSize === 'notebook' ? 'clamp(48px, 5vw, 56px)' : 'clamp(60px, 6vw, 76px)',
+                  height: screenSize === 'notebook' ? 'clamp(48px, 5vw, 56px)' : 'clamp(60px, 6vw, 76px)',
                   objectFit: 'contain',
                   position: 'relative',
                   zIndex: 2
@@ -455,8 +492,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: screenSize === 'notebook' ? '10px' : '16px',
-                width: screenSize === 'notebook' ? '300px' : '384px'
+                gap: screenSize === 'notebook' ? 'clamp(8px, 1vh, 12px)' : 'clamp(12px, 1.5vh, 16px)',
+                width: '100%',
+                maxWidth: screenSize === 'notebook' ? 'clamp(280px, 28vw, 350px)' : 'clamp(320px, 32vw, 384px)'
               }}
             >
               {/* Badge - ACESSE SUA CONTA */}
@@ -502,7 +540,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '12px', // Frame 11 gap: 12px
+                  gap: 'clamp(8px, 1vh, 12px)',
                   width: '100%'
                 }}
               >
@@ -511,7 +549,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                         style={{
                           fontFamily: 'Inter' /* MIGRATED */,
                           fontWeight: 600,
-                          fontSize: screenSize === 'notebook' ? '22px' : '30px',
+                          fontSize: screenSize === 'notebook' ? 'clamp(18px, 2vw, 22px)' : 'clamp(24px, 2.5vw, 30px)',
                           lineHeight: '1.2666666666666666em',
                           color: '#FFFFFF',
                           textAlign: 'center',
@@ -526,7 +564,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                         style={{
                           fontFamily: 'Inter' /* MIGRATED */,
                           fontWeight: 400,
-                          fontSize: screenSize === 'notebook' ? '13px' : '16px',
+                          fontSize: screenSize === 'notebook' ? 'clamp(12px, 1.2vw, 14px)' : 'clamp(14px, 1.4vw, 16px)',
                           lineHeight: '1.5em',
                           color: '#FFFFFF',
                           textAlign: 'center',
@@ -540,20 +578,39 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
         </div>
 
         {/* Form Section - Frame 4 */}
-        <div 
+        <form 
+          onSubmit={handleSubmit}
           style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: screenSize === 'notebook' ? '28px' : '32px',
+            gap: screenSize === 'notebook' ? 'clamp(20px, 2.5vh, 28px)' : 'clamp(24px, 3vh, 32px)',
             width: '100%'
           }}
         >
+          {/* Error Message */}
+          {(error || localError) && (
+            <div
+              style={{
+                background: 'rgba(239, 68, 68, 0.1)',
+                border: '1px solid rgba(239, 68, 68, 0.3)',
+                borderRadius: '8px',
+                padding: '12px 16px',
+                fontFamily: 'Sora',
+                fontSize: '14px',
+                color: '#EF4444',
+                textAlign: 'center'
+              }}
+            >
+              {error || localError}
+            </div>
+          )}
+
           {/* Input Fields Frame - Frame 2 */}
           <div 
             style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: screenSize === 'notebook' ? '18px' : '20px',
+              gap: screenSize === 'notebook' ? 'clamp(14px, 1.5vh, 18px)' : 'clamp(16px, 2vh, 20px)',
               width: '100%'
             }}
           >
@@ -739,10 +796,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
 
           {/* Submit Button - Buttons/Button instance */}
           <button
-            type="button"
-            onClick={handleSubmit}
+            type="submit"
+            disabled={isLoading}
             style={{
-              background: '#C74228',
+              background: isLoading ? '#8B2E1C' : '#C74228',
               border: '2px solid rgba(255, 255, 255, 0.12)',
               borderRadius: '8px',
               padding: '12px 18px',
@@ -751,19 +808,25 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
               fontWeight: 600,
               fontSize: '16px',
               lineHeight: '1.5em',
-              cursor: 'pointer',
+              cursor: isLoading ? 'not-allowed' : 'pointer',
               boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
               width: '100%',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              gap: '6px' // Button gap: 6px
+              gap: '6px',
+              opacity: isLoading ? 0.7 : 1,
+              transition: 'all 0.2s ease'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#B83A20';
+              if (!isLoading) {
+                e.currentTarget.style.background = '#B83A20';
+              }
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#C74228';
+              if (!isLoading) {
+                e.currentTarget.style.background = '#C74228';
+              }
             }}
           >
             {/* Text padding */}
@@ -775,10 +838,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isMobile }) => {
                 alignItems: 'center'
             }}
           >
-            Acessar conta
+            {isLoading ? 'Entrando...' : 'Acessar conta'}
             </span>
           </button>
-        </div>
+        </form>
           </>
         )}
 

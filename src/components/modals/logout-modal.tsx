@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Text, Button, colors } from '@/components/ui/design-system';
 
 interface LogoutModalProps {
   isOpen: boolean;
@@ -25,115 +24,220 @@ export const LogoutModal: React.FC<LogoutModalProps> = ({
     return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
-  console.log('LogoutModal renderizado, isOpen:', isOpen);
-  
   if (!isOpen) return null;
 
   return (
     <div 
-      className="fixed inset-0 flex items-center justify-center z-[999999] pointer-events-none" 
-      style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+      className="fixed inset-0 flex items-center justify-center z-[999999]" 
+      style={{ 
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        pointerEvents: 'auto'
+      }}
+      onClick={onClose}
     >
-      <Container
-        background={colors.bg.primary}
-        borderRadius="xl"
-        padding={isMobile ? 5 : 6}
-        direction="column"
-        gap={6}
-        style={{ 
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
           width: isMobile ? '343px' : '484px',
-          minHeight: isMobile ? '200px' : '256px',
+          background: '#252532',
+          borderRadius: '16px',
           boxShadow: '0px 3px 3px -1.5px rgba(255, 255, 255, 0), 0px 8px 8px -4px rgba(255, 255, 255, 0), 0px 20px 24px -4px rgba(255, 255, 255, 0)',
-          position: 'fixed',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          pointerEvents: 'auto'
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
         }}
       >
-        {/* Background pattern decorative */}
-        <div className="absolute -top-30 -left-30 w-84 h-84 opacity-10">
-          <div className="w-full h-full rounded-full border border-[#22262F]"></div>
+        {/* Background pattern decorative - Position: absolute (-120, -120) */}
+        <div 
+          style={{
+            position: 'absolute',
+            top: '-120px',
+            left: '-120px',
+            width: '336px',
+            height: '336px',
+            opacity: 0.1,
+            pointerEvents: 'none'
+          }}
+        >
+          <svg width="336" height="336" viewBox="0 0 336 336" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="168" cy="168" r="47.5" stroke="#22262F" strokeWidth="1"/>
+            <circle cx="168" cy="168" r="71.5" stroke="#22262F" strokeWidth="1"/>
+            <circle cx="168" cy="168" r="95.5" stroke="#22262F" strokeWidth="1"/>
+            <circle cx="168" cy="168" r="119.5" stroke="#22262F" strokeWidth="1"/>
+            <circle cx="168" cy="168" r="143.5" stroke="#22262F" strokeWidth="1"/>
+          </svg>
         </div>
 
-        {/* Close Button */}
-        <button
-          onClick={() => {
-            console.log('Botão X clicado - fechando modal');
-            onClose();
+        {/* Modal Header - padding: 24px 24px 0px */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+            padding: '24px 24px 0px',
+            width: '100%',
+            alignItems: 'flex-start'
           }}
-          className="absolute top-3 right-3 w-11 h-11 flex items-center justify-center rounded-lg hover:bg-[#333346] transition-colors duration-200"
         >
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9 3L3 9M3 3L9 9" stroke="#61656C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          {/* Featured Icon - 48x48 */}
+          <div
+            style={{
+              width: '48px',
+              height: '48px',
+              background: '#2E2E3F',
+              border: '1px solid #373750',
+              borderRadius: '9999px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0
+            }}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 17L21 12M21 12L16 7M21 12H9M9 3H7.8C6.11984 3 5.27976 3 4.63803 3.32698C4.07354 3.6146 3.6146 4.07354 3.32698 4.63803C3 5.27976 3 6.11984 3 7.8V16.2C3 17.8802 3 18.7202 3.32698 19.362C3.6146 19.9265 4.07354 20.3854 4.63803 20.673C5.27976 21 6.11984 21 7.8 21H9" stroke="#CECFD2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+
+          {/* Text and supporting text */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', width: '100%' }}>
+            <h3
+              style={{
+                fontFamily: 'Sora',
+                fontWeight: 600,
+                fontSize: '16px',
+                lineHeight: '1.5em',
+                color: '#F7F7F7',
+                margin: 0,
+                textAlign: 'left'
+              }}
+            >
+              Sair da conta
+            </h3>
+            <p
+              style={{
+                fontFamily: 'Sora',
+                fontWeight: 400,
+                fontSize: '14px',
+                lineHeight: '1.4285714285714286em',
+                color: '#CECFD2',
+                margin: 0,
+                textAlign: 'left'
+              }}
+            >
+              Tem certeza que deseja sair da conta? Ao prosseguir com essa ação você precisará fazer login novamente.
+            </p>
+          </div>
+        </div>
+
+        {/* Close Button - Position: absolute (428, 12) */}
+        <button
+          onClick={onClose}
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '12px',
+            width: '44px',
+            height: '44px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '8px',
+            borderRadius: '8px',
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            transition: 'background 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = '#333346';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'transparent';
+          }}
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 6L6 18M6 6L18 18" stroke="#61656C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </button>
 
-        {/* Header */}
-        <Container direction="row" gap={4} align="flex-start">
-          <div className="w-12 h-12 flex items-center justify-center">
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M24 0.5C36.9787 0.5 47.5 11.0213 47.5 24C47.5 36.9787 36.9787 47.5 24 47.5C11.0213 47.5 0.5 36.9787 0.5 24C0.5 11.0213 11.0213 0.5 24 0.5Z" fill="#2E2E3F"/>
-              <path d="M24 0.5C36.9787 0.5 47.5 11.0213 47.5 24C47.5 36.9787 36.9787 47.5 24 47.5C11.0213 47.5 0.5 36.9787 0.5 24C0.5 11.0213 11.0213 0.5 24 0.5Z" stroke="#373750"/>
-              <path d="M28 29L33 24M33 24L28 19M33 24H21M21 15H19.8C18.1198 15 17.2798 15 16.638 15.327C16.0735 15.6146 15.6146 16.0735 15.327 16.638C15 17.2798 15 18.1198 15 19.8V28.2C15 29.8802 15 30.7202 15.327 31.362C15.6146 31.9265 16.0735 32.3854 16.638 32.673C17.2798 33 18.1198 33 19.8 33H21" stroke="#CECFD2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          
-          <Container direction="column" gap={1}>
-            <Text
-              variant="body"
-              weight="semibold"
-              color={colors.text.primary}
-            >
-              Sair da conta
-            </Text>
-            <Text
-              variant="caption"
-              color={colors.text.secondary}
-            >
-              Tem certeza que deseja sair da conta? Ao prosseguir com essa ação você precisará fazer login novamente.
-            </Text>
-          </Container>
-        </Container>
-
-        {/* Footer */}
-        <Container
-          direction={isMobile ? "column" : "row"}
-          justify="flex-end"
-          gap={3}
+        {/* Modal Actions - padding: 32px 0px 0px */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            paddingTop: '32px'
+          }}
         >
-          <Button
-            variant="secondary"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              console.log('Botão Cancelar clicado - fechando modal');
-              onClose();
-            }}
+          {/* Buttons - padding: 0px 24px 24px, gap: 12px */}
+          <div
             style={{
-              width: isMobile ? '100%' : '212px',
-              zIndex: 10,
-              pointerEvents: 'auto'
+              display: 'flex',
+              flexDirection: isMobile ? 'column' : 'row',
+              gap: '12px',
+              padding: '0px 24px 24px',
+              width: '100%'
             }}
           >
-            Cancelar
-          </Button>
-          <Button
-            variant="danger"
-            onClick={() => {
-              console.log('Botão Confirmar clicado');
-              onConfirm();
-            }}
-            style={{
-              width: isMobile ? '100%' : '212px',
-              zIndex: 10,
-              pointerEvents: 'auto'
-            }}
-          >
-            Sair da conta
-          </Button>
-        </Container>
-      </Container>
+            {/* Button Secondary - Cancelar */}
+            <button
+              onClick={onClose}
+              style={{
+                flex: 1,
+                padding: '10px 16px',
+                background: '#2D2D45',
+                border: 'none',
+                borderRadius: '8px',
+                fontFamily: 'Sora',
+                fontWeight: 600,
+                fontSize: '16px',
+                lineHeight: '1.5em',
+                color: '#CECFD2',
+                cursor: 'pointer',
+                boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
+                transition: 'background 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#3A3A52';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#2D2D45';
+              }}
+            >
+              Cancelar
+            </button>
+
+            {/* Button Destructive - Sim, continuar */}
+            <button
+              onClick={onConfirm}
+              style={{
+                flex: 1,
+                padding: '10px 16px',
+                background: '#F04438',
+                border: '2px solid rgba(255, 255, 255, 0.12)',
+                borderRadius: '8px',
+                fontFamily: 'Sora',
+                fontWeight: 600,
+                fontSize: '16px',
+                lineHeight: '1.5em',
+                color: '#FFFFFF',
+                cursor: 'pointer',
+                boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
+                transition: 'background 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#D92D20';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#F04438';
+              }}
+            >
+              Sim, continuar
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

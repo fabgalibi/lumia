@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router";
 import { useSidebar } from "@/contexts/sidebar-context";
 import { useMainContent } from "@/contexts/main-content-context";
 import { useNotificationsModal } from "@/contexts/notifications-modal-context";
+import { useAuth } from "@/contexts/auth-context";
 import { LogoutModal } from "@/components/modals/logout-modal";
 
 export const Sidebar = () => {
@@ -11,6 +12,7 @@ export const Sidebar = () => {
   const { isCollapsed, toggleSidebar } = useSidebar();
   const { setCurrentContent } = useMainContent();
   const { openModal: openNotificationsModal, closeModal: closeNotificationsModal } = useNotificationsModal();
+  const { logout } = useAuth();
   const [showTexts, setShowTexts] = useState(true);
   const [activeItem, setActiveItem] = useState("Início");
   const [isLogoutHovered, setIsLogoutHovered] = useState(false);
@@ -227,8 +229,8 @@ export const Sidebar = () => {
   const handleLogoutConfirm = () => {
     console.log('Usuário confirmou logout');
     setShowLogoutModal(false);
-    // Navegar de volta para o login
-    navigate('/');
+    logout();
+    navigate('/login');
   };
 
   const handleLogoutClose = () => {

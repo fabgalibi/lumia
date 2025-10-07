@@ -15,13 +15,16 @@ import { NotFound } from "@/pages/not-found";
 import { RouteProvider } from "@/providers/router-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { ProfileSetupProvider } from "@/contexts/profile-setup-context";
+import { AuthProvider } from "@/contexts/auth-context";
+import { ProtectedRoute } from "@/components/auth";
 import "@/styles/globals.css";
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <ThemeProvider>
-            <BrowserRouter>
-                <RouteProvider>
+            <AuthProvider>
+                <BrowserRouter>
+                    <RouteProvider>
                     <Routes>
                         {/* Public Routes */}
                         <Route path="/" element={<LoginScreen />} />
@@ -29,27 +32,29 @@ createRoot(document.getElementById("root")!).render(
                         <Route path="/welcome" element={<WelcomeScreen />} />
                         
                         {/* Authenticated Routes */}
-                        <Route path="/home" element={<HomeScreen />} />
-                        <Route path="/conclusion" element={<ConclusionScreen />} />
+                        <Route path="/home" element={<ProtectedRoute><HomeScreen /></ProtectedRoute>} />
+                        <Route path="/conclusion" element={<ProtectedRoute><ConclusionScreen /></ProtectedRoute>} />
                         
                         {/* Nested routes dentro de HomeScreen */}
-                        <Route path="/account-settings/*" element={<HomeScreen />} />
-                        <Route path="/ranking" element={<HomeScreen />} />
-                        <Route path="/tutorials" element={<HomeScreen />} />
-                        <Route path="/messages" element={<HomeScreen />} />
+                        <Route path="/account-settings/*" element={<ProtectedRoute><HomeScreen /></ProtectedRoute>} />
+                        <Route path="/ranking" element={<ProtectedRoute><HomeScreen /></ProtectedRoute>} />
+                        <Route path="/tutorials" element={<ProtectedRoute><HomeScreen /></ProtectedRoute>} />
+                        <Route path="/messages" element={<ProtectedRoute><HomeScreen /></ProtectedRoute>} />
                         
                         {/* Profile Setup Flow - Hierarchical Structure */}
                         <Route path="/profile-setup/*" element={
-                            <ProfileSetupProvider>
-                                <Routes>
-                                    <Route index element={<ProfileSetupScreen />} />
-                                    <Route path="preparation" element={<PreparationStepScreen />} />
-                                    <Route path="availability" element={<AvailabilityStepScreen />} />
-                                    <Route path="trajectory" element={<TrajectoryStepScreen />} />
-                                    <Route path="knowledge" element={<KnowledgeStepScreen />} />
-                                    <Route path="final" element={<FinalStepScreen />} />
-                                </Routes>
-                            </ProfileSetupProvider>
+                            <ProtectedRoute>
+                                <ProfileSetupProvider>
+                                    <Routes>
+                                        <Route index element={<ProfileSetupScreen />} />
+                                        <Route path="preparation" element={<PreparationStepScreen />} />
+                                        <Route path="availability" element={<AvailabilityStepScreen />} />
+                                        <Route path="trajectory" element={<TrajectoryStepScreen />} />
+                                        <Route path="knowledge" element={<KnowledgeStepScreen />} />
+                                        <Route path="final" element={<FinalStepScreen />} />
+                                    </Routes>
+                                </ProfileSetupProvider>
+                            </ProtectedRoute>
                         } />
                         
                         {/* Fallback */}
@@ -57,6 +62,7 @@ createRoot(document.getElementById("root")!).render(
                     </Routes>
                 </RouteProvider>
             </BrowserRouter>
+            </AuthProvider>
         </ThemeProvider>
     </StrictMode>,
 );

@@ -4,6 +4,7 @@ import { Timer } from "./timer";
 import { UserMenu } from "./user-menu";
 import { useSidebar } from "../../contexts/sidebar-context";
 import { useMainContent } from "../../contexts/main-content-context";
+import { useAuth } from "../../contexts/auth-context";
 
 interface HeaderProps {
   title?: string;
@@ -15,6 +16,7 @@ export const Header = ({ title, subtitle: _subtitle }: HeaderProps = {}) => {
   const [isMobile, setIsMobile] = useState(false);
   const { toggleSidebar } = useSidebar();
   const { setCurrentContent: _setCurrentContent } = useMainContent();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   // Detectar se é mobile/tablet
@@ -76,7 +78,7 @@ export const Header = ({ title, subtitle: _subtitle }: HeaderProps = {}) => {
             {title ? title : (
               <>
                 Bem-vindo de volta!<br />
-                Max William
+                {user?.name || 'Usuário'}
               </>
             )}
           </h1>
