@@ -8,6 +8,7 @@ import { TutorialCard } from './tutorial-card';
 import { TutorialsGrid } from './tutorials-grid';
 import { TutorialsCarousel } from './tutorials-carousel';
 import { ContinueWatchingCarousel } from './continue-watching-carousel';
+import { VideoModal } from './video-modal';
 
 interface TutorialsContentProps {
   className?: string;
@@ -16,6 +17,8 @@ interface TutorialsContentProps {
 export const TutorialsContent: React.FC<TutorialsContentProps> = ({ className = '' }) => {
   const [activeTab, setActiveTab] = useState('todos');
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedTutorial, setSelectedTutorial] = useState<any>(null);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   // Funções de busca
   const handleSearch = (query: string) => {
@@ -311,6 +314,34 @@ export const TutorialsContent: React.FC<TutorialsContentProps> = ({ className = 
     return tutorialsByCategory[activeTab as keyof typeof tutorialsByCategory] || tutorialsByCategory.todos;
   };
 
+  // Função para abrir o modal de vídeo
+  const handleTutorialClick = (tutorial: any) => {
+    setSelectedTutorial(tutorial);
+    setIsVideoModalOpen(true);
+  };
+
+  // Função para fechar o modal
+  const handleCloseModal = () => {
+    setIsVideoModalOpen(false);
+    setSelectedTutorial(null);
+  };
+
+  // Função para obter descrição detalhada baseada no ID
+  const getDetailedDescription = (tutorialId?: string) => {
+    const detailedDescriptions: { [key: string]: string } = {
+      '1': 'Neste tutorial, você aprenderá a utilizar os relatórios de desempenho da plataforma para acompanhar sua evolução nos estudos. Mostramos como acessar as métricas de cada disciplina, visualizar os resultados de simulados e identificar quais tópicos você já domina e quais precisam de reforço. Também explicamos como interpretar gráficos de progresso, analisar o tempo dedicado a cada matéria e comparar sua performance em diferentes períodos.',
+      '2': 'Aprenda a configurar completamente seu perfil na plataforma Lumia. Neste tutorial, mostramos como atualizar suas informações pessoais, definir suas preferências de estudo, configurar notificações e personalizar sua experiência de aprendizado. Você também descobrirá como gerenciar suas configurações de privacidade e conectar suas redes sociais para uma experiência mais integrada.',
+      '3': 'Descubra como acessar e organizar todos os materiais de estudo disponíveis na plataforma. Este tutorial abrange desde a localização de PDFs e videoaulas até a criação de listas de reprodução personalizadas. Você aprenderá a fazer download de materiais para estudo offline, marcar conteúdos favoritos e acompanhar seu progresso através dos diferentes tipos de conteúdo disponíveis.',
+      '4': 'Aprenda a se comunicar eficientemente com seus mentores através da plataforma. Este tutorial cobre desde o envio de mensagens até o agendamento de sessões de mentoria. Você descobrirá como fazer perguntas específicas, compartilhar arquivos, receber feedback detalhado e acompanhar o histórico de suas conversas para maximizar seu aprendizado.',
+      '5': 'Domine a realização de simulados online na plataforma Lumia. Este tutorial completo ensina desde o agendamento de simulados até a análise detalhada dos resultados. Você aprenderá a interpretar estatísticas de desempenho, identificar pontos fortes e fracos, e usar essas informações para direcionar seus estudos de forma mais eficaz.',
+      '6': 'Explore todos os recursos de relatórios e estatísticas da plataforma. Este tutorial ensina como interpretar gráficos de progresso, analisar métricas de estudo e acompanhar sua evolução ao longo do tempo. Você descobrirá como usar essas informações para otimizar seu plano de estudos e alcançar melhores resultados.',
+      '7': 'Aprenda a acessar e aproveitar ao máximo as gravações de mentorias. Este tutorial mostra como navegar pela biblioteca de vídeos, usar recursos de busca e filtros, e como aplicar o conhecimento adquirido nas gravações em seus estudos. Você também descobrirá como criar playlists personalizadas e compartilhar conteúdos relevantes.',
+      '8': 'Domine o gerenciamento de arquivos na plataforma Lumia. Este tutorial abrange desde o recebimento de materiais enviados por mentores até a organização eficiente de seus arquivos. Você aprenderá a baixar, categorizar e acessar rapidamente todos os documentos importantes para seus estudos.'
+    };
+
+    return detailedDescriptions[tutorialId || '1'] || 'Este tutorial foi projetado para ajudá-lo a dominar uma funcionalidade específica da plataforma Lumia. Acompanhe atentamente as instruções para aproveitar ao máximo sua experiência de aprendizado e alcançar seus objetivos de estudo.';
+  };
+
       return (
         <div className={`min-h-screen bg-[#191923] w-full ${className}`}>
             <div
@@ -405,14 +436,33 @@ export const TutorialsContent: React.FC<TutorialsContentProps> = ({ className = 
           {/* Grid de tutoriais */}
           {/* Mobile Carousel */}
           <div className="lg:hidden">
-            <TutorialsCarousel tutorials={getCurrentTutorials()} />
+            <TutorialsCarousel 
+              tutorials={getCurrentTutorials()} 
+              onTutorialClick={handleTutorialClick}
+            />
           </div>
           {/* Desktop Grid */}
           <div className="hidden lg:block">
-            <TutorialsGrid tutorials={getCurrentTutorials()} />
+            <TutorialsGrid 
+              tutorials={getCurrentTutorials()} 
+              onTutorialClick={handleTutorialClick}
+            />
           </div>
         </div>
       </div>
+
+      {/* Modal de vídeo */}
+      <VideoModal
+        isOpen={isVideoModalOpen}
+        onClose={handleCloseModal}
+        title={selectedTutorial?.title || ''}
+        description={selectedTutorial?.description || ''}
+        videoUrl={selectedTutorial?.thumbnail}
+        currentTime="4:12"
+        totalTime="8:24"
+        progress={50}
+        detailedDescription={getDetailedDescription(selectedTutorial?.id)}
+      />
     </div>
   );
 };

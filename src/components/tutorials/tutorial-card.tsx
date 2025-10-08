@@ -7,6 +7,7 @@ export interface TutorialCardProps {
   progress: number;
   isWatching?: boolean;
   className?: string;
+  onPlay?: () => void;
 }
 
 export const TutorialCard: React.FC<TutorialCardProps> = ({
@@ -14,7 +15,8 @@ export const TutorialCard: React.FC<TutorialCardProps> = ({
   thumbnail,
   progress,
   isWatching = false,
-  className = ''
+  className = '',
+  onPlay
 }) => {
   return (
     <div className={`bg-[#252532] rounded-lg overflow-hidden ${className}`}>
@@ -43,7 +45,10 @@ export const TutorialCard: React.FC<TutorialCardProps> = ({
         
         {/* Botões de ação */}
         <div className="flex gap-4">
-          <button className="flex-1 bg-[#562524] border border-[#C74228] rounded-lg px-3.5 py-2.5 text-[#F0F0F1] text-sm font-semibold leading-5 hover:bg-[#6A2D2A] transition-colors">
+          <button 
+            onClick={onPlay}
+            className="flex-1 bg-[#562524] border border-[#C74228] rounded-lg px-3.5 py-2.5 text-[#F0F0F1] text-sm font-semibold leading-5 hover:bg-[#6A2D2A] transition-colors"
+          >
             {isWatching ? 'Retomar tutorial' : 'Assistir tutorial'}
           </button>
           <button className="w-10 h-10 bg-[#562524] border border-[#C74228] rounded-lg flex items-center justify-center hover:bg-[#6A2D2A] transition-colors">

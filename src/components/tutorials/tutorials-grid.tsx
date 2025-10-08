@@ -1,5 +1,5 @@
 import React from 'react';
-import { TutorialCardMain } from './tutorial-card-main';
+import { TutorialGridCard } from './tutorial-grid-card';
 
 interface TutorialsGridProps {
   tutorials: Array<{
@@ -10,11 +10,13 @@ interface TutorialsGridProps {
     isWatched?: boolean;
     isPrimary?: boolean;
   }>;
+  onTutorialClick?: (tutorial: any) => void;
   className?: string;
 }
 
 export const TutorialsGrid: React.FC<TutorialsGridProps> = ({
   tutorials,
+  onTutorialClick,
   className = ''
 }) => {
   return (
@@ -38,13 +40,15 @@ export const TutorialsGrid: React.FC<TutorialsGridProps> = ({
         }}
       >
         {tutorials.map((tutorial) => (
-          <TutorialCardMain
+          <TutorialGridCard
             key={tutorial.id}
             id={tutorial.id}
             title={tutorial.title}
-            description={tutorial.description}
-            image={tutorial.thumbnail}
+            description={tutorial.description || ''}
+            thumbnail={tutorial.thumbnail}
             isWatched={tutorial.isWatched}
+            isPrimary={tutorial.isPrimary}
+            onPlay={() => onTutorialClick?.(tutorial)}
             className="flex-shrink-0 lg:flex-shrink"
           />
         ))}

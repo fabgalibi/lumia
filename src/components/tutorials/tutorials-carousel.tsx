@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TutorialCardMain } from './tutorial-card-main';
+import { TutorialGridCard } from './tutorial-grid-card';
 
 interface TutorialsCarouselProps {
   tutorials: Array<{
@@ -10,11 +10,13 @@ interface TutorialsCarouselProps {
     isWatched?: boolean;
     isPrimary?: boolean;
   }>;
+  onTutorialClick?: (tutorial: any) => void;
   className?: string;
 }
 
 export const TutorialsCarousel: React.FC<TutorialsCarouselProps> = ({
   tutorials,
+  onTutorialClick,
   className = ''
 }) => {
   const [isMobile, setIsMobile] = useState(false);
@@ -34,28 +36,23 @@ export const TutorialsCarousel: React.FC<TutorialsCarouselProps> = ({
     <div className={`w-full ${className}`}>
       {/* Grid de Cards */}
       <div 
+        className={isMobile ? 'flex flex-col gap-4' : 'flex flex-wrap gap-6 justify-start'}
         style={{
-          display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
-          gap: isMobile ? '16px' : '24px',
-          width: '100%',
-          padding: isMobile ? '0' : '0'
+          width: '100%'
         }}
       >
         {tutorials.map((tutorial) => (
-          <div 
-            key={tutorial.id} 
-            className={isMobile ? 'w-full' : 'flex justify-center'}
-          >
-            <TutorialCardMain
-              id={tutorial.id}
-              title={tutorial.title}
-              description={tutorial.description}
-              image={tutorial.thumbnail}
-              isWatched={tutorial.isWatched}
-              className={isMobile ? 'w-full' : ''}
-            />
-          </div>
+          <TutorialGridCard
+            key={tutorial.id}
+            id={tutorial.id}
+            title={tutorial.title}
+            description={tutorial.description || ''}
+            thumbnail={tutorial.thumbnail}
+            isWatched={tutorial.isWatched}
+            isPrimary={tutorial.isPrimary}
+            onPlay={() => onTutorialClick?.(tutorial)}
+            className={isMobile ? 'w-full' : 'w-[265px] flex-shrink-0'}
+          />
         ))}
       </div>
     </div>

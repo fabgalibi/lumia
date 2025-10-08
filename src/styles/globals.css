@@ -184,3 +184,694 @@ input[type="search"]::-webkit-search-cancel-button {
         padding-right: 40px !important;
     }
 }
+
+/* Estilos para o modal de vídeo */
+.video-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(89, 89, 89, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 16px;
+}
+
+/* Mobile specific overlay */
+@media (max-width: 768px) {
+    .video-modal-overlay {
+        padding: 8px;
+    }
+}
+
+.video-modal-container {
+    background: #2D2D45;
+    border: 1px solid #373A41;
+    border-radius: 16px;
+    padding: 20px;
+    width: 100%;
+    max-width: 950px;
+    height: 100%;
+    max-height: 404px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow: hidden;
+}
+
+    .video-modal-close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 44px;
+        height: 44px;
+        background: transparent;
+        border: none;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 20;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+    
+    /* Show close button on desktop */
+    @media (min-width: 1024px) {
+        .video-modal-close {
+            display: flex;
+        }
+    }
+
+.video-modal-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+    /* Hide desktop close button on mobile/tablet */
+    @media (max-width: 1023px) {
+        .video-modal-close:first-of-type {
+            display: none !important;
+        }
+    }
+    
+    /* Hide mobile close button on desktop */
+    @media (min-width: 1024px) {
+        .video-modal-mobile-header .video-modal-close {
+            display: none !important;
+        }
+        
+        .video-modal-mobile-header .video-title {
+            display: none !important;
+        }
+    }
+    
+    /* Mobile specific close button positioning */
+    @media (max-width: 768px) {
+        .video-modal-close {
+            position: relative;
+            top: auto;
+            right: auto;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 44px;
+            width: 44px;
+            margin: 0;
+        }
+    }
+
+.video-modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+    width: 100%;
+}
+
+.video-player {
+    width: 100%;
+    height: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+    background: #000;
+}
+
+.video-player video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.video-player video::-webkit-media-controls-panel {
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+}
+
+/* Video Player Component */
+.video-player-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.video-player-element {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.video-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    padding: 16px;
+    opacity: 1;
+    pointer-events: all;
+    z-index: 10;
+}
+
+.video-progress-container {
+    margin-bottom: 12px;
+}
+
+.video-progress-container {
+    flex: 1;
+    height: 4px;
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+    user-select: none;
+    touch-action: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+}
+
+.video-progress-container:hover {
+    height: 6px;
+}
+
+.video-progress-container:hover .video-progress-track {
+    height: 6px;
+}
+
+/* Mobile touch improvements */
+@media (max-width: 768px) {
+    .video-progress-container {
+        height: 8px;
+        margin: 0;
+        padding: 2px 0;
+    }
+    
+    .video-progress-container:hover {
+        height: 8px;
+    }
+    
+    .video-progress-container:hover .video-progress-track {
+        height: 4px;
+    }
+    
+    .video-progress-track {
+        height: 4px;
+    }
+}
+
+.video-progress-track {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.video-progress-buffered {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    transition: width 0.1s ease;
+}
+
+.video-progress-played {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: white;
+    border-radius: 2px;
+    transition: width 0.1s ease;
+}
+
+
+.video-controls-main {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+}
+
+.video-controls-left {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+}
+
+.video-controls-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.video-play-button {
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.video-play-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+}
+
+.video-volume-button {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.video-fullscreen-button {
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.video-volume-button:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    transform: scale(1.05);
+}
+
+.video-fullscreen-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+}
+
+.video-time-current,
+.video-time-remaining {
+    color: white;
+    font-size: 12px;
+    font-weight: 400;
+    white-space: nowrap;
+    min-width: 40px;
+    text-align: center;
+}
+
+.video-time-current {
+    text-align: left;
+}
+
+.video-time-remaining {
+    text-align: right;
+}
+
+.video-volume-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .video-controls {
+        padding: 12px;
+    }
+    
+    .video-controls-main {
+        gap: 4px;
+    }
+    
+    .video-controls-left {
+        gap: 2px;
+    }
+    
+    .video-controls-right {
+        gap: 3px;
+    }
+    
+    .video-play-button,
+    .video-volume-button,
+    .video-fullscreen-button {
+        width: 28px;
+        height: 28px;
+    }
+    
+    
+    .video-time-current,
+    .video-time-remaining {
+        font-size: 11px;
+        min-width: 35px;
+    }
+    
+}
+
+.video-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+    gap: 8px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.video-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.5em;
+    color: #FFFFFF;
+    margin: 0;
+    width: 100%;
+    text-align: left;
+}
+
+.video-description {
+    font-family: 'Sora', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 1.5em;
+    letter-spacing: 0%;
+    color: #FFFFFF;
+    margin: 0;
+    width: 100%;
+    text-align: left;
+}
+
+    /* Tablet styles */
+    @media (min-width: 769px) and (max-width: 1023px) {
+        .video-modal-container {
+            width: calc(100% - 32px);
+            max-width: 800px;
+            height: auto;
+            max-height: 80vh;
+            padding: 20px;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .video-modal-content {
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .video-player {
+            width: 100%;
+            height: 300px;
+            flex-shrink: 0;
+        }
+        
+        .video-info {
+            flex: 1;
+            padding: 0;
+            width: 100%;
+            max-height: calc(80vh - 400px);
+            overflow-y: auto;
+        }
+        
+        .video-title {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+        
+        .video-description {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+    }
+
+    /* Desktop styles */
+    @media (min-width: 1024px) {
+        .video-modal-container {
+            flex-direction: row;
+            height: 404px;
+            width: 950px;
+            padding: 20px 20px 20px 0;
+        }
+        
+        .video-modal-content {
+            flex-direction: row;
+            gap: 0;
+        }
+        
+        .video-player {
+            width: 560px;
+            height: 100%;
+            max-height: 404px;
+            flex-shrink: 0;
+        }
+        
+        .video-info {
+            flex: 1;
+            justify-content: flex-start;
+            align-items: flex-start;
+            padding: 20px;
+        }
+        
+        .video-info .video-title {
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+            font-style: normal;
+            font-size: 20px;
+            leading-trim: none;
+            line-height: 1.5em;
+            letter-spacing: 0%;
+            color: #FFFFFF;
+            margin: 0 0 8px 0;
+            padding-right: 80px;
+        }
+        
+    }
+
+/* Estilos para cards de tutorial responsivos */
+.tutorial-card {
+    background: #252532;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    width: 265px;
+    height: 296px;
+}
+
+.tutorial-card:hover {
+    background: #2A2A3A;
+}
+
+.tutorial-card-thumbnail {
+    width: 100%;
+    height: 122px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.tutorial-card-content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
+.tutorial-card-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.4285714285714286em;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+.tutorial-card-description {
+    font-family: 'Sora', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.4285714285714286em;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+.tutorial-card-button {
+    width: 100%;
+    background: #562524;
+    border: 1px solid #C74228;
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: #F0F0F1;
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.4285714285714286em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.tutorial-card-button:hover {
+    background: #6A2D2A;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .tutorial-card {
+        width: 100% !important;
+        height: auto !important;
+        min-height: auto;
+    }
+    
+    .tutorial-card-content {
+        min-height: 150px;
+    }
+    
+    .tutorial-card-thumbnail {
+        height: 140px;
+    }
+    
+    /* Video modal mobile styles */
+    .video-modal-container {
+        width: calc(100% - 16px);
+        max-width: none;
+        height: auto;
+        max-height: none;
+        padding: 24px 16px;
+        flex-direction: column;
+        gap: 16px;
+        margin: 0 auto;
+    }
+    
+    .video-modal-content {
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .video-player {
+        height: 250px;
+        width: 100%;
+    }
+    
+    .video-modal-mobile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        margin: 0;
+        padding: 8px 0;
+        height: 44px;
+    }
+    
+    .video-modal-mobile-header .video-modal-close {
+        display: flex !important;
+        position: relative;
+        top: auto;
+        right: auto;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        height: 44px;
+        width: 44px;
+        margin: 0;
+    }
+    
+    /* Hide mobile header on desktop */
+    @media (min-width: 1024px) {
+        .video-modal-mobile-header {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            overflow: hidden !important;
+        }
+    }
+    
+    /* Tablet header adjustments */
+    @media (min-width: 769px) and (max-width: 1023px) {
+        .video-modal-mobile-header {
+            padding: 12px 0;
+            height: 56px;
+        }
+        
+        .video-title {
+            font-size: 20px;
+            font-weight: 500;
+        }
+    }
+    
+    /* Mobile/Tablet video-info styles */
+    @media (max-width: 1023px) {
+        .video-info {
+            padding: 0;
+            flex: none;
+            overflow: visible;
+            align-items: flex-start;
+            width: 100%;
+            align-self: center;
+        }
+    }
+    
+    /* Hide title in mobile/tablet info area */
+    @media (max-width: 1023px) {
+        .video-info .video-title {
+            display: none;
+        }
+    }
+    
+    
+    .video-title {
+        font-family: 'Sora', sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 16px;
+        line-height: 1.5;
+        letter-spacing: 0%;
+        color: #F7F7F7;
+        text-align: left;
+        margin: 0;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+    
+    .video-description {
+        font-family: 'Sora', sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 14px;
+        line-height: 1.5;
+        letter-spacing: 0%;
+        width: 100%;
+        padding: 0;
+    }
+}
