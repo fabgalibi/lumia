@@ -18,12 +18,14 @@ export const CalendarDayCell: React.FC<CalendarDayCellProps> = ({ day, dayIndex 
         borderLeft: 'none',
         borderRight: dayIndex === 6 ? 'none' : '1px solid #22262F',
         borderBottom: '1px solid #22262F',
-        minHeight: '100px',
+        minHeight: '120px', // Aumentado para comportar melhor os eventos
         cursor: day.isCurrentMonth ? 'pointer' : 'default',
         opacity: day.isCurrentMonth ? 1 : 0.6,
         display: 'flex',
         flexDirection: 'column',
         gap: '4px',
+        boxSizing: 'border-box', // Garante cálculo correto de largura
+        overflow: 'hidden', // Evita que conteúdo ultrapasse os limites
       }}
     >
       <div

@@ -42,6 +42,18 @@ const eventColors = {
     text: '#FDE272',
     time: '#FAC515',
   },
+  green: { // Added for week-view mock
+    bg: '#053321',
+    border: '#0A7440',
+    text: '#6CE9A6',
+    time: '#32D583',
+  },
+  indigo: { // Added for calendar compatibility
+    bg: '#1F235B',
+    border: '#2D31A6',
+    text: '#A4BCFD',
+    time: '#8098F9',
+  },
 };
 
 export const CalendarEvent: React.FC<CalendarEventProps> = ({ event }) => {
@@ -57,6 +69,8 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({ event }) => {
         display: 'flex',
         alignItems: 'center',
         gap: '4px',
+        width: '100%', // Garante que ocupa toda a largura disponível
+        boxSizing: 'border-box', // Inclui padding e border no cálculo da largura
       }}
     >
       {event.showDot && (

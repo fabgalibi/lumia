@@ -2,7 +2,7 @@ export interface MentoriaEvent {
   id: string;
   title: string;
   time: string;
-  color: 'gray' | 'brand' | 'blue' | 'pink' | 'orange' | 'yellow';
+  color: 'gray' | 'brand' | 'blue' | 'pink' | 'orange' | 'yellow' | 'green' | 'indigo';
   showDot?: boolean;
 }
 

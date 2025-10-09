@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { MentoriasHeader } from './header';
-import { CalendarHeader, CalendarGrid } from './calendar';
+import { CalendarHeader } from './shared';
+import { CalendarGrid } from './calendar';
+import { WeekView } from './week-view';
 import { CalendarDay, MentoriaEvent } from './types';
 
 export const MentoriasCalendar: React.FC = () => {
@@ -9,59 +11,82 @@ export const MentoriasCalendar: React.FC = () => {
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
   const [viewType, setViewType] = useState<'month' | 'week' | 'day'>('month');
 
-  // Mock data para eventos - organizado por data completa (ano-mês-dia)
+  // Mock data para eventos - organizado por data completa (ano-mês-dia-hora)
   // Em produção, isso virá de uma API
-  const mockEventsData: Record<string, MentoriaEvent[]> = {
-    // Setembro 2025 (mês anterior - exemplos)
-    '2025-8-28': [
-      { id: 'set28-1', title: 'Mentoria com', time: '9:00 AM', color: 'gray' },
-      { id: 'set28-2', title: 'Mentoria com', time: '11:30 AM', color: 'brand' },
-    ],
-    '2025-8-30': [
-      { id: 'set30-1', title: 'Mentoria com', time: '2:00 PM', color: 'blue' },
-    ],
-    // Outubro 2025 (mês atual)
-    '2025-9-2': [
-      { id: 'out2-1', title: 'Mentoria com', time: '10:00 AM', color: 'pink' },
-      { id: 'out2-2', title: 'Mentoria com', time: '4:00 PM', color: 'gray' },
-      { id: 'out2-3', title: 'Mentoria com', time: '6:00 PM', color: 'blue' },
-      { id: 'out2-4', title: 'Mentoria com', time: '8:00 PM', color: 'orange' },
-    ],
-    '2025-9-3': [
-      { id: 'out3-1', title: 'Mentoria com', time: '9:00 AM', color: 'gray' },
-    ],
-    '2025-9-4': [
-      { id: 'out4-1', title: 'Mentoria com', time: '10:30 AM', color: 'orange', showDot: true },
-    ],
-    '2025-9-15': [
-      { id: 'out15-1', title: 'Mentoria com', time: '9:30 AM', color: 'blue' },
-    ],
-    '2025-9-16': [
-      { id: 'out16-1', title: 'Mentoria com', time: '10:00 AM', color: 'pink' },
-      { id: 'out16-2', title: 'Mentoria com', time: '4:00 PM', color: 'gray' },
-    ],
-    '2025-9-21': [
-      { id: 'out21-1', title: 'Mentoria com', time: '11:30 AM', color: 'orange' },
-    ],
-    '2025-9-23': [
-      { id: 'out23-1', title: 'Mentoria com', time: '10:00 AM', color: 'pink' },
-    ],
-    '2025-9-24': [
-      { id: 'out24-1', title: 'Mentoria com', time: '9:00 AM', color: 'gray' },
-      { id: 'out24-2', title: 'Mentoria com', time: '1:45 PM', color: 'yellow' },
-    ],
-    '2025-9-29': [
-      { id: 'out29-1', title: 'Mentoria com', time: '9:30 AM', color: 'blue' },
-    ],
-    '2025-9-30': [
-      { id: 'out30-1', title: 'Mentoria com', time: '4:00 PM', color: 'gray' },
-      { id: 'out30-2', title: 'Mentoria com', time: '5:30 PM', color: 'pink' },
-    ],
+  // Formato: 'YYYY-M-D-H' onde H é a hora em formato 24h
+  const mockEventsData: Record<string, any> = {
+    // Outubro 2025 - Domingo (dia 5)
+    '2025-9-5-10': { 
+      duration: 30,
+      event: { id: '1', title: 'Mentoria com Julia Costa', time: '10:00 AM', color: 'gray' as const }
+    },
+    
+    // Outubro 2025 - Segunda (dia 6)
+    '2025-9-6-11': { 
+      duration: 60,
+      event: { id: '2', title: 'Mentoria com Ana Beatriz', time: '11:00 AM', color: 'brand' as const }
+    },
+    
+    // Outubro 2025 - Quarta (dia 8)
+    '2025-9-8-14': { 
+      duration: 120,
+      event: { id: '4', title: 'Mentoria com Mariana Silva', time: '2:00 PM', color: 'indigo' as const }
+    },
+    
+    // Outubro 2025 - Quinta (dia 9)
+    '2025-9-9-13': { 
+      duration: 60,
+      event: { id: '5', title: 'Mentoria com João Pedro', time: '1:00 PM', color: 'orange' as const }
+    },
+    
+    // Outubro 2025 - Sexta (dia 10)
+    '2025-9-10-10': { 
+      duration: 30,
+      event: { id: '6', title: 'Mentoria com Paula Costa', time: '10:00 AM', color: 'green' as const }
+    },
   };
 
+  // Eventos multi-dia (semana toda, etc)
+  const multiDayEvents = [
+    {
+      startDate: new Date(2025, 9, 5), // 5 de outubro 2025 (domingo)
+      endDate: new Date(2025, 9, 11),   // 11 de outubro 2025 (sábado)
+      hour: 9, // 9 AM
+      duration: 60,
+      event: {
+        id: 'week-1',
+        title: 'Mentoria Semanal com Dr. Roberto',
+        time: '9:00 - 10:00 AM',
+        color: 'yellow' as const,
+      }
+    }
+  ];
+
+  // Converter eventos para o formato da visualização mensal
   const getEventsForDate = (year: number, month: number, date: number): MentoriaEvent[] => {
-    const key = `${year}-${month}-${date}`;
-    return mockEventsData[key] || [];
+    const events: MentoriaEvent[] = [];
+    
+    // Buscar eventos regulares para este dia
+    Object.keys(mockEventsData).forEach(key => {
+      const [y, m, d] = key.split('-').map(Number);
+      if (y === year && m === month && d === date) {
+        const data = mockEventsData[key];
+        events.push(data.event);
+      }
+    });
+    
+    // Buscar eventos multi-dia que incluem este dia
+    const currentDate = new Date(year, month, date);
+    multiDayEvents.forEach(multiEvent => {
+      if (currentDate >= multiEvent.startDate && currentDate <= multiEvent.endDate) {
+        events.push({
+          ...multiEvent.event,
+          showDot: true, // Mostrar dot para eventos multi-dia
+        });
+      }
+    });
+    
+    return events;
   };
 
   const previousMonth = () => {
@@ -185,28 +210,39 @@ export const MentoriasCalendar: React.FC = () => {
           flex: 1,
         }}
       >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            background: '#252532',
-            border: '1px solid #2C2C45',
-            borderRadius: '12px',
-            boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
-            flex: 1,
-          }}
-        >
-          <CalendarHeader
+        {viewType === 'month' ? (
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              background: '#252532',
+              border: '1px solid #2C2C45',
+              borderRadius: '12px',
+              boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
+              flex: 1,
+            }}
+          >
+            <CalendarHeader
+              currentMonth={currentMonth}
+              currentYear={currentYear}
+              onPreviousMonth={previousMonth}
+              onNextMonth={nextMonth}
+            />
+
+            <CalendarGrid
+              weeks={calendarWeeks}
+            />
+          </div>
+        ) : (
+          <WeekView
             currentMonth={currentMonth}
             currentYear={currentYear}
             onPreviousMonth={previousMonth}
             onNextMonth={nextMonth}
+            eventsData={mockEventsData}
+            multiDayEvents={multiDayEvents}
           />
-
-          <CalendarGrid
-            weeks={calendarWeeks}
-          />
-        </div>
+        )}
       </div>
     </div>
   );
