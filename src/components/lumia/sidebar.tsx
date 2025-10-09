@@ -37,6 +37,8 @@ export const Sidebar = () => {
     
     if (currentPath === '/home' || currentPath === '/') {
       setActiveItem("Início");
+    } else if (currentPath.startsWith('/mentorias')) {
+      setActiveItem("Mentorias");
     } else if (currentPath.startsWith('/account-settings')) {
       setActiveItem("Configurações");
     } else if (currentPath.startsWith('/ranking')) {

@@ -40,6 +40,7 @@ createRoot(document.getElementById("root")!).render(
                         <Route path="/ranking" element={<ProtectedRoute><HomeScreen /></ProtectedRoute>} />
                         <Route path="/tutorials" element={<ProtectedRoute><HomeScreen /></ProtectedRoute>} />
                         <Route path="/messages" element={<ProtectedRoute><HomeScreen /></ProtectedRoute>} />
+                        <Route path="/mentorias" element={<ProtectedRoute><HomeScreen /></ProtectedRoute>} />
                         
                         {/* Profile Setup Flow - Hierarchical Structure */}
                         <Route path="/profile-setup/*" element={
