@@ -4,9 +4,10 @@ import { CalendarDayCell } from './calendar-day-cell';
 
 interface CalendarGridProps {
   weeks: CalendarDay[][];
+  onEventClick?: (event: any) => void;
 }
 
-export const CalendarGrid: React.FC<CalendarGridProps> = ({ weeks }) => {
+export const CalendarGrid: React.FC<CalendarGridProps> = ({ weeks, onEventClick }) => {
   const weekDays = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
 
   return (
@@ -66,6 +67,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ weeks }) => {
               key={dayIndex}
               day={day}
               dayIndex={dayIndex}
+              onEventClick={onEventClick}
             />
           ))}
         </div>

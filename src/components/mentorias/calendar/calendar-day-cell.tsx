@@ -5,9 +5,10 @@ import { CalendarEvent } from './calendar-event';
 interface CalendarDayCellProps {
   day: CalendarDay;
   dayIndex: number;
+  onEventClick?: (event: any) => void;
 }
 
-export const CalendarDayCell: React.FC<CalendarDayCellProps> = ({ day, dayIndex }) => {
+export const CalendarDayCell: React.FC<CalendarDayCellProps> = ({ day, dayIndex, onEventClick }) => {
   return (
     <div
       style={{
@@ -55,7 +56,7 @@ export const CalendarDayCell: React.FC<CalendarDayCellProps> = ({ day, dayIndex 
 
       {/* Events */}
       {day.events.slice(0, 2).map((event) => (
-        <CalendarEvent key={event.id} event={event} />
+        <CalendarEvent key={event.id} event={event} onEventClick={onEventClick} />
       ))}
       
       {/* More events indicator */}

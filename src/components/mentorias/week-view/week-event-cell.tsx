@@ -11,6 +11,7 @@ interface WeekEventCellProps {
   };
   style?: React.CSSProperties; // Para posicionamento absoluto
   isFirst?: boolean; // Para a primeira célula (1 AM)
+  onEventClick?: (event: any) => void;
 }
 
 const eventColors = {
@@ -69,7 +70,8 @@ export const WeekEventCell: React.FC<WeekEventCellProps> = ({
   duration = 30,
   event,
   style,
-  isFirst = false
+  isFirst = false,
+  onEventClick
 }) => {
   const cellHeight = duration === 30 ? 48 : duration === 60 ? 96 : 192;
 
@@ -118,7 +120,9 @@ export const WeekEventCell: React.FC<WeekEventCellProps> = ({
           gap: '4px',
           flex: 1,
           width: '100%', // Ocupa toda a largura disponível
+          cursor: 'pointer',
         }}
+        onClick={() => onEventClick?.(event)}
       >
         {/* Text and time wrapper */}
         <div

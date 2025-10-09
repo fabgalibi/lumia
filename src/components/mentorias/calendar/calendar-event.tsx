@@ -3,6 +3,7 @@ import { MentoriaEvent } from '../types';
 
 interface CalendarEventProps {
   event: MentoriaEvent;
+  onEventClick?: (event: any) => void;
 }
 
 const eventColors = {
@@ -56,7 +57,7 @@ const eventColors = {
   },
 };
 
-export const CalendarEvent: React.FC<CalendarEventProps> = ({ event }) => {
+export const CalendarEvent: React.FC<CalendarEventProps> = ({ event, onEventClick }) => {
   const colors = eventColors[event.color];
 
   return (
@@ -71,7 +72,9 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({ event }) => {
         gap: '4px',
         width: '100%', // Garante que ocupa toda a largura disponível
         boxSizing: 'border-box', // Inclui padding e border no cálculo da largura
+        cursor: 'pointer',
       }}
+      onClick={() => onEventClick?.(event)}
     >
       {event.showDot && (
         <div

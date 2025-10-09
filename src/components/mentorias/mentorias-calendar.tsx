@@ -3,6 +3,7 @@ import { MentoriasHeader } from './header';
 import { CalendarHeader } from './shared';
 import { CalendarGrid } from './calendar';
 import { WeekView } from './week-view';
+import { MentoriaModal } from './mentoria-modal';
 import { CalendarDay, MentoriaEvent } from './types';
 
 export const MentoriasCalendar: React.FC = () => {
@@ -10,6 +11,8 @@ export const MentoriasCalendar: React.FC = () => {
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
   const [viewType, setViewType] = useState<'month' | 'week' | 'day'>('month');
+  const [selectedMentoria, setSelectedMentoria] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Mock data para eventos - organizado por data completa (ano-mês-dia-hora)
   // Em produção, isso virá de uma API
@@ -18,31 +21,96 @@ export const MentoriasCalendar: React.FC = () => {
     // Outubro 2025 - Domingo (dia 5)
     '2025-9-5-10': { 
       duration: 30,
-      event: { id: '1', title: 'Mentoria com Julia Costa', time: '10:00 AM', color: 'gray' as const }
+      event: { 
+        id: '1', 
+        title: 'Mentoria com Julia Costa', 
+        time: '10:00 AM', 
+        color: 'gray' as const,
+        description: 'Nossa mentoria está marcada para as 10:00. Nesse encontro vamos revisar os principais pontos de Direito Constitucional e resolver algumas questões para fixar o conteúdo. Traga suas dúvidas, pois teremos um espaço reservado para discutir casos práticos e estratégias de estudo.',
+        platform: 'Google Meet',
+        mentor: {
+          name: 'Julia Costa',
+          avatar: '',
+          isOnline: true
+        },
+        notifyBefore: true
+      }
     },
     
     // Outubro 2025 - Segunda (dia 6)
     '2025-9-6-11': { 
       duration: 60,
-      event: { id: '2', title: 'Mentoria com Ana Beatriz', time: '11:00 AM', color: 'brand' as const }
+      event: { 
+        id: '2', 
+        title: 'Mentoria com Ana Beatriz', 
+        time: '11:00 AM', 
+        color: 'brand' as const,
+        description: 'Nossa mentoria está marcada para as 11:00. Nesse encontro vamos revisar os principais pontos de Direito Administrativo e resolver algumas questões para fixar o conteúdo. Traga suas dúvidas, pois teremos um espaço reservado para discutir casos práticos e estratégias de estudo.',
+        platform: 'Google Meet',
+        mentor: {
+          name: 'Ana Beatriz',
+          avatar: '',
+          isOnline: true
+        },
+        notifyBefore: true
+      }
     },
     
     // Outubro 2025 - Quarta (dia 8)
     '2025-9-8-14': { 
       duration: 120,
-      event: { id: '4', title: 'Mentoria com Mariana Silva', time: '2:00 PM', color: 'indigo' as const }
+      event: { 
+        id: '4', 
+        title: 'Mentoria com Mariana Silva', 
+        time: '2:00 PM', 
+        color: 'indigo' as const,
+        description: 'Nossa mentoria está marcada para as 14:00. Nesse encontro vamos revisar os principais pontos de Direito Penal e resolver algumas questões para fixar o conteúdo. Traga suas dúvidas, pois teremos um espaço reservado para discutir casos práticos e estratégias de estudo.',
+        platform: 'Zoom',
+        mentor: {
+          name: 'Mariana Silva',
+          avatar: '',
+          isOnline: false
+        },
+        notifyBefore: false
+      }
     },
     
     // Outubro 2025 - Quinta (dia 9)
     '2025-9-9-13': { 
       duration: 60,
-      event: { id: '5', title: 'Mentoria com João Pedro', time: '1:00 PM', color: 'orange' as const }
+      event: { 
+        id: '5', 
+        title: 'Mentoria com João Pedro', 
+        time: '1:00 PM', 
+        color: 'orange' as const,
+        description: 'Nossa mentoria está marcada para as 13:00. Nesse encontro vamos revisar os principais pontos de Direito Civil e resolver algumas questões para fixar o conteúdo. Traga suas dúvidas, pois teremos um espaço reservado para discutir casos práticos e estratégias de estudo.',
+        platform: 'Microsoft Teams',
+        mentor: {
+          name: 'João Pedro',
+          avatar: '',
+          isOnline: true
+        },
+        notifyBefore: true
+      }
     },
     
     // Outubro 2025 - Sexta (dia 10)
     '2025-9-10-10': { 
       duration: 30,
-      event: { id: '6', title: 'Mentoria com Paula Costa', time: '10:00 AM', color: 'green' as const }
+      event: { 
+        id: '6', 
+        title: 'Mentoria com Paula Costa', 
+        time: '10:00 AM', 
+        color: 'green' as const,
+        description: 'Nossa mentoria está marcada para as 10:00. Nesse encontro vamos revisar os principais pontos de Direito Tributário e resolver algumas questões para fixar o conteúdo. Traga suas dúvidas, pois teremos um espaço reservado para discutir casos práticos e estratégias de estudo.',
+        platform: 'Google Meet',
+        mentor: {
+          name: 'Paula Costa',
+          avatar: '',
+          isOnline: true
+        },
+        notifyBefore: true
+      }
     },
   };
 
@@ -187,6 +255,33 @@ export const MentoriasCalendar: React.FC = () => {
 
   const calendarWeeks = generateCalendar();
 
+  const handleEventClick = (event: any) => {
+    // Formatar os dados do evento para o modal
+    const mentoriaData = {
+      id: event.id,
+      title: event.title,
+      date: '15 de agosto', // Formato: "15 de agosto"
+      time: '9:30', // Horário de início
+      duration: '11:45', // Horário de término
+      description: event.description || 'Nossa mentoria está marcada para as 9:30. Nesse encontro vamos revisar os principais pontos de Direito Administrativo e resolver algumas questões para fixar o conteúdo. Traga suas dúvidas, pois teremos um espaço reservado para discutir casos práticos e estratégias de estudo.',
+      platform: event.platform || 'Google Meet',
+      mentor: event.mentor || {
+        name: 'Ana Beatriz',
+        avatar: '',
+        isOnline: true
+      },
+      notifyBefore: event.notifyBefore || true
+    };
+    
+    setSelectedMentoria(mentoriaData);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedMentoria(null);
+  };
+
   return (
     <div
       style={{
@@ -231,6 +326,7 @@ export const MentoriasCalendar: React.FC = () => {
 
             <CalendarGrid
               weeks={calendarWeeks}
+              onEventClick={handleEventClick}
             />
           </div>
         ) : (
@@ -241,9 +337,16 @@ export const MentoriasCalendar: React.FC = () => {
             onNextMonth={nextMonth}
             eventsData={mockEventsData}
             multiDayEvents={multiDayEvents}
+            onEventClick={handleEventClick}
           />
         )}
       </div>
+
+      <MentoriaModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        mentoria={selectedMentoria}
+      />
     </div>
   );
 };

@@ -10,6 +10,7 @@ export const TimeLabel: React.FC<TimeLabelProps> = ({ time, isHighlighted = fals
   // Calcular posição X baseada no texto (conforme Figma)
   const getTextPositionX = (timeText: string) => {
     switch (timeText) {
+      case '1 AM': return '33px'; // Adicionado 1AM
       case '8 AM': return '33px';
       case '9 AM': return '33px';
       case '10 AM': return '27px';
@@ -29,6 +30,7 @@ export const TimeLabel: React.FC<TimeLabelProps> = ({ time, isHighlighted = fals
   // Calcular largura baseada no texto (conforme Figma)
   const getTextWidth = (timeText: string) => {
     switch (timeText) {
+      case '1 AM': return '31px'; // Adicionado 1AM
       case '10 AM': 
       case '10 PM': return '37px'; // Mesma largura
       case '11 AM': 
@@ -63,7 +65,7 @@ export const TimeLabel: React.FC<TimeLabelProps> = ({ time, isHighlighted = fals
       <span
         style={{
           position: 'absolute',
-          top: '-8px',
+          top: isFirst ? '4px' : '-8px', // Primeira célula (1AM) com posição diferente
           left: getTextPositionX(time),
           width: getTextWidth(time),
           height: '18px',

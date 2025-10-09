@@ -10,6 +10,7 @@ interface WeekViewProps {
   onNextMonth: () => void;
   eventsData: Record<string, any>;
   multiDayEvents: any[];
+  onEventClick?: (event: any) => void;
 }
 
 export const WeekView: React.FC<WeekViewProps> = ({ 
@@ -18,7 +19,8 @@ export const WeekView: React.FC<WeekViewProps> = ({
   onPreviousMonth,
   onNextMonth,
   eventsData,
-  multiDayEvents
+  multiDayEvents,
+  onEventClick
 }) => {
   const today = new Date();
 
@@ -96,6 +98,7 @@ export const WeekView: React.FC<WeekViewProps> = ({
         weekDays={weekDays} 
         eventsData={eventsData}
         multiDayEvents={multiDayEvents}
+        onEventClick={onEventClick}
       />
     </div>
   );

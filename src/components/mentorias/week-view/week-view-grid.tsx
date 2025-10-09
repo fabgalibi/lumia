@@ -12,9 +12,10 @@ interface WeekViewGridProps {
   }[];
   eventsData: Record<string, any>;
   multiDayEvents: any[];
+  onEventClick?: (event: any) => void;
 }
 
-export const WeekViewGrid: React.FC<WeekViewGridProps> = ({ weekDays, eventsData, multiDayEvents }) => {
+export const WeekViewGrid: React.FC<WeekViewGridProps> = ({ weekDays, eventsData, multiDayEvents, onEventClick }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Fazer o scroll começar no topo quando o componente montar
@@ -205,11 +206,13 @@ export const WeekViewGrid: React.FC<WeekViewGridProps> = ({ weekDays, eventsData
                       key={`${timeIndex}-0`}
                       isEmpty={true}
                       isFirst={timeIndex === 0} // Primeira célula (1 AM)
+                      onEventClick={onEventClick}
                     />
                     {/* Segunda meia hora */}
                     <WeekEventCell
                       key={`${timeIndex}-1`}
                       isEmpty={true}
+                      onEventClick={onEventClick}
                     />
                   </React.Fragment>
                 ))}
@@ -233,6 +236,7 @@ export const WeekViewGrid: React.FC<WeekViewGridProps> = ({ weekDays, eventsData
                         height: `${eventHeight}px`,
                         zIndex: 10
                       }}
+                      onEventClick={onEventClick}
                     />
                   );
                 })}
@@ -262,6 +266,7 @@ export const WeekViewGrid: React.FC<WeekViewGridProps> = ({ weekDays, eventsData
                   width: `${eventWidth}%`,
                   zIndex: 10, // Garante que fica sobre as células
                 }}
+                onEventClick={onEventClick}
               />
             );
           })}
