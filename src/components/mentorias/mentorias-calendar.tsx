@@ -3,7 +3,7 @@ import { MentoriasHeader } from './header';
 import { CalendarHeader } from './shared';
 import { CalendarGrid } from './calendar';
 import { WeekView } from './week-view';
-import { MentoriaModal } from './mentoria-modal';
+import { MentoriaModal } from './mentoria-modal/index';
 import { CalendarDay, MentoriaEvent } from './types';
 
 export const MentoriasCalendar: React.FC = () => {
@@ -124,8 +124,16 @@ export const MentoriasCalendar: React.FC = () => {
       event: {
         id: 'week-1',
         title: 'Mentoria Semanal com Dr. Roberto',
-        time: '9:00 - 10:00 AM',
+        time: '9:00 AM',
         color: 'yellow' as const,
+        description: 'Mentoria semanal focada em revisão de conteúdos. Durante esta semana, vamos revisar os principais tópicos estudados e resolver questões práticas. Essa é uma excelente oportunidade para esclarecer dúvidas e consolidar o aprendizado.',
+        platform: 'Google Meet',
+        mentor: {
+          name: 'Dr. Roberto',
+          avatar: '',
+          isOnline: true
+        },
+        notifyBefore: true
       }
     }
   ];
@@ -256,21 +264,80 @@ export const MentoriasCalendar: React.FC = () => {
   const calendarWeeks = generateCalendar();
 
   const handleEventClick = (event: any) => {
+    // Buscar dados completos do evento original (eventos regulares)
+    const eventKey = Object.keys(mockEventsData).find(key => {
+      const eventData = mockEventsData[key];
+      return eventData.event.id === event.id;
+    });
+
+    let fullEventData = eventKey ? mockEventsData[eventKey] : null;
+    
+    // Se não encontrou nos eventos regulares, buscar nos multi-dia
+    if (!fullEventData) {
+      const multiDayEvent = multiDayEvents.find(me => me.event.id === event.id);
+      if (multiDayEvent) {
+        fullEventData = multiDayEvent;
+      }
+    }
+    
+    if (!fullEventData) {
+      console.warn('Evento não encontrado:', event.id);
+      return;
+    }
+
+    // Função auxiliar para calcular horário final
+    const calculateEndTime = (startTime: string, durationMinutes: number) => {
+      const [time, period] = startTime.split(' ');
+      let [hours, minutes] = time.split(':').map(Number);
+      
+      // Converter para formato 24h
+      if (period === 'PM' && hours !== 12) hours += 12;
+      if (period === 'AM' && hours === 12) hours = 0;
+      
+      // Adicionar duração
+      minutes += durationMinutes;
+      hours += Math.floor(minutes / 60);
+      minutes = minutes % 60;
+      
+      // Converter de volta para 12h
+      const endPeriod = hours >= 12 ? 'PM' : 'AM';
+      const endHours = hours > 12 ? hours - 12 : (hours === 0 ? 12 : hours);
+      
+      return `${endHours}:${minutes.toString().padStart(2, '0')} ${endPeriod}`;
+    };
+
+    // Função auxiliar para formatar data
+    const formatDate = (dateKey?: string) => {
+      if (!dateKey) {
+        // Para eventos multi-dia, usar a data de hoje ou a data de início
+        const multiDayEvent = multiDayEvents.find(me => me.event.id === fullEventData.event.id);
+        if (multiDayEvent) {
+          const startDate = multiDayEvent.startDate;
+          const months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 
+                          'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+          return `${startDate.getDate()} de ${months[startDate.getMonth()]}`;
+        }
+        return '';
+      }
+      const [year, month, day] = dateKey.split('-').slice(0, 3).map(Number);
+      const months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 
+                      'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+      return `${day} de ${months[month]}`;
+    };
+
+    const endTime = calculateEndTime(fullEventData.event.time, fullEventData.duration);
+    
     // Formatar os dados do evento para o modal
     const mentoriaData = {
-      id: event.id,
-      title: event.title,
-      date: '15 de agosto', // Formato: "15 de agosto"
-      time: '9:30', // Horário de início
-      duration: '11:45', // Horário de término
-      description: event.description || 'Nossa mentoria está marcada para as 9:30. Nesse encontro vamos revisar os principais pontos de Direito Administrativo e resolver algumas questões para fixar o conteúdo. Traga suas dúvidas, pois teremos um espaço reservado para discutir casos práticos e estratégias de estudo.',
-      platform: event.platform || 'Google Meet',
-      mentor: event.mentor || {
-        name: 'Ana Beatriz',
-        avatar: '',
-        isOnline: true
-      },
-      notifyBefore: event.notifyBefore || true
+      id: fullEventData.event.id,
+      title: fullEventData.event.title,
+      date: formatDate(eventKey),
+      time: fullEventData.event.time.replace(' AM', '').replace(' PM', ''), // Remover AM/PM para exibição
+      duration: endTime.replace(' AM', '').replace(' PM', ''),
+      description: fullEventData.event.description,
+      platform: fullEventData.event.platform,
+      mentor: fullEventData.event.mentor,
+      notifyBefore: fullEventData.event.notifyBefore
     };
     
     setSelectedMentoria(mentoriaData);
