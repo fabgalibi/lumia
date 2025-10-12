@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MentoriasHeader } from './header';
 import { CalendarHeader } from './shared';
 import { CalendarGrid } from './calendar';
 import { WeekView } from './week-view';
+import { DayView } from './day-view';
 import { MentoriaModal } from './mentoria-modal/index';
 import { CalendarDay, MentoriaEvent } from './types';
 
@@ -13,6 +14,19 @@ export const MentoriasCalendar: React.FC = () => {
   const [viewType, setViewType] = useState<'month' | 'week' | 'day'>('month');
   const [selectedMentoria, setSelectedMentoria] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detectar se é mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Mock data para eventos - organizado por data completa (ano-mês-dia-hora)
   // Em produção, isso virá de uma API
@@ -87,6 +101,61 @@ export const MentoriasCalendar: React.FC = () => {
         platform: 'Microsoft Teams',
         mentor: {
           name: 'João Pedro',
+          avatar: '',
+          isOnline: true
+        },
+        notifyBefore: true
+      }
+    },
+
+    // Outubro 2025 - Quinta (dia 9) - Eventos em horários diferentes
+    '2025-9-9-9': { 
+      duration: 30,
+      event: { 
+        id: '6', 
+        title: 'Mentoria com Carlos', 
+        time: '9:00 AM', 
+        color: 'green' as const,
+        description: 'Revisão matinal de Direito Tributário.',
+        platform: 'Google Meet',
+        mentor: {
+          name: 'Carlos',
+          avatar: '',
+          isOnline: true
+        },
+        notifyBefore: true
+      }
+    },
+
+    '2025-9-9-15': { 
+      duration: 60,
+      event: { 
+        id: '7', 
+        title: 'Mentoria com Maria', 
+        time: '3:00 PM', 
+        color: 'blue' as const,
+        description: 'Discussão sobre Direito Civil.',
+        platform: 'Zoom',
+        mentor: {
+          name: 'Maria',
+          avatar: '',
+          isOnline: false
+        },
+        notifyBefore: false
+      }
+    },
+
+    '2025-9-9-20': { 
+      duration: 120,
+      event: { 
+        id: '8', 
+        title: 'Mentoria noturna com Pedro', 
+        time: '8:00 PM', 
+        color: 'pink' as const,
+        description: 'Sessão noturna de revisão geral.',
+        platform: 'Microsoft Teams',
+        mentor: {
+          name: 'Pedro',
           avatar: '',
           isOnline: true
         },
@@ -319,7 +388,7 @@ export const MentoriasCalendar: React.FC = () => {
         }
         return '';
       }
-      const [year, month, day] = dateKey.split('-').slice(0, 3).map(Number);
+      const [, month, day] = dateKey.split('-').slice(0, 3).map(Number);
       const months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 
                       'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
       return `${day} de ${months[month]}`;
@@ -365,14 +434,44 @@ export const MentoriasCalendar: React.FC = () => {
 
       <div
         style={{
-          padding: '24px 32px',
+          padding: isMobile ? '16px' : '24px 32px',
           display: 'flex',
           flexDirection: 'column',
-          gap: '24px',
+          gap: isMobile ? '16px' : '24px',
           flex: 1,
+          width: '100%',
         }}
       >
-        {viewType === 'month' ? (
+        {isMobile ? (
+          // Mobile: sempre usar Day View
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              background: '#252532',
+              border: '1px solid #2C2C45',
+              borderRadius: '8px',
+              boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
+              width: '100%',
+              maxWidth: '100%',
+            }}
+          >
+            <CalendarHeader
+              currentMonth={currentMonth}
+              currentYear={currentYear}
+              onPreviousMonth={previousMonth}
+              onNextMonth={nextMonth}
+            />
+
+            <DayView
+              currentMonth={currentMonth}
+              currentYear={currentYear}
+              eventsData={mockEventsData}
+              onEventClick={handleEventClick}
+            />
+          </div>
+        ) : viewType === 'month' ? (
+          // Desktop: Month View
           <div
             style={{
               display: 'flex',
@@ -397,6 +496,7 @@ export const MentoriasCalendar: React.FC = () => {
             />
           </div>
         ) : (
+          // Desktop: Week View
           <WeekView
             currentMonth={currentMonth}
             currentYear={currentYear}

@@ -949,3 +949,31 @@ input[type="search"]::-webkit-search-cancel-button {
 .week-view-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #6366F1 !important;
 }
+
+/* Custom scrollbar for day view - skeuomorphic style */
+.day-view-scrollbar {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.day-view-scrollbar::-webkit-scrollbar {
+  width: 16px !important;
+}
+
+.day-view-scrollbar::-webkit-scrollbar-track {
+  background: transparent !important;
+  margin: 4px 0;
+}
+
+.day-view-scrollbar::-webkit-scrollbar-thumb {
+  background: #535372 !important;
+  border: 1px solid #363657 !important;
+  border-radius: 9999px !important;
+  min-height: 179px;
+}
+
+.day-view-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #6366F1 !important;
+}

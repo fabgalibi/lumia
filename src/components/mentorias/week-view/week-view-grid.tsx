@@ -8,7 +8,8 @@ interface WeekViewGridProps {
     date: number; 
     month: number; 
     year: number; 
-    isToday: boolean 
+    isToday: boolean;
+    isSelected?: boolean;
   }[];
   eventsData: Record<string, any>;
   multiDayEvents: any[];
@@ -58,22 +59,24 @@ export const WeekViewGrid: React.FC<WeekViewGridProps> = ({ weekDays, eventsData
 
   const currentTimeMarker = getCurrentTimePosition();
 
-  // Converter eventos para o formato da grade semanal
+  // Encontrar o dia selecionado
+  const selectedDay = weekDays.find(day => day.isSelected) || weekDays[0];
+  const selectedDayIndex = weekDays.findIndex(day => day.isSelected);
+  
+  // Converter eventos apenas para o dia selecionado
   const weekEvents: Record<string, any> = {};
   
-  weekDays.forEach((day, dayIndex) => {
-    // Buscar eventos para este dia
-    Object.keys(eventsData).forEach(key => {
-      const parts = key.split('-');
-      if (parts.length === 4) {
-        const [y, m, d, h] = parts.map(Number);
-        if (y === day.year && m === day.month && d === day.date) {
-          // Usar timeIndex diretamente (hora = timeIndex)
-          const eventKey = `${dayIndex}-${h}`;
-          weekEvents[eventKey] = eventsData[key];
-        }
+  // Buscar eventos apenas para o dia selecionado
+  Object.keys(eventsData).forEach(key => {
+    const parts = key.split('-');
+    if (parts.length === 4) {
+      const [y, m, d, h] = parts.map(Number);
+      if (y === selectedDay.year && m === selectedDay.month && d === selectedDay.date) {
+        // Usar timeIndex diretamente (hora = timeIndex)
+        const eventKey = `0-${h}`; // Sempre usar índice 0 pois só temos um dia
+        weekEvents[eventKey] = eventsData[key];
       }
-    });
+    }
   });
 
   // Converter eventos multi-dia para o formato da grade
@@ -173,31 +176,31 @@ export const WeekViewGrid: React.FC<WeekViewGridProps> = ({ weekDays, eventsData
               position: 'relative',
             }}
           >
-          {/* Colunas de dias */}
-          {weekDays.map((dayInfo, dayIndex) => {
-            // Coletar eventos desta coluna
-            const columnEvents: Array<{timeIndex: number, data: any}> = [];
-            timeSlots.forEach((time, timeIndex) => {
-              // timeIndex 0 = 1 AM (hora 1), timeIndex 1 = 2 AM (hora 2), etc
-              // Os eventos usam hora direta (1-23), então timeIndex + 1 = hora
-              const hour = timeIndex + 1; // Converter timeIndex para hora real (1-23)
-              const eventKey = `${dayIndex}-${hour}`;
-              const cellData = weekEvents[eventKey];
-              if (cellData) {
-                columnEvents.push({ timeIndex, data: cellData });
-              }
-            });
+          {/* Coluna do dia selecionado */}
+          <div
+            style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+            }}
+          >
+            {/* Coletar eventos do dia selecionado */}
+            {(() => {
+              const columnEvents: Array<{timeIndex: number, data: any}> = [];
+              timeSlots.forEach((time, timeIndex) => {
+                // timeIndex 0 = 1 AM (hora 1), timeIndex 1 = 2 AM (hora 2), etc
+                // Os eventos usam hora direta (1-23), então timeIndex + 1 = hora
+                const hour = timeIndex + 1; // Converter timeIndex para hora real (1-23)
+                const eventKey = `0-${hour}`; // Sempre usar índice 0 pois só temos um dia
+                const cellData = weekEvents[eventKey];
+                if (cellData) {
+                  columnEvents.push({ timeIndex, data: cellData });
+                }
+              });
 
-            return (
-              <div
-                key={dayIndex}
-                style={{
-                  flex: 1,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  position: 'relative',
-                }}
-              >
+              return (
+                <>
                 {/* Renderizar células vazias para criar a grade - 2 células de 48px por hora */}
                 {timeSlots.map((time, timeIndex) => (
                   <React.Fragment key={timeIndex}>
@@ -240,9 +243,10 @@ export const WeekViewGrid: React.FC<WeekViewGridProps> = ({ weekDays, eventsData
                     />
                   );
                 })}
-              </div>
-            );
-          })}
+                </>
+              );
+            })()}
+          </div>
 
           {/* Renderizar eventos multi-dia (se estendem por várias colunas) */}
           {convertedMultiDayEvents.map((multiEvent) => {

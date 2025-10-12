@@ -11,6 +11,7 @@ export const MonthNavigation: React.FC<MonthNavigationProps> = ({
   onPrevious,
   onNext
 }) => {
+
   return (
     <div
       style={{
@@ -18,6 +19,7 @@ export const MonthNavigation: React.FC<MonthNavigationProps> = ({
         border: '1px solid rgba(255, 255, 255, 0.12)',
         borderRadius: '8px',
         boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
+        width: '100%',
       }}
     >
       <button
@@ -44,6 +46,7 @@ export const MonthNavigation: React.FC<MonthNavigationProps> = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          flex: 1,
         }}
       >
         <span

@@ -6,11 +6,13 @@ interface WeekDaysHeaderProps {
     date: number; 
     month: number; 
     year: number; 
-    isToday: boolean 
+    isToday: boolean;
+    isSelected?: boolean;
   }[];
+  onSelectDay?: (index: number) => void;
 }
 
-export const WeekDaysHeader: React.FC<WeekDaysHeaderProps> = ({ weekDays }) => {
+export const WeekDaysHeader: React.FC<WeekDaysHeaderProps> = ({ weekDays, onSelectDay }) => {
   return (
     <div
       style={{
@@ -39,6 +41,7 @@ export const WeekDaysHeader: React.FC<WeekDaysHeaderProps> = ({ weekDays }) => {
       {weekDays.map((dayInfo, index) => (
                   <div
                     key={index}
+                    onClick={() => onSelectDay?.(index)}
                     style={{
                       flex: 1,
                       display: 'flex',
@@ -53,6 +56,7 @@ export const WeekDaysHeader: React.FC<WeekDaysHeaderProps> = ({ weekDays }) => {
                       borderLeft: 'none',
                       borderRight: '1px solid #22262F', // Sempre com borda direita
                       borderBottom: '1px solid #22262F', // Sempre com borda inferior
+                      cursor: 'pointer',
                     }}
                   >
           <span
@@ -73,7 +77,7 @@ export const WeekDaysHeader: React.FC<WeekDaysHeaderProps> = ({ weekDays }) => {
               alignItems: 'center',
               width: '24px', // Sempre 24px conforme Figma
               height: '24px', // Sempre 24px conforme Figma
-              background: dayInfo.isToday ? '#F66649' : 'transparent',
+              background: dayInfo.isSelected ? '#F66649' : 'transparent',
               borderRadius: '9999px',
             }}
           >
@@ -83,7 +87,7 @@ export const WeekDaysHeader: React.FC<WeekDaysHeaderProps> = ({ weekDays }) => {
                 fontSize: '12px',
                 fontWeight: 600,
                 lineHeight: '1.5em',
-                color: dayInfo.isToday ? '#FFFFFF' : '#CECFD2',
+                color: dayInfo.isSelected ? '#FFFFFF' : '#CECFD2',
               }}
             >
               {dayInfo.date}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { CalendarDateIcon } from './calendar-date-icon';
 import { MonthNavigation } from './month-navigation';
 
@@ -17,6 +17,18 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 }) => {
   const today = new Date();
   const isCurrentMonthView = today.getMonth() === currentMonth && today.getFullYear() === currentYear;
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
   const monthNames = [
     'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
@@ -37,10 +49,11 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
       <div
         style={{
           display: 'flex',
-          alignItems: 'center',
+          flexDirection: isMobile ? 'column' : 'row',
+          alignItems: isMobile ? 'stretch' : 'center',
           justifyContent: 'space-between',
-          gap: '16px',
-          padding: '20px 24px',
+          gap: isMobile ? '16px' : '16px',
+          padding: isMobile ? '16px' : '20px 24px',
         }}
       >
         {/* Date info */}
@@ -51,10 +64,12 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
             flex: 1,
           }}
         >
-          <CalendarDateIcon
-            month={getMonthAbbreviation(isCurrentMonthView ? currentMonth : currentMonth)}
-            day={isCurrentMonthView ? today.getDate() : 1}
-          />
+          {!isMobile && (
+            <CalendarDateIcon
+              month={getMonthAbbreviation(isCurrentMonthView ? currentMonth : currentMonth)}
+              day={isCurrentMonthView ? today.getDate() : 1}
+            />
+          )}
 
           {/* Text info */}
           <div
@@ -74,9 +89,9 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
               <span
                 style={{
                   fontFamily: 'Sora',
-                  fontSize: '18px',
+                  fontSize: isMobile ? '16px' : '18px',
                   fontWeight: 400,
-                  lineHeight: '1.5555555555555556em',
+                  lineHeight: isMobile ? '1.5em' : '1.5555555555555556em',
                   color: '#F7F7F7',
                 }}
               >
@@ -88,12 +103,15 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
                     display: 'flex',
                     alignItems: 'center',
                     padding: '2px 8px',
-                    background: 'transparent',
+                    background: isMobile ? 'transparent' : 'transparent',
                     borderRadius: '9999px',
-                    border: '1.5px solid transparent',
-                    backgroundImage: 'linear-gradient(#252532, #252532), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)',
+                    border: isMobile ? '1px solid transparent' : '1.5px solid transparent',
+                    backgroundImage: isMobile 
+                      ? 'linear-gradient(#252532, #252532), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)'
+                      : 'linear-gradient(#252532, #252532), linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)',
                     backgroundOrigin: 'border-box',
                     backgroundClip: 'padding-box, border-box',
+                    boxShadow: isMobile ? '0px 1px 2px 0px rgba(255, 255, 255, 0)' : 'none',
                   }}
                 >
                   <span
@@ -126,11 +144,13 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
         </div>
 
         {/* Month navigation */}
-        <MonthNavigation
-          currentMonth={monthNames[currentMonth]}
-          onPrevious={onPreviousMonth}
-          onNext={onNextMonth}
-        />
+        <div style={{ width: isMobile ? '100%' : 'auto' }}>
+          <MonthNavigation
+            currentMonth={monthNames[currentMonth]}
+            onPrevious={onPreviousMonth}
+            onNext={onNextMonth}
+          />
+        </div>
       </div>
     </div>
   );

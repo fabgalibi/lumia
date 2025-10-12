@@ -70,7 +70,6 @@ export const WeekEventCell: React.FC<WeekEventCellProps> = ({
   duration = 30,
   event,
   style,
-  isFirst = false,
   onEventClick
 }) => {
   const cellHeight = duration === 30 ? 48 : duration === 60 ? 96 : 192;

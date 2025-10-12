@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ModalHeader } from './modal-header';
 import { InfoCard } from './info-card';
 import { PlatformIcon } from './platform-icon';
@@ -37,6 +37,19 @@ export const MentoriaModal: React.FC<MentoriaModalProps> = ({
   onClose,
   mentoria
 }) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   if (!isOpen || !mentoria) return null;
 
   return (
@@ -50,9 +63,9 @@ export const MentoriaModal: React.FC<MentoriaModalProps> = ({
         backgroundColor: 'rgba(89, 89, 89, 0.6)',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'flex-end',
+        justifyContent: isMobile ? 'center' : 'flex-end',
         zIndex: 1000,
-        padding: '40px',
+        padding: isMobile ? '0' : '40px',
       }}
       onClick={onClose}
     >
@@ -60,9 +73,10 @@ export const MentoriaModal: React.FC<MentoriaModalProps> = ({
         style={{
           backgroundColor: '#202028',
           border: '1px solid #272737',
-          borderRadius: '16px',
-          width: '617px',
-          height: '944px',
+          borderRadius: isMobile ? '0' : '16px',
+          width: isMobile ? '100%' : '617px',
+          height: isMobile ? '100%' : '944px',
+          maxHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',

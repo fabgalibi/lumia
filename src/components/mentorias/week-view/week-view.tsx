@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CalendarHeader } from '../shared';
 import { WeekDaysHeader } from './week-days-header';
 import { WeekViewGrid } from './week-view-grid';
@@ -23,6 +23,11 @@ export const WeekView: React.FC<WeekViewProps> = ({
   onEventClick
 }) => {
   const today = new Date();
+  const [selectedDayIndex, setSelectedDayIndex] = useState(() => {
+    // Calcular o dia de hoje como selecionado inicialmente
+    const currentDate = new Date();
+    return currentDate.getDay(); // 0 = Domingo, 6 = Sábado
+  });
 
   // Gerar semana baseada no mês/ano atual
   const generateWeekDays = () => {
@@ -64,6 +69,7 @@ export const WeekView: React.FC<WeekViewProps> = ({
           currentDay.getDate() === today.getDate() &&
           currentDay.getMonth() === today.getMonth() &&
           currentDay.getFullYear() === today.getFullYear(),
+        isSelected: i === selectedDayIndex,
       });
     }
 
@@ -93,7 +99,10 @@ export const WeekView: React.FC<WeekViewProps> = ({
         onNextMonth={onNextMonth}
       />
       
-      <WeekDaysHeader weekDays={weekDays} />
+      <WeekDaysHeader 
+        weekDays={weekDays} 
+        onSelectDay={setSelectedDayIndex}
+      />
       <WeekViewGrid 
         weekDays={weekDays} 
         eventsData={eventsData}
