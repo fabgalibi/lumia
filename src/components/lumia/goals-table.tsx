@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Input, Text, Tabs, colors } from '@/components/ui/design-system';
 import { TableColumn } from '@/types/table';
-import { Goal } from '@/types/table';
-import { goalsTableData } from '@/data/goals';
+import { Goal } from '@/types/goal';
+// import { goalsTableData } from '@/data/goals'; // Removido - usando apenas dados da API
 import { reviewSuggestionsData } from '@/data/review-suggestions';
 import { RelevanceStars, type RelevanceLevel } from './relevance-stars';
 import { StatusDot } from './status-dot';
@@ -12,16 +12,19 @@ import { GoalsMobileCard } from "./goals-mobile-card";
 import { GoalDetailsModal, GoalSuccessNotification } from "./goal-details-modal";
 import { RocketAnimation } from "../animations";
 import { SkipGoalNotification } from "../notifications/skip-goal-notification";
-import { useSprint } from "@/contexts/sprint-context";
+import { useSprint as useSprintContext } from "@/contexts/sprint-context";
+import { useSprint as useSprintAPI } from "@/hooks/useSprint";
+import { mapMetasSprintToGoals } from "@/utils/sprint-mapper";
 
 interface GoalsTableProps {
   screenSize?: 'mobile' | 'tablet' | 'notebook' | 'desktop';
 }
 
 export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }) => {
-  const { updateProgress } = useSprint();
-  const [activeTab, setActiveTab] = useState('lista-topicos');
+  const { updateProgress } = useSprintContext();
+  const { dashboard, isLoading, error, refetch, concluirMeta, pularMeta } = useSprintAPI();
   
+  const [activeTab, setActiveTab] = useState('lista-topicos');
   const [searchValue, setSearchValue] = useState("");
   const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,13 +33,21 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
   const [showRocketAnimation, setShowRocketAnimation] = useState(false);
   const [showSkipNotification, setShowSkipNotification] = useState(false);
   const [skippedGoalName] = useState<string>("");
+  const [goals, setGoals] = useState<Goal[]>([]);
+
+  // Atualizar metas quando os dados da API chegarem
+  useEffect(() => {
+    if (dashboard?.metas) {
+      const mappedGoals = mapMetasSprintToGoals(dashboard.metas);
+      setGoals(mappedGoals);
+    }
+  }, [dashboard]);
 
   // Filtrar dados baseado na busca
-  const filteredGoals = goalsTableData.goals.filter(goal =>
+  const filteredGoals = goals.filter(goal =>
     goal.discipline.toLowerCase().includes(searchValue.toLowerCase()) ||
     goal.subject.toLowerCase().includes(searchValue.toLowerCase()) ||
-    goal.studyType.toLowerCase().includes(searchValue.toLowerCase()) ||
-    goal.mentorCommand.toLowerCase().includes(searchValue.toLowerCase())
+    goal.studyType.toLowerCase().includes(searchValue.toLowerCase())
   );
 
 
@@ -362,7 +373,10 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
           width: (screenSize === 'mobile' || screenSize === 'tablet') ? '100%' : 'auto'
         }}>
           <Tabs
-            tabs={goalsTableData.tabs}
+            tabs={[
+              { id: 'lista-topicos', label: 'Lista de metas' },
+              { id: 'sugestoes-revisao', label: 'Sugestões de revisão' }
+            ]}
             activeTab={activeTab}
             onTabChange={setActiveTab}
             variant="underline"
@@ -413,7 +427,94 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
           width: '100%',
           maxWidth: '100%'
         }}>
-          {activeTab === 'lista-topicos' ? (
+          {/* Loading State */}
+          {isLoading ? (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '80px 24px',
+                color: '#CECFD2',
+                fontFamily: 'Sora',
+                fontSize: '16px',
+                flexDirection: 'column',
+                gap: '16px'
+              }}
+            >
+              <div
+                style={{
+                  width: '48px',
+                  height: '48px',
+                  border: '4px solid #2C2C45',
+                  borderTop: '4px solid #F48E2F',
+                  borderRadius: '50%',
+                  animation: 'spin 1s linear infinite'
+                }}
+              />
+              <style>{`
+                @keyframes spin {
+                  0% { transform: rotate(0deg); }
+                  100% { transform: rotate(360deg); }
+                }
+              `}</style>
+              Carregando suas metas...
+            </div>
+          ) : error ? (
+            /* Error State */
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '80px 24px',
+                color: '#F66649',
+                fontFamily: 'Sora',
+                fontSize: '16px',
+                flexDirection: 'column',
+                gap: '16px'
+              }}
+            >
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M12 8V12M12 16H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z"
+                  stroke="#F66649"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <div style={{ textAlign: 'center' }}>
+                <div>Erro ao carregar metas</div>
+                <div style={{ fontSize: '14px', color: '#94979C', marginTop: '8px' }}>
+                  {error}
+                </div>
+              </div>
+              <button
+                onClick={() => refetch()}
+                style={{
+                  padding: '12px 24px',
+                  backgroundColor: '#F48E2F',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontFamily: 'Sora',
+                  fontSize: '14px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#E07A1F';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#F48E2F';
+                }}
+              >
+                Tentar novamente
+              </button>
+            </div>
+          ) : activeTab === 'lista-topicos' ? (
             screenSize === 'mobile' ? (
                 // Layout Mobile - Cards verticais
                 <div
@@ -521,12 +622,11 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
                           studyType: suggestion.studyType,
                           timeStudied: suggestion.timeStudied,
                           performance: suggestion.performance,
-                          mentorCommand: suggestion.mentorCommand,
-                          status: 'pending',
+                          status: 'pendente',
                           relevance: suggestion.relevance,
-                          subjects: [],
+                          subjects: [suggestion.topic],
                           materials: [],
-                          mentorCommands: [suggestion.mentorCommand],
+                          commands: [suggestion.mentorCommand],
                           additionalTips: []
                         };
                         handleGoalClick(mockGoal);
@@ -558,12 +658,11 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
                           studyType: suggestion.studyType,
                           timeStudied: suggestion.timeStudied,
                           performance: suggestion.performance,
-                          mentorCommand: suggestion.mentorCommand,
-                          status: 'pending',
+                          status: 'pendente',
                           relevance: suggestion.relevance,
-                          subjects: [],
+                          subjects: [suggestion.topic],
                           materials: [],
-                          mentorCommands: [suggestion.mentorCommand],
+                          commands: [suggestion.mentorCommand],
                           additionalTips: []
                         };
                         handleGoalClick(mockGoal);
@@ -593,12 +692,11 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
                           studyType: suggestion.studyType,
                           timeStudied: suggestion.timeStudied,
                           performance: suggestion.performance,
-                          mentorCommand: suggestion.mentorCommand,
-                          status: 'pending',
+                          status: 'pendente',
                           relevance: suggestion.relevance,
-                          subjects: [],
+                          subjects: [suggestion.topic],
                           materials: [],
-                          mentorCommands: [suggestion.mentorCommand],
+                          commands: [suggestion.mentorCommand],
                           additionalTips: []
                         };
                         handleGoalClick(mockGoal);
@@ -615,29 +713,36 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
       {isModalOpen && selectedGoal && (
       <GoalDetailsModal
           isOpen={true}
-          goal={{
-            topic: selectedGoal.topic, // Manter para compatibilidade
-            discipline: selectedGoal.discipline,
-            subject: selectedGoal.subject,
-            studyType: selectedGoal.studyType,
-            timeStudied: selectedGoal.timeStudied,
-            performance: selectedGoal.performance,
-            mentorCommand: selectedGoal.mentorCommand,
-            status: selectedGoal.status,
-            subjects: selectedGoal.subjects || [],
-            materials: selectedGoal.materials || [],
-            mentorCommands: selectedGoal.mentorCommands || [selectedGoal.mentorCommand],
-            additionalTips: selectedGoal.additionalTips || []
-          }}
+          goal={selectedGoal}
           onClose={() => setIsModalOpen(false)}
-          onCompleteGoal={() => {
+          onCompleteGoal={async () => {
             console.log('Completando meta - ativando foguetinho');
-            setShowRocketAnimation(true);
-            setIsModalOpen(false);
+            if (selectedGoal?.id) {
+              try {
+                await concluirMeta(selectedGoal.id);
+                setShowRocketAnimation(true);
+                setIsModalOpen(false);
+              } catch (error) {
+                console.error('Erro ao concluir meta:', error);
+                // Ainda mostra a animação mesmo se falhar (UX)
+                setShowRocketAnimation(true);
+                setIsModalOpen(false);
+              }
+            }
           }}
-          onSkipGoal={() => {
-            setShowSkipNotification(true);
-            setIsModalOpen(false);
+          onSkipGoal={async (goalName: string) => {
+            if (selectedGoal?.id) {
+              try {
+                await pularMeta(selectedGoal.id, `Meta pulada: ${goalName}`);
+                setShowSkipNotification(true);
+                setIsModalOpen(false);
+              } catch (error) {
+                console.error('Erro ao pular meta:', error);
+                // Ainda mostra a notificação mesmo se falhar (UX)
+                setShowSkipNotification(true);
+                setIsModalOpen(false);
+              }
+            }
           }}
         />
       )}

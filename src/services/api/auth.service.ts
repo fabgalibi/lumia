@@ -51,10 +51,10 @@ class AuthService {
    * @returns Token de acesso e dados do usuário
    */
   async login(credentials: LoginRequest): Promise<ApiResponse<LoginResponse>> {
-    console.log('📡 Enviando requisição de login para:', '/api/auth/login');
+    console.log('📡 Enviando requisição de login para:', '/auth/login');
     console.log('📦 Payload:', { login: credentials.email, senha: '***', grupo: 'aluno' });
     
-    const response = await apiClient.post<LoginResponse>('/api/auth/login', {
+    const response = await apiClient.post<LoginResponse>('/auth/login', {
       login: credentials.email, // API usa "login" ao invés de "email"
       senha: credentials.password, // API usa "senha" ao invés de "password"
       grupo: 'aluno', // Grupo padrão para alunos

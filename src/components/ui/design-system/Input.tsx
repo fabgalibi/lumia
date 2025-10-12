@@ -59,7 +59,7 @@ export const Input: React.FC<InputProps> = ({
     zIndex: 1,
     position: 'relative',
     pointerEvents: 'auto',
-    padding: '0',
+    padding: icon ? '0 0 0 12px' : '0', // Adiciona padding à esquerda quando há ícone
   };
 
 

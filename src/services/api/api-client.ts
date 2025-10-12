@@ -3,7 +3,10 @@
  * Configuração centralizada com interceptors para token e tratamento de erros
  */
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://dev.lumia-app.com.br';
+// Em desenvolvimento, usa o proxy local do Vite
+// Em produção, usa a URL da API diretamente
+const API_URL = import.meta.env.VITE_API_URL || 
+  (import.meta.env.DEV ? '/api' : 'https://dev.lumia-app.com.br');
 
 export interface ApiResponse<T> {
   data: T;
@@ -58,13 +61,34 @@ class ApiClient {
     try {
       const response = await fetch(`${this.baseURL}${endpoint}`, config);
       
+      // Verifica se a resposta é JSON
+      const contentType = response.headers.get('content-type');
+      const isJson = contentType && contentType.includes('application/json');
+      
       // Trata erros HTTP
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
+        let errorData = {};
+        if (isJson) {
+          errorData = await response.json().catch(() => ({}));
+        } else {
+          // Se não for JSON, pode ser HTML de erro
+          const htmlText = await response.text().catch(() => '');
+          console.error('Resposta não-JSON recebida:', htmlText.substring(0, 200));
+        }
         throw {
-          message: errorData.message || 'Erro na requisição',
+          message: errorData.message || `Erro HTTP ${response.status}`,
           status: response.status,
           errors: errorData.errors,
+        } as ApiError;
+      }
+
+      // Verifica se a resposta é JSON antes de tentar fazer parse
+      if (!isJson) {
+        const htmlText = await response.text();
+        console.error('API retornou HTML em vez de JSON:', htmlText.substring(0, 200));
+        throw {
+          message: 'API retornou resposta inválida (HTML em vez de JSON)',
+          status: response.status,
         } as ApiError;
       }
 

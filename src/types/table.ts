@@ -33,7 +33,7 @@ export interface Goal {
   timeStudied: string;
   performance: string;
   mentorCommand: string;
-  status: 'completed' | 'in-progress' | 'pending';
+  status: 'concluido' | 'pendente';
   relevance: RelevanceLevel;
   subjects?: string[];
   materials?: string[];
@@ -42,7 +42,7 @@ export interface Goal {
 }
 
 // Tipo para o status visual da tabela
-export type GoalStatusType = 'completed' | 'in-progress' | 'pending';
+export type GoalStatusType = 'concluido' | 'pendente';
 
 export interface GoalsTableData {
   goals: Goal[];

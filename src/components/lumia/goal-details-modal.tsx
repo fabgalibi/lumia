@@ -5,6 +5,8 @@ import { Timer } from "./timer";
 import { PerformanceModal } from "../modals/performance-modal";
 import { SkipGoalModal } from "../modals/skip-goal-modal";
 import { SuccessNotification } from "../notifications";
+import { getStatusColor } from '@/constants/status-colors';
+import { type Goal } from '@/types/goal';
 
 interface GoalDetailsModalProps {
   isOpen: boolean;
@@ -12,27 +14,14 @@ interface GoalDetailsModalProps {
   onSave?: (data: any) => void;
   onCompleteGoal?: () => void;
   onSkipGoal?: (goalName: string) => void;
-  goal: {
-    topic?: string; // Manter para compatibilidade
-    discipline: string;
-    subject: string;
-    studyType: string;
-    timeStudied: string;
-    performance: string;
-    mentorCommand: string;
-    status: 'pending' | 'completed' | 'in-progress';
-    subjects: string[];
-    materials: string[];
-    mentorCommands: string[];
-    additionalTips: string[];
-  };
+  goal: Goal;
 }
 
 export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onClose, onSave, onCompleteGoal, onSkipGoal, goal }) => {
   const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
     subjects: true,
     materials: false,
-    mentorCommands: false,
+    commands: false,
     additionalTips: false
   });
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -118,29 +107,15 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
 
   if (!isOpen) return null;
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'pending':
-        return '#17B26A'; // Verde para pendente (invertido)
-      case 'completed':
-        return '#F79009'; // Amarelo para concluída (invertido)
-      case 'in-progress':
-        return '#17B26A'; // Verde para pendente (invertido)
-      default:
-        return '#17B26A'; // Verde por padrão
-    }
-  };
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'pending':
-        return 'Meta concluída'; // Invertido
-      case 'completed':
-        return 'Meta pendente'; // Invertido
-      case 'in-progress':
-        return 'Meta concluída'; // Invertido
-      default:
+      case 'pendente':
+        return 'Meta pendente';
+      case 'concluido':
         return 'Meta concluída';
+      default:
+        return 'Meta pendente';
     }
   };
 
@@ -192,9 +167,9 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
       )
     },
     {
-      key: 'mentorCommands',
+      key: 'commands',
       title: 'Comandos do mentor',
-      content: goal.mentorCommands,
+      content: goal.commands,
       icon: (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <mask id="mask0_14978_15142" style={{maskType:"alpha"}} maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
@@ -517,7 +492,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                   }}
                 >
                   <div className="flex flex-col gap-3">
-                    {section.content.map((item, index) => (
+                    {section.content.map((item: string, index: number) => (
                       <div 
                         key={index}
                         className="flex items-start gap-2"

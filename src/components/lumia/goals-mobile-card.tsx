@@ -1,5 +1,6 @@
 import React from 'react';
-import { Goal } from '@/types/table';
+import { Goal } from '@/types/goal';
+import { getStatusColor } from '@/constants/status-colors';
 import { RelevanceStars, type RelevanceLevel } from './relevance-stars';
 
 interface GoalsMobileCardProps {
@@ -21,18 +22,6 @@ export const GoalsMobileCard: React.FC<GoalsMobileCardProps> = ({
   width = '306px',
   fullWidth = false
 }) => {
-  const getStatusColor = () => {
-    switch (goal.status) {
-      case 'completed':
-        return '#17B26A'; // Verde
-      case 'in-progress':
-        return '#F79009'; // Laranja
-      case 'pending':
-        return '#94979C'; // Cinza para pending
-      default:
-        return '#94979C';
-    }
-  };
 
   return (
     <div
@@ -63,7 +52,7 @@ export const GoalsMobileCard: React.FC<GoalsMobileCardProps> = ({
             width: '8px',
             height: '8px',
             borderRadius: '50%',
-            backgroundColor: getStatusColor(),
+            backgroundColor: getStatusColor(goal.status),
             flexShrink: 0
           }}
         />
@@ -253,7 +242,7 @@ export const GoalsMobileCard: React.FC<GoalsMobileCardProps> = ({
             color: '#F0F0F1'
           }}
         >
-          {goal.mentorCommand}
+          {goal.commands.join(', ')}
         </span>
       </div>
 

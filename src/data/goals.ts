@@ -1,17 +1,17 @@
 import { Goal, GoalsTableData } from '@/types/table';
 
 export const goalsData: Goal[] = [
-  {
-    id: "1",
-    metaNumber: "01",
-    discipline: "Ética no Serviço Público",
-    subject: "Compreensão de Texto e Interpretação de Questões",
-    studyType: "Estudos de caso",
-    timeStudied: "2h30",
-    performance: "84%",
-    mentorCommand: "Enviar resumo dos principais dilemas éticos",
-    status: "in-progress", // Dot laranja no Figma
-    relevance: "high",
+          {
+            id: "1",
+            metaNumber: "01",
+            discipline: "Ética no Serviço Público",
+            subject: "Compreensão de Texto e Interpretação de Questões",
+            studyType: "Estudos de caso",
+            timeStudied: "2h30",
+            performance: "84%",
+            mentorCommand: "", // Comandos serão preenchidos no modal
+            status: "pendente",
+            relevance: "high",
     subjects: [
       "Princípios e valores do serviço público (legalidade, impessoalidade, moralidade, publicidade e eficiência);",
       "Código de Ética Profissional do Servidor Público Civil do Poder Executivo Federal;",
@@ -45,8 +45,8 @@ export const goalsData: Goal[] = [
     studyType: "Mapas mentais",
     timeStudied: "3h15",
     performance: "84%",
-    mentorCommand: "Liberar mapa mental sobre atos administrativos",
-    status: "completed",
+    mentorCommand: "", // Comandos serão preenchidos no modal
+    status: "concluido",
     relevance: "high"
   },
   {
@@ -57,8 +57,8 @@ export const goalsData: Goal[] = [
     studyType: "Simulado",
     timeStudied: "2h",
     performance: "84%",
-    mentorCommand: "Atualizar aluno sobre mudanças recentes no INSS",
-    status: "completed",
+    mentorCommand: "", // Comandos serão preenchidos no modal
+    status: "concluido",
     relevance: "medium"
   },
   {
@@ -69,8 +69,8 @@ export const goalsData: Goal[] = [
     studyType: "Revisão simulado",
     timeStudied: "2h45",
     performance: "84%",
-    mentorCommand: "Aplicar quiz de revisão sobre princípios do Direito",
-    status: "completed", // Verde no Figma
+    mentorCommand: "", // Comandos serão preenchidos no modal
+    status: "concluido", // Verde no Figma
     relevance: "low"
   },
   {
@@ -81,8 +81,8 @@ export const goalsData: Goal[] = [
     studyType: "Resumo esquematizado",
     timeStudied: "3h",
     performance: "84%",
-    mentorCommand: "Enviar checklist de temas mais cobrados",
-    status: "completed", // Verde no Figma
+    mentorCommand: "", // Comandos serão preenchidos no modal
+    status: "concluido", // Verde no Figma
     relevance: "low"
   },
   {
@@ -93,8 +93,8 @@ export const goalsData: Goal[] = [
     studyType: "Questões comentadas",
     timeStudied: "1h30",
     performance: "84%",
-    mentorCommand: "Compartilhar estudo de caso prático",
-    status: "completed", // Verde no Figma
+    mentorCommand: "", // Comandos serão preenchidos no modal
+    status: "concluido", // Verde no Figma
     relevance: "low"
   },
   {
@@ -105,8 +105,8 @@ export const goalsData: Goal[] = [
     studyType: "Vídeo-aula resumida",
     timeStudied: "3h30",
     performance: "84%",
-    mentorCommand: "Liberar vídeo sobre controle de constitucionalidade",
-    status: "completed",
+    mentorCommand: "", // Comandos serão preenchidos no modal
+    status: "concluido",
     relevance: "medium"
   },
   {
@@ -117,8 +117,8 @@ export const goalsData: Goal[] = [
     studyType: "Teste rápido",
     timeStudied: "4h",
     performance: "84%",
-    mentorCommand: "Recomendar leitura sobre políticas públicas",
-    status: "completed",
+    mentorCommand: "", // Comandos serão preenchidos no modal
+    status: "concluido",
     relevance: "high"
   },
   {
@@ -129,8 +129,8 @@ export const goalsData: Goal[] = [
     studyType: "Exercício contextual",
     timeStudied: "2h15",
     performance: "84%",
-    mentorCommand: "Enviar exercícios de balanço patrimonial",
-    status: "completed",
+    mentorCommand: "", // Comandos serão preenchidos no modal
+    status: "concluido",
     relevance: "medium"
   },
   {
@@ -141,8 +141,8 @@ export const goalsData: Goal[] = [
     studyType: "Produção de relatório",
     timeStudied: "3h45",
     performance: "84%",
-    mentorCommand: "Liberar roteiro de atuação profissional",
-    status: "completed",
+    mentorCommand: "", // Comandos serão preenchidos no modal
+    status: "concluido",
     relevance: "high"
   }
 ];
