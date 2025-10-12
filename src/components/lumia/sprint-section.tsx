@@ -3,6 +3,7 @@ import { Expand04 } from "@untitledui/icons";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProgressBar } from "./progress-bar";
+import { useSprint } from "@/contexts/sprint-context";
 import objectiveIcon from "/src/assets/images/objective-icon.png";
 
 interface SprintData {
@@ -38,6 +39,7 @@ export const SprintSection = ({
 }: SprintSectionProps) => {
   const [internalIsExpanded, setIsExpanded] = useState(false);
   const [internalShowQuote, setShowQuote] = useState(true);
+  const { sprintData: sprintDataFromContext } = useSprint();
 
   // Dados padrão para desenvolvimento
   const defaultData: SprintData = {
@@ -60,9 +62,15 @@ export const SprintSection = ({
   const isExpanded = externalIsExpanded !== undefined ? externalIsExpanded : internalIsExpanded;
   const showQuote = onShowQuote !== undefined ? true : internalShowQuote; // Se onShowQuote existe, sempre mostrar
   
-  // Usar progresso externo se disponível, senão usar o padrão
-  const currentProgress = externalProgress !== undefined ? externalProgress : sprintData.progress;
-  const currentProgressLabel = `${currentProgress}% concluído`;
+  // Usar dados da API se disponível
+  const nomePlano = sprintDataFromContext?.nomePlano || sprintData.currentObjective.title;
+  const percentualConclusao = sprintDataFromContext?.metricas?.percentualConclusao;
+  
+  // Usar progresso externo se disponível, senão usar da API, senão usar o padrão
+  const currentProgress = externalProgress !== undefined 
+    ? externalProgress 
+    : (percentualConclusao !== undefined ? percentualConclusao : sprintData.progress);
+  const currentProgressLabel = `${Math.round(currentProgress)}% concluído`;
 
   const handleToggleExpanded = () => {
     const newExpanded = !isExpanded;
@@ -220,7 +228,7 @@ export const SprintSection = ({
                   color: '#F48E2F'
                 }}
               >
-                {sprintData.currentObjective.title}
+                {nomePlano}
               </p>
             </div>
           </div>

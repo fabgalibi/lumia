@@ -47,6 +47,7 @@ export interface MetaSprint {
 }
 
 export interface DashboardSprintAtual {
+  nomePlano: string;
   sprint: Sprint;
   metas: MetaSprint[];
   metricas: MetricasSprint;
