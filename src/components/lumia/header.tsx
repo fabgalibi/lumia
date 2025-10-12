@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { Timer } from "./timer";
 import { UserMenu } from "./user-menu";
 import { useSidebar } from "../../contexts/sidebar-context";
 import { useMainContent } from "../../contexts/main-content-context";
@@ -12,7 +11,6 @@ interface HeaderProps {
 }
 
 export const Header = ({ title, subtitle: _subtitle }: HeaderProps = {}) => {
-  const [initialTime] = useState("00:00:00");
   const [isMobile, setIsMobile] = useState(false);
   const { toggleSidebar } = useSidebar();
   const { setCurrentContent: _setCurrentContent } = useMainContent();
@@ -84,18 +82,8 @@ export const Header = ({ title, subtitle: _subtitle }: HeaderProps = {}) => {
           </h1>
         </div>
 
-        {/* Lado direito - Cronômetro (desktop) / Menu + Avatar (mobile) */}
-        <div className="flex items-center" style={{ gap: '16px' }}>
-          {/* Cronômetro - apenas no desktop */}
-          <div className="hidden lg:block">
-            <Timer 
-              initialTime={initialTime}
-              onTimeChange={() => {}}
-              showControls={true}
-            />
-          </div>
-
-          {/* User Menu Component */}
+        {/* Lado direito - Menu + Avatar */}
+        <div className="flex items-center">
           <UserMenu />
         </div>
       </div>

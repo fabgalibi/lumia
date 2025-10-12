@@ -1,65 +1,17 @@
-import { useState, useEffect } from "react";
-// import { Text } from '@/components/ui'; // TODO: Migrar estilos
+import { useTimer } from "@/contexts/timer-context";
 
 interface TimerProps {
-  initialTime?: string;
-  onTimeChange?: (time: string) => void;
   showControls?: boolean;
   className?: string;
   style?: React.CSSProperties;
 }
 
 export const Timer: React.FC<TimerProps> = ({ 
-  initialTime = "00:00:00", 
-  onTimeChange,
   showControls = true,
   className = "",
   style = {}
 }) => {
-  const [time, setTime] = useState(initialTime);
-  const [isRunning, setIsRunning] = useState(false);
-
-  // Sincronizar com initialTime quando mudar
-  useEffect(() => {
-    setTime(initialTime);
-  }, [initialTime]);
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isRunning) {
-      interval = setInterval(() => {
-        setTime(prev => {
-          const [hours, minutes, seconds] = prev.split(':').map(Number);
-          let totalSeconds = hours * 3600 + minutes * 60 + seconds + 1;
-          
-          const newHours = Math.floor(totalSeconds / 3600);
-          const newMinutes = Math.floor((totalSeconds % 3600) / 60);
-          const newSeconds = totalSeconds % 60;
-          
-          const newTime = `${newHours.toString().padStart(2, '0')}:${newMinutes.toString().padStart(2, '0')}:${newSeconds.toString().padStart(2, '0')}`;
-          
-          if (onTimeChange) {
-            onTimeChange(newTime);
-          }
-          
-          return newTime;
-        });
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [isRunning, onTimeChange]);
-
-  const toggleTimer = () => {
-    setIsRunning(!isRunning);
-  };
-
-  const resetTimer = () => {
-    setTime(initialTime);
-    setIsRunning(false);
-    if (onTimeChange) {
-      onTimeChange(initialTime);
-    }
-  };
+  const { time, isRunning, startTimer, pauseTimer, stopTimer } = useTimer();
 
   return (
     <div className={`flex items-center gap-4 ${className}`} style={style}>
@@ -99,7 +51,7 @@ export const Timer: React.FC<TimerProps> = ({
         <div className="flex items-center gap-3">
           {/* Botão Play/Pause */}
           <button
-            onClick={toggleTimer}
+            onClick={isRunning ? pauseTimer : startTimer}
             className="relative overflow-hidden hover:opacity-80 transition-all duration-200 cursor-pointer"
             style={{
               width: '40px',
@@ -169,15 +121,18 @@ export const Timer: React.FC<TimerProps> = ({
           
           {/* Botão Stop */}
           <button
-            onClick={resetTimer}
-            className={`relative overflow-hidden hover:opacity-80 transition-all duration-200 cursor-pointer ${!isRunning && time === initialTime ? "opacity-50" : "opacity-100"}`}
+            onClick={stopTimer}
+            disabled={!isRunning && time === "00:00:00"}
+            className="relative overflow-hidden hover:opacity-80 transition-all duration-200 cursor-pointer"
             style={{
               width: '40px',
               height: '40px',
               background: 'linear-gradient(180deg, rgba(65, 60, 122, 1) 40%, rgba(45, 45, 69, 1) 100%)',
               borderRadius: '50%',
               border: 'none',
-              boxShadow: '0px 0.3125px 0.625px 0px rgba(0, 0, 0, 0.2)'
+              boxShadow: '0px 0.3125px 0.625px 0px rgba(0, 0, 0, 0.2)',
+              opacity: (!isRunning && time === "00:00:00") ? 0.4 : 1,
+              pointerEvents: (!isRunning && time === "00:00:00") ? 'none' : 'auto'
             }}
           >
             {/* Camada interna */}

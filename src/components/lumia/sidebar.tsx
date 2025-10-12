@@ -3,8 +3,6 @@ import { useNavigate, useLocation } from "react-router";
 import { useSidebar } from "@/contexts/sidebar-context";
 import { useMainContent } from "@/contexts/main-content-context";
 import { useNotificationsModal } from "@/contexts/notifications-modal-context";
-import { useAuth } from "@/contexts/auth-context";
-import { LogoutModal } from "@/components/modals/logout-modal";
 import { SidebarTimer } from "@/components/lumia/timer";
 
 export const Sidebar = () => {
@@ -13,11 +11,8 @@ export const Sidebar = () => {
   const { isCollapsed, toggleSidebar } = useSidebar();
   const { setCurrentContent } = useMainContent();
   const { openModal: openNotificationsModal, closeModal: closeNotificationsModal } = useNotificationsModal();
-  const { logout } = useAuth();
   const [showTexts, setShowTexts] = useState(true);
   const [activeItem, setActiveItem] = useState("Início");
-  const [isLogoutHovered, setIsLogoutHovered] = useState(false);
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   // Detectar se é mobile/tablet
@@ -225,22 +220,6 @@ export const Sidebar = () => {
     // TODO: Implementar navegação para outras páginas quando estiverem criadas
   };
 
-  const handleLogoutClick = () => {
-    setShowLogoutModal(true);
-  };
-
-  const handleLogoutConfirm = () => {
-    console.log('Usuário confirmou logout');
-    setShowLogoutModal(false);
-    logout();
-    navigate('/login');
-  };
-
-  const handleLogoutClose = () => {
-    console.log('Fechando modal de logout');
-    setShowLogoutModal(false);
-  };
-
   return (
     <>
       {/* Overlay escuro para mobile */}
@@ -442,79 +421,25 @@ export const Sidebar = () => {
               ))}
             </nav>
 
-        {/* Timer section */}
-        {!isMobile && !isCollapsed && (
-          <div className="flex-shrink-0" style={{ paddingTop: '16px' }}>
-            <SidebarTimer />
-          </div>
+        {/* Spacer para empurrar o timer para baixo quando colapsado */}
+        {!isMobile && isCollapsed && (
+          <div style={{ flex: 1 }} />
         )}
 
-        {/* User section - fica no final */}
-        <div className="flex-shrink-0" style={{ padding: isMobile ? '12px 16px' : '16px' }}>
-        <button 
-          onClick={handleLogoutClick}
-          className="flex items-center transition-all duration-200 group"
-          style={{
-            padding: isMobile ? '8px 14px' : (isCollapsed ? '8px' : '8px 14px'),
-            gap: '10px',
-            borderRadius: '8px',
-            background: 'transparent',
-            color: '#F0F0F1',
-            width: isMobile ? '100%' : (isCollapsed ? '48px' : '204px'),
-            justifyContent: isMobile ? 'flex-start' : (isCollapsed ? 'center' : 'flex-start'),
-            border: '1px solid transparent',
-            transition: 'all 0.2s ease',
-            cursor: 'pointer'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = '#2D2D42';
-            setIsLogoutHovered(true);
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'transparent';
-            setIsLogoutHovered(false);
-          }}
-        >
-                           <div className="w-8 h-8 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-            {isLogoutHovered ? (
-                                     <svg 
-                    width="24" 
-                    height="24" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                className="w-6 h-6 transition-colors duration-200"
-              >
-                <path fillRule="evenodd" clipRule="evenodd" d="M24 2.57143C24 1.88944 23.7291 1.23539 23.2468 0.753154C22.7646 0.270918 22.1105 0 21.4285 0L9.42788 0C8.74587 0 8.09178 0.270918 7.60952 0.753154C7.12726 1.23539 6.85633 1.88944 6.85633 2.57143V5.89543C7.55194 6.45257 8.00328 7.25865 8.11468 8.14286H14.1424C14.6489 8.14286 15.1505 8.24263 15.6185 8.43646C16.0865 8.6303 16.5117 8.91442 16.8699 9.27259C17.2281 9.63076 17.5122 10.056 17.7061 10.5239C17.8999 10.9919 17.9997 11.4935 17.9997 12C17.9997 12.5065 17.8999 13.0081 17.7061 13.4761C17.5122 13.944 17.2281 14.3692 16.8699 14.7274C16.5117 15.0856 16.0865 15.3697 15.6185 15.5635C15.1505 15.7574 14.6489 15.8571 14.1424 15.8571H8.11468C8.00328 16.7413 7.55194 17.5474 6.85633 18.1046V21.4286C6.85633 22.1106 7.12726 22.7646 7.60952 23.2468C8.09178 23.7291 8.74587 24 9.42788 24H21.4285C22.1105 24 22.7646 23.7291 23.2468 23.2468C23.7291 22.7646 24 22.1106 24 21.4286V2.57143ZM5.2054 7.38343C5.44037 7.48075 5.6412 7.64556 5.78249 7.85703C5.92378 8.06849 5.99918 8.31711 5.99915 8.57143V10.2857H14.1424C14.5971 10.2857 15.0331 10.4663 15.3546 10.7878C15.6761 11.1093 15.8568 11.5453 15.8568 12C15.8568 12.4547 15.6761 12.8907 15.3546 13.2122C15.0331 13.5337 14.5971 13.7143 14.1424 13.7143H5.99915V15.4286C5.99893 15.6827 5.9234 15.9311 5.7821 16.1423C5.6408 16.3535 5.44007 16.5181 5.20527 16.6154C4.97046 16.7126 4.71211 16.738 4.46284 16.6885C4.21358 16.639 3.98458 16.5167 3.80476 16.3371L0.37603 12.9086C0.135246 12.6675 0 12.3407 0 12C0 11.6593 0.135246 11.3325 0.37603 11.0914L3.80476 7.66286C3.98445 7.48304 4.21341 7.36053 4.46271 7.31079C4.71201 7.26106 4.97046 7.28633 5.2054 7.38343Z" fill="#F97066"/>
-              </svg>
-            ) : (
-              <svg 
-                width="22" 
-                height="24" 
-                viewBox="0 0 22 24" 
-                fill="none" 
-                className="w-6 h-6 transition-colors duration-200"
-                    style={{ color: '#F0F0F1' }}
-                  >
-                <path fillRule="evenodd" clipRule="evenodd" d="M19.5666 2.32783C19.4353 2.20962 19.2621 2.14292 19.0817 2.14099H6.51035C6.32537 2.14099 6.15117 2.20956 6.02546 2.32783C5.96639 2.38309 5.91932 2.44894 5.88696 2.5216C5.85461 2.59425 5.83759 2.67229 5.83689 2.75123V4.40026C5.83689 4.6844 5.71863 4.9569 5.50813 5.15782C5.29764 5.35874 5.01214 5.47161 4.71445 5.47161C4.41676 5.47161 4.13126 5.35874 3.92076 5.15782C3.71027 4.9569 3.59201 4.6844 3.59201 4.40026V2.75123C3.59201 2.01414 3.9045 1.31134 4.45404 0.797086C5.00436 0.285625 5.74224 -0.000399814 6.51035 4.19468e-07H19.0817C19.8485 4.19468e-07 20.5902 0.286266 21.138 0.7988C21.6857 1.31134 22 2.01586 22 2.75295V21.2488C22 21.9859 21.6875 22.687 21.138 23.2029C20.5884 23.7154 19.8485 24 19.0817 24H6.51035C5.7435 24 5.00179 23.7154 4.45404 23.2012C3.90629 22.6869 3.59201 21.9841 3.59201 21.2471V19.5997C3.59201 19.3156 3.71027 19.0431 3.92076 18.8422C4.13126 18.6413 4.41676 18.5284 4.71445 18.5284C5.01214 18.5284 5.29764 18.6413 5.50813 18.8422C5.71863 19.0431 5.83689 19.3156 5.83689 19.5997V21.2488C5.83689 21.403 5.90334 21.5573 6.02725 21.6722C6.15837 21.7894 6.33073 21.8554 6.51035 21.8573H19.0817C19.2666 21.8573 19.4408 21.7887 19.5666 21.6722C19.6256 21.6169 19.6727 21.5511 19.705 21.4784C19.7374 21.4057 19.7544 21.3277 19.7551 21.2488V2.75123C19.7551 2.59696 19.6905 2.44268 19.5666 2.32783ZM5.14367 7.58174C5.34768 7.66394 5.52193 7.80146 5.64484 7.97728C5.76774 8.15309 5.83389 8.35946 5.83509 8.57082V10.9278H13.694C13.9916 10.9278 14.2771 11.0407 14.4876 11.2416C14.6981 11.4425 14.8164 11.715 14.8164 11.9991C14.8164 12.2833 14.6981 12.5558 14.4876 12.7567C14.2771 12.9576 13.9916 13.0705 13.694 13.0705H5.83689V15.4275C5.83693 15.6394 5.77112 15.8466 5.64779 16.0228C5.52446 16.199 5.34914 16.3364 5.14402 16.4175C4.93889 16.4986 4.71317 16.5198 4.49541 16.4784C4.27766 16.4371 4.07764 16.335 3.92066 16.1851L0.328857 12.7568C0.2246 12.6573 0.141895 12.5392 0.0854702 12.4092C0.0290432 12.2792 0 12.1399 0 11.9991C0 11.8584 0.0290432 11.7191 0.0854702 11.5891C0.141895 11.4591 0.2246 11.341 0.328857 11.2415L3.92066 7.81316C4.07771 7.66351 4.27772 7.56165 4.49541 7.52046C4.71309 7.47927 4.93868 7.5006 5.14367 7.58174Z" fill="currentColor"/>
-                  </svg>
-            )}
-                 </div>
-          {!isCollapsed && showTexts && (
-            <span 
-              className="font-medium transition-all duration-200" 
-              style={{ 
-                fontSize: '14px',
-                fontWeight: isLogoutHovered ? '600' : '400',
-                color: isLogoutHovered ? '#F97066' : '#F0F0F1',
-                opacity: 1,
-                transform: 'translateX(0)'
-              }}
-            >
-              Sair da conta
-            </span>
-          )}
-        </button>
-      </div>
+        {/* Timer section */}
+        {!isMobile && (
+          <div 
+            className="flex-shrink-0" 
+            style={{ 
+              padding: isCollapsed ? '0 24px 120px' : '0 28px 16px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <SidebarTimer isCollapsed={isCollapsed} />
+          </div>
+        )}
       </div>
 
       {/* Collapse Button - Desktop only */}
@@ -585,13 +510,6 @@ export const Sidebar = () => {
       </button>
     </div>
     )}
-
-    {/* Logout Modal - Outside all containers */}
-    <LogoutModal
-      isOpen={showLogoutModal}
-      onClose={handleLogoutClose}
-      onConfirm={handleLogoutConfirm}
-    />
     </>
   );
 };

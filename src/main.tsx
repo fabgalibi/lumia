@@ -16,6 +16,7 @@ import { RouteProvider } from "@/providers/router-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { ProfileSetupProvider } from "@/contexts/profile-setup-context";
 import { AuthProvider } from "@/contexts/auth-context";
+import { TimerProvider } from "@/contexts/timer-context";
 import { ProtectedRoute } from "@/components/auth";
 import "@/styles/globals.css";
 
@@ -23,6 +24,7 @@ createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <ThemeProvider>
             <AuthProvider>
+                <TimerProvider>
                 <BrowserRouter>
                     <RouteProvider>
                     <Routes>
@@ -63,6 +65,7 @@ createRoot(document.getElementById("root")!).render(
                     </Routes>
                 </RouteProvider>
             </BrowserRouter>
+                </TimerProvider>
             </AuthProvider>
         </ThemeProvider>
     </StrictMode>,

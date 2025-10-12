@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../contexts/auth-context";
+import { LogoutModal } from "@/components/modals/logout-modal";
 
 export const UserMenu: React.FC = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
   const { logout } = useAuth();
 
@@ -21,6 +23,21 @@ export const UserMenu: React.FC = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isUserMenuOpen]);
+
+  const handleLogoutClick = () => {
+    setIsUserMenuOpen(false);
+    setShowLogoutModal(true);
+  };
+
+  const handleLogoutConfirm = () => {
+    setShowLogoutModal(false);
+    logout();
+    navigate('/login');
+  };
+
+  const handleLogoutClose = () => {
+    setShowLogoutModal(false);
+  };
 
   return (
     <div 
@@ -99,11 +116,7 @@ export const UserMenu: React.FC = () => {
               Configurações
             </button>
             <button
-              onClick={() => {
-                setIsUserMenuOpen(false);
-                logout();
-                navigate('/login');
-              }}
+              onClick={handleLogoutClick}
               className="w-full text-left px-4 py-2 text-[#F7F7F7] hover:bg-[#333346] transition-colors duration-200"
               style={{ cursor: 'pointer' }}
             >
@@ -112,6 +125,13 @@ export const UserMenu: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Logout Modal */}
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={handleLogoutClose}
+        onConfirm={handleLogoutConfirm}
+      />
     </div>
   );
 };

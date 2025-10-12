@@ -12,6 +12,7 @@ import { TutorialsContent } from "@/components/tutorials";
 import MessagesContent from "@/components/messages/messages-content";
 import { MentoriasCalendar } from "@/components/mentorias";
 import { NotificationsModal } from "@/components/notifications";
+import { LockScreen } from "@/components/lumia/timer";
 import { SprintProvider, useSprint } from "@/contexts/sprint-context";
 import { SidebarProvider, useSidebar } from "@/contexts/sidebar-context";
 import { MainContentProvider, useMainContent } from "@/contexts/main-content-context";
@@ -98,6 +99,9 @@ const HomeScreenContent = () => {
       
       {/* Notifications Modal */}
       <NotificationsModal isOpen={isNotificationsOpen} onClose={closeNotifications} />
+      
+      {/* Lock Screen do Timer */}
+      <LockScreen />
     </div>
   );
 };

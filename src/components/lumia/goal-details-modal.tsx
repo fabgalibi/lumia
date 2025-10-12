@@ -27,7 +27,6 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showPerformanceModal, setShowPerformanceModal] = useState(false);
   const [showSkipModal, setShowSkipModal] = useState(false);
-  const [initialTimer] = useState("00:00:00");
 
   // Resetar estado quando o modal for fechado
   useEffect(() => {
@@ -309,8 +308,6 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
             {/* Cronômetro - só aparece em tela cheia */}
             {isFullscreen && (
               <Timer 
-                initialTime={initialTimer}
-                onTimeChange={() => {}}
                 showControls={true}
                 className="w-full sm:w-auto"
               />
