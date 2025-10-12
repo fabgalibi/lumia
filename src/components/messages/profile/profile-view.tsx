@@ -99,12 +99,12 @@ const ProfileView: React.FC<ProfileViewProps> = ({
           />
         </div>
       ) : (
-        <ProfileHeader 
-          contactName={contactName}
-          contactAvatar={contactAvatar}
-          isOnline={isOnline}
+      <ProfileHeader 
+        contactName={contactName}
+        contactAvatar={contactAvatar}
+        isOnline={isOnline}
           onClose={onClose}
-        />
+      />
       )}
 
       {/* Conteúdo Scrollável */}
@@ -320,7 +320,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({
 
         {/* Informações de Contato */}
         <div style={{ padding: isMobile ? '0 16px' : '0 24px' }}>
-          <ProfileInfoSection contactName={contactName} />
+        <ProfileInfoSection contactName={contactName} />
         </div>
 
         {/* Disponibilidade */}

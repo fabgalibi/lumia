@@ -1,5 +1,4 @@
-import { type MetaSprint } from '@/services/sprint.service';
-import { type Goal, type RelevanceLevel } from '@/types/goal';
+import { type MetaSprint, type Goal, type RelevanceLevel } from '@/types';
 
 /**
  * Converte os dados da API para o formato esperado pela tabela de metas
@@ -29,7 +28,8 @@ export function mapMetaSprintToGoal(meta: MetaSprint): Goal {
  * Converte status da API para lowercase
  */
 function mapStatusToLowercase(status: string): 'concluido' | 'pendente' {
-  return status.toLowerCase() === 'concluído' ? 'concluido' : 'pendente';
+  const statusLower = status.toLowerCase().trim();
+  return statusLower === 'concluída' || statusLower === 'concluido' ? 'concluido' : 'pendente';
 }
 
 /**

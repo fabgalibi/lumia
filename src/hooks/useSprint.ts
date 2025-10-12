@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { sprintService, type DashboardSprintAtual, type MetaSprint } from '@/services/sprint.service';
+import { sprintService } from '@/services/sprint.service';
+import type { DashboardSprintAtual } from '@/types';
 
 interface UseSprintReturn {
   dashboard: DashboardSprintAtual | null;
@@ -20,6 +21,14 @@ export const useSprint = (): UseSprintReturn => {
       setIsLoading(true);
       setError(null);
       const data = await sprintService.buscarDashboardSprintAtual();
+      
+      // Log para debug - verificar se os dados estão chegando corretos
+      console.log('Dashboard data received:', {
+        metasConcluidas: data?.metricas?.metasConcluidas,
+        metasPendentes: data?.metricas?.totalMetas - data?.metricas?.metasConcluidas,
+        metas: data?.metas?.map(m => ({ id: m.id, status: m.status }))
+      });
+      
       setDashboard(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao carregar dados do sprint');

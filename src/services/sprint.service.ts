@@ -1,43 +1,5 @@
 import { apiClient } from './api/api-client';
-
-export interface DashboardSprintAtual {
-  id: string;
-  numeroSprint: number;
-  dataInicio: string;
-  dataFim: string;
-  status: 'ativo' | 'concluido' | 'pendente';
-  progresso: number;
-  metas: MetaSprint[];
-  estatisticas: {
-    metasConcluidas: number;
-    metasEmAndamento: number;
-    metasPendentes: number;
-    tempoTotalEstudado: string;
-    desempenhoMedio: number;
-  };
-}
-
-export interface MetaSprint {
-  id: number;
-  disciplinaId: number;
-  disciplina: string;
-  tipo: string; // Tipo de estudo (teoria, pratica, etc)
-  assuntoId: number;
-  assunto: string;
-  comandos: string; // Comandos do mentor
-  link: string; // Link para material
-  relevancia: number; // 1-3 (número de estrelas preenchidas)
-  tempoEstudado: string; // Formato "HH:MM"
-  desempenho: string; // Formato "XX.XX"
-  status: string; // "Pendente" ou "Concluído" (será convertido para lowercase)
-  totalQuestoes: number;
-  questoesCorretas: number;
-  createdAt: string;
-  updatedAt: string;
-  sprintId: number;
-  metaMestreId: number;
-  posicao: number; // Número da meta
-}
+import type { DashboardSprintAtual, MetaSprint } from '@/types';
 
 class SprintService {
   /**

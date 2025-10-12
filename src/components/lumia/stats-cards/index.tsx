@@ -3,7 +3,6 @@ import { useSprint } from '@/hooks/useSprint';
 import { SprintHeader } from './sprint-header';
 import { StatCard } from './stat-card';
 import { PerformanceIcon, GoalsIcon, StudyHoursIcon, AverageHoursIcon } from './stat-icons';
-import { calcularMediaDiaria } from './utils';
 
 interface StatsCardsProps {
   metasPendentes?: number; // Recebido do dashboard para atualizar o texto
@@ -28,7 +27,7 @@ export const StatsCards: React.FC<StatsCardsProps> = ({ metasPendentes }) => {
     {
       icon: PerformanceIcon,
       title: "Seu desempenho",
-      value: isLoading ? "..." : `${dashboard?.estatisticas?.desempenhoMedio?.toFixed(2) || '0,00'}%`,
+      value: isLoading ? "..." : `${dashboard?.metricas?.desempenhoMedio?.toFixed(2) || '0,00'}%`,
       change: "15%", // TODO: Calcular variação quando API enviar histórico
       changeText: "comparado à semana passada",
       showChange: true
@@ -36,7 +35,7 @@ export const StatsCards: React.FC<StatsCardsProps> = ({ metasPendentes }) => {
     {
       icon: GoalsIcon,
       title: "Metas concluídas",
-      value: isLoading ? "..." : `${dashboard?.estatisticas?.metasConcluidas || 0} metas`,
+      value: isLoading ? "..." : `${dashboard?.metricas?.metasConcluidas || 0} metas`,
       change: null,
       changeText: null,
       showChange: false
@@ -44,7 +43,7 @@ export const StatsCards: React.FC<StatsCardsProps> = ({ metasPendentes }) => {
     {
       icon: StudyHoursIcon,
       title: "Horas estudadas",
-      value: isLoading ? "..." : dashboard?.estatisticas?.tempoTotalEstudado || '0h',
+      value: isLoading ? "..." : dashboard?.metricas?.totalHorasEstudadas || '0h',
       change: null,
       changeText: null,
       showChange: false
@@ -52,7 +51,7 @@ export const StatsCards: React.FC<StatsCardsProps> = ({ metasPendentes }) => {
     {
       icon: AverageHoursIcon,
       title: "Média de horas diárias",
-      value: isLoading ? "..." : calcularMediaDiaria(dashboard?.estatisticas?.tempoTotalEstudado || ''),
+      value: isLoading ? "..." : dashboard?.metricas?.mediaHorasDiaria || '0h',
       change: null,
       changeText: null,
       showChange: false
@@ -61,7 +60,7 @@ export const StatsCards: React.FC<StatsCardsProps> = ({ metasPendentes }) => {
 
   const metasPendentesTexto = metasPendentes !== undefined 
     ? metasPendentes 
-    : dashboard?.estatisticas?.metasPendentes || 0;
+    : (dashboard?.metricas?.totalMetas || 0) - (dashboard?.metricas?.metasConcluidas || 0);
 
   return (
     <div className="w-full">

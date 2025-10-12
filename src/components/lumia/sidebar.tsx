@@ -5,6 +5,7 @@ import { useMainContent } from "@/contexts/main-content-context";
 import { useNotificationsModal } from "@/contexts/notifications-modal-context";
 import { useAuth } from "@/contexts/auth-context";
 import { LogoutModal } from "@/components/modals/logout-modal";
+import { SidebarTimer } from "@/components/lumia/timer";
 
 export const Sidebar = () => {
   const navigate = useNavigate();
@@ -440,6 +441,13 @@ export const Sidebar = () => {
                 </button>
               ))}
             </nav>
+
+        {/* Timer section */}
+        {!isMobile && !isCollapsed && (
+          <div className="flex-shrink-0" style={{ paddingTop: '16px' }}>
+            <SidebarTimer />
+          </div>
+        )}
 
         {/* User section - fica no final */}
         <div className="flex-shrink-0" style={{ padding: isMobile ? '12px 16px' : '16px' }}>
