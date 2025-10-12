@@ -76,9 +76,9 @@ export const Input: React.FC<InputProps> = ({
     transition: 'all 0.2s ease',
     minHeight: type === 'textarea' ? (screenSize === 'mobile' ? '140px' : '120px') : '44px',
     height: type === 'textarea' ? 'auto' : '44px',
-    width: type === 'textarea' ? '100%' : '512px',
-    minWidth: type === 'textarea' ? 'auto' : '400px',
-    maxWidth: type === 'textarea' ? '100%' : '512px',
+    width: type === 'textarea' ? '100%' : (style?.width || '512px'),
+    minWidth: type === 'textarea' ? 'auto' : (style?.minWidth || '400px'),
+    maxWidth: type === 'textarea' ? '100%' : (style?.maxWidth || '512px'),
     boxSizing: 'border-box',
   };
 

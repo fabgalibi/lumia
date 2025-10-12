@@ -77,7 +77,7 @@ export const GoalsMobileCard: React.FC<GoalsMobileCardProps> = ({
             color: '#F0F0F1'
           }}
         >
-          {goal.topic}
+          {goal.discipline}
         </span>
       </div>
 

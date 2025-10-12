@@ -13,7 +13,9 @@ interface GoalDetailsModalProps {
   onCompleteGoal?: () => void;
   onSkipGoal?: (goalName: string) => void;
   goal: {
-    topic: string;
+    topic?: string; // Manter para compatibilidade
+    discipline: string;
+    subject: string;
     studyType: string;
     timeStudied: string;
     performance: string;
@@ -73,7 +75,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
   };
 
   const handleSkipGoal = (reason: string) => {
-    console.log('Meta pulada:', { goal: goal.topic, reason });
+    console.log('Meta pulada:', { goal: goal.discipline, reason });
     // Aqui você pode implementar a lógica para pular a meta
     setShowSkipModal(false);
     onClose(); // Fechar o modal principal também
@@ -85,7 +87,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
     
     // Chamar callback para pular a meta
     if (onSkipGoal) {
-      onSkipGoal(goal.topic);
+      onSkipGoal(goal.discipline);
     }
   };
 
@@ -285,7 +287,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
                 color: '#F7F7F7'
               }}
             >
-              {goal.topic}
+              {goal.discipline}
             </h2>
             <div 
               className="flex items-center gap-1.5"
@@ -748,7 +750,7 @@ export const GoalDetailsModal: React.FC<GoalDetailsModalProps> = ({ isOpen, onCl
         isOpen={showSkipModal}
         onClose={handleSkipClose}
         onSkip={handleSkipGoal}
-        goalName={goal.topic}
+        goalName={goal.discipline}
       />
 
     </div>

@@ -33,7 +33,8 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
 
   // Filtrar dados baseado na busca
   const filteredGoals = goalsTableData.goals.filter(goal =>
-    goal.topic.toLowerCase().includes(searchValue.toLowerCase()) ||
+    goal.discipline.toLowerCase().includes(searchValue.toLowerCase()) ||
+    goal.subject.toLowerCase().includes(searchValue.toLowerCase()) ||
     goal.studyType.toLowerCase().includes(searchValue.toLowerCase()) ||
     goal.mentorCommand.toLowerCase().includes(searchValue.toLowerCase())
   );
@@ -64,10 +65,39 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
       )
     },
     {
-      key: 'topic',
-      title: 'Tópicos',
-      dataIndex: 'topic',
-      width: '200px', // Largura dos Tópicos no Figma
+      key: 'metaNumber',
+      title: 'Nº meta',
+      dataIndex: 'metaNumber',
+      width: '80px', // Largura do Nº meta no Figma
+      align: 'center',
+      render: (value: string) => (
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%'
+        }}>
+          <Text 
+            variant="caption" 
+            weight="regular" 
+            color="#F0F0F1"
+            screenSize={screenSize}
+            style={{
+              fontSize: '14px',
+              lineHeight: '1.4285714285714286em',
+              letterSpacing: '-0.5%'
+            }}
+          >
+            {value}
+          </Text>
+        </div>
+      )
+    },
+    {
+      key: 'discipline',
+      title: 'Disciplinas',
+      dataIndex: 'discipline',
+      width: '200px', // Largura das Disciplinas no Figma
       align: 'left',
       render: (value: string) => (
         <div style={{ 
@@ -87,6 +117,36 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
               fontSize: '14px',
               lineHeight: '1.4285714285714286em',
               letterSpacing: '-0.5%'
+            }}
+          >
+            {value}
+          </Text>
+        </div>
+      )
+    },
+    {
+      key: 'subject',
+      title: 'Assunto',
+      dataIndex: 'subject',
+      width: '250px', // Largura do Assunto no Figma
+      align: 'left',
+      render: (value: string) => (
+        <div style={{ 
+          display: 'flex',
+          alignItems: 'center',
+          width: '100%',
+          height: '100%'
+        }}>
+          <Text 
+            variant="body" 
+            weight="regular"
+            color="#FAFAFA"
+            screenSize={screenSize}
+            style={{
+              width: '100%',
+              textAlign: 'left',
+              fontSize: '14px',
+              lineHeight: '1.4285714285714286em'
             }}
           >
             {value}
@@ -155,7 +215,7 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
     },
     {
       key: 'performance',
-      title: 'Desempenho (%)',
+      title: 'Desempenho',
       dataIndex: 'performance',
       width: '132px', // Largura do Desempenho no Figma
       align: 'center',
@@ -184,37 +244,6 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
           height: '100%'
         }}>
           <RelevanceStars level={value} />
-        </div>
-      )
-    },
-    {
-      key: 'mentorCommand',
-      title: 'Comandos do mentor',
-      dataIndex: 'mentorCommand',
-      width: '300px', // Largura dos Comandos do mentor no Figma
-      align: 'left',
-      render: (value: string) => (
-        <div style={{ 
-          display: 'flex',
-          justifyContent: 'stretch',
-          alignItems: 'center',
-          width: '100%',
-          height: '100%'
-        }}>
-          <Text 
-            variant="body" 
-            weight="regular"
-            color="#FAFAFA"
-            screenSize={screenSize}
-            style={{
-              width: '100%',
-              textAlign: 'left',
-              fontSize: '14px',
-              lineHeight: '1.4285714285714286em'
-            }}
-          >
-            {value}
-          </Text>
         </div>
       )
     },
@@ -321,7 +350,7 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
           style={{
             display: 'flex',
             flexDirection: (screenSize === 'mobile' || screenSize === 'tablet') ? 'column' : 'row',
-            justifyContent: 'center',
+            justifyContent: (screenSize === 'mobile' || screenSize === 'tablet') ? 'center' : 'space-between',
             alignItems: 'center',
             gap: (screenSize === 'mobile' || screenSize === 'tablet') ? '20px' : '24px',
             padding: (screenSize === 'mobile' || screenSize === 'tablet') ? '20px 16px' : '16px 24px'
@@ -329,7 +358,7 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
         >
         {/* Tabs Container */}
         <div style={{ 
-          flex: (screenSize === 'mobile' || screenSize === 'tablet') ? 'none' : 1,
+          flex: 'none',
           width: (screenSize === 'mobile' || screenSize === 'tablet') ? '100%' : 'auto'
         }}>
           <Tabs
@@ -349,11 +378,12 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
             flexDirection: 'column',
                 gap: '6px',
             width: (screenSize === 'mobile' || screenSize === 'tablet') ? '100%' : '465px',
-            flexShrink: 0
+            maxWidth: '465px',
+            flexShrink: 1
           }}
         >
           <Input
-            placeholder="Buscar tópicos, comandos, etc..."
+            placeholder="Buscar disciplinas, assuntos, etc... "
             value={searchValue}
             onChange={(value: string) => setSearchValue(value)}
             icon={
@@ -368,6 +398,11 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
               </svg>
             }
             screenSize={screenSize}
+            style={{
+              width: '100%',
+              minWidth: 'auto',
+              maxWidth: '100%'
+            }}
           />
         </div>
       </div>
@@ -480,7 +515,9 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
                         // Converter suggestion para goal para abrir o modal
                         const mockGoal: Goal = {
                           id: suggestion.id,
-                          topic: suggestion.topic,
+                          metaNumber: suggestion.id,
+                          discipline: suggestion.topic,
+                          subject: suggestion.topic, // Usar topic como subject para sugestões
                           studyType: suggestion.studyType,
                           timeStudied: suggestion.timeStudied,
                           performance: suggestion.performance,
@@ -515,7 +552,9 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
                         // Converter suggestion para goal para abrir o modal
                         const mockGoal: Goal = {
                           id: suggestion.id,
-                          topic: suggestion.topic,
+                          metaNumber: suggestion.id,
+                          discipline: suggestion.topic,
+                          subject: suggestion.topic, // Usar topic como subject para sugestões
                           studyType: suggestion.studyType,
                           timeStudied: suggestion.timeStudied,
                           performance: suggestion.performance,
@@ -548,7 +587,9 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
                         // Converter suggestion para goal para abrir o modal
                         const mockGoal: Goal = {
                           id: suggestion.id,
-                          topic: suggestion.topic,
+                          metaNumber: suggestion.id,
+                          discipline: suggestion.topic,
+                          subject: suggestion.topic, // Usar topic como subject para sugestões
                           studyType: suggestion.studyType,
                           timeStudied: suggestion.timeStudied,
                           performance: suggestion.performance,
@@ -575,7 +616,9 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
       <GoalDetailsModal
           isOpen={true}
           goal={{
-            topic: selectedGoal.topic,
+            topic: selectedGoal.topic, // Manter para compatibilidade
+            discipline: selectedGoal.discipline,
+            subject: selectedGoal.subject,
             studyType: selectedGoal.studyType,
             timeStudied: selectedGoal.timeStudied,
             performance: selectedGoal.performance,

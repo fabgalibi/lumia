@@ -26,7 +26,9 @@ export interface TableProps<T = any> {
 // Tipos específicos para Goals Table
 export interface Goal {
   id?: string;
-  topic: string;
+  metaNumber?: string; // Número sequencial da meta (01, 02, 03, etc.)
+  discipline: string; // Disciplina (ex: "Ética no Serviço Público")
+  subject: string; // Assunto específico (ex: "Compreensão de Texto e Interpretação de Questões")
   studyType: string;
   timeStudied: string;
   performance: string;
