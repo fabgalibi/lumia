@@ -67,7 +67,7 @@ class ApiClient {
       
       // Trata erros HTTP
       if (!response.ok) {
-        let errorData = {};
+        let errorData: Partial<ApiError> = {};
         if (isJson) {
           errorData = await response.json().catch(() => ({}));
         } else {

@@ -5,7 +5,7 @@
 // UI Components
 export { Timer } from './timer';
 export { ProgressBar } from './progress-bar';
-export { StatsCards } from './stats-cards';
+export { StatsCards } from './stats-cards/index';
 export { ContestsList } from './contests-list';
 export { SprintSection } from './sprint-section';
 export { Sidebar } from './sidebar';
