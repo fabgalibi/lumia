@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { X } from "lucide-react";
 import { NumberInputControls } from '../inputs';
+import { sprintService } from '@/services/sprint.service';
 
 interface PerformanceModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (data: FormData) => void;
+  metaId: string;
 }
 
 interface FormData {
@@ -15,7 +17,7 @@ interface FormData {
   minutes: number;
 }
 
-export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onClose, onSave }) => {
+export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onClose, onSave, metaId }) => {
   const [formData, setFormData] = useState<FormData>({
     questionsResolved: 18,
     correctAnswers: 12,
@@ -24,6 +26,8 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
   });
 
   const [isMobile, setIsMobile] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Detectar se é mobile
   useEffect(() => {
@@ -43,9 +47,54 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
     }));
   };
 
-  const handleSave = () => {
-    onSave(formData);
-    onClose();
+  const handleSave = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // Validar se os valores são números válidos
+      const totalQuestoes = Number(formData.questionsResolved);
+      const questoesCorretas = Number(formData.correctAnswers);
+      const horas = Number(formData.hours);
+      const minutos = Number(formData.minutes);
+
+      console.log('Valores validados:', {
+        totalQuestoes,
+        questoesCorretas,
+        horas,
+        minutos
+      });
+
+      // Validar se são números válidos
+      if (isNaN(totalQuestoes) || isNaN(questoesCorretas) || isNaN(horas) || isNaN(minutos)) {
+        throw new Error('Valores inválidos fornecidos');
+      }
+
+      // Converter horas e minutos para o formato "HH:MM"
+      const tempoEstudado = `${String(horas).padStart(2, '0')}:${String(minutos).padStart(2, '0')}`;
+
+      console.log('Dados finais sendo enviados:', {
+        tempoEstudado,
+        totalQuestoes,
+        questoesCorretas
+      });
+
+      // Chamar a API
+      await sprintService.concluirMeta(metaId, {
+        tempoEstudado,
+        totalQuestoes,
+        questoesCorretas
+      });
+
+      // Chamar o callback de sucesso
+      onSave(formData);
+      onClose();
+    } catch (err) {
+      console.error('Erro ao salvar desempenho:', err);
+      setError('Erro ao salvar os dados. Tente novamente.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -63,9 +112,9 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
         style={{
           background: '#202028',
           border: '1px solid #272737',
-          borderRadius: '12px',
+          borderRadius: '16px',
           boxShadow: '0px 8px 32px 0px rgba(0, 0, 0, 0.3)',
-          width: isMobile ? '343px' : '508px',
+          width: isMobile ? 'calc(100% - 32px)' : '508px',
           height: 'fit-content',
           maxHeight: '90vh',
           right: isMobile ? 'auto' : '40px',
@@ -89,10 +138,10 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
         >
           <h2
             style={{
-              fontFamily: 'Inter' /* MIGRATED */,
-              fontWeight: 600,
+              fontFamily: 'Sora',
+              fontWeight: 400,
               fontSize: isMobile ? '16px' : '18px',
-              lineHeight: '1.5em',
+              lineHeight: '1.556em',
               color: '#F7F7F7',
               flex: 1
             }}
@@ -104,13 +153,15 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
             onClick={onClose}
             className="flex items-center justify-center hover:bg-[#333346] transition-all duration-200 cursor-pointer"
             style={{
-              padding: '12px',
+              padding: '8px 12px',
               background: 'transparent',
               border: 'none',
-              borderRadius: '8px'
+              borderRadius: '8px',
+              width: '44px',
+              height: '44px'
             }}
           >
-            <X className="w-5 h-5" style={{ color: '#F0F0F1' }} />
+            <X style={{ width: '20px', height: '20px', color: '#F0F0F1', strokeWidth: '1.67px' }} />
           </button>
         </div>
 
@@ -124,28 +175,28 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
           }}
         >
           {/* Questões */}
-          <div className="flex flex-col" style={{ gap: isMobile ? '12px' : '12px' }}>
+          <div className="flex flex-col" style={{ gap: '12px' }}>
             <h3
               style={{
-                fontFamily: 'Inter' /* MIGRATED */,
+                fontFamily: 'Sora',
                 fontWeight: 600,
-                fontSize: isMobile ? '14px' : '16px',
-                lineHeight: '1.4285714285714286em',
+                fontSize: '14px',
+                lineHeight: '1.5em',
                 color: '#F7F7F7'
               }}
             >
               Questões
             </h3>
             
-            <div className="flex flex-col" style={{ gap: isMobile ? '16px' : '16px' }}>
+            <div className={isMobile ? "flex flex-col" : "flex flex-row"} style={{ gap: '16px' }}>
               {/* Questões resolvidas */}
               <div className="flex flex-col gap-1.5 flex-1 min-w-0">
                 <label
                   style={{
-                    fontFamily: 'Inter' /* MIGRATED */,
+                    fontFamily: 'Sora',
                     fontWeight: 400,
                     fontSize: '14px',
-                    lineHeight: '1.4285714285714286em',
+                    lineHeight: '1.429em',
                     color: '#CECFD2'
                   }}
                 >
@@ -166,13 +217,16 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
                   <input
                     type="number"
                     value={formData.questionsResolved}
-                    onChange={(e) => handleInputChange('questionsResolved', parseInt(e.target.value) || 0)}
+                    onChange={(e) => {
+                      const value = parseInt(e.target.value, 10);
+                      handleInputChange('questionsResolved', isNaN(value) ? 0 : value);
+                    }}
                     min="0"
                     max="999"
                     step="1"
                     className="flex-1 bg-transparent border-none outline-none"
                     style={{
-                      fontFamily: 'Inter' /* MIGRATED */,
+                      fontFamily: 'Sora',
                       fontWeight: 400,
                       fontSize: '16px',
                       lineHeight: '1.5em',
@@ -192,10 +246,10 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
               <div className="flex flex-col gap-1.5 flex-1 min-w-0">
                 <label
                   style={{
-                    fontFamily: 'Inter' /* MIGRATED */,
+                    fontFamily: 'Sora',
                     fontWeight: 400,
                     fontSize: '14px',
-                    lineHeight: '1.4285714285714286em',
+                    lineHeight: '1.429em',
                     color: '#CECFD2'
                   }}
                 >
@@ -216,13 +270,16 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
                   <input
                     type="number"
                     value={formData.correctAnswers}
-                    onChange={(e) => handleInputChange('correctAnswers', parseInt(e.target.value) || 0)}
+                    onChange={(e) => {
+                      const value = parseInt(e.target.value, 10);
+                      handleInputChange('correctAnswers', isNaN(value) ? 0 : value);
+                    }}
                     min="0"
                     max="999"
                     step="1"
                     className="flex-1 bg-transparent border-none outline-none"
                     style={{
-                      fontFamily: 'Inter' /* MIGRATED */,
+                      fontFamily: 'Sora',
                       fontWeight: 400,
                       fontSize: '16px',
                       lineHeight: '1.5em',
@@ -241,28 +298,28 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
           </div>
 
           {/* Tempo */}
-          <div className="flex flex-col" style={{ gap: isMobile ? '12px' : '12px' }}>
+          <div className="flex flex-col" style={{ gap: '12px' }}>
             <h3
               style={{
-                fontFamily: 'Inter' /* MIGRATED */,
+                fontFamily: 'Sora',
                 fontWeight: 600,
-                fontSize: isMobile ? '14px' : '16px',
-                lineHeight: '1.4285714285714286em',
+                fontSize: '14px',
+                lineHeight: '1.5em',
                 color: '#F7F7F7'
               }}
             >
               Tempo
             </h3>
             
-            <div className="flex" style={{ gap: isMobile ? '16px' : '16px' }}>
+            <div className="flex flex-row" style={{ gap: '16px' }}>
               {/* Horas */}
               <div className="flex flex-col gap-1.5 flex-1 min-w-0">
                 <label
                   style={{
-                    fontFamily: 'Inter' /* MIGRATED */,
+                    fontFamily: 'Sora',
                     fontWeight: 400,
                     fontSize: '14px',
-                    lineHeight: '1.4285714285714286em',
+                    lineHeight: '1.429em',
                     color: '#CECFD2'
                   }}
                 >
@@ -283,13 +340,16 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
                   <input
                     type="number"
                     value={formData.hours}
-                    onChange={(e) => handleInputChange('hours', parseInt(e.target.value) || 0)}
+                    onChange={(e) => {
+                      const value = parseInt(e.target.value, 10);
+                      handleInputChange('hours', isNaN(value) ? 0 : value);
+                    }}
                     min="0"
                     max="23"
                     step="1"
                     className="flex-1 bg-transparent border-none outline-none"
                     style={{
-                      fontFamily: 'Inter' /* MIGRATED */,
+                      fontFamily: 'Sora',
                       fontWeight: 400,
                       fontSize: '16px',
                       lineHeight: '1.5em',
@@ -309,10 +369,10 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
               <div className="flex flex-col gap-1.5 flex-1 min-w-0">
                 <label
                   style={{
-                    fontFamily: 'Inter' /* MIGRATED */,
+                    fontFamily: 'Sora',
                     fontWeight: 400,
                     fontSize: '14px',
-                    lineHeight: '1.4285714285714286em',
+                    lineHeight: '1.429em',
                     color: '#CECFD2'
                   }}
                 >
@@ -333,13 +393,16 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
                   <input
                     type="number"
                     value={formData.minutes}
-                    onChange={(e) => handleInputChange('minutes', parseInt(e.target.value) || 0)}
+                    onChange={(e) => {
+                      const value = parseInt(e.target.value, 10);
+                      handleInputChange('minutes', isNaN(value) ? 0 : value);
+                    }}
                     min="0"
                     max="59"
                     step="1"
                     className="flex-1 bg-transparent border-none outline-none"
                     style={{
-                      fontFamily: 'Inter' /* MIGRATED */,
+                      fontFamily: 'Sora',
                       fontWeight: 400,
                       fontSize: '16px',
                       lineHeight: '1.5em',
@@ -357,6 +420,31 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
             </div>
           </div>
         </div>
+
+        {/* Error Message */}
+        {error && (
+          <div
+            style={{
+              padding: isMobile ? '0px 16px' : '0px 24px',
+              marginBottom: '-4px'
+            }}
+          >
+            <div
+              style={{
+                padding: '12px 16px',
+                background: '#55160C',
+                border: '1px solid #912018',
+                borderRadius: '8px',
+                color: '#FECDCA',
+                fontFamily: 'Sora',
+                fontSize: '14px',
+                lineHeight: '1.429em'
+              }}
+            >
+              {error}
+            </div>
+          </div>
+        )}
 
         {/* Footer */}
         <div
@@ -399,11 +487,12 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
             >
               <span
                 style={{
-                  fontFamily: 'Inter' /* MIGRATED */,
+                  fontFamily: 'Sora',
                   fontWeight: 600,
                   fontSize: '14px',
-                  lineHeight: '1.4285714285714286em',
-                  color: '#CECFD2'
+                  lineHeight: '1.429em',
+                  color: '#CECFD2',
+                  padding: '0px 2px'
                 }}
               >
                 Cancelar
@@ -412,27 +501,47 @@ export const PerformanceModal: React.FC<PerformanceModalProps> = ({ isOpen, onCl
 
             <button
               onClick={handleSave}
-              className="flex items-center justify-center hover:bg-[#B53D25] transition-all duration-200 cursor-pointer"
+              disabled={isLoading}
+              className="flex items-center justify-center hover:bg-[#B53D25] transition-all duration-200"
               style={{
                 gap: '4px',
                 padding: '10px 14px',
-                background: '#C74228',
-                border: '2px solid',
-                borderImage: 'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%) 1',
+                background: isLoading ? '#85888E' : '#C74228',
+                border: '2px solid transparent',
                 borderRadius: '8px',
-                boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)'
+                boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
+                position: 'relative',
+                cursor: isLoading ? 'not-allowed' : 'pointer',
+                opacity: isLoading ? 0.6 : 1
               }}
             >
+              {/* Gradiente de borda */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: '-2px',
+                  borderRadius: '8px',
+                  padding: '2px',
+                  background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)',
+                  WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                  WebkitMaskComposite: 'xor',
+                  maskComposite: 'exclude',
+                  pointerEvents: 'none'
+                }}
+              />
               <span
                 style={{
-                  fontFamily: 'Inter' /* MIGRATED */,
+                  fontFamily: 'Sora',
                   fontWeight: 600,
                   fontSize: '14px',
-                  lineHeight: '1.4285714285714286em',
-                  color: '#FFFFFF'
+                  lineHeight: '1.429em',
+                  color: '#FFFFFF',
+                  padding: '0px 2px',
+                  position: 'relative',
+                  zIndex: 1
                 }}
               >
-                Salvar registro
+                {isLoading ? 'Salvando...' : 'Salvar registro'}
               </span>
             </button>
           </div>

@@ -9,33 +9,37 @@ export const goalsData: Goal[] = [
             studyType: "Estudos de caso",
             timeStudied: "2h30",
             performance: "84%",
-            mentorCommand: "", // Comandos serão preenchidos no modal
             status: "pendente",
             relevance: "high",
-    subjects: [
-      "Princípios e valores do serviço público (legalidade, impessoalidade, moralidade, publicidade e eficiência);",
-      "Código de Ética Profissional do Servidor Público Civil do Poder Executivo Federal;",
-      "Conduta ética e deveres do servidor;",
-      "Vedações e conflitos de interesse;",
-      "Transparência, sigilo e acesso à informação;",
-      "Responsabilidade funcional e sanções éticas."
-    ],
-    materials: [
-      "Lei 8.112/90 - Estatuto dos Servidores Públicos;",
-      "Decreto 1.171/94 - Código de Ética Profissional;",
-      "Lei 12.527/11 - Lei de Acesso à Informação;",
-      "Jurisprudência do STF sobre ética no serviço público."
-    ],
-    mentorCommands: [
-      "Elaborar resumo dos 5 princípios constitucionais;",
-      "Analisar 3 casos práticos de conflito de interesse;",
-      "Estudar as principais vedações do servidor público."
-    ],
-    additionalTips: [
-      "Foque nos princípios constitucionais da administração pública;",
-      "Estude bem as diferenças entre moralidade e legalidade;",
-      "Pratique com questões sobre transparência e acesso à informação."
-    ]
+            subjects: [
+              "Princípios e valores do serviço público (legalidade, impessoalidade, moralidade, publicidade e eficiência);",
+              "Código de Ética Profissional do Servidor Público Civil do Poder Executivo Federal;",
+              "Conduta ética e deveres do servidor;",
+              "Vedações e conflitos de interesse;",
+              "Transparência, sigilo e acesso à informação;",
+              "Responsabilidade funcional e sanções éticas."
+            ],
+            materials: [
+              "Lei 8.112/90 - Estatuto dos Servidores Públicos;",
+              "Decreto 1.171/94 - Código de Ética Profissional;",
+              "Lei 12.527/11 - Lei de Acesso à Informação;",
+              "Jurisprudência do STF sobre ética no serviço público."
+            ],
+            commands: [
+              "Elaborar resumo dos 5 princípios constitucionais;",
+              "Analisar 3 casos práticos de conflito de interesse;",
+              "Estudar as principais vedações do servidor público."
+            ],
+            links: [
+              "https://www.planalto.gov.br/ccivil_03/leis/l8112cons.htm",
+              "https://www.planalto.gov.br/ccivil_03/decreto/d1171.htm",
+              "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2011/lei/l12527.htm"
+            ],
+            additionalTips: [
+              "Foque nos princípios constitucionais da administração pública;",
+              "Estude bem as diferenças entre moralidade e legalidade;",
+              "Pratique com questões sobre transparência e acesso à informação."
+            ]
   },
   {
     id: "2",
@@ -45,9 +49,13 @@ export const goalsData: Goal[] = [
     studyType: "Mapas mentais",
     timeStudied: "3h15",
     performance: "84%",
-    mentorCommand: "", // Comandos serão preenchidos no modal
     status: "concluido",
-    relevance: "high"
+    relevance: "high",
+    subjects: [],
+    materials: [],
+    commands: [],
+    links: [],
+    additionalTips: []
   },
   {
     id: "3",
@@ -57,9 +65,13 @@ export const goalsData: Goal[] = [
     studyType: "Simulado",
     timeStudied: "2h",
     performance: "84%",
-    mentorCommand: "", // Comandos serão preenchidos no modal
     status: "concluido",
-    relevance: "medium"
+    relevance: "medium",
+    subjects: [],
+    materials: [],
+    commands: [],
+    links: [],
+    additionalTips: []
   },
   {
     id: "4",
@@ -69,9 +81,13 @@ export const goalsData: Goal[] = [
     studyType: "Revisão simulado",
     timeStudied: "2h45",
     performance: "84%",
-    mentorCommand: "", // Comandos serão preenchidos no modal
     status: "concluido", // Verde no Figma
-    relevance: "low"
+    relevance: "low",
+    subjects: [],
+    materials: [],
+    commands: [],
+    links: [],
+    additionalTips: []
   },
   {
     id: "5",
@@ -81,9 +97,13 @@ export const goalsData: Goal[] = [
     studyType: "Resumo esquematizado",
     timeStudied: "3h",
     performance: "84%",
-    mentorCommand: "", // Comandos serão preenchidos no modal
     status: "concluido", // Verde no Figma
-    relevance: "low"
+    relevance: "low",
+    subjects: [],
+    materials: [],
+    commands: [],
+    links: [],
+    additionalTips: []
   },
   {
     id: "6",
@@ -93,9 +113,13 @@ export const goalsData: Goal[] = [
     studyType: "Questões comentadas",
     timeStudied: "1h30",
     performance: "84%",
-    mentorCommand: "", // Comandos serão preenchidos no modal
     status: "concluido", // Verde no Figma
-    relevance: "low"
+    relevance: "low",
+    subjects: [],
+    materials: [],
+    commands: [],
+    links: [],
+    additionalTips: []
   },
   {
     id: "7",
@@ -105,9 +129,13 @@ export const goalsData: Goal[] = [
     studyType: "Vídeo-aula resumida",
     timeStudied: "3h30",
     performance: "84%",
-    mentorCommand: "", // Comandos serão preenchidos no modal
     status: "concluido",
-    relevance: "medium"
+    relevance: "medium",
+    subjects: [],
+    materials: [],
+    commands: [],
+    links: [],
+    additionalTips: []
   },
   {
     id: "8",
@@ -117,9 +145,13 @@ export const goalsData: Goal[] = [
     studyType: "Teste rápido",
     timeStudied: "4h",
     performance: "84%",
-    mentorCommand: "", // Comandos serão preenchidos no modal
     status: "concluido",
-    relevance: "high"
+    relevance: "high",
+    subjects: [],
+    materials: [],
+    commands: [],
+    links: [],
+    additionalTips: []
   },
   {
     id: "9",
@@ -129,9 +161,13 @@ export const goalsData: Goal[] = [
     studyType: "Exercício contextual",
     timeStudied: "2h15",
     performance: "84%",
-    mentorCommand: "", // Comandos serão preenchidos no modal
     status: "concluido",
-    relevance: "medium"
+    relevance: "medium",
+    subjects: [],
+    materials: [],
+    commands: [],
+    links: [],
+    additionalTips: []
   },
   {
     id: "10",
@@ -141,9 +177,13 @@ export const goalsData: Goal[] = [
     studyType: "Produção de relatório",
     timeStudied: "3h45",
     performance: "84%",
-    mentorCommand: "", // Comandos serão preenchidos no modal
     status: "concluido",
-    relevance: "high"
+    relevance: "high",
+    subjects: [],
+    materials: [],
+    commands: [],
+    links: [],
+    additionalTips: []
   }
 ];
 

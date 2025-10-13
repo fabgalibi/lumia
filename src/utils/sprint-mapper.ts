@@ -16,11 +16,12 @@ export function mapMetaSprintToGoal(meta: MetaSprint): Goal {
     status: mapStatusToLowercase(meta.status), // Converte status para lowercase
     relevance: mapRelevanciaToLevel(meta.relevancia), // Converte relevância numérica para level
     
-    // Dados do modal (temporariamente vazios até API enviar)
-    subjects: [meta.assunto], // Por enquanto usa o assunto da tabela
-    materials: [], // materiais
+    // Dados do modal
+    subjects: [meta.assunto], // Por enquanto usa o assunto da tabela (API precisa enviar lista detalhada)
+    materials: [], // TODO: API precisa enviar array de materiais
     commands: meta.comandos ? [meta.comandos] : [], // comandos do mentor
-    additionalTips: [], // Virá da API futuramente
+    links: meta.link ? [meta.link] : [], // Converte link singular para array
+    additionalTips: [], // TODO: API precisa enviar array de dicas adicionais
   };
 }
 

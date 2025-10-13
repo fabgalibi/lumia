@@ -27,7 +27,7 @@ interface SprintProviderProps {
 }
 
 export const SprintProvider: React.FC<SprintProviderProps> = ({ children }) => {
-  const [progress, setProgress] = useState(88);
+  const [progress, setProgress] = useState(0); // Inicializar com 0, será atualizado pela API
   const [sprintData, setSprintData] = useState<DashboardSprintAtual | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -44,6 +44,7 @@ export const SprintProvider: React.FC<SprintProviderProps> = ({ children }) => {
       setSprintData(data);
       // Atualizar o progress com o percentual real
       if (data?.metricas?.percentualConclusao !== undefined) {
+        console.log('Atualizando progresso do contexto:', data.metricas.percentualConclusao);
         setProgress(data.metricas.percentualConclusao);
       }
     } catch (err) {

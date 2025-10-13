@@ -25,6 +25,19 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   padding = '0 32px'
 }) => {
   const getLabelPosition = () => {
+    if (percentage >= 100) {
+      switch (labelPosition) {
+        case 'left':
+          return `calc(100% - 180px)`;
+        case 'center':
+          return `calc(100% - 50px)`;
+        case 'right':
+          return `calc(100% + 20px)`;
+        default:
+          return `calc(100% - 180px)`;
+      }
+    }
+    
     switch (labelPosition) {
       case 'left':
         return `calc(${percentage}% - 180px)`;
@@ -58,7 +71,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
         style={{
           width: `${percentage}%`,
           background: 'linear-gradient(270deg, rgba(246, 102, 73, 1) 0%, rgba(147, 25, 0, 1) 100%)',
-          borderRadius: '8px 40px 40px 8px',
+          borderRadius: percentage >= 100 ? '8px' : '8px 40px 40px 8px',
           transition: 'width 0.3s ease-in-out'
         }}
       />
@@ -77,7 +90,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
               top: '50%',
               transform: 'translateY(-50%)',
               zIndex: 5,
-              transition: 'left 0.3s ease-in-out'
+              transition: 'left 0.1s ease-out'
             }}
           >
             {label}
@@ -92,13 +105,17 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
               width: '63.64px',
               height: '63.64px',
               position: 'absolute',
-              left: showLabel && label && label.trim() !== '' 
-                ? `calc(${percentage}% - 38px)` 
-                : `calc(${percentage}% - 79px)`,
+              left: percentage >= 100 
+                ? (showLabel && label && label.trim() !== '' 
+                    ? `calc(100% - 32px)` 
+                    : `calc(100% - 32px)`)
+                : (showLabel && label && label.trim() !== '' 
+                    ? `calc(${percentage}% - 32px)` 
+                    : `calc(${percentage}% - 32px)`),
               top: '50%',
               transform: 'translateY(-50%)',
               zIndex: 50,
-              transition: 'left 0.3s ease-in-out'
+              transition: 'left 0.1s ease-out'
             }}
           >
             <img 

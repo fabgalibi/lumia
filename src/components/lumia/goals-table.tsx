@@ -9,30 +9,45 @@ import { StatusDot } from './status-dot';
 import { PerformanceTooltip } from './performance-tooltip';
 import { ReviewSuggestionCard } from "./review-suggestion-card";
 import { GoalsMobileCard } from "./goals-mobile-card";
-import { GoalDetailsModal, GoalSuccessNotification } from "./goal-details-modal";
+import { GoalDetailsModal } from "../modals/goal-details-modal";
+import { GoalSuccessNotification } from "../notifications/goal-success-notification";
 import { RocketAnimation } from "../animations";
 import { SkipGoalNotification } from "../notifications/skip-goal-notification";
 import { useSprint as useSprintContext } from "@/contexts/sprint-context";
 import { useSprint as useSprintAPI } from "@/hooks/useSprint";
 import { mapMetasSprintToGoals } from "@/utils/sprint-mapper";
 
+// Componente para auto-hide de notificações
+const AutoHideNotification: React.FC<{ onHide: () => void; delay: number }> = ({ onHide, delay }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onHide();
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [onHide, delay]);
+
+  return null;
+};
+
 interface GoalsTableProps {
   screenSize?: 'mobile' | 'tablet' | 'notebook' | 'desktop';
 }
 
 export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }) => {
-  const { updateProgress } = useSprintContext();
-  const { dashboard, isLoading, error, refetch, concluirMeta, pularMeta } = useSprintAPI();
+  const { refreshSprint } = useSprintContext();
+  const { dashboard, isLoading, error, refetch, concluirMeta } = useSprintAPI(); // pularMeta removido - endpoint não implementado
   
   const [activeTab, setActiveTab] = useState('lista-topicos');
   const [searchValue, setSearchValue] = useState("");
   const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showSuccessNotification, setShowSuccessNotification] = useState(false);
-  const [completedGoalName] = useState<string>("");
+  const [completedGoalName, setCompletedGoalName] = useState<string>("");
   const [showRocketAnimation, setShowRocketAnimation] = useState(false);
   const [showSkipNotification, setShowSkipNotification] = useState(false);
-  const [skippedGoalName] = useState<string>("");
+  const [skippedGoalName, setSkippedGoalName] = useState<string>("");
+  const [hasUpdatedAPI, setHasUpdatedAPI] = useState(false);
   const [goals, setGoals] = useState<Goal[]>([]);
 
   // Atualizar metas quando os dados da API chegarem
@@ -627,6 +642,7 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
                           subjects: [suggestion.topic],
                           materials: [],
                           commands: [suggestion.mentorCommand],
+                          links: [],
                           additionalTips: []
                         };
                         handleGoalClick(mockGoal);
@@ -663,6 +679,7 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
                           subjects: [suggestion.topic],
                           materials: [],
                           commands: [suggestion.mentorCommand],
+                          links: [],
                           additionalTips: []
                         };
                         handleGoalClick(mockGoal);
@@ -697,6 +714,7 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
                           subjects: [suggestion.topic],
                           materials: [],
                           commands: [suggestion.mentorCommand],
+                          links: [],
                           additionalTips: []
                         };
                         handleGoalClick(mockGoal);
@@ -720,11 +738,16 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
             if (selectedGoal?.id) {
               try {
                 await concluirMeta(selectedGoal.id);
+                // Não atualizar dados da API ainda - só quando o foguete tocar a barra
+                setCompletedGoalName(selectedGoal.discipline || selectedGoal.subject || 'Meta');
+                setHasUpdatedAPI(false); // Reset para nova animação
                 setShowRocketAnimation(true);
                 setIsModalOpen(false);
               } catch (error) {
                 console.error('Erro ao concluir meta:', error);
                 // Ainda mostra a animação mesmo se falhar (UX)
+                setCompletedGoalName(selectedGoal.discipline || selectedGoal.subject || 'Meta');
+                setHasUpdatedAPI(false); // Reset para nova animação
                 setShowRocketAnimation(true);
                 setIsModalOpen(false);
               }
@@ -733,12 +756,16 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
           onSkipGoal={async (goalName: string) => {
             if (selectedGoal?.id) {
               try {
-                await pularMeta(selectedGoal.id, `Meta pulada: ${goalName}`);
+                // TODO: Implementar quando endpoint pularMeta estiver disponível
+                // await pularMeta(selectedGoal.id, `Meta pulada: ${goalName}`);
+                console.log('Pular meta:', selectedGoal.id, goalName);
+                setSkippedGoalName(goalName);
                 setShowSkipNotification(true);
                 setIsModalOpen(false);
               } catch (error) {
                 console.error('Erro ao pular meta:', error);
                 // Ainda mostra a notificação mesmo se falhar (UX)
+                setSkippedGoalName(goalName);
                 setShowSkipNotification(true);
                 setIsModalOpen(false);
               }
@@ -754,11 +781,22 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
             setShowRocketAnimation(false);
             setShowSuccessNotification(true);
           }}
-          onProgressUpdate={(newProgress) => {
+          onProgressUpdate={async (newProgress) => {
             console.log('Progresso atualizado:', newProgress);
-            if (updateProgress) {
-              updateProgress(newProgress);
+            
+            // Atualizar dados da API quando o foguete tocar a barra (primeira atualização)
+            if (!hasUpdatedAPI && newProgress > 0) {
+              try {
+                console.log('Foguete tocou a barra - atualizando dados da API');
+                await refetch();
+                await refreshSprint();
+                setHasUpdatedAPI(true);
+              } catch (error) {
+                console.error('Erro ao atualizar dados após foguete tocar barra:', error);
+              }
             }
+            
+            // Não atualizar progresso manualmente - vem da API
           }}
         />
       )}
@@ -771,12 +809,28 @@ export const GoalsTable: React.FC<GoalsTableProps> = ({ screenSize = 'desktop' }
       />
       )}
 
+      {/* Auto-hide success notification after 5 seconds */}
+      {showSuccessNotification && (
+        <AutoHideNotification
+          onHide={() => setShowSuccessNotification(false)}
+          delay={5000}
+        />
+      )}
+
       {showSkipNotification && (
       <SkipGoalNotification
           isVisible={true}
           goalName={skippedGoalName}
         onClose={() => setShowSkipNotification(false)}
       />
+      )}
+
+      {/* Auto-hide skip notification after 5 seconds */}
+      {showSkipNotification && (
+        <AutoHideNotification
+          onHide={() => setShowSkipNotification(false)}
+          delay={5000}
+        />
       )}
     </div>
   );

@@ -40,11 +40,10 @@ export const TimerProvider = ({ children }: { children: ReactNode }) => {
   }, [isRunning]);
 
   const startTimer = () => {
-    // Se nunca foi iniciado antes (tempo zerado), abrir lock screen
-    if (time === "00:00:00") {
-      setIsLockScreenOpen(true);
-    } else {
-      // Se já tem tempo, apenas continuar rodando sem abrir lock screen
+    // Sempre abre a lock screen ao apertar play
+    setIsLockScreenOpen(true);
+    // Se já tem tempo, iniciar imediatamente (a lock screen vai pular a contagem)
+    if (time !== "00:00:00") {
       setIsRunning(true);
     }
   };

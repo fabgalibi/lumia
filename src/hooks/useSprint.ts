@@ -7,8 +7,8 @@ interface UseSprintReturn {
   isLoading: boolean;
   error: string | null;
   refetch: () => Promise<void>;
-  concluirMeta: (metaId: string) => Promise<void>;
-  pularMeta: (metaId: string, motivo?: string) => Promise<void>;
+  concluirMeta: (metaId: string, dados?: { tempoEstudado: string; totalQuestoes: number; questoesCorretas: number }) => Promise<void>;
+  // pularMeta: (metaId: string, motivo?: string) => Promise<void>; // Endpoint ainda não implementado
 }
 
 export const useSprint = (): UseSprintReturn => {
@@ -42,9 +42,15 @@ export const useSprint = (): UseSprintReturn => {
     fetchDashboard();
   }, [fetchDashboard]);
 
-  const concluirMeta = useCallback(async (metaId: string) => {
+  const concluirMeta = useCallback(async (
+    metaId: string, 
+    dados?: { tempoEstudado: string; totalQuestoes: number; questoesCorretas: number }
+  ) => {
     try {
-      await sprintService.concluirMeta(metaId);
+      // Se tiver dados, chama a API. Se não, só faz o refetch (pois o modal já salvou)
+      if (dados) {
+        await sprintService.concluirMeta(metaId, dados);
+      }
       // Atualizar o dashboard após concluir a meta
       await fetchDashboard();
     } catch (err) {
@@ -53,16 +59,16 @@ export const useSprint = (): UseSprintReturn => {
     }
   }, [fetchDashboard]);
 
-  const pularMeta = useCallback(async (metaId: string, motivo?: string) => {
-    try {
-      await sprintService.pularMeta(metaId, motivo);
-      // Atualizar o dashboard após pular a meta
-      await fetchDashboard();
-    } catch (err) {
-      console.error('Erro ao pular meta:', err);
-      throw err;
-    }
-  }, [fetchDashboard]);
+  // const pularMeta = useCallback(async (metaId: string, motivo?: string) => {
+  //   try {
+  //     await sprintService.pularMeta(metaId, motivo);
+  //     // Atualizar o dashboard após pular a meta
+  //     await fetchDashboard();
+  //   } catch (err) {
+  //     console.error('Erro ao pular meta:', err);
+  //     throw err;
+  //   }
+  // }, [fetchDashboard]);
 
   return {
     dashboard,
@@ -70,7 +76,7 @@ export const useSprint = (): UseSprintReturn => {
     error,
     refetch: fetchDashboard,
     concluirMeta,
-    pularMeta,
+    // pularMeta, // Endpoint ainda não implementado
   };
 };
 

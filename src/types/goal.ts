@@ -18,6 +18,7 @@ export interface Goal {
   subjects: string[]; // lista de assuntos abordados
   materials: string[]; // materiais de estudo (links, PDFs, etc)
   commands: string[]; // comandos do mentor
+  links: string[]; // links úteis relacionados à meta
   additionalTips: string[]; // dicas adicionais
 }
 
