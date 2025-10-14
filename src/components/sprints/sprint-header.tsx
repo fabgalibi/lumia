@@ -9,7 +9,7 @@ interface SprintHeaderProps {
 export const SprintHeader: React.FC<SprintHeaderProps> = ({ title, objective, imageUrl }) => {
   return (
     <div className="flex items-center w-full" style={{ gap: '12px' }}>
-      <div className="flex flex-col flex-grow" style={{ gap: '6px' }}>
+      <div className="flex flex-col flex-1 min-w-0" style={{ gap: '6px' }}>
         <span
           style={{
             fontFamily: 'Sora',
@@ -20,7 +20,6 @@ export const SprintHeader: React.FC<SprintHeaderProps> = ({ title, objective, im
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
-            maxWidth: '100%',
           }}
         >
           {title}

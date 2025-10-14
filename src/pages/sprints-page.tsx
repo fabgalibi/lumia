@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SprintCard } from '@/components/sprints/sprint-card';
 import { SprintSection } from '@/types/sprint-page';
 import { UserMenu } from '@/components/lumia/user-menu';
+import { sprintsService } from '@/services/sprints.service';
+import { mapApiToSprintSections } from '@/utils/sprint-mapper';
 
 // Mock data baseado no design do Figma
 const mockSprintData: SprintSection[] = [
@@ -140,6 +142,70 @@ const mockSprintData: SprintSection[] = [
 ];
 
 export const SprintsPage: React.FC = () => {
+  const [sprintData, setSprintData] = useState<SprintSection[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchSprints = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const apiData = await sprintsService.buscarHistoricoSprints();
+        const mappedData = mapApiToSprintSections(apiData);
+        setSprintData(mappedData);
+      } catch (err) {
+        console.error('Erro ao carregar sprints:', err);
+        setError('Erro ao carregar sprints. Tente novamente.');
+        // Fallback para dados mock em caso de erro
+        setSprintData(mockSprintData);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSprints();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col flex-1 h-full">
+        {/* Header */}
+        <header
+          className="flex items-center justify-between flex-shrink-0"
+          style={{
+            padding: '24px 32px',
+            background: '#191923',
+            borderBottom: '1px solid #272737',
+          }}
+        >
+          <h1
+            style={{
+              fontFamily: 'Sora',
+              fontWeight: 600,
+              fontSize: '18px',
+              lineHeight: '1.56em',
+              color: '#FFFFFF',
+            }}
+          >
+            Sprints
+          </h1>
+          <UserMenu />
+        </header>
+
+        {/* Loading State */}
+        <main className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
+            <p style={{ color: '#CECFD2', fontFamily: 'Sora', fontSize: '14px' }}>
+              Carregando sprints...
+            </p>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col flex-1 h-full">
       {/* Header */}
@@ -160,14 +226,23 @@ export const SprintsPage: React.FC = () => {
             color: '#FFFFFF',
           }}
         >
-          Sprints (31)
+          Sprints
         </h1>
         <UserMenu />
       </header>
 
+      {/* Error State */}
+      {error && (
+        <div className="mx-8 mb-4 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
+          <p style={{ color: '#F87171', fontFamily: 'Sora', fontSize: '14px' }}>
+            {error}
+          </p>
+        </div>
+      )}
+
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto" style={{ padding: '24px 0', gap: '24px', display: 'flex', flexDirection: 'column' }}>
-        {mockSprintData.map((section, index) => (
+        {sprintData.map((section, index) => (
           <div key={index} className="flex flex-col px-8" style={{ gap: '16px' }}>
             {/* Header da seção */}
             <div className="flex items-center justify-between w-full gap-4">
@@ -243,7 +318,7 @@ export const SprintsPage: React.FC = () => {
             <div 
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(361px, 1fr))',
+                gridTemplateColumns: 'repeat(auto-fit, 361.33px)',
                 gap: '16px 16px',
                 justifyContent: 'start',
               }}

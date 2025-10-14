@@ -1,53 +1,87 @@
-import { type MetaSprint, type Goal, type RelevanceLevel } from '@/types';
+import { SprintHistoricoResponse } from '@/services/sprints.service';
+import { Sprint, SprintSection } from '@/types/sprint-page';
 
-/**
- * Converte os dados da API para o formato esperado pela tabela de metas
- */
-export function mapMetaSprintToGoal(meta: MetaSprint): Goal {
-  return {
-    // Dados da tabela
-    id: meta.id.toString(),
-    metaNumber: meta.posicao.toString().padStart(2, '0'), // posição → metaNumber (formato 01, 02, etc)
-    discipline: meta.disciplina,
-    subject: meta.assunto,
-    studyType: meta.tipo, // tipo → studyType
-    timeStudied: meta.tempoEstudado,
-    performance: `${meta.desempenho}%`, // Adiciona % ao desempenho
-    status: mapStatusToLowercase(meta.status), // Converte status para lowercase
-    relevance: mapRelevanciaToLevel(meta.relevancia), // Converte relevância numérica para level
+export const mapApiToSprintSections = (data: SprintHistoricoResponse): SprintSection[] => {
+  const sections: SprintSection[] = [];
+
+  // Seção "Em andamento" - Sprint atual + sprints pendentes
+  const emAndamentoSprints: Sprint[] = [];
+
+  // Adicionar sprint atual se existir
+  if (data.sprintAtual) {
+    emAndamentoSprints.push({
+      id: 'sprint-atual',
+      title: data.sprintAtual.nomeSprint,
+      objective: data.sprintAtual.cargoPlano,
+      status: 'em-andamento',
+      progress: Math.round(data.sprintAtual.progressoSprint),
+      period: 'Finaliza em 5 dias', // TODO: Calcular baseado na data
+      goalsRemaining: data.sprintAtual.metaPendentes,
+      image: '/images/sprints/sprint-placeholder.png'
+    });
+  }
+
+  // Adicionar sprints pendentes como bloqueadas
+  data.sprintsPendentes.forEach((sprint, index) => {
+    emAndamentoSprints.push({
+      id: `sprint-pendente-${index}`,
+      title: sprint.nomeSprint,
+      objective: 'Agente PRF', // TODO: Pegar do sprint atual ou outro lugar
+      status: 'bloqueada',
+      progress: 0,
+      period: 'Inicia em 12 Jan 25', // TODO: Calcular baseado na data
+      startDate: '12 Jan 25',
+      image: '/images/sprints/sprint-placeholder.png'
+    });
+  });
+
+  if (emAndamentoSprints.length > 0) {
+    // Contar apenas as sprints realmente em andamento (não as bloqueadas)
+    const emAndamentoCount = emAndamentoSprints.filter(sprint => sprint.status === 'em-andamento').length;
     
-    // Dados do modal
-    subjects: [meta.assunto], // Por enquanto usa o assunto da tabela (API precisa enviar lista detalhada)
-    materials: [], // TODO: API precisa enviar array de materiais
-    commands: meta.comandos ? [meta.comandos] : [], // comandos do mentor
-    links: meta.link ? [meta.link] : [], // Converte link singular para array
-    additionalTips: [], // TODO: API precisa enviar array de dicas adicionais
-  };
-}
+    sections.push({
+      title: `Em andamento (${emAndamentoCount})`,
+      count: emAndamentoCount,
+      sprints: emAndamentoSprints
+    });
+  }
 
-/**
- * Converte status da API para lowercase
- */
-function mapStatusToLowercase(status: string): 'concluido' | 'pendente' {
-  const statusLower = status.toLowerCase().trim();
-  return statusLower === 'concluída' || statusLower === 'concluido' ? 'concluido' : 'pendente';
-}
+  // Seção "Finalizadas"
+  if (data.sprintsFinalizadas.length > 0) {
+    const finalizadasSprints: Sprint[] = data.sprintsFinalizadas.map((sprint, index) => ({
+      id: `sprint-finalizada-${index}`,
+      title: sprint.nomeSprint,
+      objective: sprint.cargoPlano,
+      status: 'concluida' as const,
+      progress: Math.round(sprint.progressoSprint),
+      period: `Finalizou ${formatDate(sprint.dataConclusaoSprint)}`,
+      endDate: formatDate(sprint.dataConclusaoSprint),
+      image: '/images/sprints/sprint-placeholder.png'
+    }));
 
-/**
- * Converte relevância numérica (número de estrelas) para level
- * relevancia: 1-3 (número de estrelas preenchidas da API)
- * level: 1-3 (sistema de 3 estrelas do componente)
- */
-function mapRelevanciaToLevel(relevancia: number): RelevanceLevel {
-  if (relevancia === 3) return 'high';   // 3 estrelas da API = alta relevância
-  if (relevancia === 2) return 'medium'; // 2 estrelas da API = média relevância
-  return 'low';                         // 1 estrela da API = baixa relevância
-}
+    sections.push({
+      title: `Finalizadas (${finalizadasSprints.length})`,
+      count: finalizadasSprints.length,
+      sprints: finalizadasSprints
+    });
+  }
 
-/**
- * Converte uma lista de metas da API para o formato da tabela
- */
-export function mapMetasSprintToGoals(metas: MetaSprint[]): Goal[] {
-  return metas.map(mapMetaSprintToGoal);
-}
+  return sections;
+};
 
+const formatDate = (dateString: string): string => {
+  try {
+    // A data vem no formato "2025-10-13", precisamos garantir que seja interpretada corretamente
+    const [year, month, day] = dateString.split('-');
+    const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+    
+    return date.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: 'short',
+      year: '2-digit'
+    });
+  } catch (error) {
+    console.error('Erro ao formatar data:', error);
+    return dateString;
+  }
+};
