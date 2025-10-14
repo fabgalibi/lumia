@@ -35,6 +35,8 @@ export const Sidebar = () => {
       setActiveItem("Início");
     } else if (currentPath.startsWith('/mentorias')) {
       setActiveItem("Mentorias");
+    } else if (currentPath.startsWith('/sprints')) {
+      setActiveItem("Sprints");
     } else if (currentPath.startsWith('/account-settings')) {
       setActiveItem("Configurações");
     } else if (currentPath.startsWith('/ranking')) {
@@ -107,6 +109,34 @@ export const Sidebar = () => {
       ), 
       label: "Mentorias", 
       path: "/mentorias",
+      isEmoji: false 
+    },
+    { 
+      icon: () => (
+        activeItem === "Sprints" ? (
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <mask id="mask0_16578_3061" style={{maskType:"luminance"}} maskUnits="userSpaceOnUse" x="3" y="2" width="26" height="28">
+              <path d="M4 3.33301H16V24.6663H4V3.33301ZM16 7.33301H28V28.6663H16V7.33301Z" fill="white" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M8.66669 11.333L11.3334 13.8597L8.88869 16.6663M20.6667 15.333L23.3334 17.8597L20.8887 20.6663" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </mask>
+            <g mask="url(#mask0_16578_3061)">
+              <path d="M0 0H32V32H0V0Z" fill="#F66649"/>
+            </g>
+          </svg>
+        ) : (
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <mask id="mask0_16578_3062" style={{maskType:"luminance"}} maskUnits="userSpaceOnUse" x="3" y="2" width="26" height="28">
+              <path d="M4 3.33301H16V24.6663H4V3.33301ZM16 7.33301H28V28.6663H16V7.33301Z" fill="white" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M8.66669 11.333L11.3334 13.8597L8.88869 16.6663M20.6667 15.333L23.3334 17.8597L20.8887 20.6663" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </mask>
+            <g mask="url(#mask0_16578_3062)">
+              <path d="M0 0H32V32H0V0Z" fill="#F0F0F1"/>
+            </g>
+          </svg>
+        )
+      ), 
+      label: "Sprints", 
+      path: "/sprints",
       isEmoji: false 
     },
     { 

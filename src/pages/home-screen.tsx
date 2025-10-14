@@ -12,6 +12,7 @@ import { TutorialsContent } from "@/components/tutorials";
 import MessagesContent from "@/components/messages/messages-content";
 import { MentoriasCalendar } from "@/components/mentorias";
 import { NotificationsModal } from "@/components/notifications";
+import { SprintsPage } from "@/pages/sprints-page";
 import { LockScreen } from "@/components/lumia/timer";
 import { SprintProvider, useSprint } from "@/contexts/sprint-context";
 import { SidebarProvider, useSidebar } from "@/contexts/sidebar-context";
@@ -32,6 +33,7 @@ const HomeScreenContent = () => {
   const isTutorialsRoute = location.pathname.startsWith('/tutorials');
   const isMessagesRoute = location.pathname.startsWith('/messages');
   const isMentoriasRoute = location.pathname.startsWith('/mentorias');
+  const isSprintsRoute = location.pathname.startsWith('/sprints');
   
   // Funções memoizadas para evitar re-criação
   const handleDeleteAccount = useCallback(() => console.log('Deletar conta'), []);
@@ -65,18 +67,18 @@ const HomeScreenContent = () => {
     <div className="min-h-screen flex overflow-hidden" style={{ background: 'rgba(25, 25, 35, 1)' }}>
       <Sidebar />
       <div 
-        className={`flex-1 flex flex-col min-w-0 overflow-hidden ${isRankingRoute || isMentoriasRoute ? '' : 'pt-6'} transition-all duration-300`}
+        className={`flex-1 flex flex-col min-w-0 overflow-hidden ${isRankingRoute || isMentoriasRoute || isSprintsRoute ? '' : 'pt-6'} transition-all duration-300`}
         style={{ 
           marginLeft: screenSize === 'mobile' ? '0px' : screenSize === 'tablet' ? '0px' : `${sidebarWidth}px`
         }}
       >
-        {!isMessagesRoute && !isMentoriasRoute && (
+        {!isMessagesRoute && !isMentoriasRoute && !isSprintsRoute && (
           <Header 
             title={isAccountSettingsRoute ? 'Configurações de conta' : isRankingRoute ? 'Ranking' : isTutorialsRoute ? 'Tutoriais' : undefined}
           />
         )}
-        <main className={`flex-1 ${isRankingRoute || isTutorialsRoute || isMessagesRoute || isMentoriasRoute ? '' : 'p-4 sm:p-6 lg:p-8'} space-y-4 sm:space-y-6 overflow-x-auto overflow-y-auto`}>
-          {!isAccountSettingsRoute && !isRankingRoute && !isTutorialsRoute && !isMessagesRoute && !isMentoriasRoute && (
+        <main className={`flex-1 ${isRankingRoute || isTutorialsRoute || isMessagesRoute || isMentoriasRoute || isSprintsRoute ? '' : 'p-4 sm:p-6 lg:p-8'} space-y-4 sm:space-y-6 overflow-x-auto overflow-y-auto`}>
+          {!isAccountSettingsRoute && !isRankingRoute && !isTutorialsRoute && !isMessagesRoute && !isMentoriasRoute && !isSprintsRoute && (
             <>
               <StatsCards />
               <SprintSection externalProgress={progress} />
@@ -94,6 +96,7 @@ const HomeScreenContent = () => {
           {isTutorialsRoute && <TutorialsContent />}
           {isMessagesRoute && <MessagesContent />}
           {isMentoriasRoute && <MentoriasCalendar />}
+          {isSprintsRoute && <SprintsPage />}
         </main>
       </div>
       
