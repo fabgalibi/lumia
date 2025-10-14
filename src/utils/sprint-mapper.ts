@@ -1,5 +1,7 @@
 import { SprintHistoricoResponse } from '@/services/sprints.service';
 import { Sprint, SprintSection } from '@/types/sprint-page';
+import { MetaSprint } from '@/types/sprint';
+import { Goal, RelevanceLevel } from '@/types/goal';
 
 export const mapApiToSprintSections = (data: SprintHistoricoResponse): SprintSection[] => {
   const sections: SprintSection[] = [];
@@ -67,6 +69,67 @@ export const mapApiToSprintSections = (data: SprintHistoricoResponse): SprintSec
   }
 
   return sections;
+};
+
+/**
+ * Mapeia dados de metas da API para o formato usado na tabela de goals
+ */
+export const mapMetasSprintToGoals = (metas: MetaSprint[]): Goal[] => {
+  return metas.map((meta, index) => {
+    // Converter relevância numérica para nível de relevância
+    const getRelevanceLevel = (relevancia: number): RelevanceLevel => {
+      if (relevancia >= 3) return 'high';
+      if (relevancia >= 2) return 'medium';
+      return 'low';
+    };
+
+    // Converter status da API para formato da tabela
+    const getStatus = (status: string): 'concluido' | 'pendente' => {
+      return status.toLowerCase() === 'concluído' ? 'concluido' : 'pendente';
+    };
+
+    // Formatar número da meta com zero à esquerda
+    const formatMetaNumber = (posicao: number): string => {
+      return posicao.toString().padStart(2, '0');
+    };
+
+    // Formatar tempo estudado para exibição
+    const formatTimeStudied = (tempoEstudado: string): string => {
+      if (!tempoEstudado || tempoEstudado === '00:00') {
+        return '0h 0min';
+      }
+      const [hours, minutes] = tempoEstudado.split(':');
+      const h = parseInt(hours) || 0;
+      const m = parseInt(minutes) || 0;
+      return `${h}h ${m}min`;
+    };
+
+    // Formatar desempenho para exibição
+    const formatPerformance = (desempenho: string): string => {
+      if (!desempenho) return '0%';
+      const percentage = parseFloat(desempenho);
+      return isNaN(percentage) ? '0%' : `${percentage}%`;
+    };
+
+    return {
+      id: meta.id.toString(),
+      metaNumber: formatMetaNumber(meta.posicao),
+      discipline: meta.disciplina,
+      subject: meta.assunto,
+      studyType: meta.tipo,
+      timeStudied: formatTimeStudied(meta.tempoEstudado),
+      performance: formatPerformance(meta.desempenho),
+      status: getStatus(meta.status),
+      relevance: getRelevanceLevel(meta.relevancia),
+      
+      // Dados do modal (expandidos da API)
+      subjects: [meta.assunto],
+      materials: meta.link ? [meta.link] : [],
+      commands: meta.comandos ? [meta.comandos] : [],
+      links: meta.link ? [meta.link] : [],
+      additionalTips: []
+    };
+  });
 };
 
 const formatDate = (dateString: string): string => {
