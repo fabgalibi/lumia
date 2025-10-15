@@ -3,9 +3,10 @@ import React from 'react';
 interface ReviewCardProps {
   title: string;
   isCompleted?: boolean;
+  onViewDetails?: () => void;
 }
 
-export const ReviewCard: React.FC<ReviewCardProps> = ({ title, isCompleted = false }) => {
+export const ReviewCard: React.FC<ReviewCardProps> = ({ title, isCompleted = false, onViewDetails }) => {
   return (
     <div
       className="flex flex-row"
@@ -51,6 +52,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ title, isCompleted = fal
         <div className="flex items-center" style={{ gap: '16px' }}>
           {/* Ver detalhes button */}
           <button
+            onClick={onViewDetails}
             style={{
               display: 'flex',
               alignItems: 'center',

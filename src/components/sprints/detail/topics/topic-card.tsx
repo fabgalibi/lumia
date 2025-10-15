@@ -3,9 +3,10 @@ import React from 'react';
 interface TopicCardProps {
   title: string;
   isCompleted?: boolean;
+  onViewDetails?: () => void;
 }
 
-export const TopicCard: React.FC<TopicCardProps> = ({ title, isCompleted = false }) => {
+export const TopicCard: React.FC<TopicCardProps> = ({ title, isCompleted = false, onViewDetails }) => {
   return (
     <div
       className="flex flex-row"
@@ -51,6 +52,7 @@ export const TopicCard: React.FC<TopicCardProps> = ({ title, isCompleted = false
         <div className="flex items-center" style={{ gap: '16px' }}>
           {/* Ver detalhes button */}
           <button
+            onClick={onViewDetails}
             style={{
               display: 'flex',
               alignItems: 'center',

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Tabs } from '@/components/ui/design-system/Tabs';
 import { TopicCard } from './topic-card';
 import { ReviewCard } from './review-card';
+import { MetaDetailsModal } from '@/components/modals';
 
 interface Topic {
   id: string;
@@ -30,6 +31,8 @@ export const SprintTopicsSection: React.FC<SprintTopicsSectionProps> = ({
   apiGoals = []
 }) => {
   const [activeTab, setActiveTab] = useState('topics');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedMeta, setSelectedMeta] = useState<any>(null);
 
   // Mock reviews data - TODO: Replace with API data
   const mockReviews: Review[] = [
@@ -64,6 +67,58 @@ export const SprintTopicsSection: React.FC<SprintTopicsSectionProps> = ({
 
   const currentItems = activeTab === 'topics' ? finalTopics : mockReviews;
 
+  const handleOpenModal = (item: Topic | Review) => {
+    // Mock data for the modal
+    setSelectedMeta({
+      title: item.title,
+      status: item.isCompleted ? 'concluida' : 'pendente',
+      assunto: 'Estudos de caso',
+      relevancia: 'high',
+      tipoEstudo: 'Estudos de caso',
+      desempenho: '84%',
+      comandosMentor: 'Enviar resumo dos principais dilemas éticos',
+      materiais: [
+        {
+          id: '1',
+          nome: 'Caderno de Questões Comentadas – Português',
+          tipo: 'pdf',
+          tamanho: '2.5MB',
+        },
+        {
+          id: '2',
+          nome: 'Modelo de Cronograma Diário Personalizado',
+          tipo: 'png',
+          tamanho: '700KB',
+        },
+        {
+          id: '3',
+          nome: 'Checklist de Estudos Semanais',
+          tipo: 'image',
+          tamanho: '776KB',
+        },
+        {
+          id: '4',
+          nome: 'Mapa Mental de Raciocínio Lógico',
+          tipo: 'docx',
+          tamanho: '2.5MB',
+        },
+        {
+          id: '5',
+          nome: 'Simulado Temático com Gabarito Explicado',
+          tipo: 'pdf',
+          tamanho: '2.5MB',
+        },
+        {
+          id: '6',
+          nome: 'Resumo Esquematizado de Direito Constitucional',
+          tipo: 'document',
+          tamanho: '150KB',
+        },
+      ],
+    });
+    setIsModalOpen(true);
+  };
+
   return (
     <div className="flex flex-col" style={{ gap: '24px' }}>
       {/* Tabs */}
@@ -83,6 +138,7 @@ export const SprintTopicsSection: React.FC<SprintTopicsSectionProps> = ({
               key={topic.id}
               title={topic.title}
               isCompleted={topic.isCompleted}
+              onViewDetails={() => handleOpenModal(topic)}
             />
           ))
         ) : (
@@ -91,10 +147,27 @@ export const SprintTopicsSection: React.FC<SprintTopicsSectionProps> = ({
               key={review.id}
               title={review.title}
               isCompleted={review.isCompleted}
+              onViewDetails={() => handleOpenModal(review)}
             />
           ))
         )}
       </div>
+
+      {/* Meta Details Modal */}
+      {selectedMeta && (
+        <MetaDetailsModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          metaTitle={selectedMeta.title}
+          status={selectedMeta.status}
+          assunto={selectedMeta.assunto}
+          relevancia={selectedMeta.relevancia}
+          tipoEstudo={selectedMeta.tipoEstudo}
+          desempenho={selectedMeta.desempenho}
+          comandosMentor={selectedMeta.comandosMentor}
+          materiais={selectedMeta.materiais}
+        />
+      )}
     </div>
   );
 };
