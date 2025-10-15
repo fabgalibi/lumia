@@ -3,14 +3,24 @@ import { PerformanceCard } from '../performance';
 
 interface SprintMetricsProps {
   lastUpdate: string;
+  performance?: number;
+  totalGoals?: number;
+  completedGoals?: number;
+  totalDisciplines?: number;
 }
 
-export const SprintMetrics: React.FC<SprintMetricsProps> = ({ lastUpdate }) => {
+export const SprintMetrics: React.FC<SprintMetricsProps> = ({ 
+  lastUpdate, 
+  performance = 50, 
+  totalGoals = 12, 
+  completedGoals = 7, 
+  totalDisciplines = 10 
+}) => {
   return (
     <div className="flex items-end justify-between" style={{ gap: '24px' }}>
       <div className="flex items-end" style={{ gap: '24px' }}>
         {/* Desempenho Geral */}
-        <PerformanceCard percentage={50} />
+        <PerformanceCard percentage={performance} />
 
         {/* Separator */}
         <div
@@ -46,7 +56,7 @@ export const SprintMetrics: React.FC<SprintMetricsProps> = ({ lastUpdate }) => {
               width: '41px',
             }}
           >
-            7/12
+            {completedGoals}/{totalGoals}
           </span>
         </div>
 
@@ -84,7 +94,7 @@ export const SprintMetrics: React.FC<SprintMetricsProps> = ({ lastUpdate }) => {
               width: '41px',
             }}
           >
-            10
+            {totalDisciplines}
           </span>
         </div>
       </div>

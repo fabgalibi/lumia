@@ -101,7 +101,13 @@ export const SprintInfoCard: React.FC<SprintInfoCardProps> = ({ sprint }) => {
       />
 
       {/* Metrics Section */}
-      <SprintMetrics lastUpdate="20/09/2025 - 14:45 PM" />
+      <SprintMetrics 
+        lastUpdate={sprint.lastUpdate || "20/09/2025 - 14:45 PM"}
+        performance={sprint.performance}
+        totalGoals={sprint.totalGoals}
+        completedGoals={sprint.totalGoals && sprint.goalsRemaining ? sprint.totalGoals - sprint.goalsRemaining : undefined}
+        totalDisciplines={sprint.totalDisciplines}
+      />
     </div>
   );
 };

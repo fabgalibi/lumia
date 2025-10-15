@@ -16,7 +16,7 @@ export const SprintCard: React.FC<SprintCardProps> = ({ sprint, onClick }) => {
   const isBlocked = sprint.status === 'bloqueada';
   const isCompleted = sprint.status === 'concluida';
 
-  const handleCardClick = () => {
+  const handleButtonClick = () => {
     if (isBlocked) return;
     if (onClick) {
       onClick();
@@ -35,9 +35,7 @@ export const SprintCard: React.FC<SprintCardProps> = ({ sprint, onClick }) => {
         borderRadius: '12px',
         gap: '16px',
         opacity: isCompleted ? 0.6 : 1,
-        cursor: isBlocked ? 'not-allowed' : 'pointer',
       }}
-      onClick={handleCardClick}
     >
       {/* Overlay para sprints bloqueadas */}
       {isBlocked && (
@@ -58,7 +56,7 @@ export const SprintCard: React.FC<SprintCardProps> = ({ sprint, onClick }) => {
       </div>
 
       {/* Botão */}
-      <SprintButton onClick={handleCardClick} disabled={isBlocked} />
+      <SprintButton onClick={handleButtonClick} disabled={isBlocked} />
     </div>
   );
 };

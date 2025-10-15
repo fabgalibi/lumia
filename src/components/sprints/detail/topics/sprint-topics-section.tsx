@@ -8,21 +8,45 @@ interface Topic {
   isCompleted?: boolean;
 }
 
+interface ApiGoal {
+  idMeta: number;
+  nomeDisciplina: string;
+}
+
 interface SprintTopicsSectionProps {
-  topics: Topic[];
+  topics?: Topic[];
   reviews?: Topic[];
+  apiGoals?: ApiGoal[];
 }
 
 export const SprintTopicsSection: React.FC<SprintTopicsSectionProps> = ({ 
-  topics, 
-  reviews = [] 
+  topics = [], 
+  reviews = [],
+  apiGoals = []
 }) => {
   const [activeTab, setActiveTab] = useState('topics');
+
+  // Converter dados da API para o formato esperado
+  const apiTopics: Topic[] = apiGoals.map(goal => ({
+    id: goal.idMeta.toString(),
+    title: goal.nomeDisciplina,
+    isCompleted: false // Por enquanto, assumir que não estão completos
+  }));
+
+  // Debug: verificar se dados da API estão chegando
+  console.log('SprintTopicsSection - apiGoals:', apiGoals);
+  console.log('SprintTopicsSection - apiTopics:', apiTopics);
+  console.log('SprintTopicsSection - mock topics:', topics);
+
+  // Usar dados da API se disponíveis, senão array vazio
+  const finalTopics = apiGoals.length > 0 ? apiTopics : [];
+  
+  console.log('SprintTopicsSection - finalTopics:', finalTopics);
 
   const tabs = [
     {
       id: 'topics',
-      label: `Lista de Tópicos (${topics.length})`,
+      label: `Lista de Tópicos (${finalTopics.length})`,
     },
     {
       id: 'reviews',
@@ -30,7 +54,7 @@ export const SprintTopicsSection: React.FC<SprintTopicsSectionProps> = ({
     },
   ];
 
-  const currentItems = activeTab === 'topics' ? topics : reviews;
+  const currentItems = activeTab === 'topics' ? finalTopics : reviews;
 
   return (
     <div className="flex flex-col" style={{ gap: '24px' }}>

@@ -12,7 +12,7 @@ export const mapApiToSprintSections = (data: SprintHistoricoResponse): SprintSec
   // Adicionar sprint atual se existir
   if (data.sprintAtual) {
     emAndamentoSprints.push({
-      id: 'sprint-atual',
+      id: data.sprintAtual.id.toString(), // Usar o ID real da API
       title: data.sprintAtual.nomeSprint,
       objective: data.sprintAtual.cargoPlano,
       status: 'em-andamento',
@@ -50,8 +50,8 @@ export const mapApiToSprintSections = (data: SprintHistoricoResponse): SprintSec
 
   // Seção "Finalizadas"
   if (data.sprintsFinalizadas.length > 0) {
-    const finalizadasSprints: Sprint[] = data.sprintsFinalizadas.map((sprint, index) => ({
-      id: `sprint-finalizada-${index}`,
+    const finalizadasSprints: Sprint[] = data.sprintsFinalizadas.map((sprint) => ({
+      id: sprint.id.toString(), // Usar o ID real da API
       title: sprint.nomeSprint,
       objective: sprint.cargoPlano,
       status: 'concluida' as const,
@@ -75,7 +75,7 @@ export const mapApiToSprintSections = (data: SprintHistoricoResponse): SprintSec
  * Mapeia dados de metas da API para o formato usado na tabela de goals
  */
 export const mapMetasSprintToGoals = (metas: MetaSprint[]): Goal[] => {
-  return metas.map((meta, index) => {
+  return metas.map((meta) => {
     // Converter relevância numérica para nível de relevância
     const getRelevanceLevel = (relevancia: number): RelevanceLevel => {
       if (relevancia >= 3) return 'high';
