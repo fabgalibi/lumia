@@ -2,7 +2,7 @@ import { apiClient } from './api';
 
 export interface SprintHistoricoResponse {
   sprintAtual: {
-    id: number;
+    idSprint: number;
     nomeSprint: string;
     cargoPlano: string;
     metaPendentes: number;
@@ -10,10 +10,11 @@ export interface SprintHistoricoResponse {
     progressoSprint: number;
   };
   sprintsPendentes: Array<{
+    idSprint: number;
     nomeSprint: string;
   }>;
   sprintsFinalizadas: Array<{
-    id: number;
+    idSprint: number;
     nomeSprint: string;
     cargoPlano: string;
     dataConclusaoSprint: string;

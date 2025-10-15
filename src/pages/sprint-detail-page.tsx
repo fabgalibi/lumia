@@ -16,9 +16,8 @@ export const SprintDetailPage: React.FC = () => {
     const fetchSprintDetail = async () => {
       if (!sprintId) return;
       
-      // Validar se o sprintId é um número válido
-      const numericId = parseInt(sprintId, 10);
-      if (isNaN(numericId) || numericId <= 0) {
+      // Validar se o sprintId é válido (pode ser número ou string como 'sprint-atual')
+      if (!sprintId || sprintId.trim() === '') {
         console.error('ID da sprint inválido:', sprintId);
         setSprint(null);
         setLoading(false);

@@ -13,12 +13,13 @@ export const SprintButton: React.FC<SprintButtonProps> = ({
 }) => {
   return (
     <button
-      className="flex items-center justify-center w-full gap-1 transition-all duration-200 hover:bg-[#2D2D42] disabled:opacity-50 disabled:cursor-not-allowed"
+      className="flex items-center justify-center w-full gap-1 transition-all duration-200 hover:bg-[#2D2D42] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       style={{
         background: '#2D2D45',
         boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05), inset 0px 0px 0px 1px rgba(12, 14, 18, 0.18)',
         borderRadius: '8px',
         padding: '10px 14px',
+        cursor: 'pointer',
       }}
       onClick={onClick}
       disabled={disabled}
