@@ -18,16 +18,18 @@ export const SprintMetrics: React.FC<SprintMetricsProps> = ({
 }) => {
   return (
     <div className="flex items-end justify-between" style={{ gap: '24px' }}>
-      <div className="flex items-end" style={{ gap: '24px' }}>
+      <div className="flex items-start" style={{ gap: '24px' }}>
         {/* Desempenho Geral */}
         <PerformanceCard percentage={performance} />
 
         {/* Separator */}
         <div
+          className="flex-shrink-0"
           style={{
             width: '1px',
             height: '32px',
             background: '#2C2C45',
+            alignSelf: 'center',
           }}
         />
 
@@ -62,10 +64,12 @@ export const SprintMetrics: React.FC<SprintMetricsProps> = ({
 
         {/* Separator */}
         <div
+          className="flex-shrink-0"
           style={{
             width: '1px',
             height: '32px',
             background: '#2C2C45',
+            alignSelf: 'center',
           }}
         />
 

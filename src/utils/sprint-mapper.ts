@@ -87,7 +87,21 @@ export const mapMetasSprintToGoals = (metas: MetaSprint[]): Goal[] => {
 
     // Converter status da API para formato da tabela
     const getStatus = (status: string): 'concluido' | 'pendente' => {
-      return status.toLowerCase() === 'concluído' ? 'concluido' : 'pendente';
+      // Log para debug - ver valor exato da API
+      console.log('Status recebido da API:', status, '| Type:', typeof status);
+      
+      // Normalizar o status removendo acentos e convertendo para minúsculo
+      const normalizedStatus = status
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, ''); // Remove acentos
+      
+      console.log('Status normalizado:', normalizedStatus);
+      
+      // Aceitar tanto "concluido" quanto "concluida" (masculino/feminino)
+      const isConcluido = normalizedStatus === 'concluido' || normalizedStatus === 'concluida';
+      
+      return isConcluido ? 'concluido' : 'pendente';
     };
 
     // Formatar número da meta com zero à esquerda

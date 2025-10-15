@@ -33,20 +33,13 @@ export const SprintTopicsSection: React.FC<SprintTopicsSectionProps> = ({
     isCompleted: false // Por enquanto, assumir que não estão completos
   }));
 
-  // Debug: verificar se dados da API estão chegando
-  console.log('SprintTopicsSection - apiGoals:', apiGoals);
-  console.log('SprintTopicsSection - apiTopics:', apiTopics);
-  console.log('SprintTopicsSection - mock topics:', topics);
-
   // Usar dados da API se disponíveis, senão array vazio
   const finalTopics = apiGoals.length > 0 ? apiTopics : [];
-  
-  console.log('SprintTopicsSection - finalTopics:', finalTopics);
 
   const tabs = [
     {
       id: 'topics',
-      label: `Lista de Tópicos (${finalTopics.length})`,
+      label: `Lista de metas (${finalTopics.length})`,
     },
     {
       id: 'reviews',
