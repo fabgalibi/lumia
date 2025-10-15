@@ -16,3 +16,8 @@ export type {
   RelevanceLevel,
   GoalStatus
 } from './goal';
+
+// Tipos de Sprint Detail
+export type {
+  SprintDetail
+} from './sprint-detail';

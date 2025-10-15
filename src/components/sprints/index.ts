@@ -6,3 +6,6 @@ export { SprintOverlay } from './sprint-overlay';
 export { SprintInfo } from './sprint-info';
 export { SprintButton } from './sprint-button';
 export { LockIcon } from './lock-icon';
+
+// Sprint Detail Components
+export * from './detail';

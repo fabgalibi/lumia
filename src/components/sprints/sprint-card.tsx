@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Sprint } from '@/types/sprint-page';
 import { SprintHeader } from './sprint-header';
 import { SprintOverlay } from './sprint-overlay';
@@ -11,8 +12,18 @@ interface SprintCardProps {
 }
 
 export const SprintCard: React.FC<SprintCardProps> = ({ sprint, onClick }) => {
+  const navigate = useNavigate();
   const isBlocked = sprint.status === 'bloqueada';
   const isCompleted = sprint.status === 'concluida';
+
+  const handleCardClick = () => {
+    if (isBlocked) return;
+    if (onClick) {
+      onClick();
+    } else {
+      navigate(`/sprints/${sprint.id}`);
+    }
+  };
 
   return (
     <div
@@ -26,6 +37,7 @@ export const SprintCard: React.FC<SprintCardProps> = ({ sprint, onClick }) => {
         opacity: isCompleted ? 0.6 : 1,
         cursor: isBlocked ? 'not-allowed' : 'pointer',
       }}
+      onClick={handleCardClick}
     >
       {/* Overlay para sprints bloqueadas */}
       {isBlocked && (
@@ -46,7 +58,7 @@ export const SprintCard: React.FC<SprintCardProps> = ({ sprint, onClick }) => {
       </div>
 
       {/* Botão */}
-      <SprintButton onClick={onClick} disabled={isBlocked} />
+      <SprintButton onClick={handleCardClick} disabled={isBlocked} />
     </div>
   );
 };
