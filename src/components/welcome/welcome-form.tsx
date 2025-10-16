@@ -1,5 +1,6 @@
 // welcome-form.tsx
 import React from "react";
+import { useAuth } from "@/contexts/auth-context";
 
 /** ===== Props públicas ===== */
 export type WelcomeFormProps = {
@@ -18,6 +19,7 @@ export default function WelcomeForm({
   onBackToStart,
   onPrepareProfile,
 }: WelcomeFormProps) {
+  const { user } = useAuth();
   return (
     <div
       style={{
@@ -87,7 +89,7 @@ export default function WelcomeForm({
                 textAlign: screenSize === 'mobile' ? 'center' : 'left' // mobile: center, desktop: left
               }}
             >
-              Olá, Max William
+              Olá, {user?.name || 'Usuário'}
             </h1>
 
             <div

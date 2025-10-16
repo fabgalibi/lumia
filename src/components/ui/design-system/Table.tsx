@@ -35,6 +35,7 @@ export const Table = <T extends Record<string, any>>({
     backgroundColor: '#252532', // Fundo da tabela
     borderTop: `1px solid #2C2C45`, // border-top-width: 1px
     borderBottom: `1px solid #2C2C45`, // border-bottom-width: 1px
+    borderRadius: '12px 12px 0 0', // Cantos arredondados no topo
   };
 
   const headerCellStyle: React.CSSProperties = {
@@ -146,13 +147,15 @@ export const Table = <T extends Record<string, any>>({
         {/* Header */}
         <thead>
           <tr style={headerStyle}>
-            {columns.map((column) => (
+            {columns.map((column, index) => (
               <th
                 key={column.key}
                        style={{
                          ...headerCellStyle,
                          ...getCellAlignment(),
                          width: column.width,
+                         borderRadius: index === 0 ? '12px 0 0 0' : 
+                                     index === columns.length - 1 ? '0 12px 0 0' : '0',
                        }}
               >
                 <div style={{ 

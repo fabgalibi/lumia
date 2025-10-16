@@ -2,8 +2,11 @@ import React from 'react';
 import { AdminDashboardHeader } from '@/components/admin/admin-dashboard-header';
 import { AdminMetricsCards } from '@/components/admin/admin-metrics-cards';
 import { AdminStudentsTable } from '@/components/admin/admin-students-table';
+import { useAuth } from '@/contexts/auth-context';
 
 export const AdminDashboardScreen: React.FC = () => {
+  const { user } = useAuth();
+  
   return (
     <div
       style={{
@@ -74,7 +77,7 @@ export const AdminDashboardScreen: React.FC = () => {
                       margin: 0,
                     }}
                   >
-                    Bem vindo de volta, Max!
+                    Bem vindo de volta, {user?.name || 'Usuário'}!
                   </h1>
                   <p
                     style={{

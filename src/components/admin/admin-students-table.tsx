@@ -301,28 +301,30 @@ export const AdminStudentsTable: React.FC = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          gap: '8px',
+          gap: '4px',
         }}>
           <button
             style={{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              padding: '8px',
+              padding: '6px',
               cursor: 'pointer',
               background: 'transparent',
               border: 'none',
-              color: '#CECFD2',
-              borderRadius: '6px',
+              color: '#94979C',
+              borderRadius: '4px',
               transition: 'all 0.2s ease',
+              width: '28px',
+              height: '28px',
             }}
             onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
-              e.currentTarget.style.background = '#3A3A4A';
-              e.currentTarget.style.color = '#FFFFFF';
+              e.currentTarget.style.background = '#2D2D3B';
+              e.currentTarget.style.color = '#CECFD2';
             }}
             onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
               e.currentTarget.style.background = 'transparent';
-              e.currentTarget.style.color = '#CECFD2';
+              e.currentTarget.style.color = '#94979C';
             }}
             onClick={() => console.log('Ver detalhes:', record.id)}
           >
@@ -333,21 +335,23 @@ export const AdminStudentsTable: React.FC = () => {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              padding: '8px',
+              padding: '6px',
               cursor: 'pointer',
               background: 'transparent',
               border: 'none',
-              color: '#CECFD2',
-              borderRadius: '6px',
+              color: '#94979C',
+              borderRadius: '4px',
               transition: 'all 0.2s ease',
+              width: '28px',
+              height: '28px',
             }}
             onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
-              e.currentTarget.style.background = '#3A3A4A';
-              e.currentTarget.style.color = '#FFFFFF';
+              e.currentTarget.style.background = '#2D2D3B';
+              e.currentTarget.style.color = '#CECFD2';
             }}
             onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
               e.currentTarget.style.background = 'transparent';
-              e.currentTarget.style.color = '#CECFD2';
+              e.currentTarget.style.color = '#94979C';
             }}
             onClick={() => console.log('Visualizar:', record.id)}
           >
@@ -363,11 +367,8 @@ export const AdminStudentsTable: React.FC = () => {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: '0px',
+        gap: '24px',
         width: '100%',
-        borderRadius: '12px',
-        overflow: 'hidden',
-        boxShadow: '0px 4px 8px 0px rgba(0, 0, 0, 0.2)',
       }}
     >
       {/* Header Section */}
@@ -376,10 +377,8 @@ export const AdminStudentsTable: React.FC = () => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '24px 0 16px 0',
+          padding: '0',
           background: 'transparent',
-          borderRadius: '12px 12px 0 0',
-          border: 'none',
         }}
       >
         <h2
@@ -456,10 +455,9 @@ export const AdminStudentsTable: React.FC = () => {
         style={{
           background: '#252532',
           border: '1px solid #2C2C45',
-          borderTop: 'none',
-          borderBottom: 'none',
-          borderRadius: '0',
+          borderRadius: '12px',
           overflow: 'hidden',
+          boxShadow: '0px 4px 8px 0px rgba(0, 0, 0, 0.2)',
         }}
       >
         {/* Tabela usando o componente Table */}
@@ -468,9 +466,8 @@ export const AdminStudentsTable: React.FC = () => {
           data={filteredStudents}
           screenSize="desktop"
         />
-      </div>
 
-      {/* Pagination */}
+        {/* Pagination */}
       <div
         style={{
           display: 'flex',
@@ -614,6 +611,7 @@ export const AdminStudentsTable: React.FC = () => {
           Próxima
         </button>
         </div>
+      </div>
       </div>
     </div>
   );
