@@ -35,6 +35,8 @@ createRoot(document.getElementById("root")!).render(
                         <Route path="/login" element={<LoginScreen />} />
                         <Route path="/admin/login" element={<AdminLoginScreen />} />
                         <Route path="/admin/dashboard" element={<AdminProtectedRoute><AdminDashboardScreen /></AdminProtectedRoute>} />
+                        <Route path="/admin/settings" element={<AdminProtectedRoute><AdminDashboardScreen /></AdminProtectedRoute>} />
+                        <Route path="/admin/settings/*" element={<AdminProtectedRoute><AdminDashboardScreen /></AdminProtectedRoute>} />
                         <Route path="/welcome" element={<WelcomeScreen />} />
                         
                         {/* Authenticated Routes */}

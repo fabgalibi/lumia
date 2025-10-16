@@ -1,11 +1,21 @@
 import React from 'react';
+import { useLocation } from 'react-router';
 import { AdminDashboardHeader } from '@/components/admin/admin-dashboard-header';
 import { AdminMetricsCards } from '@/components/admin/admin-metrics-cards';
 import { AdminStudentsTable } from '@/components/admin/admin-students-table';
+import { AccountSettingsContent } from '@/components/account-settings';
 import { useAuth } from '@/contexts/auth-context';
 
 export const AdminDashboardScreen: React.FC = () => {
   const { user } = useAuth();
+  const location = useLocation();
+  
+  // Verificar se está na rota de configurações
+  const isSettingsRoute = location.pathname === '/admin/settings' || location.pathname.startsWith('/admin/settings/');
+  
+  // Funções para configurações
+  const handleDeleteAccount = () => console.log('Deletar conta admin');
+  const handleUpdatePhoto = () => console.log('Atualizar foto admin');
   
   return (
     <div
@@ -152,15 +162,30 @@ export const AdminDashboardScreen: React.FC = () => {
           </div>
         </section>
 
-        {/* Metrics Section */}
-        <section style={{ padding: '0 48px' }}>
-          <AdminMetricsCards />
-        </section>
+        {/* Conteúdo baseado na rota */}
+        {!isSettingsRoute && (
+          <>
+            {/* Metrics Section */}
+            <section style={{ padding: '0 48px' }}>
+              <AdminMetricsCards />
+            </section>
 
-        {/* Students Table Section */}
-        <section style={{ padding: '0 48px' }}>
-          <AdminStudentsTable />
-        </section>
+            {/* Students Table Section */}
+            <section style={{ padding: '0 48px' }}>
+              <AdminStudentsTable />
+            </section>
+          </>
+        )}
+
+        {/* Settings Section */}
+        {isSettingsRoute && (
+          <section style={{ padding: '0 48px', flex: 1 }}>
+            <AccountSettingsContent
+              onDeleteAccount={handleDeleteAccount}
+              onUpdatePhoto={handleUpdatePhoto}
+            />
+          </section>
+        )}
       </main>
     </div>
   );
