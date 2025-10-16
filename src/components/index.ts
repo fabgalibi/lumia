@@ -1,6 +1,9 @@
 // Lumia Components
 export * from './lumia';
 
+// Admin Components
+export * from './admin';
+
 // Modals
 export * from './modals';
 

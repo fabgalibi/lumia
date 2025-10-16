@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { HomeScreen } from "@/pages/home-screen";
 import { LoginScreen } from "@/pages/login-screen";
+import { AdminLoginScreen } from "@/pages/admin-login-screen";
 import { WelcomeScreen } from "@/pages/welcome-screen";
 import { ProfileSetupScreen } from "@/pages/profile-setup-screen";
 import { PreparationStepScreen } from "@/pages/preparation-step-screen";
@@ -31,6 +32,7 @@ createRoot(document.getElementById("root")!).render(
                         {/* Public Routes */}
                         <Route path="/" element={<LoginScreen />} />
                         <Route path="/login" element={<LoginScreen />} />
+                        <Route path="/admin/login" element={<AdminLoginScreen />} />
                         <Route path="/welcome" element={<WelcomeScreen />} />
                         
                         {/* Authenticated Routes */}
