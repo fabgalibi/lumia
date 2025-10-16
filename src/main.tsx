@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import { HomeScreen } from "@/pages/home-screen";
 import { LoginScreen } from "@/pages/login-screen";
 import { AdminLoginScreen } from "@/pages/admin-login-screen";
+import { AdminDashboardScreen } from "@/pages/admin-dashboard-screen";
 import { WelcomeScreen } from "@/pages/welcome-screen";
 import { ProfileSetupScreen } from "@/pages/profile-setup-screen";
 import { PreparationStepScreen } from "@/pages/preparation-step-screen";
@@ -18,7 +19,7 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import { ProfileSetupProvider } from "@/contexts/profile-setup-context";
 import { AuthProvider } from "@/contexts/auth-context";
 import { TimerProvider } from "@/contexts/timer-context";
-import { ProtectedRoute } from "@/components/auth";
+import { ProtectedRoute, AdminProtectedRoute } from "@/components/auth";
 import "@/styles/globals.css";
 
 createRoot(document.getElementById("root")!).render(
@@ -33,6 +34,7 @@ createRoot(document.getElementById("root")!).render(
                         <Route path="/" element={<LoginScreen />} />
                         <Route path="/login" element={<LoginScreen />} />
                         <Route path="/admin/login" element={<AdminLoginScreen />} />
+                        <Route path="/admin/dashboard" element={<AdminProtectedRoute><AdminDashboardScreen /></AdminProtectedRoute>} />
                         <Route path="/welcome" element={<WelcomeScreen />} />
                         
                         {/* Authenticated Routes */}

@@ -31,8 +31,20 @@ export const UserMenu: React.FC = () => {
 
   const handleLogoutConfirm = () => {
     setShowLogoutModal(false);
+    
+    // Verifica se é admin ANTES de fazer logout
+    const userData = JSON.parse(localStorage.getItem('user_data') || '{}');
+    const isAdmin = userData.grupo?.nome === 'administrador' || userData.grupoId === 2;
+    
+    // Faz logout
     logout();
-    navigate('/login');
+    
+    // Navega para a página correta
+    if (isAdmin) {
+      navigate('/admin/login');
+    } else {
+      navigate('/login');
+    }
   };
 
   const handleLogoutClose = () => {

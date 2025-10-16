@@ -1,35 +1,33 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService, LoginRequest } from '../../services/api/auth.service';
+import { useAuth } from '../../contexts/auth-context';
+import { LoginRequest } from '../../services/api/auth.service';
 
 export const AdminLoginForm: React.FC = () => {
   const navigate = useNavigate();
+  const { login, isLoading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    setIsLoading(true);
 
     try {
       console.log('🔐 Tentando login administrativo com:', { email, password });
       
-      // Usa o método específico para login administrativo
+      // Usa o contexto de autenticação com grupo administrativo
       const credentials: LoginRequest = { email, password };
-      const response = await authService.loginAdmin(credentials);
+      await login(credentials, 'administrador');
       
-      console.log('✅ Login administrativo bem-sucedido!', response);
+      console.log('✅ Login administrativo bem-sucedido!');
       
-      // Redirecionar para painel admin (quando criado)
+      // Redirecionar para painel admin
       navigate('/admin/dashboard');
     } catch (err: any) {
       console.error('❌ Erro no login administrativo:', err);
       setError(err.message || 'Erro ao fazer login. Verifique suas credenciais.');
-    } finally {
-      setIsLoading(false);
     }
   };
 

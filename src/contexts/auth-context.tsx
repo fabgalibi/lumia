@@ -11,7 +11,7 @@ interface AuthContextData {
   isAuthenticated: boolean;
   isLoading: boolean;
   isInitializing: boolean;
-  login: (credentials: LoginRequest) => Promise<void>;
+  login: (credentials: LoginRequest, grupo?: 'aluno' | 'administrador') => Promise<void>;
   logout: () => void;
   error: string | null;
 }
@@ -49,19 +49,30 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   /**
    * Realiza login do usuário
    */
-  const login = async (credentials: LoginRequest) => {
+  const login = async (credentials: LoginRequest, grupo: 'aluno' | 'administrador' = 'aluno') => {
     try {
       setIsLoading(true);
       setError(null);
 
-      const response = await authService.login(credentials);
+      console.log('🔐 AuthContext: Iniciando login com credenciais:', credentials, 'grupo:', grupo);
+      
+      let response;
+      if (grupo === 'administrador') {
+        response = await authService.loginAdmin(credentials);
+      } else {
+        response = await authService.login(credentials);
+      }
       
       // Carrega o usuário que foi salvo pelo authService
       const userData = authService.getUser();
+      console.log('👤 AuthContext: Dados do usuário carregados:', userData);
+      
       if (userData) {
         setUser(userData);
+        console.log('✅ AuthContext: Usuário definido no contexto');
       }
     } catch (err: any) {
+      console.error('❌ AuthContext: Erro no login:', err);
       const errorMessage = err.message || 'Erro ao fazer login. Tente novamente.';
       setError(errorMessage);
       throw err;
