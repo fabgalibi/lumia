@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Tabs } from '@/components/ui/design-system/Tabs';
 import { TopicCard } from './topic-card';
 import { ReviewCard } from './review-card';
 import { MetaDetailsModal } from '@/components/modals';
+import { sprintDetailService } from '@/services/sprint-detail.service';
 
 interface Topic {
   id: string;
@@ -30,6 +32,7 @@ interface SprintTopicsSectionProps {
 export const SprintTopicsSection: React.FC<SprintTopicsSectionProps> = ({ 
   apiGoals = []
 }) => {
+  const { sprintId } = useParams<{ sprintId: string }>();
   const [activeTab, setActiveTab] = useState('topics');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMeta, setSelectedMeta] = useState<any>(null);
@@ -67,56 +70,124 @@ export const SprintTopicsSection: React.FC<SprintTopicsSectionProps> = ({
 
   const currentItems = activeTab === 'topics' ? finalTopics : mockReviews;
 
-  const handleOpenModal = (item: Topic | Review) => {
-    // Mock data for the modal
+  const handleOpenModal = async (item: Topic | Review) => {
+    console.log('=== MODAL OPEN DEBUG ===');
+    console.log('1. handleOpenModal chamado');
+    console.log('2. Sprint ID:', sprintId);
+    console.log('3. Meta ID:', item.id);
+    console.log('4. Meta Title:', item.title);
+    console.log('5. URL que será chamada:', `/sprints/aluno/historico/detalhes/${sprintId}/meta/${item.id}`);
+    
+    if (!sprintId) {
+      console.error('❌ Sprint ID não encontrado');
+      return;
+    }
+
+    // Mock de materiais
+    const mockMateriais = [
+      {
+        id: '1',
+        nome: 'Caderno de Questões Comentadas – Português',
+        tipo: 'pdf' as const,
+        tamanho: '2.5MB',
+      },
+      {
+        id: '2',
+        nome: 'Modelo de Cronograma Diário Personalizado',
+        tipo: 'png' as const,
+        tamanho: '700KB',
+      },
+      {
+        id: '3',
+        nome: 'Checklist de Estudos Semanais',
+        tipo: 'image' as const,
+        tamanho: '776KB',
+      },
+      {
+        id: '4',
+        nome: 'Mapa Mental de Raciocínio Lógico',
+        tipo: 'docx' as const,
+        tamanho: '2.5MB',
+      },
+      {
+        id: '5',
+        nome: 'Simulado Temático com Gabarito Explicado',
+        tipo: 'pdf' as const,
+        tamanho: '2.5MB',
+      },
+      {
+        id: '6',
+        nome: 'Resumo Esquematizado de Direito Constitucional',
+        tipo: 'document' as const,
+        tamanho: '150KB',
+      },
+    ];
+
+    // Abre o modal imediatamente com dados básicos
+    console.log('6. Abrindo modal com dados iniciais...');
     setSelectedMeta({
       title: item.title,
       status: item.isCompleted ? 'concluida' : 'pendente',
-      assunto: 'Estudos de caso',
-      relevancia: 'high',
-      tipoEstudo: 'Estudos de caso',
-      desempenho: '84%',
-      comandosMentor: 'Enviar resumo dos principais dilemas éticos',
-      materiais: [
-        {
-          id: '1',
-          nome: 'Caderno de Questões Comentadas – Português',
-          tipo: 'pdf',
-          tamanho: '2.5MB',
-        },
-        {
-          id: '2',
-          nome: 'Modelo de Cronograma Diário Personalizado',
-          tipo: 'png',
-          tamanho: '700KB',
-        },
-        {
-          id: '3',
-          nome: 'Checklist de Estudos Semanais',
-          tipo: 'image',
-          tamanho: '776KB',
-        },
-        {
-          id: '4',
-          nome: 'Mapa Mental de Raciocínio Lógico',
-          tipo: 'docx',
-          tamanho: '2.5MB',
-        },
-        {
-          id: '5',
-          nome: 'Simulado Temático com Gabarito Explicado',
-          tipo: 'pdf',
-          tamanho: '2.5MB',
-        },
-        {
-          id: '6',
-          nome: 'Resumo Esquematizado de Direito Constitucional',
-          tipo: 'document',
-          tamanho: '150KB',
-        },
-      ],
+      assunto: 'Carregando...',
+      relevancia: 'medium',
+      tipoEstudo: 'Carregando...',
+      desempenho: '0%',
+      comandosMentor: 'Carregando...',
+      materiais: mockMateriais,
     });
     setIsModalOpen(true);
+    console.log('7. Modal aberto!');
+    
+    try {
+      console.log('8. Iniciando requisição API...');
+      // Buscar detalhes da meta na API
+      const metaDetail = await sprintDetailService.getMetaDetail(sprintId, item.id);
+      console.log('9. ✅ Resposta da API recebida:', metaDetail);
+      
+      // Mapear relevância: 1-3 (API) -> 'low' | 'medium' | 'high' (Modal)
+      const getRelevancia = (relevanciaNum: number): 'low' | 'medium' | 'high' => {
+        if (relevanciaNum >= 3) return 'high';
+        if (relevanciaNum >= 2) return 'medium';
+        return 'low';
+      };
+
+      // Mapear status: normalizar para 'pendente' | 'concluida'
+      const normalizeStatus = (status: string): 'pendente' | 'concluida' => {
+        const normalizedStatus = status
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '');
+        
+        return normalizedStatus === 'concluida' || normalizedStatus === 'concluido' 
+          ? 'concluida' 
+          : 'pendente';
+      };
+
+      // Atualiza com os dados reais da API
+      setSelectedMeta({
+        title: metaDetail.disciplina,
+        status: normalizeStatus(metaDetail.status),
+        assunto: metaDetail.assunto,
+        relevancia: getRelevancia(metaDetail.relevancia),
+        tipoEstudo: metaDetail.tipoEstudo,
+        desempenho: `${metaDetail.desempenho}%`,
+        comandosMentor: metaDetail.comandosMentor,
+        materiais: mockMateriais, // TODO: Adicionar quando a API retornar os materiais
+      });
+    } catch (error) {
+      console.error('Erro ao buscar detalhes da meta:', error);
+      // Em caso de erro, atualiza com dados básicos
+      setSelectedMeta({
+        title: item.title,
+        status: item.isCompleted ? 'concluida' : 'pendente',
+        assunto: 'Não disponível',
+        relevancia: 'medium',
+        tipoEstudo: 'Não disponível',
+        desempenho: '0%',
+        comandosMentor: 'Não disponível',
+        materiais: mockMateriais,
+      });
+    }
   };
 
   return (
