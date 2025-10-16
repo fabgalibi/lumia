@@ -1,14 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { SprintCard } from '@/components/sprints/sprint-card';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { SprintSection } from '@/types/sprint-page';
-import { UserMenu } from '@/components/lumia/user-menu';
 import { sprintsService } from '@/services/sprints.service';
 import { mapApiToSprintSections } from '@/utils/sprint-mapper';
+import {
+  SprintsPageHeader,
+  SprintsSectionHeader,
+  SprintsCarousel,
+  SprintsGrid,
+} from '@/components/sprints';
 
 export const SprintsPage: React.FC = () => {
+  const navigate = useNavigate();
   const [sprintData, setSprintData] = useState<SprintSection[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
+  const [isAtStart, setIsAtStart] = useState(false);
+  const [isAtEnd, setIsAtEnd] = useState(false);
 
   useEffect(() => {
     const fetchSprints = async () => {
@@ -29,33 +38,64 @@ export const SprintsPage: React.FC = () => {
     fetchSprints();
   }, []);
 
+  // Função para verificar posição do scroll
+  const checkScrollPosition = () => {
+    if (carouselRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
+      const hasScroll = scrollWidth > clientWidth;
+      
+      if (!hasScroll) {
+        // Se não há scroll, desabilitar ambos os botões
+        setIsAtStart(true);
+        setIsAtEnd(true);
+      } else {
+        const atStart = scrollLeft <= 0;
+        const atEnd = scrollLeft + clientWidth >= scrollWidth - 1;
+        setIsAtStart(atStart);
+        setIsAtEnd(atEnd);
+      }
+    }
+  };
+
+  // Atualizar posição do scroll ao carregar dados
+  useEffect(() => {
+    if (sprintData.length > 0) {
+      // Delay para garantir que o DOM foi renderizado
+      setTimeout(() => {
+        checkScrollPosition();
+      }, 100);
+    }
+  }, [sprintData]);
+
+  // Função para navegar no carrossel
+  const scrollCarousel = (direction: 'left' | 'right') => {
+    if (carouselRef.current) {
+      const scrollAmount = 377.33; // largura do card (361.33) + gap (16)
+      const newScrollPosition = carouselRef.current.scrollLeft + (direction === 'right' ? scrollAmount : -scrollAmount);
+      
+      carouselRef.current.scrollTo({
+        left: newScrollPosition,
+        behavior: 'smooth'
+      });
+      
+      // Atualizar estados após um pequeno delay para a animação
+      setTimeout(checkScrollPosition, 300);
+    }
+  };
+
+  // Função para obter sprints bloqueadas
+  const getBlockedSprints = () => {
+    const emAndamentoSection = sprintData.find(section => section.title.includes('Em andamento'));
+    if (emAndamentoSection) {
+      return emAndamentoSection.sprints.filter(sprint => sprint.status === 'bloqueada');
+    }
+    return [];
+  };
+
   if (loading) {
     return (
       <div className="flex flex-col flex-1 h-full">
-        {/* Header */}
-        <header
-          className="flex items-center justify-between flex-shrink-0"
-          style={{
-            padding: '24px 32px',
-            background: '#191923',
-            borderBottom: '1px solid #272737',
-          }}
-        >
-          <h1
-            style={{
-              fontFamily: 'Sora',
-              fontWeight: 600,
-              fontSize: '18px',
-              lineHeight: '1.56em',
-              color: '#FFFFFF',
-            }}
-          >
-            Sprints
-          </h1>
-          <UserMenu />
-        </header>
-
-        {/* Loading State */}
+        <SprintsPageHeader />
         <main className="flex-1 flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
@@ -70,28 +110,7 @@ export const SprintsPage: React.FC = () => {
 
   return (
     <div className="flex flex-col flex-1 h-full">
-      {/* Header */}
-      <header
-        className="flex items-center justify-between flex-shrink-0"
-        style={{
-          padding: '24px 32px',
-          background: '#191923',
-          borderBottom: '1px solid #272737',
-        }}
-      >
-        <h1
-          style={{
-            fontFamily: 'Sora',
-            fontWeight: 600,
-            fontSize: '18px',
-            lineHeight: '1.56em',
-            color: '#FFFFFF',
-          }}
-        >
-          Sprints
-        </h1>
-        <UserMenu />
-      </header>
+      <SprintsPageHeader />
 
       {/* Error State */}
       {error && (
@@ -104,93 +123,35 @@ export const SprintsPage: React.FC = () => {
 
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto" style={{ padding: '24px 0', gap: '24px', display: 'flex', flexDirection: 'column' }}>
-        {sprintData.map((section, index) => (
-          <div key={index} className="flex flex-col px-8" style={{ gap: '16px' }}>
-            {/* Header da seção */}
-            <div className="flex items-center justify-between w-full gap-4">
-              <h2
-                style={{
-                  fontFamily: 'Sora',
-                  fontWeight: 400,
-                  fontSize: '18px',
-                  lineHeight: '1.56em',
-                  color: '#FFFFFF',
-                }}
-              >
-                {section.title}
-              </h2>
-              {section.title.includes('Em andamento') && (
-                <div className="flex items-center" style={{ gap: '16px' }}>
-                  {/* Link Ver próximas */}
-                  <a 
-                    href="#" 
-                    className="cursor-pointer"
-                    style={{
-                      fontFamily: 'Sora',
-                      fontWeight: 400,
-                      fontSize: '14px',
-                      lineHeight: '2em',
-                      color: '#CECFD2',
-                      textDecoration: 'underline',
-                    }}
-                  >
-                    Ver próximas
-                  </a>
-                  
-                  {/* Botão esquerda */}
-                  <button
-                    className="flex items-center justify-center"
-                    style={{
-                      width: '32px',
-                      height: '32px',
-                      background: '#212130',
-                      borderRadius: '6px',
-                      border: 'none',
-                      cursor: 'pointer',
-                      padding: '6px',
-                    }}
-                  >
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12.5 15L7.5 10L12.5 5" stroke="#94979C" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </button>
-                  
-                  {/* Botão direita */}
-                  <button
-                    className="flex items-center justify-center"
-                    style={{
-                      width: '32px',
-                      height: '32px',
-                      background: '#2D2D45',
-                      borderRadius: '6px',
-                      border: 'none',
-                      cursor: 'pointer',
-                      padding: '6px',
-                    }}
-                  >
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M7.5 5L12.5 10L7.5 15" stroke="#94979C" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </button>
-                </div>
+        {sprintData.map((section, index) => {
+          const isInProgress = section.title.includes('Em andamento');
+          const hasBlockedSprints = getBlockedSprints().length > 0;
+
+          return (
+            <div key={index} className="flex flex-col px-8" style={{ gap: '16px' }}>
+              <SprintsSectionHeader
+                title={section.title}
+                showControls={isInProgress}
+                showViewMore={isInProgress && hasBlockedSprints}
+                onViewMore={() => navigate('/sprints/proximas')}
+                onScrollLeft={() => scrollCarousel('left')}
+                onScrollRight={() => scrollCarousel('right')}
+                isAtStart={isAtStart}
+                isAtEnd={isAtEnd}
+              />
+              
+              {isInProgress ? (
+                <SprintsCarousel
+                  sprints={section.sprints}
+                  carouselRef={carouselRef}
+                  onScroll={checkScrollPosition}
+                />
+              ) : (
+                <SprintsGrid sprints={section.sprints} />
               )}
             </div>
-            
-            {/* Grid de cards */}
-            <div 
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, 361.33px)',
-                gap: '16px 16px',
-                justifyContent: 'start',
-              }}
-            >
-              {section.sprints.map(sprint => (
-                <SprintCard key={sprint.id} sprint={sprint} />
-              ))}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </main>
     </div>
   );

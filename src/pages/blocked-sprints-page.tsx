@@ -1,48 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { SprintCard } from '@/components/sprints/sprint-card';
+import { Sprint } from '@/types/sprint-page';
 import { UserMenu } from '@/components/lumia/user-menu';
-import { SprintInfoCard, SprintTopicsSection, SprintInfoPanel } from '@/components/sprints/detail';
-import { SprintDetail } from '@/types';
-import { sprintDetailService } from '@/services/sprint-detail.service';
-import { mapApiResponseToSprintDetail } from '@/utils/sprint-detail-mapper';
+import { sprintsService } from '@/services/sprints.service';
+import { mapApiToSprintSections } from '@/utils/sprint-mapper';
 
-export const SprintDetailPage: React.FC = () => {
-  const { sprintId } = useParams<{ sprintId: string }>();
+export const BlockedSprintsPage: React.FC = () => {
   const navigate = useNavigate();
-  const [sprint, setSprint] = useState<SprintDetail | null>(null);
+  const [blockedSprints, setBlockedSprints] = useState<Sprint[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchSprintDetail = async () => {
-      if (!sprintId) return;
-      
-      // Validar se o sprintId é válido (pode ser número ou string como 'sprint-atual')
-      if (!sprintId || sprintId.trim() === '') {
-        console.error('ID da sprint inválido:', sprintId);
-        setSprint(null);
-        setLoading(false);
-        return;
-      }
-      
+    const fetchSprints = async () => {
       try {
         setLoading(true);
-        const apiResponse = await sprintDetailService.getSprintDetail(sprintId);
-        console.log('API Response:', apiResponse);
-        const sprintData = mapApiResponseToSprintDetail(apiResponse, sprintId);
-        console.log('Mapped Sprint Data:', sprintData);
-        setSprint(sprintData);
-      } catch (error) {
-        console.error('Erro ao buscar detalhes da sprint:', error);
-        setSprint(null); // Deixar como null para mostrar erro
+        setError(null);
+        const apiData = await sprintsService.buscarHistoricoSprints();
+        const mappedData = mapApiToSprintSections(apiData);
+        
+        // Filtrar apenas sprints bloqueadas
+        const emAndamentoSection = mappedData.find(section => section.title.includes('Em andamento'));
+        if (emAndamentoSection) {
+          const blocked = emAndamentoSection.sprints.filter(sprint => sprint.status === 'bloqueada');
+          setBlockedSprints(blocked);
+        }
+      } catch (err) {
+        console.error('Erro ao carregar sprints bloqueadas:', err);
+        setError('Erro ao carregar sprints. Tente novamente.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchSprintDetail();
-  }, [sprintId]);
-
-
+    fetchSprints();
+  }, []);
 
   if (loading) {
     return (
@@ -65,7 +58,7 @@ export const SprintDetailPage: React.FC = () => {
               color: '#FFFFFF',
             }}
           >
-            Sprint
+            Sprints
           </h1>
           <UserMenu />
         </header>
@@ -75,43 +68,7 @@ export const SprintDetailPage: React.FC = () => {
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
             <p style={{ color: '#CECFD2', fontFamily: 'Sora', fontSize: '14px' }}>
-              Carregando sprint...
-            </p>
-          </div>
-        </main>
-      </div>
-    );
-  }
-
-  if (!sprint) {
-    return (
-      <div className="flex flex-col flex-1 h-full">
-        <header
-          className="flex items-center justify-between flex-shrink-0"
-          style={{
-            padding: '24px 32px',
-            background: '#191923',
-            borderBottom: '1px solid #272737',
-          }}
-        >
-          <h1
-            style={{
-              fontFamily: 'Sora',
-              fontWeight: 600,
-              fontSize: '18px',
-              lineHeight: '1.56em',
-              color: '#FFFFFF',
-            }}
-          >
-            Sprint
-          </h1>
-          <UserMenu />
-        </header>
-
-        <main className="flex-1 flex items-center justify-center">
-          <div className="text-center">
-            <p style={{ color: '#F87171', fontFamily: 'Sora', fontSize: '16px' }}>
-              Sprint não encontrada
+              Carregando sprints...
             </p>
           </div>
         </main>
@@ -139,7 +96,7 @@ export const SprintDetailPage: React.FC = () => {
             color: '#FFFFFF',
           }}
         >
-          {sprint.title}
+          Sprints ({blockedSprints.length})
         </h1>
         <UserMenu />
       </header>
@@ -179,48 +136,71 @@ export const SprintDetailPage: React.FC = () => {
           <path d="M6 4L10 8L6 12" stroke="#61656C" strokeWidth="1.33" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
         
-        {/* Current sprint */}
+        {/* Current page */}
         <span
           style={{
             fontFamily: 'Sora',
-            fontWeight: 600,
-            fontSize: '14px',
-            lineHeight: '1.43em',
+            fontWeight: 400,
+            fontSize: '18px',
+            lineHeight: '1.56em',
             color: '#FFFFFF',
+            verticalAlign: 'middle',
           }}
         >
-          {sprint.title}
+          Próximas Sprints
         </span>
       </div>
 
-      {/* Main Content */}
-      <main className="flex-1 px-8 pb-8" style={{ gap: '32px', display: 'flex' }}>
-        {/* Left Column - Sprint Info */}
-        <div 
-          className="flex flex-col"
-          style={{
-            width: '728px',
-            gap: '32px',
-          }}
-        >
-          {/* Sprint Header Card */}
-          <SprintInfoCard sprint={sprint} />
-
-          {/* Topics Section */}
-          <SprintTopicsSection 
-            apiGoals={sprint.apiGoals}
-          />
+      {/* Error State */}
+      {error && (
+        <div className="mx-8 mb-4 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
+          <p style={{ color: '#F87171', fontFamily: 'Sora', fontSize: '14px' }}>
+            {error}
+          </p>
         </div>
+      )}
 
-        {/* Right Column - Info Panel */}
-        <SprintInfoPanel
-          progress={sprint.progress}
-          startDate={sprint.startDate || "17/09/2025"}
-          endDate={sprint.endDate || "15/12/2025"}
-          duration="90 dias"
-          timePerGoal={sprint.averageTimePerGoal || "1h45m"}
-        />
+      {/* Main Content */}
+      <main className="flex-1 overflow-y-auto" style={{ padding: '0 32px 24px 32px' }}>
+        {blockedSprints.length > 0 ? (
+          <div 
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, 361.33px)',
+              gap: '16px 16px',
+              justifyContent: 'start',
+            }}
+          >
+            {blockedSprints.map(sprint => (
+              <SprintCard key={sprint.id} sprint={sprint} />
+            ))}
+          </div>
+        ) : (
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '48px 24px',
+              textAlign: 'center',
+            }}
+          >
+            <p
+              style={{
+                fontFamily: 'Sora',
+                fontWeight: 400,
+                fontSize: '16px',
+                lineHeight: '1.5em',
+                color: '#94979C',
+              }}
+            >
+              Não há sprints bloqueadas no momento
+            </p>
+          </div>
+        )}
       </main>
     </div>
   );
 };
+

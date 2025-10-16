@@ -44,6 +44,7 @@ createRoot(document.getElementById("root")!).render(
                         <Route path="/messages" element={<ProtectedRoute><HomeScreen /></ProtectedRoute>} />
                         <Route path="/mentorias" element={<ProtectedRoute><HomeScreen /></ProtectedRoute>} />
                         <Route path="/sprints" element={<ProtectedRoute><HomeScreen /></ProtectedRoute>} />
+                        <Route path="/sprints/proximas" element={<ProtectedRoute><HomeScreen /></ProtectedRoute>} />
                         <Route path="/sprints/:sprintId" element={<ProtectedRoute><HomeScreen /></ProtectedRoute>} />
                         
                         {/* Profile Setup Flow - Hierarchical Structure */}

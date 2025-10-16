@@ -7,5 +7,11 @@ export { SprintInfo } from './sprint-info';
 export { SprintButton } from './sprint-button';
 export { LockIcon } from './lock-icon';
 
+// Sprints Page Components
+export { SprintsPageHeader } from './sprints-page-header';
+export { SprintsSectionHeader } from './sprints-section-header';
+export { SprintsCarousel } from './sprints-carousel';
+export { SprintsGrid } from './sprints-grid';
+
 // Sprint Detail Components
 export * from './detail';

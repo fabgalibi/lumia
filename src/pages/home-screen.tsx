@@ -13,6 +13,7 @@ import MessagesContent from "@/components/messages/messages-content";
 import { MentoriasCalendar } from "@/components/mentorias";
 import { NotificationsModal } from "@/components/notifications";
 import { SprintsPage } from "@/pages/sprints-page";
+import { BlockedSprintsPage } from "@/pages/blocked-sprints-page";
 import { SprintDetailPage } from "@/pages/sprint-detail-page";
 import { LockScreen } from "@/components/lumia/timer";
 import { SprintProvider, useSprint } from "@/contexts/sprint-context";
@@ -35,7 +36,8 @@ const HomeScreenContent = () => {
   const isMessagesRoute = location.pathname.startsWith('/messages');
   const isMentoriasRoute = location.pathname.startsWith('/mentorias');
   const isSprintsRoute = location.pathname.startsWith('/sprints');
-  const isSprintDetailRoute = location.pathname.match(/^\/sprints\/[^\/]+$/);
+  const isBlockedSprintsRoute = location.pathname === '/sprints/proximas';
+  const isSprintDetailRoute = location.pathname.match(/^\/sprints\/[^\/]+$/) && !isBlockedSprintsRoute;
   
   // Funções memoizadas para evitar re-criação
   const handleDeleteAccount = useCallback(() => console.log('Deletar conta'), []);
@@ -69,18 +71,18 @@ const HomeScreenContent = () => {
     <div className="min-h-screen flex overflow-hidden" style={{ background: 'rgba(25, 25, 35, 1)' }}>
       <Sidebar />
       <div 
-        className={`flex-1 flex flex-col min-w-0 overflow-hidden ${isRankingRoute || isMentoriasRoute || isSprintsRoute || isSprintDetailRoute ? '' : 'pt-6'} transition-all duration-300`}
+        className={`flex-1 flex flex-col min-w-0 overflow-hidden ${isRankingRoute || isMentoriasRoute || isSprintsRoute || isBlockedSprintsRoute || isSprintDetailRoute ? '' : 'pt-6'} transition-all duration-300`}
         style={{ 
           marginLeft: screenSize === 'mobile' ? '0px' : screenSize === 'tablet' ? '0px' : `${sidebarWidth}px`
         }}
       >
-        {!isMessagesRoute && !isMentoriasRoute && !isSprintsRoute && !isSprintDetailRoute && (
+        {!isMessagesRoute && !isMentoriasRoute && !isSprintsRoute && !isBlockedSprintsRoute && !isSprintDetailRoute && (
           <Header 
             title={isAccountSettingsRoute ? 'Configurações de conta' : isRankingRoute ? 'Ranking' : isTutorialsRoute ? 'Tutoriais' : undefined}
           />
         )}
-        <main className={`flex-1 ${isRankingRoute || isTutorialsRoute || isMessagesRoute || isMentoriasRoute || isSprintsRoute || isSprintDetailRoute ? '' : 'p-4 sm:p-6 lg:p-8'} space-y-4 sm:space-y-6 overflow-x-auto overflow-y-auto`}>
-          {!isAccountSettingsRoute && !isRankingRoute && !isTutorialsRoute && !isMessagesRoute && !isMentoriasRoute && !isSprintsRoute && !isSprintDetailRoute && (
+        <main className={`flex-1 ${isRankingRoute || isTutorialsRoute || isMessagesRoute || isMentoriasRoute || isSprintsRoute || isBlockedSprintsRoute || isSprintDetailRoute ? '' : 'p-4 sm:p-6 lg:p-8'} space-y-4 sm:space-y-6 overflow-x-auto overflow-y-auto`}>
+          {!isAccountSettingsRoute && !isRankingRoute && !isTutorialsRoute && !isMessagesRoute && !isMentoriasRoute && !isSprintsRoute && !isBlockedSprintsRoute && !isSprintDetailRoute && (
             <>
               <StatsCards />
               <SprintSection externalProgress={progress} />
@@ -98,7 +100,8 @@ const HomeScreenContent = () => {
           {isTutorialsRoute && <TutorialsContent />}
           {isMessagesRoute && <MessagesContent />}
           {isMentoriasRoute && <MentoriasCalendar />}
-          {isSprintsRoute && !isSprintDetailRoute && <SprintsPage />}
+          {isSprintsRoute && !isSprintDetailRoute && !isBlockedSprintsRoute && <SprintsPage />}
+          {isBlockedSprintsRoute && <BlockedSprintsPage />}
           {isSprintDetailRoute && <SprintDetailPage />}
         </main>
       </div>
