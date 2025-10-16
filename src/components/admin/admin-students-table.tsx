@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table } from '@/components/ui/design-system';
 import { TableColumn } from '@/types/table';
+import { adminStudentsService, Aluno } from '@/services/api';
 
 // Declaração de tipos para JSX
 declare global {
@@ -108,36 +109,67 @@ const MoreVerticalIcon = (props: any) => (
   </svg>
 );
 
-interface Student {
-  id: string;
-  name: string;
-  email: string;
-  cpf: string;
-  currentPlan: string;
-  startedOn: string;
-  status: 'Ativo' | 'Inativo';
-}
-
-const mockStudents: Student[] = [
-  { id: '1', name: 'Fernanda Albuquerque da Silva', email: 'fernanda.silva.albuquerque@gmail.com', cpf: '032.654.981-40', currentPlan: 'Polícia Federal', startedOn: '14/02/2024', status: 'Ativo' },
-  { id: '2', name: 'Roberto Henrique Monteiro Filho', email: 'roberto.monteiro.filho@gmail.com', cpf: 'Não preenchido', currentPlan: 'Nenhum', startedOn: '14/02/2024', status: 'Inativo' },
-  { id: '3', name: 'Juliana Costa Pereira Andrade', email: 'juliana.p.andrade@gmail.com', cpf: '248.316.579-92', currentPlan: 'Polícia Federal', startedOn: '14/02/2024', status: 'Ativo' },
-  { id: '4', name: 'Marcelo Augusto Fernandes Lima', email: 'marcelo.a.lima@gmail.com', cpf: 'Não preenchido', currentPlan: 'Nenhum', startedOn: '14/02/2024', status: 'Ativo' },
-  { id: '5', name: 'Patrícia Regina Duarte Campos', email: 'patricia.r.campos@gmail.com', cpf: 'Não preenchido', currentPlan: 'Nenhum', startedOn: '14/02/2024', status: 'Inativo' },
-  { id: '6', name: 'Rafael Domingos Oliveira Souza', email: 'rafael.d.oliveira@gmail.com', cpf: '581.473.206-18', currentPlan: 'Nenhum', startedOn: '14/02/2024', status: 'Ativo' },
-  { id: '7', name: 'Carolina Beatriz Nogueira Martins', email: 'carolina.b.martins@gmail.com', cpf: '692.805.134-03', currentPlan: 'Polícia Federal', startedOn: '14/02/2024', status: 'Ativo' },
-  { id: '8', name: 'Carolina Beatriz Nogueira Martins', email: 'carolina.b.martins@gmail.com', cpf: '692.805.134-03', currentPlan: 'Polícia Federal', startedOn: '14/02/2024', status: 'Ativo' },
-];
+// Usar a interface Aluno da API
+type Student = Aluno;
 
 export const AdminStudentsTable: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
+  const [students, setStudents] = useState<Student[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [pagination, setPagination] = useState({
+    pagina: 1,
+    limite: 10,
+    total: 0,
+    totalPaginas: 0
+  });
 
-  const filteredStudents = mockStudents.filter(student =>
-    student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.email.toLowerCase().includes(searchTerm.toLowerCase())
+  // Buscar dados da API
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        setLoading(true);
+        const response = await adminStudentsService.getStudents({
+          pagina: pagination.pagina,
+          limite: pagination.limite
+        });
+        
+        setStudents(response.alunos);
+        setPagination(response.paginacao);
+      } catch (err: any) {
+        console.error('Erro ao buscar alunos:', err);
+        setError(err.message || 'Erro ao carregar alunos');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStudents();
+  }, [pagination.pagina, pagination.limite]);
+
+  const filteredStudents = students.filter(student =>
+    student.nomeAluno.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    student.emailAluno.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (student.cpfAluno && student.cpfAluno.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
+  // Funções de paginação
+  const handlePreviousPage = () => {
+    if (pagination.pagina > 1) {
+      setPagination(prev => ({ ...prev, pagina: prev.pagina - 1 }));
+    }
+  };
+
+  const handleNextPage = () => {
+    if (pagination.pagina < pagination.totalPaginas) {
+      setPagination(prev => ({ ...prev, pagina: prev.pagina + 1 }));
+    }
+  };
+
+  const handlePageChange = (page: number) => {
+    setPagination(prev => ({ ...prev, pagina: page }));
+  };
 
   const handleSelectStudent = (studentId: string) => {
     setSelectedStudents(prev =>
@@ -156,7 +188,7 @@ export const AdminStudentsTable: React.FC = () => {
           checked={selectedStudents.length === filteredStudents.length && filteredStudents.length > 0}
           onChange={(checked) => {
             if (checked) {
-              setSelectedStudents(filteredStudents.map(student => student.id));
+              setSelectedStudents(filteredStudents.map(student => student.idAluno.toString()));
             } else {
               setSelectedStudents([]);
             }
@@ -168,14 +200,14 @@ export const AdminStudentsTable: React.FC = () => {
       align: 'center',
       render: (_, record: Student) => (
         <CustomCheckbox
-          checked={selectedStudents.includes(record.id)}
-          onChange={() => handleSelectStudent(record.id)}
+          checked={selectedStudents.includes(record.idAluno.toString())}
+          onChange={() => handleSelectStudent(record.idAluno.toString())}
           size={20}
         />
       )
     },
     {
-      key: 'name',
+      key: 'nomeAluno',
       title: 'Nome do usuário',
       width: '25%',
       render: (_, record: Student) => (
@@ -187,12 +219,12 @@ export const AdminStudentsTable: React.FC = () => {
           lineHeight: '20px',
           letterSpacing: '0px',
         }}>
-          {record.name}
+          {record.nomeAluno}
         </span>
       )
     },
     {
-      key: 'email',
+      key: 'emailAluno',
       title: 'E-mail',
       width: '25%',
       align: 'center',
@@ -205,12 +237,12 @@ export const AdminStudentsTable: React.FC = () => {
           lineHeight: '20px',
           letterSpacing: '0px',
         }}>
-          {record.email}
+          {record.emailAluno}
         </span>
       )
     },
     {
-      key: 'cpf',
+      key: 'cpfAluno',
       title: 'CPF',
       width: '15%',
       align: 'center',
@@ -223,12 +255,12 @@ export const AdminStudentsTable: React.FC = () => {
           lineHeight: '20px',
           letterSpacing: '0px',
         }}>
-          {record.cpf}
+          {record.cpfAluno || 'Não preenchido'}
         </span>
       )
     },
     {
-      key: 'currentPlan',
+      key: 'planoAtivo',
       title: 'Plano atual',
       width: '15%',
       align: 'center',
@@ -241,12 +273,12 @@ export const AdminStudentsTable: React.FC = () => {
           lineHeight: '20px',
           letterSpacing: '0px',
         }}>
-          {record.currentPlan}
+          {record.planoAtivo || 'Nenhum'}
         </span>
       )
     },
     {
-      key: 'startedOn',
+      key: 'dataCadastro',
       title: 'Iniciou em',
       width: '12%',
       align: 'center',
@@ -259,7 +291,7 @@ export const AdminStudentsTable: React.FC = () => {
           lineHeight: '20px',
           letterSpacing: '0px',
         }}>
-          {record.startedOn}
+          {new Date(record.dataCadastro).toLocaleDateString('pt-BR')}
         </span>
       )
     },
@@ -275,8 +307,8 @@ export const AdminStudentsTable: React.FC = () => {
           justifyContent: 'center',
           padding: '4px 8px',
           borderRadius: '16px',
-          background: record.status === 'Ativo' ? '#243D2A' : '#5B5B5B',
-          color: record.status === 'Ativo' ? '#3DC462' : '#E0E0E0',
+          background: record.status === 'ativo' ? '#243D2A' : '#5B5B5B',
+          color: record.status === 'ativo' ? '#3DC462' : '#E0E0E0',
           fontFamily: 'Inter',
           fontWeight: 500,
           fontSize: '12px',
@@ -287,7 +319,7 @@ export const AdminStudentsTable: React.FC = () => {
           minWidth: '50px',
           height: '20px',
         }}>
-          {record.status}
+          {record.status === 'ativo' ? 'Ativo' : 'Inativo'}
         </span>
       )
     },
@@ -326,7 +358,7 @@ export const AdminStudentsTable: React.FC = () => {
               e.currentTarget.style.background = 'transparent';
               e.currentTarget.style.color = '#94979C';
             }}
-            onClick={() => console.log('Ver detalhes:', record.id)}
+            onClick={() => console.log('Ver detalhes:', record.idAluno)}
           >
             <MoreVerticalIcon />
           </button>
@@ -353,7 +385,7 @@ export const AdminStudentsTable: React.FC = () => {
               e.currentTarget.style.background = 'transparent';
               e.currentTarget.style.color = '#94979C';
             }}
-            onClick={() => console.log('Visualizar:', record.id)}
+            onClick={() => console.log('Visualizar:', record.idAluno)}
           >
             <EyeIcon />
           </button>
@@ -393,7 +425,7 @@ export const AdminStudentsTable: React.FC = () => {
             margin: 0,
           }}
         >
-          Alunos cadastrados (1.999.999)
+          Alunos cadastrados ({pagination.total.toLocaleString()})
         </h2>
         <div
           style={{
@@ -461,13 +493,35 @@ export const AdminStudentsTable: React.FC = () => {
         }}
       >
         {/* Tabela usando o componente Table */}
-        <Table
-          columns={columns}
-          data={filteredStudents}
-          screenSize="desktop"
-        />
+        {loading ? (
+          <div style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+            padding: '40px',
+            color: '#94979C'
+          }}>
+            Carregando alunos...
+                  </div>
+        ) : error ? (
+          <div style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+            padding: '40px',
+            color: '#C74228'
+          }}>
+            Erro ao carregar alunos: {error}
+          </div>
+        ) : (
+          <Table
+            columns={columns}
+            data={filteredStudents}
+            screenSize="desktop"
+          />
+        )}
 
-        {/* Pagination */}
+      {/* Pagination */}
       <div
         style={{
           display: 'flex',
@@ -483,133 +537,132 @@ export const AdminStudentsTable: React.FC = () => {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
         <button
           style={{
-              background: '#363946',
+              background: pagination.pagina <= 1 ? '#363946' : '#363946',
               border: 'none',
               borderRadius: '6px',
             padding: '8px 12px',
-              color: '#9CA3AF',
+              color: pagination.pagina <= 1 ? '#9CA3AF' : '#9CA3AF',
               fontFamily: 'Inter',
               fontWeight: 500,
               fontSize: '12px',
               lineHeight: '16px',
               letterSpacing: '0px',
-            cursor: 'not-allowed',
+            cursor: pagination.pagina <= 1 ? 'not-allowed' : 'pointer',
               transition: 'all 0.2s ease',
           }}
+          onClick={handlePreviousPage}
+          disabled={pagination.pagina <= 1}
         >
           Anterior
         </button>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
-            <button
-              style={{
-                background: '#4A4C60',
-                border: 'none',
-                borderRadius: '6px',
-                padding: '8px 12px',
-                minWidth: '32px',
-                height: '32px',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                color: '#FFFFFF',
+            {/* Gerar números das páginas baseado no total de páginas da API */}
+            {Array.from({ length: Math.min(pagination.totalPaginas, 10) }, (_, i) => {
+              const pageNumber = i + 1;
+              const isCurrentPage = pageNumber === pagination.pagina;
+              
+              return (
+                <button
+                  key={pageNumber}
+                  style={{
+                    background: isCurrentPage ? '#4A4C60' : 'transparent',
+                    border: 'none',
+                    borderRadius: '6px',
+                    padding: '8px 12px',
+                    minWidth: '32px',
+                    height: '32px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    color: isCurrentPage ? '#FFFFFF' : '#9CA3AF',
+                    fontFamily: 'Inter',
+                    fontWeight: 500,
+                    fontSize: '12px',
+                    lineHeight: '16px',
+                    letterSpacing: '0px',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                  }}
+                  onClick={() => handlePageChange(pageNumber)}
+                >
+                  {pageNumber}
+                </button>
+              );
+            })}
+            
+            {/* Mostrar reticências se houver mais de 10 páginas */}
+            {pagination.totalPaginas > 10 && (
+              <span style={{
+                color: '#9CA3AF',
                 fontFamily: 'Inter',
                 fontWeight: 500,
                 fontSize: '12px',
                 lineHeight: '16px',
                 letterSpacing: '0px',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-              }}
-            >
-              1
-            </button>
+                padding: '0 8px',
+              }}>...</span>
+            )}
             
-            <span style={{
-              color: '#9CA3AF',
-              fontFamily: 'Inter',
-              fontWeight: 500,
-              fontSize: '12px',
-              lineHeight: '16px',
-              letterSpacing: '0px',
-              padding: '0 8px',
-            }}>2</span>
-            
-            <span style={{
-              color: '#9CA3AF',
-              fontFamily: 'Inter',
-              fontWeight: 500,
-              fontSize: '12px',
-              lineHeight: '16px',
-              letterSpacing: '0px',
-              padding: '0 8px',
-            }}>3</span>
-            
-            <span style={{
-              color: '#9CA3AF',
-              fontFamily: 'Inter',
-              fontWeight: 500,
-              fontSize: '12px',
-              lineHeight: '16px',
-              letterSpacing: '0px',
-              padding: '0 8px',
-            }}>...</span>
-            
-            <span style={{
-              color: '#9CA3AF',
-              fontFamily: 'Inter',
-              fontWeight: 500,
-              fontSize: '12px',
-              lineHeight: '16px',
-              letterSpacing: '0px',
-              padding: '0 8px',
-            }}>8</span>
-            
-            <span style={{
-              color: '#9CA3AF',
-              fontFamily: 'Inter',
-              fontWeight: 500,
-              fontSize: '12px',
-              lineHeight: '16px',
-              letterSpacing: '0px',
-              padding: '0 8px',
-            }}>9</span>
-            
-            <span style={{
-              color: '#9CA3AF',
-              fontFamily: 'Inter',
-              fontWeight: 500,
-              fontSize: '12px',
-              lineHeight: '16px',
-              letterSpacing: '0px',
-              padding: '0 8px',
-            }}>10</span>
-        </div>
+            {/* Mostrar última página se houver mais de 10 páginas */}
+            {pagination.totalPaginas > 10 && (
+              <button
+                style={{
+                  background: pagination.pagina === pagination.totalPaginas ? '#4A4C60' : 'transparent',
+                  border: 'none',
+                  borderRadius: '6px',
+                  padding: '8px 12px',
+                  minWidth: '32px',
+                  height: '32px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  color: pagination.pagina === pagination.totalPaginas ? '#FFFFFF' : '#9CA3AF',
+                  fontFamily: 'Inter',
+                  fontWeight: 500,
+                  fontSize: '12px',
+                  lineHeight: '16px',
+                  letterSpacing: '0px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}
+                onClick={() => handlePageChange(pagination.totalPaginas)}
+              >
+                {pagination.totalPaginas}
+              </button>
+            )}
+          </div>
           
         <button
           style={{
-              background: '#993D2B',
+              background: pagination.pagina >= pagination.totalPaginas ? '#363946' : '#993D2B',
               border: 'none',
               borderRadius: '6px',
-            padding: '8px 12px',
-            color: '#FFFFFF',
+              padding: '8px 12px',
+              color: pagination.pagina >= pagination.totalPaginas ? '#9CA3AF' : '#FFFFFF',
               fontFamily: 'Inter',
               fontWeight: 500,
               fontSize: '12px',
               lineHeight: '16px',
               letterSpacing: '0px',
-            cursor: 'pointer',
+              cursor: pagination.pagina >= pagination.totalPaginas ? 'not-allowed' : 'pointer',
               transition: 'all 0.2s ease',
             }}
+            onClick={handleNextPage}
+            disabled={pagination.pagina >= pagination.totalPaginas}
             onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
-              e.currentTarget.style.background = '#B03A20';
+              if (pagination.pagina < pagination.totalPaginas) {
+                e.currentTarget.style.background = '#B03A20';
+              }
             }}
             onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
-              e.currentTarget.style.background = '#993D2B';
-          }}
-        >
-          Próxima
-        </button>
+              if (pagination.pagina < pagination.totalPaginas) {
+                e.currentTarget.style.background = '#993D2B';
+              }
+            }}
+          >
+            Próxima
+          </button>
         </div>
       </div>
       </div>

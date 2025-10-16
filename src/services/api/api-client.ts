@@ -75,6 +75,17 @@ class ApiClient {
           const htmlText = await response.text().catch(() => '');
           console.error('Resposta não-JSON recebida:', htmlText.substring(0, 200));
         }
+        
+        // Trata erro 401 (não autorizado) - token expirado
+        if (response.status === 401) {
+          console.warn('🔐 Token expirado ou inválido. Fazendo logout automático...');
+          // Remove token e dados do usuário
+          localStorage.removeItem('auth_token');
+          localStorage.removeItem('user_data');
+          // Redireciona para login
+          window.location.href = '/login';
+        }
+        
         throw {
           message: errorData.message || `Erro HTTP ${response.status}`,
           status: response.status,

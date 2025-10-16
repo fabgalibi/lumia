@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatCard } from '@/components/lumia/stats-cards/stat-card';
+import { adminMetricsService, AdminMetricsResponse } from '@/services/api';
 
 // Ícones baixados do Figma
 const UsersUpIcon = (props: any) => (
@@ -39,36 +40,102 @@ const BookOpen01Icon = (props: any) => (
 );
 
 export const AdminMetricsCards: React.FC = () => {
-  const metrics = [
+  const [metrics, setMetrics] = useState<AdminMetricsResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchMetrics = async () => {
+      try {
+        setLoading(true);
+        const data = await adminMetricsService.getMetrics();
+        setMetrics(data);
+      } catch (err: any) {
+        console.error('Erro ao buscar métricas:', err);
+        setError(err.message || 'Erro ao carregar métricas');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMetrics();
+  }, []);
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', gap: '32px', width: '100%' }}>
+        {[1, 2, 3, 4].map((i) => (
+          <div
+            key={i}
+            style={{
+              flex: 1,
+              height: '120px',
+              background: '#252532',
+              borderRadius: '12px',
+              border: '1px solid #2C2C45',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <span style={{ color: '#94979C' }}>Carregando...</span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ display: 'flex', gap: '32px', width: '100%' }}>
+        <div
+          style={{
+            flex: 1,
+            height: '120px',
+            background: '#252532',
+            borderRadius: '12px',
+            border: '1px solid #2C2C45',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <span style={{ color: '#C74228' }}>Erro ao carregar métricas</span>
+        </div>
+      </div>
+    );
+  }
+
+  const metricsData = [
     {
       icon: UsersUpIcon,
-      title: 'Alunos Ativos no Mês',
-      value: '1.598.000',
+      title: 'Alunos Ativos',
+      value: metrics?.totalAlunosAtivos?.toLocaleString() || '0',
       change: '15%',
       changeText: 'comparado ao mês anterior',
       showChange: true,
     },
     {
       icon: ZapIcon,
-      title: 'Novas Vendas/Matrículas do mês',
-      value: '250.000',
+      title: 'Matrículas do Mês',
+      value: metrics?.alunosMatriculadosMes?.toLocaleString() || '0',
       change: '46%',
       changeText: 'comparado ao mês anterior',
       showChange: true,
     },
     {
       icon: CheckCircleBrokenIcon,
-      title: 'Taxa de Conclusão de Metas/Sprints',
-      value: '75,29%',
+      title: 'Metas Concluídas',
+      value: `${metrics?.percentualMetasConcluidasMes?.toFixed(2) || '0'}%`,
       change: '5,18%',
       changeText: 'comparado ao mês anterior',
       showChange: true,
-      trend: 'negative', // Adicionando tendência negativa
+      trend: 'negative' as const,
     },
     {
       icon: BookOpen01Icon,
-      title: 'Engajamento Diário',
-      value: '18h45m',
+      title: 'Tempo de Estudo Diário',
+      value: metrics?.tempoEstudoDiarioMedio || '00:00',
       change: '12%',
       changeText: 'comparado à semana passada',
       showChange: true,
@@ -84,7 +151,7 @@ export const AdminMetricsCards: React.FC = () => {
         width: '100%',
       }}
     >
-      {metrics.map((metric, index) => (
+      {metricsData.map((metric, index) => (
         <StatCard
           key={index}
           icon={metric.icon}

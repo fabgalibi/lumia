@@ -46,6 +46,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     loadUser();
   }, []);
 
+  // Monitora mudanças no localStorage para detectar logout automático
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'auth_token' && e.newValue === null && e.oldValue !== null) {
+        console.warn('🔍 AuthContext: Token removido do localStorage - logout automático detectado');
+        setUser(null);
+      }
+      if (e.key === 'user_data' && e.newValue === null && e.oldValue !== null) {
+        console.warn('🔍 AuthContext: Dados do usuário removidos do localStorage - logout automático detectado');
+        setUser(null);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
   /**
    * Realiza login do usuário
    */
@@ -85,9 +102,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
    * Realiza logout do usuário
    */
   const logout = () => {
+    console.log('🚪 AuthContext: Logout iniciado');
     authService.logout();
     setUser(null);
     setError(null);
+    console.log('✅ AuthContext: Logout concluído');
   };
 
   const value: AuthContextData = {
