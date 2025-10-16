@@ -48,16 +48,17 @@ class AuthService {
   /**
    * Realiza login do usuário
    * @param credentials - Email e senha do usuário
+   * @param grupo - Grupo do usuário (aluno ou administrador)
    * @returns Token de acesso e dados do usuário
    */
-  async login(credentials: LoginRequest): Promise<ApiResponse<LoginResponse>> {
+  async login(credentials: LoginRequest, grupo: 'aluno' | 'administrador' = 'aluno'): Promise<ApiResponse<LoginResponse>> {
     console.log('📡 Enviando requisição de login para:', '/auth/login');
-    console.log('📦 Payload:', { login: credentials.email, senha: '***', grupo: 'aluno' });
+    console.log('📦 Payload:', { login: credentials.email, senha: '***', grupo });
     
     const response = await apiClient.post<LoginResponse>('/auth/login', {
       login: credentials.email, // API usa "login" ao invés de "email"
       senha: credentials.password, // API usa "senha" ao invés de "password"
-      grupo: 'aluno', // Grupo padrão para alunos
+      grupo, // Grupo do usuário (aluno ou admin)
     });
 
     console.log('📥 Resposta recebida:', response);
@@ -83,6 +84,15 @@ class AuthService {
     }
 
     return response;
+  }
+
+  /**
+   * Realiza login administrativo
+   * @param credentials - Email e senha do administrador
+   * @returns Token de acesso e dados do usuário
+   */
+  async loginAdmin(credentials: LoginRequest): Promise<ApiResponse<LoginResponse>> {
+    return this.login(credentials, 'administrador');
   }
 
   /**

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { authService, LoginRequest } from '../../services/api/auth.service';
 
 export const AdminLoginForm: React.FC = () => {
   const navigate = useNavigate();
@@ -14,16 +15,19 @@ export const AdminLoginForm: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // TODO: Implementar autenticação de administrador
-      console.log('Admin login:', { email, password });
+      console.log('🔐 Tentando login administrativo com:', { email, password });
       
-      // Simulação - remover quando implementar API
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Usa o método específico para login administrativo
+      const credentials: LoginRequest = { email, password };
+      const response = await authService.loginAdmin(credentials);
+      
+      console.log('✅ Login administrativo bem-sucedido!', response);
       
       // Redirecionar para painel admin (quando criado)
       navigate('/admin/dashboard');
     } catch (err: any) {
-      setError('Erro ao fazer login. Verifique suas credenciais.');
+      console.error('❌ Erro no login administrativo:', err);
+      setError(err.message || 'Erro ao fazer login. Verifique suas credenciais.');
     } finally {
       setIsLoading(false);
     }
