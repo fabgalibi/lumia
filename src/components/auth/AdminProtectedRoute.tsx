@@ -40,17 +40,15 @@ export const AdminProtectedRoute: React.FC<AdminProtectedRouteProps> = ({ childr
   }
 
   // Verifica se é administrador
-  const isAdmin = user?.grupo?.nome === 'administrador' || user?.grupoId === 2;
-  
-  console.log('🔍 Verificando permissões admin:', { 
-    user, 
-    isAdmin, 
-    grupoNome: user?.grupo?.nome, 
-    grupoId: user?.grupoId 
-  });
+  const grupoNome = user?.grupo?.nome?.toLowerCase();
+  const isAdmin = grupoNome === 'administrador' || user?.grupoId === 2;
   
   if (!isAdmin) {
-    console.log('❌ Usuário não é administrador, redirecionando para login admin');
+    // Se o usuário for um aluno tentando acessar área admin, redireciona para login do aluno
+    if (grupoNome === 'aluno' || user?.grupoId === 1) {
+      return <Navigate to="/login" replace />;
+    }
+    
     // Se não for admin, redireciona para login admin
     return <Navigate to="/admin/login" replace />;
   }

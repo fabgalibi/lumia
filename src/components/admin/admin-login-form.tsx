@@ -15,18 +15,13 @@ export const AdminLoginForm: React.FC = () => {
     setError(null);
 
     try {
-      console.log('🔐 Tentando login administrativo com:', { email, password });
-      
       // Usa o contexto de autenticação com grupo administrativo
       const credentials: LoginRequest = { email, password };
       await login(credentials, 'administrador');
       
-      console.log('✅ Login administrativo bem-sucedido!');
-      
       // Redirecionar para painel admin
       navigate('/admin/dashboard');
     } catch (err: any) {
-      console.error('❌ Erro no login administrativo:', err);
       setError(err.message || 'Erro ao fazer login. Verifique suas credenciais.');
     }
   };

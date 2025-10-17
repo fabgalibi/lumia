@@ -52,25 +52,18 @@ class AuthService {
    * @returns Token de acesso e dados do usuário
    */
   async login(credentials: LoginRequest, grupo: 'aluno' | 'administrador' = 'aluno'): Promise<ApiResponse<LoginResponse>> {
-    console.log('📡 Enviando requisição de login para:', '/auth/login');
-    console.log('📦 Payload:', { login: credentials.email, senha: '***', grupo });
-    
     const response = await apiClient.post<LoginResponse>('/auth/login', {
       login: credentials.email, // API usa "login" ao invés de "email"
       senha: credentials.password, // API usa "senha" ao invés de "password"
       grupo, // Grupo do usuário (aluno ou admin)
     });
 
-    console.log('📥 Resposta recebida:', response);
-
     // Armazena o token no localStorage
     if (response.data.token) {
-      console.log('💾 Salvando token no localStorage');
       this.setToken(response.data.token);
       
       // Armazena dados do usuário se disponível
       if (response.data.usuario) {
-        console.log('👤 Salvando dados do usuário:', response.data.usuario);
         const user: User = {
           id: response.data.usuario.id,
           email: response.data.usuario.login,

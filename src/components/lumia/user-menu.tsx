@@ -26,10 +26,8 @@ export const UserMenu: React.FC = () => {
   }, [isUserMenuOpen]);
 
   const handleLogoutClick = () => {
-    console.log('🔍 UserMenu: Clicando em sair da conta');
     setIsUserMenuOpen(false);
     setShowLogoutModal(true);
-    console.log('🔍 UserMenu: showLogoutModal definido como true');
   };
 
   const handleLogoutConfirm = () => {
@@ -57,8 +55,6 @@ export const UserMenu: React.FC = () => {
   const handleMenuToggle = () => {
     setIsUserMenuOpen(!isUserMenuOpen);
   };
-
-  console.log('🔍 UserMenu: Renderizando', { isUserMenuOpen, showLogoutModal });
 
   return (
     <div 

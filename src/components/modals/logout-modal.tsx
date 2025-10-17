@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 interface LogoutModalProps {
   isOpen: boolean;
@@ -26,14 +27,14 @@ export const LogoutModal: React.FC<LogoutModalProps> = ({
 
   if (!isOpen) return null;
 
-  console.log('🔍 LogoutModal: Renderizando modal', { isOpen, isMobile });
-
-  return (
+  const modalContent = (
     <div 
       style={{ 
         position: 'fixed',
         top: 0,
         left: 0,
+        right: 0,
+        bottom: 0,
         width: '100vw',
         height: '100vh',
         display: 'flex',
@@ -254,4 +255,6 @@ export const LogoutModal: React.FC<LogoutModalProps> = ({
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 };
