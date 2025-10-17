@@ -26,10 +26,20 @@ export const LogoutModal: React.FC<LogoutModalProps> = ({
 
   if (!isOpen) return null;
 
+  console.log('🔍 LogoutModal: Renderizando modal', { isOpen, isMobile });
+
   return (
     <div 
-      className="fixed inset-0 flex items-center justify-center z-[999999]" 
       style={{ 
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 999999,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         pointerEvents: 'auto'
       }}
@@ -39,13 +49,17 @@ export const LogoutModal: React.FC<LogoutModalProps> = ({
         onClick={(e) => e.stopPropagation()}
         style={{
           width: isMobile ? '343px' : '484px',
+          maxWidth: '90vw',
+          maxHeight: '90vh',
           background: '#252532',
           borderRadius: '16px',
           boxShadow: '0px 3px 3px -1.5px rgba(255, 255, 255, 0), 0px 8px 8px -4px rgba(255, 255, 255, 0), 0px 20px 24px -4px rgba(255, 255, 255, 0)',
           position: 'relative',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center'
+          alignItems: 'center',
+          margin: '20px',
+          transform: 'translate(0, 0)'
         }}
       >
         {/* Background pattern decorative - Position: absolute (-120, -120) */}

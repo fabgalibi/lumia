@@ -12,6 +12,10 @@ interface AccountSettingsLayoutProps {
   onSave?: () => void;
   isLoading?: boolean;
   saveButtonText?: string;
+  // Tab control props
+  activeTab?: string;
+  onTabChange?: (tabId: string) => void;
+  userType?: 'aluno' | 'admin';
 }
 
 
@@ -25,7 +29,11 @@ export const AccountSettingsLayout: React.FC<AccountSettingsLayoutProps> = ({
   onCancel = () => {},
   onSave = () => {},
   isLoading = false,
-  saveButtonText = 'Salvar alterações'
+  saveButtonText = 'Salvar alterações',
+  // Tab control props
+  activeTab,
+  onTabChange,
+  userType = 'aluno'
 }) => {
   const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
 
@@ -70,6 +78,9 @@ export const AccountSettingsLayout: React.FC<AccountSettingsLayoutProps> = ({
         {/* Tabs */}
         <HorizontalTabs
           screenSize={screenSize}
+          activeTab={activeTab}
+          onTabChange={onTabChange}
+          userType={userType}
         />
 
         {/* Content - Flex grow para empurrar footer para baixo */}

@@ -4,29 +4,39 @@ import { Tabs } from '@/components/ui/design-system';
 
 interface HorizontalTabsProps {
   screenSize?: 'mobile' | 'tablet' | 'desktop';
+  activeTab?: string;
+  onTabChange?: (tabId: string) => void;
+  userType?: 'aluno' | 'admin';
 }
 
-export function HorizontalTabs({ screenSize = 'desktop' }: HorizontalTabsProps) {
+export function HorizontalTabs({ 
+  screenSize = 'desktop', 
+  activeTab: externalActiveTab,
+  onTabChange: externalOnTabChange,
+  userType = 'aluno'
+}: HorizontalTabsProps) {
   const location = useLocation();
   const navigate = useNavigate();
   
   const getActiveTab = () => {
-    if (location.pathname === '/account-settings' || location.pathname === '/account-settings/profile') {
+    const basePath = userType === 'admin' ? '/admin/settings' : '/account-settings';
+    
+    if (location.pathname === basePath || location.pathname === `${basePath}/profile`) {
       return 'profile';
     }
-    if (location.pathname === '/account-settings/password') {
+    if (location.pathname === `${basePath}/password`) {
       return 'password';
     }
-    if (location.pathname === '/account-settings/notifications') {
+    if (location.pathname === `${basePath}/notifications`) {
       return 'notifications';
     }
-    if (location.pathname === '/account-settings/content') {
+    if (location.pathname === `${basePath}/content`) {
       return 'content';
     }
     return 'profile'; // default
   };
   
-  const activeTab = getActiveTab();
+  const activeTab = externalActiveTab || getActiveTab();
   const tabs = [
     { id: 'profile', label: 'Dados de perfil' },
     { id: 'password', label: 'Alterar senha' },
@@ -35,7 +45,14 @@ export function HorizontalTabs({ screenSize = 'desktop' }: HorizontalTabsProps) 
   ];
 
   const handleTabChange = (tabId: string) => {
-    navigate(`/account-settings/${tabId}`);
+    if (externalOnTabChange) {
+      // Se há callback externo, usar ele (não navegar)
+      externalOnTabChange(tabId);
+    } else {
+      // Comportamento padrão: navegar para nova rota
+      const basePath = userType === 'admin' ? '/admin/settings' : '/account-settings';
+      navigate(`${basePath}/${tabId}`);
+    }
   };
 
   return (

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { createPortal } from "react-dom";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../contexts/auth-context";
 import { LogoutModal } from "@/components/modals/logout-modal";
@@ -8,7 +7,6 @@ export const UserMenu: React.FC = () => {
   
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
   const navigate = useNavigate();
   const { logout } = useAuth();
 
@@ -28,8 +26,10 @@ export const UserMenu: React.FC = () => {
   }, [isUserMenuOpen]);
 
   const handleLogoutClick = () => {
+    console.log('🔍 UserMenu: Clicando em sair da conta');
     setIsUserMenuOpen(false);
     setShowLogoutModal(true);
+    console.log('🔍 UserMenu: showLogoutModal definido como true');
   };
 
   const handleLogoutConfirm = () => {
@@ -54,22 +54,11 @@ export const UserMenu: React.FC = () => {
     setShowLogoutModal(false);
   };
 
-  const handleMenuToggle = (event: React.MouseEvent) => {
-    if (!isUserMenuOpen) {
-      const rect = event.currentTarget.getBoundingClientRect();
-      
-      // Calcular posição mais simples e confiável
-      const top = rect.bottom + 8;
-      const right = Math.max(16, window.innerWidth - rect.right - 16); // Mínimo 16px da borda
-      
-      setMenuPosition({
-        top: top,
-        right: right
-      });
-    }
-    
+  const handleMenuToggle = () => {
     setIsUserMenuOpen(!isUserMenuOpen);
   };
+
+  console.log('🔍 UserMenu: Renderizando', { isUserMenuOpen, showLogoutModal });
 
   return (
     <div 
@@ -159,13 +148,10 @@ export const UserMenu: React.FC = () => {
       </button>
     
       {/* Menu Dropdown */}
-      {isUserMenuOpen && createPortal(
+      {isUserMenuOpen && (
         <div 
-          className="w-64 bg-[#252532] border border-[#2C2C45] rounded-xl shadow-xl"
+          className="absolute top-full right-0 mt-2 w-64 bg-[#252532] border border-[#2C2C45] rounded-xl shadow-xl"
           style={{
-            position: 'fixed',
-            top: `${menuPosition.top}px`,
-            right: `${menuPosition.right}px`,
             zIndex: 999999,
             boxShadow: '0px 12px 32px 0px rgba(0, 0, 0, 0.4), 0px 4px 16px 0px rgba(0, 0, 0, 0.2)',
             backdropFilter: 'blur(12px)',
@@ -297,8 +283,7 @@ export const UserMenu: React.FC = () => {
               Sair da conta
             </button>
           </div>
-        </div>,
-        document.body
+        </div>
       )}
 
       {/* Logout Modal */}
