@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router';
 import { AdminDashboardHeader } from '@/components/admin/admin-dashboard-header';
 import { AdminMetricsCards } from '@/components/admin/admin-metrics-cards';
 import { AdminStudentsTable } from '@/components/admin/admin-students-table';
 import { UniversalAccountSettings } from '@/components/account-settings/universal-account-settings';
+import { StudentRegistrationModal } from '@/components/modals/student-registration-modal';
+import { SuccessNotification } from '@/components/ui/success-notification';
 import { useAuth } from '@/contexts/auth-context';
 
 export const AdminDashboardScreen: React.FC = () => {
   const { user } = useAuth();
   const location = useLocation();
+  const [showStudentModal, setShowStudentModal] = useState(false);
+  const [showSuccessNotification, setShowSuccessNotification] = useState(false);
   
   // Verificar se está na rota de configurações
   const isSettingsRoute = location.pathname === '/admin/settings' || location.pathname.startsWith('/admin/settings/');
@@ -17,6 +21,21 @@ export const AdminDashboardScreen: React.FC = () => {
   // Funções para configurações
   const handleDeleteAccount = () => console.log('Deletar conta admin');
   const handleUpdatePhoto = () => console.log('Atualizar foto admin');
+  
+  // Funções para cadastro de aluno
+  const handleStudentRegistration = (studentData: any) => {
+    console.log('Dados do aluno:', studentData);
+    // Aqui você pode integrar com a API para cadastrar o aluno
+    setShowStudentModal(false);
+    
+    // Mostrar notificação de sucesso
+    setShowSuccessNotification(true);
+    
+    // Fechar notificação após 3 segundos
+    setTimeout(() => {
+      setShowSuccessNotification(false);
+    }, 3000);
+  };
   
   return (
     <div
@@ -134,6 +153,7 @@ export const AdminDashboardScreen: React.FC = () => {
                       Baixar relatório
                     </button>
                     <button
+                      onClick={() => setShowStudentModal(true)}
                       style={{
                         background: '#C74228',
                         border: '2px solid transparent',
@@ -150,6 +170,13 @@ export const AdminDashboardScreen: React.FC = () => {
                         alignItems: 'center',
                         gap: '4px',
                         boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05)',
+                        transition: 'background 0.2s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = '#D55A3A';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = '#C74228';
                       }}
                     >
                       {/* Plus icon */}
@@ -194,6 +221,21 @@ export const AdminDashboardScreen: React.FC = () => {
           </section>
         )}
       </main>
+      
+      {/* Modal de cadastro de aluno */}
+      <StudentRegistrationModal
+        isOpen={showStudentModal}
+        onClose={() => setShowStudentModal(false)}
+        onConfirm={handleStudentRegistration}
+      />
+      
+      {/* Notificação de sucesso */}
+      <SuccessNotification
+        isOpen={showSuccessNotification}
+        onClose={() => setShowSuccessNotification(false)}
+        title="Aluno cadastrado com sucesso!"
+        message="O novo registro foi concluído e já está disponível na base de alunos."
+      />
     </div>
   );
 };

@@ -15,7 +15,7 @@ export type AreaCardProps = {
 };
 
 /** ===== Componente principal ===== */
-export default function AreaCard({ 
+function AreaCard({ 
   title, 
   description, 
   image, 
@@ -256,3 +256,6 @@ function DecorativeBackground() {
     </div>
   );
 }
+
+export { AreaCard };
+export default AreaCard;
