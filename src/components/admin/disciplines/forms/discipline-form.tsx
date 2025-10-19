@@ -1,4 +1,5 @@
 import React from 'react';
+import { Copy } from 'lucide-react';
 
 interface DisciplineFormProps {
   nomeDisciplina: string;
@@ -7,6 +8,9 @@ interface DisciplineFormProps {
   onAssuntoChange: (value: string) => void;
   onAddSubject: () => void;
   onAssuntoKeyDown: (e: React.KeyboardEvent) => void;
+  // Props para modo de edição
+  isEditMode?: boolean;
+  codigoDisciplina?: string;
 }
 
 export const DisciplineForm: React.FC<DisciplineFormProps> = ({
@@ -15,8 +19,16 @@ export const DisciplineForm: React.FC<DisciplineFormProps> = ({
   onNomeChange,
   onAssuntoChange,
   onAddSubject,
-  onAssuntoKeyDown
+  onAssuntoKeyDown,
+  isEditMode = false,
+  codigoDisciplina
 }) => {
+  const handleCopyCode = (code: string) => {
+    navigator.clipboard.writeText(code);
+    // Aqui você pode adicionar uma notificação de sucesso
+    console.log(`Código copiado: ${code}`);
+  };
+
   return (
     <div style={{
       display: 'flex',
@@ -44,27 +56,90 @@ export const DisciplineForm: React.FC<DisciplineFormProps> = ({
           <span style={{ color: '#F97066' }}>*</span>
         </label>
         
-        <input
-          type="text"
-          value={nomeDisciplina}
-          onChange={(e) => onNomeChange(e.target.value)}
-          placeholder="Insira o nome da disciplina"
-          style={{
-            width: '100%',
+        {isEditMode && codigoDisciplina ? (
+          // Modo de edição: input editável + código não editável com botão de copiar
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
             padding: '10px 14px',
             backgroundColor: '#2D2D3B',
             border: '1px solid #373A41',
             borderRadius: '8px',
-            color: '#CECFD2',
-            fontSize: '16px',
-            fontFamily: 'Sora',
-            fontWeight: 400,
-            lineHeight: '1.5em',
-            textAlign: 'left',
-            outline: 'none',
             boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)'
-          }}
-        />
+          }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              flex: 1
+            }}>
+              <span style={{
+                fontFamily: 'Sora',
+                fontWeight: 400,
+                fontSize: '16px',
+                lineHeight: '1.5em',
+                color: '#F7F7F7'
+              }}>
+                {nomeDisciplina}
+              </span>
+              <span style={{
+                fontFamily: 'Sora',
+                fontWeight: 400,
+                fontSize: '14px',
+                lineHeight: '1.4285714285714286em',
+                color: '#CECFD2'
+              }}>
+                ({codigoDisciplina})
+              </span>
+            </div>
+            <button
+              onClick={() => handleCopyCode(codigoDisciplina)}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '4px',
+                backgroundColor: 'transparent',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                transition: 'background-color 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#2D2D3B';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+              }}
+            >
+              <Copy size={16} color="#CECFD2" strokeWidth={1.5} />
+            </button>
+          </div>
+        ) : (
+          // Modo de cadastro: input normal
+          <input
+            type="text"
+            value={nomeDisciplina}
+            onChange={(e) => onNomeChange(e.target.value)}
+            placeholder="Insira o nome da disciplina"
+            style={{
+              width: '100%',
+              padding: '10px 14px',
+              backgroundColor: '#2D2D3B',
+              border: '1px solid #373A41',
+              borderRadius: '8px',
+              color: '#CECFD2',
+              fontSize: '16px',
+              fontFamily: 'Sora',
+              fontWeight: 400,
+              lineHeight: '1.5em',
+              textAlign: 'left',
+              outline: 'none',
+              boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)'
+            }}
+          />
+        )}
       </div>
 
       {/* Assunto */}

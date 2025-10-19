@@ -3,7 +3,7 @@ import { AdminDisciplinesHeader, AdminDisciplinesSearch } from './components';
 import { Tabs } from '../../ui/design-system/Tabs';
 import { AdminDisciplinesGrid } from './tables';
 import { AdminPagination } from '../../ui/admin-pagination';
-import { DisciplineRegistrationModal } from './modals';
+import { DisciplineRegistrationModal, DisciplineViewModal } from './modals';
 import { adminDisciplinesService, Disciplina, PaginationParams, PaginatedResponse } from '../../../services/api/admin-disciplines.service';
 
 export const AdminDisciplinesContent: React.FC = () => {
@@ -84,15 +84,13 @@ export const AdminDisciplinesContent: React.FC = () => {
   // As disciplinas já vêm paginadas e filtradas da API
   const filteredDisciplines = disciplines;
 
-  const handleViewDiscipline = (disciplineId: string) => {
-    console.log('Visualizar disciplina:', disciplineId);
-  };
-
   const handleOptionsClick = (disciplineId: string) => {
     console.log('Opções da disciplina:', disciplineId);
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [selectedDisciplineId, setSelectedDisciplineId] = useState<number | null>(null);
 
   const handleAddDiscipline = () => {
     setIsModalOpen(true);
@@ -102,6 +100,18 @@ export const AdminDisciplinesContent: React.FC = () => {
     console.log('Disciplina cadastrada com sucesso!');
     fetchDisciplines();
     setIsModalOpen(false);
+  };
+
+  const handleViewDiscipline = (disciplineId: string | number) => {
+    const id = typeof disciplineId === 'string' ? parseInt(disciplineId) : disciplineId;
+    setSelectedDisciplineId(id);
+    setIsViewModalOpen(true);
+  };
+
+  const handleEditDiscipline = () => {
+    console.log('Editar disciplina:', selectedDisciplineId);
+    // A lógica de edição agora é gerenciada pelo modal de visualização
+    // Não precisamos fechar o modal de visualização aqui
   };
 
   const handleToggleCheckbox = (disciplineId: string) => {
@@ -489,6 +499,18 @@ export const AdminDisciplinesContent: React.FC = () => {
         onClose={() => setIsModalOpen(false)}
         onSuccess={handleModalSuccess}
       />
+
+             {/* Modal de Visualização de Disciplina */}
+             {selectedDisciplineId && (
+               <DisciplineViewModal
+                 isOpen={isViewModalOpen}
+                 onClose={() => {
+                   setIsViewModalOpen(false);
+                   setSelectedDisciplineId(null);
+                 }}
+                 disciplineId={selectedDisciplineId}
+               />
+             )}
       
       <style>{`
         @keyframes shimmer {

@@ -5,13 +5,15 @@ interface DisciplineModalFooterProps {
   onSubmit: () => void;
   isFormValid: boolean;
   isSubmitting: boolean;
+  submitButtonText?: string;
 }
 
 export const DisciplineModalFooter: React.FC<DisciplineModalFooterProps> = ({
   onCancel,
   onSubmit,
   isFormValid,
-  isSubmitting
+  isSubmitting,
+  submitButtonText = "Cadastrar disciplina"
 }) => {
   return (
     <div style={{
@@ -68,7 +70,7 @@ export const DisciplineModalFooter: React.FC<DisciplineModalFooterProps> = ({
           boxShadow: isFormValid && !isSubmitting ? '0px 1px 2px 0px rgba(255, 255, 255, 0)' : '0px 1px 2px 0px rgba(255, 255, 255, 0)'
         }}
       >
-        {isSubmitting ? 'Cadastrando...' : 'Cadastrar disciplina'}
+        {isSubmitting ? 'Salvando...' : submitButtonText}
       </button>
     </div>
   );

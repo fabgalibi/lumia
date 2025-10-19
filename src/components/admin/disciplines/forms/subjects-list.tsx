@@ -1,18 +1,29 @@
 import React, { useState } from 'react';
+import { Copy } from 'lucide-react';
 
 interface SubjectsListProps {
   subjects: string[];
   onRemoveSubject: (index: number) => void;
   onUpdateSubject?: (index: number, value: string) => void;
+  // Props para modo de edição
+  isEditMode?: boolean;
+  subjectsWithCodes?: { nome: string; codigo: string }[];
 }
 
 export const SubjectsList: React.FC<SubjectsListProps> = ({
   subjects,
   onRemoveSubject,
-  onUpdateSubject
+  onUpdateSubject,
+  isEditMode = false,
+  subjectsWithCodes = []
 }) => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingValue, setEditingValue] = useState('');
+
+  const handleCopyCode = (code: string) => {
+    navigator.clipboard.writeText(code);
+    console.log(`Código copiado: ${code}`);
+  };
 
   const handleEdit = (index: number, currentValue: string) => {
     setEditingIndex(index);
@@ -135,7 +146,7 @@ export const SubjectsList: React.FC<SubjectsListProps> = ({
                   key={index}
                   style={{
                     display: 'flex',
-                    alignItems: 'center',
+                    alignItems: 'flex-end',
                     gap: '16px'
                   }}
                 >
@@ -147,7 +158,8 @@ export const SubjectsList: React.FC<SubjectsListProps> = ({
                     padding: '10px 0px',
                     cursor: 'grab',
                     minHeight: '48px', // Mesma altura mínima do input
-                    justifyContent: 'center'
+                    justifyContent: 'center',
+                    alignSelf: 'flex-end'
                   }}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M3 6H21M3 12H21M3 18H21" stroke="#CECFD2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -203,21 +215,67 @@ export const SubjectsList: React.FC<SubjectsListProps> = ({
                           }}
                         />
                       ) : (
-                        <span
-                          onClick={() => handleEdit(index, subject)}
-                          style={{
-                            flex: 1,
-                            color: '#F7F7F7',
-                            fontSize: '16px',
-                            fontFamily: 'Sora',
-                            fontWeight: 400,
-                            lineHeight: '1.5em',
-                            cursor: 'text',
-                            padding: '2px 0'
-                          }}
-                        >
-                          {subject}
-                        </span>
+                        <>
+                          {/* Texto principal e código - alinhados horizontalmente */}
+                          <div 
+                            onClick={() => handleEdit(index, subject)}
+                            style={{ 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              gap: '6px',
+                              flex: 1,
+                              cursor: 'text',
+                              padding: '2px 0'
+                            }}
+                          >
+                            <span style={{
+                              color: '#F7F7F7',
+                              fontSize: '16px',
+                              fontFamily: 'Sora',
+                              fontWeight: 400,
+                              lineHeight: '1.5em'
+                            }}>
+                              {subject}
+                            </span>
+                            {isEditMode && subjectsWithCodes[index]?.codigo && (
+                              <span style={{
+                                color: '#CECFD2',
+                                fontSize: '14px',
+                                fontFamily: 'Sora',
+                                fontWeight: 400,
+                                lineHeight: '1.4285714285714286em'
+                              }}>
+                                ({subjectsWithCodes[index].codigo})
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Botões de ação - alinhados à direita */}
+                          {isEditMode && subjectsWithCodes[index]?.codigo && (
+                            <button
+                              onClick={() => handleCopyCode(subjectsWithCodes[index].codigo)}
+                              style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                padding: '4px',
+                                backgroundColor: 'transparent',
+                                border: 'none',
+                                borderRadius: '6px',
+                                cursor: 'pointer',
+                                transition: 'background-color 0.2s ease'
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = '#2D2D3B';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = 'transparent';
+                              }}
+                            >
+                              <Copy size={16} color="#CECFD2" strokeWidth={1.5} />
+                            </button>
+                          )}
+                        </>
                       )}
 
                       <button

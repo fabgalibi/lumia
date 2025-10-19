@@ -6,7 +6,6 @@ import { LoginScreen } from "@/pages/login-screen";
 import { AdminLoginScreen } from "@/pages/admin-login-screen";
 import { AdminDashboardScreen } from "@/pages/admin-dashboard-screen";
 import { AdminDisciplinesScreen } from "@/pages/admin-disciplines-screen";
-import { TestEmptyState } from "@/pages/test-empty-state";
 import { WelcomeScreen } from "@/pages/welcome-screen";
 import { ProfileSetupScreen } from "@/pages/profile-setup-screen";
 import { PreparationStepScreen } from "@/pages/preparation-step-screen";
@@ -22,6 +21,7 @@ import { ProfileSetupProvider } from "@/contexts/profile-setup-context";
 import { AuthProvider } from "@/contexts/auth-context";
 import { TimerProvider } from "@/contexts/timer-context";
 import { ProtectedRoute, AdminProtectedRoute } from "@/components/auth";
+import { TokenExpiredProvider } from "@/components/providers/token-expired-provider";
 import "@/styles/globals.css";
 
 createRoot(document.getElementById("root")!).render(
@@ -30,6 +30,7 @@ createRoot(document.getElementById("root")!).render(
             <AuthProvider>
                 <TimerProvider>
                 <BrowserRouter>
+                    <TokenExpiredProvider>
                     <RouteProvider>
                     <Routes>
                         {/* Public Routes */}
@@ -80,6 +81,7 @@ createRoot(document.getElementById("root")!).render(
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </RouteProvider>
+                    </TokenExpiredProvider>
             </BrowserRouter>
                 </TimerProvider>
             </AuthProvider>

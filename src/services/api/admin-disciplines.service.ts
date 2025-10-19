@@ -18,9 +18,42 @@ export interface Assunto {
   nome: string;
 }
 
+export interface AssuntoEdicao {
+  id?: number;
+  nome?: string;
+  excluir?: boolean;
+}
+
+export interface DisciplinaDetalhes {
+  id: number;
+  nome: string;
+  codigo: string;
+  versao: number;
+  ativa: boolean;
+  disciplinaOrigemId?: number;
+  createdAt: string;
+  updatedAt: string;
+  assuntos: AssuntoDetalhes[];
+}
+
+export interface AssuntoDetalhes {
+  id: number;
+  nome: string;
+  codigo: string;
+  disciplinaId: number;
+  ativo: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface CreateDisciplinaRequest {
   nome: string;
   assuntos: Assunto[];
+}
+
+export interface UpdateDisciplinaRequest {
+  nome: string;
+  assuntos: AssuntoEdicao[];
 }
 
 export interface PaginationParams {
@@ -172,6 +205,25 @@ export const adminDisciplinesService = {
   },
 
   /**
+   * Busca os detalhes de uma disciplina específica
+   */
+  async getDisciplineDetails(idDisciplina: number): Promise<DisciplinaDetalhes> {
+    try {
+      console.log(`🔍 Buscando detalhes da disciplina ${idDisciplina}`);
+      
+      const response = await apiClient.get(`/disciplinas/${idDisciplina}`);
+      
+      console.log('✅ Detalhes da disciplina obtidos:', response.data);
+      
+      return response.data as DisciplinaDetalhes;
+      
+    } catch (error: any) {
+      console.error('❌ Erro ao buscar detalhes da disciplina:', error);
+      throw new Error(error.message || 'Erro ao buscar detalhes da disciplina');
+    }
+  },
+
+  /**
    * Cadastra uma nova disciplina com assuntos
    */
   async createDiscipline(data: CreateDisciplinaRequest): Promise<Disciplina> {
@@ -188,6 +240,33 @@ export const adminDisciplinesService = {
     } catch (error: any) {
       console.error('❌ Erro ao cadastrar disciplina:', error);
       throw new Error(error.message || 'Erro ao cadastrar disciplina');
+    }
+  },
+
+  /**
+   * Atualiza uma disciplina existente
+   */
+  async updateDiscipline(idDisciplina: number, data: UpdateDisciplinaRequest): Promise<Disciplina> {
+    try {
+      console.log(`📝 Atualizando disciplina ${idDisciplina}:`, data);
+      
+      // Debug: verificar token
+      const token = localStorage.getItem('auth_token');
+      console.log('🔐 Token presente:', !!token);
+      console.log('🔐 Token (primeiros 20 chars):', token ? token.substring(0, 20) + '...' : 'N/A');
+      
+      const response = await apiClient.put(`/disciplinas/${idDisciplina}`, data);
+      
+      console.log('✅ Disciplina atualizada com sucesso:', response);
+      
+      // Retorna a disciplina atualizada
+      return (response.data || response) as Disciplina;
+      
+    } catch (error: any) {
+      console.error('❌ Erro ao atualizar disciplina:', error);
+      console.error('❌ Status do erro:', error.status);
+      console.error('❌ Mensagem do erro:', error.message);
+      throw new Error(error.message || 'Erro ao atualizar disciplina');
     }
   }
 };

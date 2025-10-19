@@ -1,25 +1,73 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { DisciplineModalHeader, DisciplineForm, SubjectsList, DisciplineModalFooter } from '../forms';
-import { adminDisciplinesService, CreateDisciplinaRequest } from '../../../../services/api/admin-disciplines.service';
+import { adminDisciplinesService, CreateDisciplinaRequest, UpdateDisciplinaRequest, AssuntoEdicao } from '../../../../services/api/admin-disciplines.service';
 import { SuccessNotification } from '../../../ui/success-notification';
 
 interface DisciplineRegistrationModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess?: () => void;
+  // Props para modo de edição
+  isEditMode?: boolean;
+  disciplineId?: number;
+  initialData?: {
+    nome: string;
+    assuntos: { id: number; nome: string; codigo: string }[];
+  };
 }
 
 export const DisciplineRegistrationModal: React.FC<DisciplineRegistrationModalProps> = ({
   isOpen,
   onClose,
-  onSuccess
+  onSuccess,
+  isEditMode = false,
+  disciplineId,
+  initialData
 }) => {
   const [nomeDisciplina, setNomeDisciplina] = useState('');
   const [assunto, setAssunto] = useState('');
   const [assuntos, setAssuntos] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessNotification, setShowSuccessNotification] = useState(false);
+  const [disciplineDetails, setDisciplineDetails] = useState<{
+    codigo: string;
+    assuntos: { id: number; nome: string; codigo: string }[]
+  } | null>(null);
+
+  // Carregar dados iniciais quando estiver em modo de edição
+  useEffect(() => {
+    if (isEditMode && disciplineId) {
+      const fetchDisciplineDetails = async () => {
+        try {
+          const details = await adminDisciplinesService.getDisciplineDetails(disciplineId);
+        setDisciplineDetails({
+          codigo: details.codigo,
+          assuntos: details.assuntos.map(a => ({ id: a.id, nome: a.nome, codigo: a.codigo }))
+        });
+          setNomeDisciplina(details.nome);
+          setAssuntos(details.assuntos.map(a => a.nome));
+        } catch (error) {
+          console.error('Erro ao carregar detalhes da disciplina:', error);
+        }
+      };
+      fetchDisciplineDetails();
+    } else if (isEditMode && initialData) {
+      // Usar dados iniciais se fornecidos
+      setNomeDisciplina(initialData.nome);
+      setAssuntos(initialData.assuntos.map(a => a.nome));
+      setDisciplineDetails({
+        codigo: '', // Será preenchido quando carregar da API
+        assuntos: initialData.assuntos.map(a => ({ id: a.id, nome: a.nome, codigo: a.codigo }))
+      });
+    } else if (!isEditMode) {
+      // Resetar dados quando não estiver em modo de edição
+      setNomeDisciplina('');
+      setAssunto('');
+      setAssuntos([]);
+      setDisciplineDetails(null);
+    }
+  }, [isEditMode, disciplineId, initialData]);
 
   const handleAddSubject = () => {
     if (assunto.trim()) {
@@ -43,23 +91,73 @@ export const DisciplineRegistrationModal: React.FC<DisciplineRegistrationModalPr
     }
   };
 
+  // Função para processar assuntos na edição
+  const processAssuntosForEdit = (): AssuntoEdicao[] => {
+    if (!disciplineDetails) return assuntos.map(assunto => ({ nome: assunto.trim() }));
+    
+    const assuntosEditados: AssuntoEdicao[] = [];
+    
+    // Assuntos originais que foram removidos (marcar para exclusão)
+    disciplineDetails.assuntos.forEach(assuntoOriginal => {
+      const aindaExiste = assuntos.some(assuntoAtual => 
+        assuntoAtual === assuntoOriginal.nome
+      );
+      
+      if (!aindaExiste) {
+        assuntosEditados.push({
+          id: assuntoOriginal.id,
+          excluir: true
+        });
+      }
+    });
+    
+    // Assuntos atuais (novos ou atualizados)
+    assuntos.forEach(assuntoAtual => {
+      const assuntoOriginal = disciplineDetails.assuntos.find(a => a.nome === assuntoAtual);
+      
+      if (assuntoOriginal) {
+        // Assunto existente - atualizar se nome mudou
+        if (assuntoOriginal.nome !== assuntoAtual.trim()) {
+          assuntosEditados.push({
+            id: assuntoOriginal.id,
+            nome: assuntoAtual.trim()
+          });
+        }
+      } else {
+        // Novo assunto
+        assuntosEditados.push({
+          nome: assuntoAtual.trim()
+        });
+      }
+    });
+    
+    return assuntosEditados;
+  };
+
   const handleSubmit = async () => {
     if (!nomeDisciplina.trim()) return;
     
     setIsSubmitting(true);
     try {
-      // Preparar dados para a API
-      const disciplinaData: CreateDisciplinaRequest = {
-        nome: nomeDisciplina.trim(),
-        assuntos: assuntos.map(assunto => ({ nome: assunto.trim() }))
-      };
-      
-      console.log('📝 Cadastrando disciplina:', disciplinaData);
-      
-      // Chamar API para cadastrar disciplina
-      await adminDisciplinesService.createDiscipline(disciplinaData);
-      
-      console.log('✅ Disciplina cadastrada com sucesso!');
+      if (isEditMode && disciplineId) {
+        const disciplinaData: UpdateDisciplinaRequest = {
+          nome: nomeDisciplina.trim(),
+          assuntos: processAssuntosForEdit()
+        };
+        
+        console.log('📝 Atualizando disciplina:', disciplinaData);
+        await adminDisciplinesService.updateDiscipline(disciplineId, disciplinaData);
+        console.log('✅ Disciplina atualizada com sucesso!');
+      } else {
+        const disciplinaData: CreateDisciplinaRequest = {
+          nome: nomeDisciplina.trim(),
+          assuntos: assuntos.map(assunto => ({ nome: assunto.trim() }))
+        };
+        
+        console.log('📝 Cadastrando disciplina:', disciplinaData);
+        await adminDisciplinesService.createDiscipline(disciplinaData);
+        console.log('✅ Disciplina cadastrada com sucesso!');
+      }
       
       // Mostrar notificação de sucesso
       setShowSuccessNotification(true);
@@ -69,15 +167,17 @@ export const DisciplineRegistrationModal: React.FC<DisciplineRegistrationModalPr
         onSuccess?.();
         onClose();
         
-        // Reset form
-        setNomeDisciplina('');
-        setAssunto('');
-        setAssuntos([]);
+        // Reset form apenas se não estiver em modo de edição
+        if (!isEditMode) {
+          setNomeDisciplina('');
+          setAssunto('');
+          setAssuntos([]);
+        }
         setShowSuccessNotification(false);
       }, 2000);
       
     } catch (error: any) {
-      console.error('❌ Erro ao cadastrar disciplina:', error);
+      console.error(`❌ Erro ao ${isEditMode ? 'atualizar' : 'cadastrar'} disciplina:`, error);
       // TODO: Mostrar notificação de erro para o usuário
       alert(`Erro ao cadastrar disciplina: ${error.message}`);
     } finally {
@@ -121,7 +221,10 @@ export const DisciplineRegistrationModal: React.FC<DisciplineRegistrationModalPr
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <DisciplineModalHeader onClose={onClose} />
+        <DisciplineModalHeader 
+          onClose={onClose} 
+          title={isEditMode ? "Editar dados" : "Cadastrar nova disciplina"} 
+        />
 
         {/* Content */}
         <div style={{
@@ -140,14 +243,18 @@ export const DisciplineRegistrationModal: React.FC<DisciplineRegistrationModalPr
             onAssuntoChange={setAssunto}
             onAddSubject={handleAddSubject}
             onAssuntoKeyDown={handleAssuntoKeyDown}
+            isEditMode={isEditMode}
+            codigoDisciplina={disciplineDetails?.codigo}
           />
 
           {/* Assuntos Adicionados */}
-        <SubjectsList 
-          subjects={assuntos}
-          onRemoveSubject={handleRemoveSubject}
-          onUpdateSubject={handleUpdateSubject}
-        />
+          <SubjectsList 
+            subjects={assuntos}
+            onRemoveSubject={handleRemoveSubject}
+            onUpdateSubject={handleUpdateSubject}
+            isEditMode={isEditMode}
+            subjectsWithCodes={disciplineDetails?.assuntos || []}
+          />
         </div>
 
         {/* Footer */}
@@ -156,6 +263,7 @@ export const DisciplineRegistrationModal: React.FC<DisciplineRegistrationModalPr
           onSubmit={handleSubmit}
           isFormValid={isFormValid}
           isSubmitting={isSubmitting}
+          submitButtonText={isEditMode ? "Salvar alterações" : "Cadastrar disciplina"}
         />
       </div>
 
@@ -163,8 +271,11 @@ export const DisciplineRegistrationModal: React.FC<DisciplineRegistrationModalPr
       <SuccessNotification
         isOpen={showSuccessNotification}
         onClose={() => setShowSuccessNotification(false)}
-        title="Disciplina cadastrada com sucesso!"
-        message={`A disciplina "${nomeDisciplina}" já está disponível na lista de disciplinas cadastradas.`}
+        title={isEditMode ? "Disciplina atualizada com sucesso!" : "Disciplina cadastrada com sucesso!"}
+        message={isEditMode 
+          ? `A disciplina "${nomeDisciplina}" foi atualizada com sucesso.` 
+          : `A disciplina "${nomeDisciplina}" já está disponível na lista de disciplinas cadastradas.`
+        }
       />
     </div>,
     document.body

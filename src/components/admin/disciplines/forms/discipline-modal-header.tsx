@@ -3,10 +3,12 @@ import { X } from 'lucide-react';
 
 interface DisciplineModalHeaderProps {
   onClose: () => void;
+  title?: string;
 }
 
 export const DisciplineModalHeader: React.FC<DisciplineModalHeaderProps> = ({
-  onClose
+  onClose,
+  title = "Cadastrar nova disciplina"
 }) => {
   return (
     <div style={{
@@ -37,7 +39,7 @@ export const DisciplineModalHeader: React.FC<DisciplineModalHeaderProps> = ({
           margin: 0,
           textAlign: 'left'
         }}>
-          Cadastrar nova disciplina
+                 {title}
         </h2>
       </div>
       
@@ -65,7 +67,7 @@ export const DisciplineModalHeader: React.FC<DisciplineModalHeaderProps> = ({
           e.currentTarget.style.backgroundColor = 'transparent';
         }}
       >
-        <X size={24} />
+        <X size={24} strokeWidth={1.67} />
       </button>
     </div>
   );

@@ -85,13 +85,27 @@ class ApiClient {
           if (errorData.message?.includes('token') || 
               errorData.message?.includes('Token') ||
               errorData.message?.includes('expired') ||
-              errorData.message?.includes('invalid')) {
-            console.warn('🔐 Token expirado ou inválido. Fazendo logout automático...');
+              errorData.message?.includes('invalid') ||
+              errorData.message?.includes('Unauthorized')) {
+            console.warn('🔐 Token expirado ou inválido. Iniciando processo de logout...');
+            
+            // Dispara evento customizado para notificar componentes
+            const tokenExpiredEvent = new CustomEvent('tokenExpired', {
+              detail: { message: errorData.message || 'Token expirado' }
+            });
+            window.dispatchEvent(tokenExpiredEvent);
+            
             // Remove token e dados do usuário
             localStorage.removeItem('auth_token');
             localStorage.removeItem('user_data');
-            // Redireciona para login
-            window.location.href = '/login';
+            
+            // Redireciona para login após um pequeno delay para permitir a notificação
+            setTimeout(() => {
+              // Verifica se está em uma rota admin para redirecionar corretamente
+              const isAdminRoute = window.location.pathname.startsWith('/admin');
+              const redirectUrl = isAdminRoute ? '/admin/login' : '/login';
+              window.location.href = redirectUrl;
+            }, 100);
           } else {
             console.warn('🔐 Erro 401 mas não relacionado ao token. Mantendo sessão.');
           }
