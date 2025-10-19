@@ -1,10 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+// Estilos para scrollbar customizada
+const scrollbarStyles = `
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #2D2D3B;
+    border-radius: 3px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #373A41;
+    border-radius: 3px;
+    border: 1px solid #0C0E12;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #4A4D56;
+  }
+`;
+
+// Adicionar estilos ao DOM se não existirem
+if (typeof document !== 'undefined' && !document.getElementById('calendar-scrollbar-styles')) {
+  const style = document.createElement('style');
+  style.id = 'calendar-scrollbar-styles';
+  style.textContent = scrollbarStyles;
+  document.head.appendChild(style);
+}
 
 export interface CalendarProps {
   selectedDate?: Date;
   onDateSelect: (date: Date) => void;
   onClose?: () => void;
-  screenSize?: 'mobile' | 'tablet' | 'notebook' | 'desktop';
+  onNavigationChange?: (date: Date) => void;
   isInModal?: boolean;
   minDate?: Date;
   maxDate?: Date;
@@ -17,7 +47,7 @@ export const Calendar: React.FC<CalendarProps> = ({
   selectedDate,
   onDateSelect,
   onClose,
-  screenSize = 'desktop',
+  onNavigationChange,
   isInModal = false,
   minDate,
   maxDate,
@@ -26,6 +56,17 @@ export const Calendar: React.FC<CalendarProps> = ({
   style
 }) => {
   const [currentMonth, setCurrentMonth] = useState(selectedDate || new Date());
+  const [showMonthSelector, setShowMonthSelector] = useState(false);
+  const [showYearSelector, setShowYearSelector] = useState(false);
+  const [visibleYears, setVisibleYears] = useState<number[]>([]);
+  const [isLoadingYears, setIsLoadingYears] = useState(false);
+
+  // Sincronizar currentMonth com selectedDate quando mudar
+  useEffect(() => {
+    if (selectedDate) {
+      setCurrentMonth(selectedDate);
+    }
+  }, [selectedDate]);
 
   const monthNames = [
     'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
@@ -72,12 +113,86 @@ export const Calendar: React.FC<CalendarProps> = ({
   };
 
   const previousMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
+    const newDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1);
+    setCurrentMonth(newDate);
+    onNavigationChange?.(newDate);
   };
 
   const nextMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
+    const newDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1);
+    setCurrentMonth(newDate);
+    onNavigationChange?.(newDate);
   };
+
+  const selectMonth = (monthIndex: number) => {
+    const newDate = new Date(currentMonth.getFullYear(), monthIndex, 1);
+    setCurrentMonth(newDate);
+    setShowMonthSelector(false);
+    onNavigationChange?.(newDate);
+  };
+
+  const selectYear = (year: number) => {
+    const newDate = new Date(year, currentMonth.getMonth(), 1);
+    setCurrentMonth(newDate);
+    setShowYearSelector(false);
+    onNavigationChange?.(newDate);
+  };
+
+  // Carregar anos gradualmente para datas de nascimento
+  const loadYears = async () => {
+    setIsLoadingYears(true);
+    const currentYear = new Date().getFullYear();
+    const years: number[] = [];
+    
+    // Para datas de nascimento: 100 anos para trás até o ano atual
+    for (let year = currentYear; year >= currentYear - 100; year--) {
+      years.push(year);
+    }
+    
+    // Simular carregamento gradual
+    const visibleYears: number[] = [];
+    for (let i = 0; i < years.length; i++) {
+      visibleYears.push(years[i]);
+      if (i % 10 === 0) {
+        await new Promise(resolve => setTimeout(resolve, 50));
+        setVisibleYears([...visibleYears]);
+      }
+    }
+    
+    setVisibleYears(years);
+    setIsLoadingYears(false);
+  };
+
+  // Carregar anos quando abrir o seletor
+  const handleYearSelectorClick = () => {
+    if (visibleYears.length === 0) {
+      loadYears();
+    }
+    setShowYearSelector(!showYearSelector);
+  };
+
+  // Fechar seletores quando clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('[data-calendar-container]')) {
+        setShowMonthSelector(false);
+        setShowYearSelector(false);
+      }
+    };
+
+    if (showMonthSelector || showYearSelector) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showMonthSelector, showYearSelector]);
+
+
+
+
 
   const handleDateClick = (date: Date) => {
     if (!isDisabled(date)) {
@@ -94,58 +209,38 @@ export const Calendar: React.FC<CalendarProps> = ({
 
   // Tamanhos baseados no screenSize
   const getSizeConfig = () => {
-    switch (screenSize) {
-      case 'mobile':
-        return {
-          containerPadding: '12px',
-          daySize: '32px',
-          headerGap: '12px',
-          dayGap: '2px',
-          fontSize: { header: '14px', day: '12px', dayNumber: '13px' }
-        };
-      case 'tablet':
-        return {
-          containerPadding: '14px',
-          daySize: '36px',
-          headerGap: '14px',
-          dayGap: '2px',
-          fontSize: { header: '15px', day: '12px', dayNumber: '14px' }
-        };
-      case 'notebook':
-        return {
-          containerPadding: '16px',
-          daySize: '36px',
-          headerGap: '16px',
-          dayGap: '3px',
-          fontSize: { header: '16px', day: '13px', dayNumber: '14px' }
-        };
-      case 'desktop':
-      default:
-        return {
-          containerPadding: isInModal ? '16px' : '20px',
-          daySize: isInModal ? '36px' : '40px',
-          headerGap: isInModal ? '16px' : '24px',
-          dayGap: isInModal ? '3px' : '0px',
-          fontSize: { header: isInModal ? '16px' : '16px', day: '13px', dayNumber: isInModal ? '14px' : '14px' }
-        };
-    }
+    // Configuração baseada no design do Figma
+    return {
+      containerPadding: '20px 24px',
+      daySize: '40px',
+      headerGap: '12px',
+      dayGap: '0px',
+      fontSize: { 
+        header: '14px', 
+        day: '14px', 
+        dayNumber: '14px' 
+      },
+      containerWidth: '328px'
+    };
   };
 
   const sizeConfig = getSizeConfig();
 
   return (
     <div
+      data-calendar-container
       className={className}
       style={{
-        width: '100%',
+        width: sizeConfig.containerWidth,
         maxWidth: '100%',
-        background: isInModal ? 'transparent' : 'rgba(39, 39, 55, 1)',
+        background: isInModal ? 'transparent' : '#272737',
         border: isInModal ? 'none' : '1px solid #2C2C45',
-        borderRadius: isInModal ? '0' : '12px',
+        borderRadius: isInModal ? '0' : '16px',
         display: 'flex',
         flexDirection: 'column',
-        gap: '12px',
+        gap: sizeConfig.headerGap,
         padding: isInModal ? '0' : sizeConfig.containerPadding,
+        boxShadow: isInModal ? 'none' : '0px 3px 3px -1.5px rgba(255, 255, 255, 0), 0px 8px 8px -4px rgba(255, 255, 255, 0), 0px 20px 24px -4px rgba(255, 255, 255, 0)',
         ...style
       }}
     >
@@ -153,70 +248,257 @@ export const Calendar: React.FC<CalendarProps> = ({
       <div
         style={{
           display: 'flex',
-          justifyContent: 'center',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          width: '100%',
-          gap: sizeConfig.headerGap,
-          position: 'relative'
+          width: '100%'
         }}
       >
         <button
+          type="button"
           onClick={previousMonth}
           style={{
             background: 'transparent',
             border: 'none',
             cursor: 'pointer',
-            padding: isInModal ? '8px' : '6px',
-            borderRadius: isInModal ? '8px' : '6px',
+            padding: '6px',
+            borderRadius: '6px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            width: isInModal ? '40px' : '28px',
-            height: isInModal ? '40px' : '28px',
-            transition: 'background-color 0.3s ease'
+            width: '32px',
+            height: '32px',
+            transition: 'background-color 0.3s ease',
+            flexShrink: 0
           }}
           onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
         >
-          <svg width={isInModal ? '24' : '20'} height={isInModal ? '24' : '20'} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15 18L9 12L15 6" stroke="#F7F7F7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 18L9 12L15 6" stroke="#61656C" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </button>
-        <span
-          style={{
-            fontFamily: 'Sora',
-            fontWeight: 600,
-            fontSize: sizeConfig.fontSize.header,
-            lineHeight: isInModal ? '1.5' : '20px',
-            letterSpacing: '0%',
-            color: '#F7F7F7',
-            textAlign: 'center',
-            whiteSpace: 'nowrap',
-            flex: 1
-          }}
-        >
-          {formattedMonth} de {formattedYear}
-        </span>
-        <button
-          onClick={nextMonth}
+        
+        {/* Mês e Ano clicáveis */}
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          flex: 1,
+          position: 'relative',
+          minWidth: '200px'
+        }}>
+          <button
+            type="button"
+            onClick={() => setShowMonthSelector(!showMonthSelector)}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: 'Sora',
+              fontWeight: 600,
+              fontSize: '14px',
+              lineHeight: '1.43em',
+              color: '#F7F7F7',
+              textAlign: 'center',
+              whiteSpace: 'nowrap',
+              padding: '4px 8px',
+              borderRadius: '4px',
+              transition: 'background-color 0.2s ease',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+          >
+            {formattedMonth}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="6,9 12,15 18,9"></polyline>
+            </svg>
+          </button>
+
+          <span style={{ color: '#CECFD2', margin: '0 4px' }}>de</span>
+
+          <button
+            type="button"
+            onClick={handleYearSelectorClick}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: 'Sora',
+              fontWeight: 600,
+              fontSize: '14px',
+              lineHeight: '1.43em',
+              color: '#F7F7F7',
+              textAlign: 'center',
+              whiteSpace: 'nowrap',
+              padding: '4px 8px',
+              borderRadius: '4px',
+              transition: 'background-color 0.2s ease',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+          >
+            {formattedYear}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="6,9 12,15 18,9"></polyline>
+            </svg>
+          </button>
+
+          {/* Dropdown de Mês */}
+          {showMonthSelector && (
+            <div
+              className="custom-scrollbar"
+              style={{
+                position: 'absolute',
+                top: '100%',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                background: '#2D2D3B',
+                border: '1px solid #373A41',
+                borderRadius: '8px',
+                padding: '8px',
+                zIndex: 1000,
+                marginTop: '4px',
+                minWidth: '120px',
+                maxHeight: '200px',
+                overflowY: 'auto',
+                boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.3)'
+              }}
+            >
+              {monthNames.map((month, index) => (
+                <button
+                  type="button"
+                  key={index}
+                  onClick={() => selectMonth(index)}
+                  style={{
+                    width: '100%',
+                    padding: '8px 12px',
+                    background: currentMonth.getMonth() === index ? '#F48E2F' : 'transparent',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontFamily: 'Sora',
+                    fontWeight: 400,
+                    fontSize: '14px',
+                    color: currentMonth.getMonth() === index ? '#FFFFFF' : '#CECFD2',
+                    textAlign: 'left',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (currentMonth.getMonth() !== index) {
+                      e.currentTarget.style.background = 'rgba(244, 142, 47, 0.1)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (currentMonth.getMonth() !== index) {
+                      e.currentTarget.style.background = 'transparent';
+                    }
+                  }}
+                >
+                  {month}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Dropdown de Ano */}
+          {showYearSelector && (
+            <div
+              className="custom-scrollbar"
+              style={{
+                position: 'absolute',
+                top: '100%',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                background: '#2D2D3B',
+                border: '1px solid #373A41',
+                borderRadius: '8px',
+                padding: '8px',
+                zIndex: 1000,
+                marginTop: '4px',
+                minWidth: '80px',
+                maxHeight: '200px',
+                overflowY: 'auto',
+                boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.3)'
+              }}
+            >
+              {isLoadingYears ? (
+                <div style={{ 
+                  padding: '8px 12px', 
+                  textAlign: 'center', 
+                  color: '#CECFD2', 
+                  fontSize: '12px',
+                  fontFamily: 'Sora'
+                }}>
+                  Carregando anos...
+                </div>
+              ) : (
+                visibleYears.map((year) => (
+                  <button
+                    type="button"
+                    key={year}
+                    onClick={() => selectYear(year)}
+                    style={{
+                      width: '100%',
+                      padding: '8px 12px',
+                      background: currentMonth.getFullYear() === year ? '#F48E2F' : 'transparent',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                      fontFamily: 'Sora',
+                      fontWeight: 400,
+                      fontSize: '14px',
+                      color: currentMonth.getFullYear() === year ? '#FFFFFF' : '#CECFD2',
+                      textAlign: 'center',
+                      transition: 'all 0.2s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (currentMonth.getFullYear() !== year) {
+                        e.currentTarget.style.background = 'rgba(244, 142, 47, 0.1)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (currentMonth.getFullYear() !== year) {
+                        e.currentTarget.style.background = 'transparent';
+                      }
+                    }}
+                  >
+                    {year}
+                  </button>
+                ))
+              )}
+            </div>
+          )}
+        </div>
+
+
+          <button
+            type="button"
+            onClick={nextMonth}
           style={{
             background: 'transparent',
             border: 'none',
             cursor: 'pointer',
-            padding: isInModal ? '8px' : '6px',
-            borderRadius: isInModal ? '8px' : '6px',
+            padding: '6px',
+            borderRadius: '6px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            width: isInModal ? '40px' : '28px',
-            height: isInModal ? '40px' : '28px',
-            transition: 'background-color 0.3s ease'
+            width: '32px',
+            height: '32px',
+            transition: 'background-color 0.3s ease',
+            flexShrink: 0
           }}
           onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
         >
-          <svg width={isInModal ? '24' : '20'} height={isInModal ? '24' : '20'} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9 18L15 12L9 6" stroke="#F7F7F7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 18L15 12L9 6" stroke="#61656C" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </button>
       </div>
@@ -226,7 +508,7 @@ export const Calendar: React.FC<CalendarProps> = ({
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(7, 1fr)',
-          gap: sizeConfig.dayGap,
+          gap: '0px',
           width: '100%',
           marginBottom: '0'
         }}
@@ -235,21 +517,21 @@ export const Calendar: React.FC<CalendarProps> = ({
           <div
             key={index}
             style={{
-              width: sizeConfig.daySize,
-              height: sizeConfig.daySize,
+              width: '40px',
+              height: '40px',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              borderRadius: '9999px'
             }}
           >
             <span
               style={{
                 fontFamily: 'Sora',
-                fontWeight: 600,
-                fontSize: sizeConfig.fontSize.day,
-                lineHeight: '20px',
-                letterSpacing: '0%',
-                color: '#CECFD2',
+                fontWeight: 400,
+                fontSize: '14px',
+                lineHeight: '1.43em',
+                color: '#F7F7F7',
                 textAlign: 'center'
               }}
             >
@@ -264,50 +546,51 @@ export const Calendar: React.FC<CalendarProps> = ({
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(7, 1fr)',
-          gap: sizeConfig.dayGap,
+          gap: '0px',
           width: '100%'
         }}
       >
         {days.map((day, index) => {
           const isSelectedDay = isSelected(day);
           const isDisabledDay = isDisabled(day);
+          const isToday = day.toDateString() === new Date().toDateString();
 
           return (
             <button
+              type="button"
               key={index}
               onClick={() => handleDateClick(day)}
               style={{
-                width: sizeConfig.daySize,
-                height: sizeConfig.daySize,
+                width: '40px',
+                height: '40px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                background: isSelectedDay ? (isInModal ? '#D9572D' : '#F48E2F') : 'transparent',
-                borderRadius: isInModal ? '8px' : '6px',
+                background: isSelectedDay ? '#F48E2F' : (isToday ? '#31314E' : 'transparent'),
+                borderRadius: '9999px',
                 border: 'none',
                 cursor: isDisabledDay ? 'not-allowed' : 'pointer',
-                transition: 'background-color 0.3s ease',
+                transition: 'all 0.2s ease',
                 opacity: isDisabledDay ? 0.3 : 1
               }}
               onMouseEnter={(e) => {
-                if (!isSelectedDay && !isDisabledDay) {
+                if (!isSelectedDay && !isDisabledDay && !isToday) {
                   e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)';
                 }
               }}
               onMouseLeave={(e) => {
-                if (!isSelectedDay && !isDisabledDay) {
+                if (!isSelectedDay && !isDisabledDay && !isToday) {
                   e.currentTarget.style.backgroundColor = 'transparent';
                 }
               }}
             >
               <span
                 style={{
-                  fontFamily: 'Sora',
-                  fontWeight: isSelectedDay ? 600 : 400,
-                  fontSize: sizeConfig.fontSize.dayNumber,
-                  lineHeight: isInModal ? '1.5' : '20px',
-                  letterSpacing: '0%',
-                  color: isDisabledDay ? '#85888E' : '#F7F7F7',
+                  fontFamily: isToday ? 'Inter' : 'Sora',
+                  fontWeight: isToday ? 500 : 400,
+                  fontSize: '14px',
+                  lineHeight: '1.43em',
+                  color: isDisabledDay ? '#85888E' : (isSelectedDay ? '#FFFFFF' : (isToday ? '#ECECED' : '#F7F7F7')),
                   textAlign: 'center'
                 }}
               >

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Table } from '@/components/ui/design-system';
 import { TableColumn } from '@/types/table';
 import { adminStudentsService, Aluno } from '@/services/api';
+import { ErrorFeedback } from '@/components/ui/error-feedback';
+import { EmptyStudentsState } from '@/components/ui/empty-students-state';
 
 // Declaração de tipos para JSX
 declare global {
@@ -112,7 +114,12 @@ const MoreVerticalIcon = (props: any) => (
 // Usar a interface Aluno da API
 type Student = Aluno;
 
-export const AdminStudentsTable: React.FC = () => {
+interface AdminStudentsTableProps {
+  refreshTrigger?: number; // Prop para forçar refresh
+  onAddStudent?: () => void; // Callback para adicionar aluno
+}
+
+export const AdminStudentsTable: React.FC<AdminStudentsTableProps> = ({ refreshTrigger, onAddStudent }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
   const [students, setStudents] = useState<Student[]>([]);
@@ -135,8 +142,29 @@ export const AdminStudentsTable: React.FC = () => {
           limite: pagination.limite
         });
         
-        setStudents(response.alunos);
-        setPagination(response.paginacao);
+        console.log('📊 Resposta completa da API:', response);
+        
+        // A API agora retorna um objeto com alunos e paginacao
+        if (response.alunos && Array.isArray(response.alunos)) {
+          console.log('✅ Estrutura correta - alunos:', response.alunos.length);
+          console.log('✅ Estrutura correta - paginacao:', response.paginacao);
+          
+          setStudents(response.alunos);
+          
+          if (response.paginacao) {
+            setPagination(response.paginacao);
+          } else {
+            // Fallback se não houver dados de paginação
+            setPagination(prev => ({
+              ...prev,
+              total: response.alunos.length,
+              totalPaginas: Math.ceil(response.alunos.length / prev.limite)
+            }));
+          }
+        } else {
+          console.error('❌ Estrutura de resposta inválida:', response);
+          setStudents([]);
+        }
       } catch (err: any) {
         console.error('Erro ao buscar alunos:', err);
         setError(err.message || 'Erro ao carregar alunos');
@@ -146,13 +174,68 @@ export const AdminStudentsTable: React.FC = () => {
     };
 
     fetchStudents();
-  }, [pagination.pagina, pagination.limite]);
+  }, [pagination.pagina, pagination.limite, refreshTrigger]);
 
-  const filteredStudents = students.filter(student =>
-    student.nomeAluno.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.emailAluno.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (student.cpfAluno && student.cpfAluno.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const filteredStudents = students.filter(student => {
+    if (!searchTerm.trim()) return true;
+    
+    const searchLower = searchTerm.toLowerCase().trim();
+    
+    // Buscar no nome completo (nome + sobrenome)
+    const nomeCompleto = student.nomeAluno ? student.nomeAluno.toLowerCase() : '';
+    const nomeMatch = nomeCompleto.includes(searchLower);
+    
+    // Buscar por partes do nome (nome ou sobrenome separadamente)
+    const partesNome = nomeCompleto.split(' ');
+    const nomeParteMatch = partesNome.some(parte => parte.includes(searchLower));
+    
+    // Buscar no email
+    const emailMatch = student.emailAluno ? student.emailAluno.toLowerCase().includes(searchLower) : false;
+    
+    // Buscar no CPF (com ou sem formatação)
+    const cpfMatch = student.cpfAluno ? 
+      student.cpfAluno.replace(/\D/g, '').includes(searchLower.replace(/\D/g, '')) : false;
+    
+    // Buscar no plano ativo
+    const planoMatch = student.planoAtivo ? 
+      student.planoAtivo.toLowerCase().includes(searchLower) : false;
+    
+    // Buscar no status
+    const statusMatch = student.status ? 
+      student.status.toLowerCase().includes(searchLower) : false;
+    
+    const matches = nomeMatch || nomeParteMatch || emailMatch || cpfMatch || planoMatch || statusMatch;
+    
+    // Debug para verificar por que "Galibi" e "fabricia" estão aparecendo
+    if (searchLower === 'integração' && (student.nomeAluno?.toLowerCase().includes('galibi') || student.nomeAluno?.toLowerCase().includes('fabricia'))) {
+      console.log('🔍 DEBUG - Aluno problemático:', {
+        nome: student.nomeAluno,
+        email: student.emailAluno,
+        cpf: student.cpfAluno,
+        plano: student.planoAtivo,
+        status: student.status,
+        searchTerm: searchLower,
+        nomeMatch,
+        nomeParteMatch,
+        emailMatch,
+        cpfMatch,
+        planoMatch,
+        statusMatch,
+        matches
+      });
+    }
+    
+    return matches;
+  });
+
+  // A paginação agora é feita pela API, então usamos filteredStudents diretamente
+  const paginatedStudents = filteredStudents;
+
+  console.log('🔍 Filtro - searchTerm:', searchTerm);
+  console.log('🔍 Filtro - students.length:', students.length);
+  console.log('🔍 Filtro - filteredStudents.length:', filteredStudents.length);
+  console.log('📄 Paginação - página:', pagination.pagina, 'limite:', pagination.limite);
+  console.log('📄 Paginação - paginatedStudents.length:', paginatedStudents.length);
 
   // Funções de paginação
   const handlePreviousPage = () => {
@@ -183,19 +266,7 @@ export const AdminStudentsTable: React.FC = () => {
   const columns: TableColumn<Student>[] = [
     {
       key: 'select',
-      title: (
-        <CustomCheckbox
-          checked={selectedStudents.length === filteredStudents.length && filteredStudents.length > 0}
-          onChange={(checked) => {
-            if (checked) {
-              setSelectedStudents(filteredStudents.map(student => student.idAluno.toString()));
-            } else {
-              setSelectedStudents([]);
-            }
-          }}
-          size={20}
-        />
-      ),
+      title: '',
       width: '60px',
       align: 'center',
       render: (_, record: Student) => (
@@ -291,7 +362,7 @@ export const AdminStudentsTable: React.FC = () => {
           lineHeight: '20px',
           letterSpacing: '0px',
         }}>
-          {new Date(record.dataCadastro).toLocaleDateString('pt-BR')}
+          {record.dataCadastro ? new Date(record.dataCadastro).toLocaleDateString('pt-BR') : '-'}
         </span>
       )
     },
@@ -394,6 +465,23 @@ export const AdminStudentsTable: React.FC = () => {
     }
   ];
 
+  // Debug logs
+  console.log('🔍 Debug - students:', students.length);
+  console.log('🔍 Debug - filteredStudents:', filteredStudents.length);
+  console.log('🔍 Debug - loading:', loading);
+  console.log('🔍 Debug - error:', error);
+  console.log('🔍 Debug - first student:', students[0]);
+  console.log('🔍 Debug - columns:', columns.length);
+  console.log('🔍 Debug - columns keys:', columns.map(c => c.key));
+  
+  // Verificar se os dados têm as propriedades esperadas
+  if (students.length > 0) {
+    const firstStudent = students[0];
+    console.log('🔍 Debug - first student keys:', Object.keys(firstStudent));
+    console.log('🔍 Debug - nomeAluno exists:', 'nomeAluno' in firstStudent);
+    console.log('🔍 Debug - emailAluno exists:', 'emailAluno' in firstStudent);
+  }
+
   return (
     <div
       style={{
@@ -435,7 +523,6 @@ export const AdminStudentsTable: React.FC = () => {
             width: '596px',
             height: '40px',
             opacity: 1,
-            angle: '0deg',
           }}
         >
           <div
@@ -450,7 +537,7 @@ export const AdminStudentsTable: React.FC = () => {
             <SearchMdIcon style={{ position: 'absolute', left: '12px', color: '#94979C', width: '16px', height: '16px' }} />
             <input
               type="text"
-              placeholder="Buscar aluno, e-mail, etc..."
+              placeholder="Buscar por nome, sobrenome, e-mail, CPF, plano ou status..."
               value={searchTerm}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
               style={{
@@ -505,43 +592,49 @@ export const AdminStudentsTable: React.FC = () => {
                   </div>
         ) : error ? (
           <div style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
             padding: '40px',
-            color: '#C74228'
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
           }}>
-            Erro ao carregar alunos: {error}
+            <ErrorFeedback 
+              message="Erro ao carregar alunos"
+              description={`${error}. Verifique sua conexão e tente novamente.`}
+              onRetry={() => window.location.reload()}
+            />
           </div>
+        ) : students.length === 0 ? (
+          <EmptyStudentsState onAddStudent={onAddStudent || (() => {})} />
         ) : (
-          <Table
-            columns={columns}
-            data={filteredStudents}
-            screenSize="desktop"
-          />
-        )}
-
-      {/* Pagination */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '16px 24px',
-          background: '#252532',
-          borderRadius: '0 0 12px 12px',
-          border: '1px solid #2C2C45',
-          borderTop: 'none',
-        }}
-      >
+          <>
+            <Table
+              columns={columns}
+              data={paginatedStudents}
+              screenSize="desktop"
+            />
+            
+            {/* Pagination - só mostra se houver dados */}
+            {students.length > 0 && (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '16px 24px',
+                  background: '#252532',
+                  borderRadius: '0 0 12px 12px',
+                  border: '1px solid #2C2C45',
+                  borderTop: 'none',
+                }}
+              >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
         <button
           style={{
-              background: pagination.pagina <= 1 ? '#363946' : '#363946',
+              background: pagination.pagina <= 1 ? '#363946' : '#2D2D45',
               border: 'none',
               borderRadius: '6px',
             padding: '8px 12px',
-              color: pagination.pagina <= 1 ? '#9CA3AF' : '#9CA3AF',
+              color: pagination.pagina <= 1 ? '#9CA3AF' : '#F7F7F7',
               fontFamily: 'Inter',
               fontWeight: 500,
               fontSize: '12px',
@@ -552,6 +645,16 @@ export const AdminStudentsTable: React.FC = () => {
           }}
           onClick={handlePreviousPage}
           disabled={pagination.pagina <= 1}
+          onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
+            if (pagination.pagina > 1) {
+              e.currentTarget.style.background = '#363946';
+            }
+          }}
+          onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
+            if (pagination.pagina > 1) {
+              e.currentTarget.style.background = '#2D2D45';
+            }
+          }}
         >
           Anterior
         </button>
@@ -566,7 +669,7 @@ export const AdminStudentsTable: React.FC = () => {
                 <button
                   key={pageNumber}
                   style={{
-                    background: isCurrentPage ? '#4A4C60' : 'transparent',
+                    background: isCurrentPage ? '#2D2D45' : 'transparent',
                     border: 'none',
                     borderRadius: '6px',
                     padding: '8px 12px',
@@ -575,7 +678,7 @@ export const AdminStudentsTable: React.FC = () => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    color: isCurrentPage ? '#FFFFFF' : '#9CA3AF',
+                    color: isCurrentPage ? '#F7F7F7' : '#9CA3AF',
                     fontFamily: 'Inter',
                     fontWeight: 500,
                     fontSize: '12px',
@@ -608,7 +711,7 @@ export const AdminStudentsTable: React.FC = () => {
             {pagination.totalPaginas > 10 && (
               <button
                 style={{
-                  background: pagination.pagina === pagination.totalPaginas ? '#4A4C60' : 'transparent',
+                  background: pagination.pagina === pagination.totalPaginas ? '#2D2D45' : 'transparent',
                   border: 'none',
                   borderRadius: '6px',
                   padding: '8px 12px',
@@ -617,7 +720,7 @@ export const AdminStudentsTable: React.FC = () => {
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  color: pagination.pagina === pagination.totalPaginas ? '#FFFFFF' : '#9CA3AF',
+                  color: pagination.pagina === pagination.totalPaginas ? '#F7F7F7' : '#9CA3AF',
                   fontFamily: 'Inter',
                   fontWeight: 500,
                   fontSize: '12px',
@@ -664,7 +767,10 @@ export const AdminStudentsTable: React.FC = () => {
             Próxima
           </button>
         </div>
-      </div>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

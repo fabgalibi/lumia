@@ -6,9 +6,9 @@ import {
   Step2PlanSelection,
   Step3PasswordSetup,
   ModalFooter,
-  StudentData,
-  Plan
+  StudentData
 } from './student-registration';
+import { ErrorNotification } from '../ui';
 
 interface StudentRegistrationModalProps {
   isOpen: boolean;
@@ -26,28 +26,21 @@ export const StudentRegistrationModal: React.FC<StudentRegistrationModalProps> =
     nome: '',
     email: '',
     cpf: '',
-    dataInicio: '',
+    dataNascimento: '',
     observacoes: ''
   });
-  const [errors, setErrors] = useState<Partial<StudentData>>({});
+  const [errors, setErrors] = useState<Partial<StudentData & { plano?: string }>>({});
   const [currentStep, setCurrentStep] = useState(1);
 
   const [selectedPlan, setSelectedPlan] = useState<string>('');
-  const [searchPlan, setSearchPlan] = useState('');
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
 
-  // Dados dos planos
-  const plans: Plan[] = [
-    { id: 'PLPF874231', name: 'Plano Polícia Federal', code: 'PLPF874231' },
-    { id: 'PLPRF692580', name: 'Plano Polícia Rodoviária Federal (PRF)', code: 'PLPRF692580' },
-    { id: 'PLINSS308416', name: 'Plano INSS', code: 'PLINSS308416' },
-    { id: 'PLBB762934', name: 'Plano Banco do Brasil', code: 'PLBB762934' },
-    { id: 'PLCOR558127', name: 'Plano Correios', code: 'PLCOR558127' },
-    { id: 'PLRF912673', name: 'Plano Receita Federal', code: 'PLRF912673' },
-    { id: 'PLTJ385249', name: 'Plano Tribunal de Justiça (TJ)', code: 'PLTJ385249' },
-    { id: 'PLMP671092', name: 'Plano Ministério Público (MP)', code: 'PLMP671092' }
-  ];
+  // Estado para notificação de erro
+  const [showErrorNotification, setShowErrorNotification] = useState(false);
+  const [errorTitle, setErrorTitle] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [errorTimeout, setErrorTimeout] = useState<NodeJS.Timeout | null>(null);
 
   // Detectar se é mobile
   useEffect(() => {
@@ -67,33 +60,90 @@ export const StudentRegistrationModal: React.FC<StudentRegistrationModalProps> =
         nome: '',
         email: '',
         cpf: '',
-        dataInicio: '',
+        dataNascimento: '',
         observacoes: ''
       });
       setErrors({});
       setCurrentStep(1);
       setSelectedPlan('');
-      setSearchPlan('');
       setSenha('');
       setConfirmarSenha('');
     }
   }, [isOpen]);
 
+  // Cleanup timeout when component unmounts
+  useEffect(() => {
+    return () => {
+      if (errorTimeout) {
+        clearTimeout(errorTimeout);
+      }
+    };
+  }, [errorTimeout]);
+
+  // Forçar revalidação quando senhas mudarem
+  useEffect(() => {
+    // Este useEffect força a revalidação do isFormValid
+  }, [senha, confirmarSenha, currentStep]);
+
+  // Função para mostrar notificação de erro
+  const showError = (title: string, message: string) => {
+    // Cancelar timeout anterior se existir
+    if (errorTimeout) {
+      clearTimeout(errorTimeout);
+    }
+    
+    setErrorTitle(title);
+    setErrorMessage(message);
+    setShowErrorNotification(true);
+    
+    // Fechar notificação após 5 segundos
+    const timeout = setTimeout(() => {
+      setShowErrorNotification(false);
+      setErrorTimeout(null);
+    }, 5000);
+    
+    setErrorTimeout(timeout);
+  };
+
+  // Função para fechar notificação de erro
+  const closeErrorNotification = () => {
+    // Cancelar timeout se existir
+    if (errorTimeout) {
+      clearTimeout(errorTimeout);
+      setErrorTimeout(null);
+    }
+    setShowErrorNotification(false);
+  };
+
   const validateForm = (): boolean => {
-    const newErrors: Partial<StudentData> = {};
+    const newErrors: Partial<StudentData & { plano?: string }> = {};
 
-    if (!formData.nome.trim()) {
-      newErrors.nome = 'Nome é obrigatório';
+    // Validação da etapa 1 (dados básicos)
+    if (currentStep >= 1) {
+      if (!formData.nome.trim()) {
+        newErrors.nome = 'Nome é obrigatório';
+      }
+
+      if (!formData.email.trim()) {
+        newErrors.email = 'E-mail é obrigatório';
+      } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+        newErrors.email = 'E-mail inválido';
+      }
+
+      if (!formData.cpf.trim()) {
+        newErrors.cpf = 'CPF é obrigatório';
+      } else if (formData.cpf.replace(/\D/g, '').length !== 11) {
+        newErrors.cpf = 'CPF deve ter 11 dígitos';
+      }
     }
 
-    if (!formData.email.trim()) {
-      newErrors.email = 'E-mail é obrigatório';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'E-mail inválido';
+    // Validação da etapa 2 (plano)
+    if (currentStep >= 2 && !selectedPlan) {
+      newErrors.plano = 'Seleção de plano é obrigatória';
     }
 
-    // Validação das senhas (apenas na etapa 3)
-    if (currentStep === 3) {
+    // Validação da etapa 3 (senhas)
+    if (currentStep >= 3) {
       if (!senha.trim()) {
         newErrors.senha = 'Senha é obrigatória';
       } else if (senha.length < 6) {
@@ -111,25 +161,109 @@ export const StudentRegistrationModal: React.FC<StudentRegistrationModalProps> =
     return Object.keys(newErrors).length === 0;
   };
 
+  // Validação específica para cada etapa
+  const validateCurrentStep = (): boolean => {
+    const newErrors: Partial<StudentData & { plano?: string }> = {};
+
+    if (currentStep === 1) {
+      // Validar apenas campos da etapa 1
+      if (!formData.nome.trim()) {
+        newErrors.nome = 'Nome é obrigatório';
+      }
+      if (!formData.email.trim()) {
+        newErrors.email = 'E-mail é obrigatório';
+      } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+        newErrors.email = 'E-mail inválido';
+      }
+      if (!formData.cpf.trim()) {
+        newErrors.cpf = 'CPF é obrigatório';
+      } else if (formData.cpf.replace(/\D/g, '').length !== 11) {
+        newErrors.cpf = 'CPF deve ter 11 dígitos';
+      }
+    } else if (currentStep === 2) {
+      // Validar apenas seleção de plano
+      if (!selectedPlan) {
+        newErrors.plano = 'Seleção de plano é obrigatória';
+      }
+    } else if (currentStep === 3) {
+      // Validar apenas senhas
+      if (!senha.trim()) {
+        newErrors.senha = 'Senha é obrigatória';
+      } else if (senha.length < 6) {
+        newErrors.senha = 'A senha deve ter ao menos 6 caracteres';
+      }
+      if (!confirmarSenha.trim()) {
+        newErrors.confirmarSenha = 'Confirmação de senha é obrigatória';
+      } else if (senha !== confirmarSenha) {
+        newErrors.confirmarSenha = 'As senhas não coincidem';
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleInputChange = (field: keyof StudentData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     
-    // Limpar erro do campo quando o usuário começar a digitar
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: undefined }));
+    // Validação em tempo real para campos específicos
+    const newErrors = { ...errors };
+    
+    if (field === 'email') {
+      if (!value.trim()) {
+        newErrors.email = 'E-mail é obrigatório';
+      } else if (!/\S+@\S+\.\S+/.test(value)) {
+        newErrors.email = 'E-mail inválido';
+      } else {
+        delete newErrors.email;
+      }
+    } else if (field === 'cpf') {
+      if (!value.trim()) {
+        newErrors.cpf = 'CPF é obrigatório';
+      } else if (value.replace(/\D/g, '').length !== 11) {
+        newErrors.cpf = 'CPF deve ter 11 dígitos';
+      } else {
+        delete newErrors.cpf;
+      }
+    } else if (field === 'nome') {
+      if (!value.trim()) {
+        newErrors.nome = 'Nome é obrigatório';
+      } else {
+        delete newErrors.nome;
+      }
     }
+    
+    setErrors(newErrors);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
+    console.log('🚨 handleSubmit chamado!', e.type, e.target);
     e.preventDefault();
-    if (validateForm()) {
-      onConfirm(formData);
-    }
+    e.stopPropagation();
+    return false;
   };
 
   const handleNext = () => {
     if (currentStep < 3) {
-      setCurrentStep(currentStep + 1);
+      // Validar apenas campos da etapa atual antes de avançar
+      const isValid = validateCurrentStep();
+      
+      if (isValid) {
+        setCurrentStep(currentStep + 1);
+      } else {
+        // Mostrar notificação de erro específica para a etapa atual
+        let errorMessage = '';
+        if (currentStep === 1) {
+          errorMessage = 'Por favor, preencha corretamente todos os campos obrigatórios (Nome, E-mail e CPF).';
+        } else if (currentStep === 2) {
+          errorMessage = 'Por favor, selecione um plano antes de continuar.';
+        }
+        
+        showError(
+          'Campos inválidos',
+          errorMessage
+        );
+      }
     }
   };
 
@@ -143,19 +277,19 @@ export const StudentRegistrationModal: React.FC<StudentRegistrationModalProps> =
     setSelectedPlan(planId);
   };
 
-  const handleSearchChange = (search: string) => {
-    setSearchPlan(search);
-  };
 
   const handlePasswordChange = (field: 'senha' | 'confirmarSenha', value: string) => {
+    // Atualizar estado primeiro
     if (field === 'senha') {
       setSenha(value);
     } else {
       setConfirmarSenha(value);
     }
 
-    // Validação em tempo real
-    const newErrors: Partial<StudentData> = { ...errors };
+    // Validação em tempo real com valores atualizados
+    const newErrors: Partial<StudentData & { plano?: string }> = { ...errors };
+    const currentSenha = field === 'senha' ? value : senha;
+    const currentConfirmarSenha = field === 'confirmarSenha' ? value : confirmarSenha;
 
     if (field === 'senha') {
       if (!value.trim()) {
@@ -167,17 +301,17 @@ export const StudentRegistrationModal: React.FC<StudentRegistrationModalProps> =
       }
 
       // Revalidar confirmação se já foi preenchida
-      if (confirmarSenha && value !== confirmarSenha) {
+      if (currentConfirmarSenha && value !== currentConfirmarSenha) {
         newErrors.confirmarSenha = 'As senhas não coincidem';
-      } else if (confirmarSenha && value === confirmarSenha) {
+      } else if (currentConfirmarSenha && value === currentConfirmarSenha) {
         delete newErrors.confirmarSenha;
       }
     } else if (field === 'confirmarSenha') {
       if (!value.trim()) {
         newErrors.confirmarSenha = 'Confirmação de senha é obrigatória';
-      } else if (senha && value !== senha) {
+      } else if (currentSenha && value !== currentSenha) {
         newErrors.confirmarSenha = 'As senhas não coincidem';
-      } else if (senha && value === senha) {
+      } else if (currentSenha && value === currentSenha) {
         delete newErrors.confirmarSenha;
       }
     }
@@ -199,23 +333,70 @@ export const StudentRegistrationModal: React.FC<StudentRegistrationModalProps> =
   };
 
   const handleFormSubmit = () => {
-    if (validateForm()) {
+    console.log('🚨 handleFormSubmit chamado!');
+    
+    // Validar todos os campos antes de submeter
+    const isValid = validateForm();
+    
+    if (isValid) {
       const finalData = {
         ...formData,
         senha,
-        confirmarSenha
+        confirmarSenha,
+        selectedPlan
       };
       
       // Fechar modal e mostrar notificação
       onConfirm(finalData);
+    } else {
+      // Encontrar a primeira etapa com erro e navegar para ela
+      let stepWithError = 1;
+      
+      // Verificar erros da etapa 1
+      if (errors.nome || errors.email || errors.cpf) {
+        stepWithError = 1;
+      } else if (errors.plano) {
+        stepWithError = 2;
+      } else if (errors.senha || errors.confirmarSenha) {
+        stepWithError = 3;
+      }
+      
+      // Navegar para a etapa com erro
+      if (stepWithError !== currentStep) {
+        setCurrentStep(stepWithError);
+      }
+      
+      // Mostrar notificação de erro
+      showError(
+        'Formulário incompleto',
+        'Por favor, corrija todos os campos destacados antes de finalizar o cadastro.'
+      );
     }
   };
 
-  const isFormValid = Boolean(
+  // Validação básica (sempre necessária)
+  const basicValidation = Boolean(
     formData.nome.trim() && 
     formData.email.trim() && 
-    (currentStep < 3 || (senha.trim() && confirmarSenha.trim() && senha === confirmarSenha && senha.length >= 6))
+    formData.cpf.trim() && formData.cpf.replace(/\D/g, '').length === 11 &&
+    // Verificar se não há erros nos campos básicos
+    !errors.nome && !errors.email && !errors.cpf
   );
+
+  // Validação do plano (etapa 2)
+  const planValidation = currentStep < 2 || (Boolean(selectedPlan) && !errors.plano);
+
+  // Validação da senha (etapa 3)
+  const passwordValidation = currentStep < 3 || Boolean(
+    senha.trim() && 
+    confirmarSenha.trim() && 
+    senha === confirmarSenha && 
+    senha.length >= 6 &&
+    !errors.senha && !errors.confirmarSenha
+  );
+
+  const isFormValid = basicValidation && planValidation && passwordValidation;
+
 
   if (!isOpen) return null;
 
@@ -267,21 +448,18 @@ export const StudentRegistrationModal: React.FC<StudentRegistrationModalProps> =
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
           <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px', flex: 1, overflow: 'auto' }}>
             {currentStep === 1 && (
-              <Step1StudentForm
-                formData={formData}
-                errors={errors}
-                onInputChange={handleInputChange}
-                isMobile={isMobile}
-              />
+                     <Step1StudentForm
+                       formData={formData}
+                       errors={errors}
+                       onInputChange={handleInputChange}
+                     />
             )}
 
             {currentStep === 2 && (
               <Step2PlanSelection
-                plans={plans}
                 selectedPlan={selectedPlan}
-                searchPlan={searchPlan}
                 onPlanSelect={handlePlanSelect}
-                onSearchChange={handleSearchChange}
+                error={errors.plano}
               />
             )}
 
@@ -289,8 +467,11 @@ export const StudentRegistrationModal: React.FC<StudentRegistrationModalProps> =
               <Step3PasswordSetup
                 formData={formData}
                 errors={errors}
+                senha={senha}
+                confirmarSenha={confirmarSenha}
                 onPasswordChange={handlePasswordChange}
                 onGeneratePassword={handleGeneratePassword}
+                onError={showError}
               />
             )}
           </div>
@@ -306,6 +487,15 @@ export const StudentRegistrationModal: React.FC<StudentRegistrationModalProps> =
           />
         </form>
       </div>
+      
+      {/* Notificação de erro */}
+      <ErrorNotification
+        isOpen={showErrorNotification}
+        onClose={closeErrorNotification}
+        title={errorTitle}
+        message={errorMessage}
+        autoCloseDelay={5000}
+      />
     </div>
   );
 

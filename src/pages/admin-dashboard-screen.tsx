@@ -6,13 +6,19 @@ import { AdminStudentsTable } from '@/components/admin/admin-students-table';
 import { UniversalAccountSettings } from '@/components/account-settings/universal-account-settings';
 import { StudentRegistrationModal } from '@/components/modals/student-registration-modal';
 import { SuccessNotification } from '@/components/ui/success-notification';
+import { ErrorNotification } from '@/components/ui/error-notification';
 import { useAuth } from '@/contexts/auth-context';
+import { studentService } from '@/services/api/student.service';
 
 export const AdminDashboardScreen: React.FC = () => {
   const { user } = useAuth();
   const location = useLocation();
   const [showStudentModal, setShowStudentModal] = useState(false);
   const [showSuccessNotification, setShowSuccessNotification] = useState(false);
+  const [showErrorNotification, setShowErrorNotification] = useState(false);
+  const [errorTitle, setErrorTitle] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [studentsRefreshTrigger, setStudentsRefreshTrigger] = useState(0);
   
   // Verificar se está na rota de configurações
   const isSettingsRoute = location.pathname === '/admin/settings' || location.pathname.startsWith('/admin/settings/');
@@ -23,18 +29,60 @@ export const AdminDashboardScreen: React.FC = () => {
   const handleUpdatePhoto = () => console.log('Atualizar foto admin');
   
   // Funções para cadastro de aluno
-  const handleStudentRegistration = (studentData: any) => {
-    console.log('Dados do aluno:', studentData);
-    // Aqui você pode integrar com a API para cadastrar o aluno
-    setShowStudentModal(false);
-    
-    // Mostrar notificação de sucesso
-    setShowSuccessNotification(true);
-    
-    // Fechar notificação após 3 segundos
-    setTimeout(() => {
-      setShowSuccessNotification(false);
-    }, 3000);
+  const handleStudentRegistration = async (studentData: any) => {
+    try {
+      // Preparar dados para a API - sempre usar cadastro completo com plano
+      const completeData = {
+        nome: studentData.nome,
+        email: studentData.email,
+        cpf: studentData.cpf && studentData.cpf.trim() ? studentData.cpf : undefined,
+        senha: studentData.senha,
+        dataNascimento: studentData.dataNascimento || undefined,
+        grupo: 'aluno' as const,
+        planoMestreId: parseInt(studentData.selectedPlan),
+        associarPlano: true
+      };
+      
+      await studentService.createStudentComplete(completeData);
+      
+      setShowStudentModal(false);
+      
+      // Atualizar tabela de alunos
+      setStudentsRefreshTrigger(prev => prev + 1);
+      
+      // Mostrar notificação de sucesso
+      setShowSuccessNotification(true);
+      
+      // Fechar notificação após 3 segundos
+      setTimeout(() => {
+        setShowSuccessNotification(false);
+      }, 3000);
+      
+    } catch (error: any) {
+      console.error('Erro ao cadastrar aluno:', error);
+      
+      // Determinar título e mensagem do erro
+      let title = 'Erro ao cadastrar aluno';
+      let message = 'Ocorreu um erro inesperado. Tente novamente.';
+      
+      if (error?.response?.status === 400) {
+        title = 'Dados inválidos';
+        message = error?.response?.data?.message || 'Verifique os dados informados e tente novamente.';
+      } else if (error?.response?.status === 409) {
+        title = 'Aluno já cadastrado';
+        message = 'Já existe um aluno cadastrado com este e-mail ou CPF.';
+      } else if (error?.response?.status === 500) {
+        title = 'Erro interno do servidor';
+        message = 'O servidor está temporariamente indisponível. Tente novamente em alguns minutos.';
+      } else if (error?.message) {
+        message = error.message;
+      }
+      
+      // Mostrar notificação de erro
+      setErrorTitle(title);
+      setErrorMessage(message);
+      setShowErrorNotification(true);
+    }
   };
   
   return (
@@ -203,7 +251,10 @@ export const AdminDashboardScreen: React.FC = () => {
 
             {/* Students Table Section */}
             <section style={{ padding: '0 48px' }}>
-              <AdminStudentsTable />
+              <AdminStudentsTable 
+                refreshTrigger={studentsRefreshTrigger} 
+                onAddStudent={() => setShowStudentModal(true)}
+              />
             </section>
           </>
         )}
@@ -235,6 +286,15 @@ export const AdminDashboardScreen: React.FC = () => {
         onClose={() => setShowSuccessNotification(false)}
         title="Aluno cadastrado com sucesso!"
         message="O novo registro foi concluído e já está disponível na base de alunos."
+      />
+      
+      {/* Notificação de erro */}
+      <ErrorNotification
+        isOpen={showErrorNotification}
+        onClose={() => setShowErrorNotification(false)}
+        title={errorTitle}
+        message={errorMessage}
+        autoCloseDelay={5000}
       />
     </div>
   );

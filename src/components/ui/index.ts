@@ -8,6 +8,9 @@ export type { IconType } from './featured-icon';
 export { AreaCard } from './area-card';
 export type { AreaCardProps } from './area-card';
 export { SuccessNotification } from './success-notification';
+export { ErrorNotification } from './error-notification';
+export { ErrorFeedback } from './error-feedback';
+export { EmptyStudentsState } from './empty-students-state';
 
 // Design System Components
 export * from './design-system';
@@ -36,4 +39,26 @@ export * from './design-system';
 //   onClose={() => setShowCalendar(false)}
 //   isInModal={true}
 //   screenSize="desktop"
+// />
+//
+// Error notification:
+// <ErrorNotification
+//   isOpen={showError}
+//   onClose={() => setShowError(false)}
+//   title="Erro ao processar"
+//   message="Ocorreu um erro inesperado. Tente novamente."
+//   autoCloseDelay={5000} // opcional, padrão 5000ms
+// />
+//
+// Success notification:
+// <SuccessNotification
+//   isOpen={showSuccess}
+//   onClose={() => setShowSuccess(false)}
+//   title="Operação concluída"
+//   message="A operação foi realizada com sucesso."
+// />
+//
+// Empty students state:
+// <EmptyStudentsState
+//   onAddStudent={() => setShowStudentModal(true)}
 // />

@@ -42,15 +42,6 @@ export const ModalHeader: React.FC<ModalHeaderProps> = ({ currentStep, onClose }
             }}>
               {getStepTitle(currentStep)}
             </h2>
-            <span style={{
-              fontFamily: 'Sora',
-              fontWeight: 400,
-              fontSize: '14px',
-              lineHeight: '1.43em',
-              color: '#CECFD2'
-            }}>
-              (opcional)
-            </span>
           </div>
           <div style={{ width: '91px' }}>
             <span style={{

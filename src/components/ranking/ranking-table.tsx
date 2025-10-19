@@ -12,11 +12,10 @@ export interface RankingUser {
 
 export interface RankingTableProps {
   users: RankingUser[];
-  currentUserId?: number;
   screenSize?: 'mobile' | 'tablet' | 'desktop';
 }
 
-export const RankingTable: React.FC<RankingTableProps> = ({ users, currentUserId, screenSize = 'desktop' }) => {
+export const RankingTable: React.FC<RankingTableProps> = ({ users, screenSize = 'desktop' }) => {
   return (
     <div
       style={{

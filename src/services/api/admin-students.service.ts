@@ -12,6 +12,7 @@ export interface Aluno {
   cpfAluno: string | null;
   planoAtivo: string | null;
   dataCadastro: string; // YYYY-MM-DD
+  dataNascimento?: string | null; // YYYY-MM-DD
   status: 'ativo' | 'inativo';
 }
 
@@ -50,7 +51,16 @@ export const adminStudentsService = {
     const queryString = queryParams.toString();
     const url = `/admin/dashboard/alunos${queryString ? `?${queryString}` : ''}`;
     
-    const response = await apiClient.get(url);
-    return response.data as AdminStudentsResponse;
+    console.log('🔍 Buscando alunos na URL:', url);
+    console.log('🔍 Parâmetros:', params);
+    
+    try {
+      const response = await apiClient.get(url);
+      console.log('✅ Resposta da API de alunos:', response);
+      return response.data as AdminStudentsResponse;
+    } catch (error) {
+      console.error('❌ Erro na API de alunos:', error);
+      throw error;
+    }
   }
 };

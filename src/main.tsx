@@ -5,6 +5,7 @@ import { HomeScreen } from "@/pages/home-screen";
 import { LoginScreen } from "@/pages/login-screen";
 import { AdminLoginScreen } from "@/pages/admin-login-screen";
 import { AdminDashboardScreen } from "@/pages/admin-dashboard-screen";
+import { TestEmptyState } from "@/pages/test-empty-state";
 import { WelcomeScreen } from "@/pages/welcome-screen";
 import { ProfileSetupScreen } from "@/pages/profile-setup-screen";
 import { PreparationStepScreen } from "@/pages/preparation-step-screen";

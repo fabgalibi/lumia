@@ -225,7 +225,7 @@ export const RankingContent: React.FC = () => {
           marginLeft: screenSize === 'mobile' ? '-24px' : screenSize === 'desktop' ? '-16px' : '0px',
           marginRight: screenSize === 'mobile' ? '-24px' : screenSize === 'desktop' ? '-16px' : '0px'
         }}>
-          <RankingTable users={rankingData} currentUserId={984} screenSize={screenSize} />
+          <RankingTable users={rankingData} screenSize={screenSize} />
         </div>
       </div>
     </div>

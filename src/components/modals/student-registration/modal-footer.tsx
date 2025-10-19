@@ -115,21 +115,21 @@ export const ModalFooter: React.FC<ModalFooterProps> = ({
       <button
         type="button"
         onClick={currentStep < 3 ? onNext : onSubmit}
-        disabled={!isFormValid && currentStep === 1}
+        disabled={!isFormValid}
         style={{
           flex: 1,
           padding: '12px 18px',
-          background: (isFormValid || currentStep > 1) ? '#C74228' : '#22262F',
-          border: (isFormValid || currentStep > 1) ? '2px solid transparent' : '2px solid #22262F',
-          backgroundImage: (isFormValid || currentStep > 1) ? 'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)' : 'none',
+          background: isFormValid ? '#C74228' : '#22262F',
+          border: isFormValid ? '2px solid transparent' : '2px solid #22262F',
+          backgroundImage: isFormValid ? 'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%)' : 'none',
           borderRadius: '8px',
           fontFamily: 'Sora',
           fontWeight: 600,
           fontSize: '16px',
           lineHeight: '1.5em',
-          color: (isFormValid || currentStep > 1) ? '#FFFFFF' : '#85888E',
-          cursor: (isFormValid || currentStep > 1) ? 'pointer' : 'not-allowed',
-          boxShadow: (isFormValid || currentStep > 1) ? '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05)' : 'none',
+          color: isFormValid ? '#FFFFFF' : '#85888E',
+          cursor: isFormValid ? 'pointer' : 'not-allowed',
+          boxShadow: isFormValid ? '0px 1px 2px 0px rgba(255, 255, 255, 0), inset 0px -2px 0px 0px rgba(12, 14, 18, 0.05)' : 'none',
           transition: 'background 0.2s ease',
           display: 'flex',
           alignItems: 'center',
@@ -137,12 +137,12 @@ export const ModalFooter: React.FC<ModalFooterProps> = ({
           gap: '6px'
         }}
         onMouseEnter={(e) => {
-          if (isFormValid || currentStep > 1) {
+          if (isFormValid) {
             e.currentTarget.style.background = '#D55A3A';
           }
         }}
         onMouseLeave={(e) => {
-          if (isFormValid || currentStep > 1) {
+          if (isFormValid) {
             e.currentTarget.style.background = '#C74228';
           }
         }}

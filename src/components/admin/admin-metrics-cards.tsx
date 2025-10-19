@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StatCard } from '@/components/lumia/stats-cards/stat-card';
 import { adminMetricsService, AdminMetricsResponse } from '@/services/api';
+import { ErrorFeedback } from '@/components/ui/error-feedback';
 
 // Ícones baixados do Figma
 const UsersUpIcon = (props: any) => (
@@ -98,9 +99,15 @@ export const AdminMetricsCards: React.FC = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            padding: '20px'
           }}
         >
-          <span style={{ color: '#C74228' }}>Erro ao carregar métricas</span>
+          <ErrorFeedback 
+            message="Erro ao carregar métricas"
+            description="Não foi possível carregar os dados das métricas. Verifique sua conexão e tente novamente."
+            onRetry={() => window.location.reload()}
+            variant="compact"
+          />
         </div>
       </div>
     );

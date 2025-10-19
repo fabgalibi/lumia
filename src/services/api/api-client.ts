@@ -59,7 +59,8 @@ class ApiClient {
     };
 
     try {
-      const response = await fetch(`${this.baseURL}${endpoint}`, config);
+      const fullUrl = `${this.baseURL}${endpoint}`;
+      const response = await fetch(fullUrl, config);
       
       // Verifica se a resposta é JSON
       const contentType = response.headers.get('content-type');
@@ -78,12 +79,22 @@ class ApiClient {
         
         // Trata erro 401 (não autorizado) - token expirado
         if (response.status === 401) {
-          console.warn('🔐 Token expirado ou inválido. Fazendo logout automático...');
-          // Remove token e dados do usuário
-          localStorage.removeItem('auth_token');
-          localStorage.removeItem('user_data');
-          // Redireciona para login
-          window.location.href = '/login';
+          console.warn('🔐 Erro 401 recebido:', errorData);
+          
+          // Só faz logout se for realmente token expirado
+          if (errorData.message?.includes('token') || 
+              errorData.message?.includes('Token') ||
+              errorData.message?.includes('expired') ||
+              errorData.message?.includes('invalid')) {
+            console.warn('🔐 Token expirado ou inválido. Fazendo logout automático...');
+            // Remove token e dados do usuário
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user_data');
+            // Redireciona para login
+            window.location.href = '/login';
+          } else {
+            console.warn('🔐 Erro 401 mas não relacionado ao token. Mantendo sessão.');
+          }
         }
         
         throw {

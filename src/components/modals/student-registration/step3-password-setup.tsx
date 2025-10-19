@@ -1,55 +1,78 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, User, Mail, AlertCircle } from 'lucide-react';
+import { studentService } from '@/services/api/student.service';
 
 interface Step3PasswordSetupProps {
   formData: {
     nome: string;
     email: string;
     cpf?: string;
-    dataInicio?: string;
+    dataNascimento?: string;
     observacoes?: string;
   };
   errors: {
     senha?: string;
     confirmarSenha?: string;
   };
+  senha: string;
+  confirmarSenha: string;
   onPasswordChange: (field: 'senha' | 'confirmarSenha', value: string) => void;
   onGeneratePassword: () => void;
+  onError?: (title: string, message: string) => void;
 }
 
 export const Step3PasswordSetup: React.FC<Step3PasswordSetupProps> = ({
   formData,
   errors,
+  senha,
+  confirmarSenha,
   onPasswordChange,
-  onGeneratePassword
+  onGeneratePassword,
+  onError
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [senha, setSenha] = useState('');
-  const [confirmarSenha, setConfirmarSenha] = useState('');
 
   const handlePasswordChange = (field: 'senha' | 'confirmarSenha', value: string) => {
-    if (field === 'senha') {
-      setSenha(value);
-    } else {
-      setConfirmarSenha(value);
-    }
     onPasswordChange(field, value);
   };
 
-  const handleGeneratePassword = () => {
-    const generatedPassword = Math.random().toString(36).slice(-8);
-    setSenha(generatedPassword);
-    setConfirmarSenha(generatedPassword);
-    onPasswordChange('senha', generatedPassword);
-    onPasswordChange('confirmarSenha', generatedPassword);
-    onGeneratePassword();
+  const handleGeneratePassword = async () => {
+    try {
+      const response = await studentService.generatePassword();
+      const generatedPassword = response.senha;
+      onPasswordChange('senha', generatedPassword);
+      onPasswordChange('confirmarSenha', generatedPassword);
+      onGeneratePassword();
+    } catch (error: any) {
+      console.error('Erro ao gerar senha:', error);
+      
+      // Mostrar notificação de erro se callback estiver disponível
+      if (onError) {
+        onError(
+          'Erro ao gerar senha automática',
+          'Não foi possível gerar uma senha automática. Uma senha local foi criada como alternativa.'
+        );
+      }
+      
+      // Fallback para senha local se a API falhar
+      const generatedPassword = Math.random().toString(36).slice(-8);
+      onPasswordChange('senha', generatedPassword);
+      onPasswordChange('confirmarSenha', generatedPassword);
+      onGeneratePassword();
+    }
   };
 
   return (
-    <>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', padding: '24px' }}>
       {/* Resumo do Aluno */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div style={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        gap: '24px',
+        width: '100%',
+        maxWidth: '569px'
+      }}>
         {/* Nome do Aluno */}
         <div style={{
           display: 'flex',
@@ -67,7 +90,7 @@ export const Step3PasswordSetup: React.FC<Step3PasswordSetupProps> = ({
               fontFamily: 'Sora',
               fontWeight: 400,
               fontSize: '14px',
-              lineHeight: '1.43em',
+              lineHeight: '1.4285714285714286em',
               color: '#ECECED'
             }}>
               Nome do aluno
@@ -77,7 +100,7 @@ export const Step3PasswordSetup: React.FC<Step3PasswordSetupProps> = ({
             fontFamily: 'Sora',
             fontWeight: 400,
             fontSize: '14px',
-            lineHeight: '1.43em',
+            lineHeight: '1.4285714285714286em',
             color: '#FFFFFF'
           }}>
             {formData.nome}
@@ -101,7 +124,7 @@ export const Step3PasswordSetup: React.FC<Step3PasswordSetupProps> = ({
               fontFamily: 'Sora',
               fontWeight: 400,
               fontSize: '14px',
-              lineHeight: '1.43em',
+              lineHeight: '1.4285714285714286em',
               color: '#ECECED'
             }}>
               E-mail
@@ -111,7 +134,7 @@ export const Step3PasswordSetup: React.FC<Step3PasswordSetupProps> = ({
             fontFamily: 'Sora',
             fontWeight: 400,
             fontSize: '14px',
-            lineHeight: '1.43em',
+            lineHeight: '1.4285714285714286em',
             color: '#FFFFFF'
           }}>
             {formData.email}
@@ -120,13 +143,20 @@ export const Step3PasswordSetup: React.FC<Step3PasswordSetupProps> = ({
       </div>
 
       {/* Divider */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%' }}>
+      <div style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        gap: '8px', 
+        width: '100%',
+        maxWidth: '569px',
+        height: '20px'
+      }}>
         <div style={{ flex: 1, height: '1px', background: '#22262F' }} />
         <span style={{
           fontFamily: 'Sora',
           fontWeight: 400,
           fontSize: '14px',
-          lineHeight: '1.43em',
+          lineHeight: '1.4285714285714286em',
           color: '#94979C',
           whiteSpace: 'nowrap'
         }}>
@@ -144,7 +174,7 @@ export const Step3PasswordSetup: React.FC<Step3PasswordSetupProps> = ({
               fontFamily: 'Sora',
               fontWeight: 400,
               fontSize: '14px',
-              lineHeight: '1.43em',
+              lineHeight: '1.4285714285714286em',
               color: '#CECFD2'
             }}>
               Senha
@@ -204,36 +234,34 @@ export const Step3PasswordSetup: React.FC<Step3PasswordSetupProps> = ({
               {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
           </div>
-          {errors.senha && (
-            <span style={{ color: '#F97066', fontSize: '12px', fontFamily: 'Sora' }}>
-              {errors.senha}
-            </span>
-          )}
-          <button
-            type="button"
+          <span 
             onClick={handleGeneratePassword}
             style={{
-              background: 'transparent',
-              border: 'none',
-              cursor: 'pointer',
-              color: '#F48E2F',
               fontFamily: 'Sora',
               fontWeight: 600,
               fontSize: '12px',
               lineHeight: '1.5em',
-              textAlign: 'right',
-              alignSelf: 'flex-end',
-              transition: 'color 0.2s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = '#D55A3A';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = '#F48E2F';
+              color: '#F48E2F',
+              cursor: 'pointer',
+              alignSelf: 'flex-end'
             }}
           >
             Gerar senha aleatória
-          </button>
+          </span>
+          {errors.senha && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <AlertCircle size={20} color="#CECFD2" />
+              <span style={{ 
+                fontFamily: 'Sora',
+                fontWeight: 400,
+                fontSize: '12px',
+                lineHeight: '1.5em',
+                color: '#CECFD2'
+              }}>
+                {errors.senha}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Campo Confirmar Senha */}
@@ -243,7 +271,7 @@ export const Step3PasswordSetup: React.FC<Step3PasswordSetupProps> = ({
               fontFamily: 'Sora',
               fontWeight: 400,
               fontSize: '14px',
-              lineHeight: '1.43em',
+              lineHeight: '1.4285714285714286em',
               color: '#CECFD2'
             }}>
               Confirmar senha
@@ -304,13 +332,22 @@ export const Step3PasswordSetup: React.FC<Step3PasswordSetupProps> = ({
             </button>
           </div>
           {errors.confirmarSenha && (
-            <span style={{ color: '#F97066', fontSize: '12px', fontFamily: 'Sora' }}>
-              {errors.confirmarSenha}
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <AlertCircle size={20} color="#CECFD2" />
+              <span style={{ 
+                fontFamily: 'Sora',
+                fontWeight: 400,
+                fontSize: '12px',
+                lineHeight: '1.5em',
+                color: '#CECFD2'
+              }}>
+                {errors.confirmarSenha}
+              </span>
+            </div>
           )}
         </div>
 
-        {/* Validação */}
+        {/* Validação Geral */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <AlertCircle size={20} color="#CECFD2" />
           <span style={{
@@ -324,6 +361,6 @@ export const Step3PasswordSetup: React.FC<Step3PasswordSetupProps> = ({
           </span>
         </div>
       </div>
-    </>
+    </div>
   );
 };

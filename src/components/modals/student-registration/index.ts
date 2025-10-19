@@ -10,10 +10,11 @@ export interface StudentData {
   nome: string;
   email: string;
   cpf: string;
-  dataInicio: string;
+  dataNascimento: string;
   observacoes: string;
   senha?: string;
   confirmarSenha?: string;
+  plano?: string;
 }
 
 export interface Plan {
