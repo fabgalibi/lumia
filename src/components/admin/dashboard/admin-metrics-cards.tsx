@@ -75,13 +75,63 @@ export const AdminMetricsCards: React.FC = () => {
               borderRadius: '12px',
               border: '1px solid #2C2C45',
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              flexDirection: 'column',
+              padding: '20px',
+              gap: '12px'
             }}
           >
-            <span style={{ color: '#94979C' }}>Carregando...</span>
+            {/* Icon skeleton */}
+            <div style={{
+              width: '40px',
+              height: '40px',
+              background: 'linear-gradient(90deg, #363946 25%, #2D2D45 50%, #363946 75%)',
+              backgroundSize: '200% 100%',
+              animation: 'shimmer 1.5s infinite',
+              borderRadius: '8px'
+            }} />
+            
+            {/* Content skeleton */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
+              <div style={{
+                width: '80%',
+                height: '20px',
+                background: 'linear-gradient(90deg, #363946 25%, #2D2D45 50%, #363946 75%)',
+                backgroundSize: '200% 100%',
+                animation: 'shimmer 1.5s infinite',
+                borderRadius: '4px'
+              }} />
+              <div style={{
+                width: '60%',
+                height: '16px',
+                background: 'linear-gradient(90deg, #363946 25%, #2D2D45 50%, #363946 75%)',
+                backgroundSize: '200% 100%',
+                animation: 'shimmer 1.5s infinite',
+                borderRadius: '4px'
+              }} />
+            </div>
+            
+            {/* Change skeleton */}
+            <div style={{
+              width: '40%',
+              height: '14px',
+              background: 'linear-gradient(90deg, #363946 25%, #2D2D45 50%, #363946 75%)',
+              backgroundSize: '200% 100%',
+              animation: 'shimmer 1.5s infinite',
+              borderRadius: '4px'
+            }} />
           </div>
         ))}
+        
+        <style>{`
+          @keyframes shimmer {
+            0% {
+              background-position: -200% 0;
+            }
+            100% {
+              background-position: 200% 0;
+            }
+          }
+        `}</style>
       </div>
     );
   }

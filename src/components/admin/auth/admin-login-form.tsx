@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/auth-context';
-import { LoginRequest } from '../../services/api/auth.service';
+import { useAuth } from '../../../contexts/auth-context';
+import { LoginRequest } from '../../../services/api/auth.service';
 
 export const AdminLoginForm: React.FC = () => {
   const navigate = useNavigate();

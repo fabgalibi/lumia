@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router';
-import { AdminDashboardHeader } from '@/components/admin/admin-dashboard-header';
-import { AdminMetricsCards } from '@/components/admin/admin-metrics-cards';
-import { AdminStudentsTable } from '@/components/admin/admin-students-table';
+import { AdminDashboardHeader } from '@/components/admin/dashboard/admin-dashboard-header';
+import { AdminMetricsCards } from '@/components/admin/dashboard/admin-metrics-cards';
+import { AdminStudentsTable } from '@/components/admin/students/admin-students-table';
 import { UniversalAccountSettings } from '@/components/account-settings/universal-account-settings';
 import { StudentRegistrationModal } from '@/components/modals/student-registration-modal';
 import { SuccessNotification } from '@/components/ui/success-notification';

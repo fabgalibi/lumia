@@ -16,3 +16,6 @@ export type { AdminStudentsResponse, Aluno, Paginacao, AdminStudentsParams } fro
 
 export { studentService } from './student.service';
 export type { StudentData, StudentCompleteData, PlanoMestre, GeneratedPassword } from './student.service';
+
+export { adminDisciplinesService } from './admin-disciplines.service';
+export type { Disciplina, DisciplinasResponse } from './admin-disciplines.service';

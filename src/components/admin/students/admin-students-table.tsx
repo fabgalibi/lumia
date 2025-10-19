@@ -4,6 +4,8 @@ import { TableColumn } from '@/types/table';
 import { adminStudentsService, Aluno } from '@/services/api';
 import { ErrorFeedback } from '@/components/ui/error-feedback';
 import { EmptyStudentsState } from '@/components/ui/empty-students-state';
+import { AdminPagination } from '@/components/ui/admin-pagination';
+import { TableLoading } from '@/components/ui/table-loading';
 
 // Declaração de tipos para JSX
 declare global {
@@ -124,6 +126,8 @@ export const AdminStudentsTable: React.FC<AdminStudentsTableProps> = ({ refreshT
   const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
+  const [paginationLoading, setPaginationLoading] = useState(false);
+  
   const [error, setError] = useState<string | null>(null);
   const [pagination, setPagination] = useState({
     pagina: 1,
@@ -136,18 +140,23 @@ export const AdminStudentsTable: React.FC<AdminStudentsTableProps> = ({ refreshT
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        setLoading(true);
+        // Só ativar loading geral se não for paginação
+        if (!paginationLoading) {
+          setLoading(true);
+        }
+        
+        // Adicionar delay artificial para mostrar o loading
+        if (paginationLoading) {
+          await new Promise(resolve => setTimeout(resolve, 800));
+        }
+        
         const response = await adminStudentsService.getStudents({
           pagina: pagination.pagina,
           limite: pagination.limite
         });
         
-        console.log('📊 Resposta completa da API:', response);
-        
         // A API agora retorna um objeto com alunos e paginacao
         if (response.alunos && Array.isArray(response.alunos)) {
-          console.log('✅ Estrutura correta - alunos:', response.alunos.length);
-          console.log('✅ Estrutura correta - paginacao:', response.paginacao);
           
           setStudents(response.alunos);
           
@@ -170,6 +179,7 @@ export const AdminStudentsTable: React.FC<AdminStudentsTableProps> = ({ refreshT
         setError(err.message || 'Erro ao carregar alunos');
       } finally {
         setLoading(false);
+        setPaginationLoading(false);
       }
     };
 
@@ -231,27 +241,27 @@ export const AdminStudentsTable: React.FC<AdminStudentsTableProps> = ({ refreshT
   // A paginação agora é feita pela API, então usamos filteredStudents diretamente
   const paginatedStudents = filteredStudents;
 
-  console.log('🔍 Filtro - searchTerm:', searchTerm);
-  console.log('🔍 Filtro - students.length:', students.length);
-  console.log('🔍 Filtro - filteredStudents.length:', filteredStudents.length);
-  console.log('📄 Paginação - página:', pagination.pagina, 'limite:', pagination.limite);
-  console.log('📄 Paginação - paginatedStudents.length:', paginatedStudents.length);
 
   // Funções de paginação
   const handlePreviousPage = () => {
-    if (pagination.pagina > 1) {
+    if (pagination.pagina > 1 && !paginationLoading) {
+      setPaginationLoading(true);
       setPagination(prev => ({ ...prev, pagina: prev.pagina - 1 }));
     }
   };
 
   const handleNextPage = () => {
-    if (pagination.pagina < pagination.totalPaginas) {
+    if (pagination.pagina < pagination.totalPaginas && !paginationLoading) {
+      setPaginationLoading(true);
       setPagination(prev => ({ ...prev, pagina: prev.pagina + 1 }));
     }
   };
 
   const handlePageChange = (page: number) => {
-    setPagination(prev => ({ ...prev, pagina: page }));
+    if (!paginationLoading) {
+      setPaginationLoading(true);
+      setPagination(prev => ({ ...prev, pagina: page }));
+    }
   };
 
   const handleSelectStudent = (studentId: string) => {
@@ -466,21 +476,6 @@ export const AdminStudentsTable: React.FC<AdminStudentsTableProps> = ({ refreshT
   ];
 
   // Debug logs
-  console.log('🔍 Debug - students:', students.length);
-  console.log('🔍 Debug - filteredStudents:', filteredStudents.length);
-  console.log('🔍 Debug - loading:', loading);
-  console.log('🔍 Debug - error:', error);
-  console.log('🔍 Debug - first student:', students[0]);
-  console.log('🔍 Debug - columns:', columns.length);
-  console.log('🔍 Debug - columns keys:', columns.map(c => c.key));
-  
-  // Verificar se os dados têm as propriedades esperadas
-  if (students.length > 0) {
-    const firstStudent = students[0];
-    console.log('🔍 Debug - first student keys:', Object.keys(firstStudent));
-    console.log('🔍 Debug - nomeAluno exists:', 'nomeAluno' in firstStudent);
-    console.log('🔍 Debug - emailAluno exists:', 'emailAluno' in firstStudent);
-  }
 
   return (
     <div
@@ -581,15 +576,7 @@ export const AdminStudentsTable: React.FC<AdminStudentsTableProps> = ({ refreshT
       >
         {/* Tabela usando o componente Table */}
         {loading ? (
-          <div style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-            padding: '40px',
-            color: '#94979C'
-          }}>
-            Carregando alunos...
-                  </div>
+          <TableLoading columns={columns.length} rows={pagination.limite} />
         ) : error ? (
           <div style={{
             padding: '40px',
@@ -607,166 +594,37 @@ export const AdminStudentsTable: React.FC<AdminStudentsTableProps> = ({ refreshT
           <EmptyStudentsState onAddStudent={onAddStudent || (() => {})} />
         ) : (
           <>
-            <Table
-              columns={columns}
-              data={paginatedStudents}
-              screenSize="desktop"
-            />
+
+
+            {paginationLoading ? (
+              <TableLoading columns={columns.length} rows={pagination.limite} />
+            ) : (
+              <Table
+                columns={columns}
+                data={paginatedStudents}
+                screenSize="desktop"
+                loading={loading}
+              />
+            )}
             
+
             {/* Pagination - só mostra se houver dados */}
             {students.length > 0 && (
               <div
                 style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: '16px 24px',
                   background: '#252532',
                   borderRadius: '0 0 12px 12px',
                   border: '1px solid #2C2C45',
                   borderTop: 'none',
                 }}
               >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-        <button
-          style={{
-              background: pagination.pagina <= 1 ? '#363946' : '#2D2D45',
-              border: 'none',
-              borderRadius: '6px',
-            padding: '8px 12px',
-              color: pagination.pagina <= 1 ? '#9CA3AF' : '#F7F7F7',
-              fontFamily: 'Inter',
-              fontWeight: 500,
-              fontSize: '12px',
-              lineHeight: '16px',
-              letterSpacing: '0px',
-            cursor: pagination.pagina <= 1 ? 'not-allowed' : 'pointer',
-              transition: 'all 0.2s ease',
-          }}
-          onClick={handlePreviousPage}
-          disabled={pagination.pagina <= 1}
-          onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
-            if (pagination.pagina > 1) {
-              e.currentTarget.style.background = '#363946';
-            }
-          }}
-          onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
-            if (pagination.pagina > 1) {
-              e.currentTarget.style.background = '#2D2D45';
-            }
-          }}
-        >
-          Anterior
-        </button>
-          
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
-            {/* Gerar números das páginas baseado no total de páginas da API */}
-            {Array.from({ length: Math.min(pagination.totalPaginas, 10) }, (_, i) => {
-              const pageNumber = i + 1;
-              const isCurrentPage = pageNumber === pagination.pagina;
-              
-              return (
-                <button
-                  key={pageNumber}
-                  style={{
-                    background: isCurrentPage ? '#2D2D45' : 'transparent',
-                    border: 'none',
-                    borderRadius: '6px',
-                    padding: '8px 12px',
-                    minWidth: '32px',
-                    height: '32px',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    color: isCurrentPage ? '#F7F7F7' : '#9CA3AF',
-                    fontFamily: 'Inter',
-                    fontWeight: 500,
-                    fontSize: '12px',
-                    lineHeight: '16px',
-                    letterSpacing: '0px',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
-                  }}
-                  onClick={() => handlePageChange(pageNumber)}
-                >
-                  {pageNumber}
-                </button>
-              );
-            })}
-            
-            {/* Mostrar reticências se houver mais de 10 páginas */}
-            {pagination.totalPaginas > 10 && (
-              <span style={{
-                color: '#9CA3AF',
-                fontFamily: 'Inter',
-                fontWeight: 500,
-                fontSize: '12px',
-                lineHeight: '16px',
-                letterSpacing: '0px',
-                padding: '0 8px',
-              }}>...</span>
-            )}
-            
-            {/* Mostrar última página se houver mais de 10 páginas */}
-            {pagination.totalPaginas > 10 && (
-              <button
-                style={{
-                  background: pagination.pagina === pagination.totalPaginas ? '#2D2D45' : 'transparent',
-                  border: 'none',
-                  borderRadius: '6px',
-                  padding: '8px 12px',
-                  minWidth: '32px',
-                  height: '32px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  color: pagination.pagina === pagination.totalPaginas ? '#F7F7F7' : '#9CA3AF',
-                  fontFamily: 'Inter',
-                  fontWeight: 500,
-                  fontSize: '12px',
-                  lineHeight: '16px',
-                  letterSpacing: '0px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                }}
-                onClick={() => handlePageChange(pagination.totalPaginas)}
-              >
-                {pagination.totalPaginas}
-              </button>
-            )}
-          </div>
-          
-        <button
-          style={{
-              background: pagination.pagina >= pagination.totalPaginas ? '#363946' : '#993D2B',
-              border: 'none',
-              borderRadius: '6px',
-              padding: '8px 12px',
-              color: pagination.pagina >= pagination.totalPaginas ? '#9CA3AF' : '#FFFFFF',
-              fontFamily: 'Inter',
-              fontWeight: 500,
-              fontSize: '12px',
-              lineHeight: '16px',
-              letterSpacing: '0px',
-              cursor: pagination.pagina >= pagination.totalPaginas ? 'not-allowed' : 'pointer',
-              transition: 'all 0.2s ease',
-            }}
-            onClick={handleNextPage}
-            disabled={pagination.pagina >= pagination.totalPaginas}
-            onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
-              if (pagination.pagina < pagination.totalPaginas) {
-                e.currentTarget.style.background = '#B03A20';
-              }
-            }}
-            onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
-              if (pagination.pagina < pagination.totalPaginas) {
-                e.currentTarget.style.background = '#993D2B';
-              }
-            }}
-          >
-            Próxima
-          </button>
-        </div>
+                <AdminPagination 
+                  currentPage={pagination.pagina}
+                  totalPages={pagination.totalPaginas}
+                  onPageChange={handlePageChange}
+                  onPreviousPage={handlePreviousPage}
+                  onNextPage={handleNextPage}
+                />
               </div>
             )}
           </>

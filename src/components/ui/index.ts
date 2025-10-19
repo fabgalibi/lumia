@@ -11,6 +11,9 @@ export { SuccessNotification } from './success-notification';
 export { ErrorNotification } from './error-notification';
 export { ErrorFeedback } from './error-feedback';
 export { EmptyStudentsState } from './empty-students-state';
+export { FeaturedIconLarge } from './featured-icon-large';
+export { AdminPagination } from './admin-pagination';
+export { TableLoading } from './table-loading';
 
 // Design System Components
 export * from './design-system';
