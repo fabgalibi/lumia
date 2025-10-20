@@ -27,3 +27,4 @@ export const AdminStudentsScreen: React.FC = () => {
     </div>
   );
 };
+

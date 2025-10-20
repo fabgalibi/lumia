@@ -48,13 +48,17 @@ export const AdminDisciplinesSearch: React.FC<AdminDisciplinesSearchProps> = ({
             fontWeight: 400,
             fontSize: '16px',
             lineHeight: '1.5em',
-            color: '#CECFD2',
-            '::placeholder': {
-              color: '#CECFD2'
-            } as React.CSSProperties
+            color: '#CECFD2'
           }}
+          className="admin-disciplines-search-input"
         />
       </div>
+      
+      <style>{`
+        .admin-disciplines-search-input::placeholder {
+          color: #CECFD2;
+        }
+      `}</style>
     </div>
   );
 };

@@ -58,3 +58,4 @@ export const AdminPermissionsScreen: React.FC = () => {
     </div>
   );
 };
+

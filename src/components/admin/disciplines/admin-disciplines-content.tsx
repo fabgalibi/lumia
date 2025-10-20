@@ -43,8 +43,8 @@ export const AdminDisciplinesContent: React.FC = () => {
       }
       
       const params: PaginationParams = {
-        pagina: currentPage,
-        limite: 5,
+        page: currentPage,
+        limit: 5,
         search: searchTerm || undefined,
         status: activeTab === 'all' ? undefined : activeTab as 'active' | 'inactive'
       };

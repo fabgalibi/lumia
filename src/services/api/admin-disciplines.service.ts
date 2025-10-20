@@ -57,8 +57,8 @@ export interface UpdateDisciplinaRequest {
 }
 
 export interface PaginationParams {
-  pagina: number;
-  limite: number;
+  page: number;
+  limit: number;
   search?: string;
   status?: 'active' | 'inactive' | 'all';
 }
@@ -117,8 +117,8 @@ export const adminDisciplinesService = {
       console.log('🔍 Buscando disciplinas paginadas:', params);
       
       const queryParams = new URLSearchParams({
-        pagina: params.pagina.toString(),
-        limite: params.limite.toString(),
+        page: params.page.toString(),
+        limit: params.limit.toString(),
         ...(params.search && { search: params.search }),
         ...(params.status && params.status !== 'all' && { status: params.status })
       });
@@ -127,7 +127,20 @@ export const adminDisciplinesService = {
       
       console.log('✅ Resposta da API de disciplinas paginadas:', response);
       
-      // Se a API retorna dados paginados com metadados
+      // Se a API retorna dados paginados com metadados em data.meta
+      if ((response as any).data && (response as any).data.meta) {
+        return {
+          data: (response as any).data.data,
+          pagination: {
+            currentPage: (response as any).data.meta.page || params.page,
+            totalPages: (response as any).data.meta.totalPages || Math.ceil((response as any).data.meta.total / params.limit),
+            totalItems: (response as any).data.meta.total || (response as any).data.data.length,
+            itemsPerPage: params.limit
+          }
+        };
+      }
+      
+      // Se a API retorna dados paginados com metadados em pagination
       if ((response as any).data && (response as any).pagination) {
         return {
           data: (response as any).data,
@@ -138,34 +151,34 @@ export const adminDisciplinesService = {
       // Se retorna {data: Array, status: number} - simular paginação
       if ((response as any).data && Array.isArray((response as any).data)) {
         const allData = (response as any).data;
-        const startIndex = (params.pagina - 1) * params.limite;
-        const endIndex = startIndex + params.limite;
+        const startIndex = (params.page - 1) * params.limit;
+        const endIndex = startIndex + params.limit;
         const paginatedData = allData.slice(startIndex, endIndex);
         
         return {
           data: paginatedData,
           pagination: {
-            currentPage: params.pagina,
-            totalPages: Math.ceil(allData.length / params.limite),
+            currentPage: params.page,
+            totalPages: Math.ceil(allData.length / params.limit),
             totalItems: allData.length,
-            itemsPerPage: params.limite
+            itemsPerPage: params.limit
           }
         };
       }
       
       // Se retorna array direto, simular paginação
       if (Array.isArray(response)) {
-        const startIndex = (params.pagina - 1) * params.limite;
-        const endIndex = startIndex + params.limite;
+        const startIndex = (params.page - 1) * params.limit;
+        const endIndex = startIndex + params.limit;
         const paginatedData = response.slice(startIndex, endIndex);
         
         return {
           data: paginatedData,
           pagination: {
-            currentPage: params.pagina,
-            totalPages: Math.ceil(response.length / params.limite),
+            currentPage: params.page,
+            totalPages: Math.ceil(response.length / params.limit),
             totalItems: response.length,
-            itemsPerPage: params.limite
+            itemsPerPage: params.limit
           }
         };
       }
@@ -177,7 +190,7 @@ export const adminDisciplinesService = {
           currentPage: 1,
           totalPages: 0,
           totalItems: 0,
-          itemsPerPage: params.limite
+          itemsPerPage: params.limit
         }
       };
       
