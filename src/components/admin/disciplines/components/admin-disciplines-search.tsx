@@ -11,12 +11,15 @@ export const AdminDisciplinesSearch: React.FC<AdminDisciplinesSearchProps> = ({
   onSearchChange
 }) => {
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '6px',
-      width: '465px'
-    }}>
+    <div 
+      className="admin-disciplines-search"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '6px',
+        width: '465px'
+      }}
+    >
       {/* Search Input */}
       <div style={{
         display: 'flex',
@@ -27,7 +30,8 @@ export const AdminDisciplinesSearch: React.FC<AdminDisciplinesSearchProps> = ({
         border: '1px solid #2D2D36',
         borderRadius: '8px',
         boxShadow: '0px 1px 2px 0px rgba(255, 255, 255, 0)',
-        height: '40px'
+        height: '40px',
+        width: '100%'
       }}>
         <Search size={20} color="#94979C" strokeWidth={1.67} />
         <input

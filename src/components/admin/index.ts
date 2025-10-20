@@ -5,6 +5,7 @@ export { AdminLoginFooter } from './auth/admin-login-footer';
 
 // Dashboard Components
 export { AdminDashboardHeader } from './dashboard/admin-dashboard-header';
+export { AdminHeader } from './admin-header';
 export { AdminMetricsCards } from './dashboard/admin-metrics-cards';
 
 // Students Components
@@ -15,6 +16,5 @@ export { AdminDisciplinesScreen } from '../../pages/admin-disciplines-screen';
 export * from './disciplines';
 
 // Shared Components
-export { AdminHeader } from './shared/admin-header';
 export { AdminSidebar } from './shared/admin-sidebar';
 

@@ -28,13 +28,16 @@ export const AdminDisciplinesHeader: React.FC<AdminDisciplinesHeaderProps> = ({
     onDisciplineCreated?.();
   };
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      gap: '24px',
-      width: '100%'
-    }}>
+    <div 
+      className="admin-disciplines-header"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '24px',
+        width: '100%'
+      }}
+    >
       {/* Container */}
       <div style={{
         display: 'flex',
@@ -53,21 +56,27 @@ export const AdminDisciplinesHeader: React.FC<AdminDisciplinesHeaderProps> = ({
           width: '100%'
         }}>
           {/* Content */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            alignSelf: 'stretch',
-            flexWrap: 'wrap',
-            gap: '16px',
-            width: '100%'
-          }}>
-            {/* Text and supporting text */}
-            <div style={{
+          <div 
+            className="header-content"
+            style={{
               display: 'flex',
-              flexDirection: 'column',
-              gap: '6px',
-              flex: 1
-            }}>
+              alignItems: 'center',
+              alignSelf: 'stretch',
+              flexWrap: 'wrap',
+              gap: '16px',
+              width: '100%'
+            }}
+          >
+            {/* Text and supporting text */}
+            <div 
+              className="header-text"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '6px',
+                flex: 1
+              }}
+            >
               <h1 style={{
                 fontFamily: 'Sora',
                 fontWeight: 600,
@@ -81,11 +90,14 @@ export const AdminDisciplinesHeader: React.FC<AdminDisciplinesHeaderProps> = ({
             </div>
 
             {/* Actions */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px'
-            }}>
+            <div 
+              className="header-actions"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px'
+              }}
+            >
               <button
                 onClick={handleAddDiscipline}
                 style={{

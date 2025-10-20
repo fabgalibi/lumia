@@ -84,13 +84,15 @@ export const AdminDisciplinesContent: React.FC = () => {
   // As disciplinas já vêm paginadas e filtradas da API
   const filteredDisciplines = disciplines;
 
-  const handleOptionsClick = (disciplineId: string) => {
-    console.log('Opções da disciplina:', disciplineId);
-  };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedDisciplineId, setSelectedDisciplineId] = useState<number | null>(null);
+  const [editInitialData, setEditInitialData] = useState<{
+    nome: string;
+    assuntos: { id: number; nome: string; codigo: string }[];
+  } | null>(null);
 
   const handleAddDiscipline = () => {
     setIsModalOpen(true);
@@ -102,16 +104,60 @@ export const AdminDisciplinesContent: React.FC = () => {
     setIsModalOpen(false);
   };
 
+  const handleEditSuccess = () => {
+    console.log('Disciplina editada com sucesso!');
+    fetchDisciplines();
+    setIsEditModalOpen(false);
+    setEditInitialData(null);
+    setSelectedDisciplineId(null);
+  };
+
   const handleViewDiscipline = (disciplineId: string | number) => {
     const id = typeof disciplineId === 'string' ? parseInt(disciplineId) : disciplineId;
     setSelectedDisciplineId(id);
     setIsViewModalOpen(true);
   };
 
-  const handleEditDiscipline = () => {
-    console.log('Editar disciplina:', selectedDisciplineId);
-    // A lógica de edição agora é gerenciada pelo modal de visualização
-    // Não precisamos fechar o modal de visualização aqui
+  const handleEditDiscipline = async (disciplineId: string) => {
+    const id = parseInt(disciplineId);
+    try {
+      console.log('🔧 Buscando dados da disciplina para edição:', id);
+      const details = await adminDisciplinesService.getDisciplineDetails(id);
+      setEditInitialData({
+        nome: details.nome,
+        assuntos: details.assuntos.map(a => ({ id: a.id, nome: a.nome, codigo: a.codigo }))
+      });
+      setSelectedDisciplineId(id);
+      setIsEditModalOpen(true);
+    } catch (error) {
+      console.error('Erro ao buscar dados da disciplina:', error);
+    }
+  };
+
+  const handleAddSubjects = async (disciplineId: string) => {
+    const id = parseInt(disciplineId);
+    try {
+      console.log('🔧 Buscando dados da disciplina para adicionar assuntos:', id);
+      const details = await adminDisciplinesService.getDisciplineDetails(id);
+      setEditInitialData({
+        nome: details.nome,
+        assuntos: details.assuntos.map(a => ({ id: a.id, nome: a.nome, codigo: a.codigo }))
+      });
+      setSelectedDisciplineId(id);
+      setIsEditModalOpen(true);
+    } catch (error) {
+      console.error('Erro ao buscar dados da disciplina:', error);
+    }
+  };
+
+  const handleDuplicateDiscipline = (disciplineId: string) => {
+    console.log('Duplicar disciplina:', disciplineId);
+    // TODO: Implementar funcionalidade de duplicar disciplina
+  };
+
+  const handleDeleteDiscipline = (disciplineId: string) => {
+    console.log('Deletar disciplina:', disciplineId);
+    // TODO: Implementar funcionalidade de deletar disciplina
   };
 
   const handleToggleCheckbox = (disciplineId: string) => {
@@ -180,16 +226,19 @@ export const AdminDisciplinesContent: React.FC = () => {
   };
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '24px',
-      padding: '48px 80px 0',
-      minHeight: 'calc(100vh - 120px)',
-      maxWidth: '1440px',
-      margin: '0 auto',
-      width: '100%'
-    }}>
+    <div 
+      className="admin-disciplines-container"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '24px',
+        padding: '48px 80px 0',
+        minHeight: 'calc(100vh - 120px)',
+        maxWidth: '1440px',
+        margin: '0 auto',
+        width: '100%'
+      }}
+    >
       {/* Header Section */}
       <AdminDisciplinesHeader 
         totalCount={pagination.totalItems}
@@ -197,13 +246,16 @@ export const AdminDisciplinesContent: React.FC = () => {
       />
 
       {/* Tabs and Search Row */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'space-between',
-        gap: '24px',
-        width: '100%'
-      }}>
+      <div 
+        className="tabs-search-row"
+        style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          justifyContent: 'space-between',
+          gap: '24px',
+          width: '100%'
+        }}
+      >
         {/* Tabs */}
         <Tabs
           tabs={tabs}
@@ -474,7 +526,10 @@ export const AdminDisciplinesContent: React.FC = () => {
           disciplines={filteredDisciplines}
           disciplinesStatus={disciplinesStatus}
           onViewDiscipline={handleViewDiscipline}
-          onOptionsClick={handleOptionsClick}
+          onEdit={handleEditDiscipline}
+          onAddSubjects={handleAddSubjects}
+          onDuplicate={handleDuplicateDiscipline}
+          onDelete={handleDeleteDiscipline}
           onToggleCheckbox={handleToggleCheckbox}
           onToggleStatus={handleToggleStatus}
           checkedDisciplines={checkedDisciplines}
@@ -499,6 +554,22 @@ export const AdminDisciplinesContent: React.FC = () => {
         onClose={() => setIsModalOpen(false)}
         onSuccess={handleModalSuccess}
       />
+
+      {/* Modal de Edição de Disciplina */}
+      {selectedDisciplineId && editInitialData && (
+        <DisciplineRegistrationModal
+          isOpen={isEditModalOpen}
+          onClose={() => {
+            setIsEditModalOpen(false);
+            setEditInitialData(null);
+            setSelectedDisciplineId(null);
+          }}
+          onSuccess={handleEditSuccess}
+          isEditMode={true}
+          disciplineId={selectedDisciplineId}
+          initialData={editInitialData}
+        />
+      )}
 
              {/* Modal de Visualização de Disciplina */}
              {selectedDisciplineId && (

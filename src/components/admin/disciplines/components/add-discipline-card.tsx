@@ -8,6 +8,7 @@ interface AddDisciplineCardProps {
 export const AddDisciplineCard: React.FC<AddDisciplineCardProps> = ({ onClick }) => {
   return (
     <div 
+      className="add-discipline-card"
       onClick={onClick}
       style={{
         display: 'flex',
@@ -19,10 +20,13 @@ export const AddDisciplineCard: React.FC<AddDisciplineCardProps> = ({ onClick })
         background: '#252532',
         border: '1px solid #2C2C45',
         borderRadius: '12px',
-        width: '410px',
+        width: '100%',
+        minWidth: '280px',
+        maxWidth: '100%',
         height: '274px',
         cursor: 'pointer',
-        transition: 'all 0.2s ease'
+        transition: 'all 0.2s ease',
+        boxSizing: 'border-box'
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.background = '#2A2B3A';

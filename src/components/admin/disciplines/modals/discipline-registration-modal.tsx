@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { DisciplineModalHeader, DisciplineForm, SubjectsList, DisciplineModalFooter } from '../forms';
 import { adminDisciplinesService, CreateDisciplinaRequest, UpdateDisciplinaRequest, AssuntoEdicao } from '../../../../services/api/admin-disciplines.service';
 import { SuccessNotification } from '../../../ui/success-notification';
+import { ErrorNotification } from '../../../ui/error-notification';
 
 interface DisciplineRegistrationModalProps {
   isOpen: boolean;
@@ -30,6 +31,8 @@ export const DisciplineRegistrationModal: React.FC<DisciplineRegistrationModalPr
   const [assuntos, setAssuntos] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessNotification, setShowSuccessNotification] = useState(false);
+  const [showErrorNotification, setShowErrorNotification] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [disciplineDetails, setDisciplineDetails] = useState<{
     codigo: string;
     assuntos: { id: number; nome: string; codigo: string }[]
@@ -159,27 +162,41 @@ export const DisciplineRegistrationModal: React.FC<DisciplineRegistrationModalPr
         console.log('✅ Disciplina cadastrada com sucesso!');
       }
       
-      // Mostrar notificação de sucesso
-      setShowSuccessNotification(true);
+      // Fechar modal imediatamente
+      onSuccess?.();
+      onClose();
       
-      // Fechar modal após um delay
+      // Reset form apenas se não estiver em modo de edição
+      if (!isEditMode) {
+        setNomeDisciplina('');
+        setAssunto('');
+        setAssuntos([]);
+      }
+      
+      // Mostrar notificação de sucesso após fechar o modal
       setTimeout(() => {
-        onSuccess?.();
-        onClose();
-        
-        // Reset form apenas se não estiver em modo de edição
-        if (!isEditMode) {
-          setNomeDisciplina('');
-          setAssunto('');
-          setAssuntos([]);
-        }
-        setShowSuccessNotification(false);
-      }, 2000);
+        setShowSuccessNotification(true);
+        // Esconder notificação após 3 segundos
+        setTimeout(() => {
+          setShowSuccessNotification(false);
+        }, 3000);
+      }, 100);
       
     } catch (error: any) {
       console.error(`❌ Erro ao ${isEditMode ? 'atualizar' : 'cadastrar'} disciplina:`, error);
-      // TODO: Mostrar notificação de erro para o usuário
-      alert(`Erro ao cadastrar disciplina: ${error.message}`);
+      
+      // Definir mensagem de erro
+      setErrorMessage(error.message || `Erro ao ${isEditMode ? 'atualizar' : 'cadastrar'} disciplina`);
+      
+      // Mostrar notificação de erro
+      setShowErrorNotification(true);
+      
+      // Esconder notificação de erro após 5 segundos
+      setTimeout(() => {
+        setShowErrorNotification(false);
+        setErrorMessage('');
+      }, 5000);
+      
     } finally {
       setIsSubmitting(false);
     }
@@ -276,6 +293,14 @@ export const DisciplineRegistrationModal: React.FC<DisciplineRegistrationModalPr
           ? `A disciplina "${nomeDisciplina}" foi atualizada com sucesso.` 
           : `A disciplina "${nomeDisciplina}" já está disponível na lista de disciplinas cadastradas.`
         }
+      />
+
+      {/* Notificação de Erro */}
+      <ErrorNotification
+        isOpen={showErrorNotification}
+        onClose={() => setShowErrorNotification(false)}
+        title={isEditMode ? "Erro ao atualizar disciplina" : "Erro ao cadastrar disciplina"}
+        message={errorMessage}
       />
     </div>,
     document.body

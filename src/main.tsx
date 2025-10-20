@@ -5,7 +5,11 @@ import { HomeScreen } from "@/pages/home-screen";
 import { LoginScreen } from "@/pages/login-screen";
 import { AdminLoginScreen } from "@/pages/admin-login-screen";
 import { AdminDashboardScreen } from "@/pages/admin-dashboard-screen";
+import { AdminStudentsScreen } from "@/pages/admin-students-screen";
 import { AdminDisciplinesScreen } from "@/pages/admin-disciplines-screen";
+import { AdminPlansScreen } from "@/pages/admin-plans-screen";
+import { AdminSprintsScreen } from "@/pages/admin-sprints-screen";
+import { AdminPermissionsScreen } from "@/pages/admin-permissions-screen";
 import { WelcomeScreen } from "@/pages/welcome-screen";
 import { ProfileSetupScreen } from "@/pages/profile-setup-screen";
 import { PreparationStepScreen } from "@/pages/preparation-step-screen";
@@ -38,11 +42,11 @@ createRoot(document.getElementById("root")!).render(
                         <Route path="/login" element={<LoginScreen />} />
                         <Route path="/admin/login" element={<AdminLoginScreen />} />
                         <Route path="/admin/dashboard" element={<AdminProtectedRoute><AdminDashboardScreen /></AdminProtectedRoute>} />
-                        <Route path="/admin/students" element={<AdminProtectedRoute><AdminDashboardScreen /></AdminProtectedRoute>} />
+                        <Route path="/admin/students" element={<AdminProtectedRoute><AdminStudentsScreen /></AdminProtectedRoute>} />
                         <Route path="/admin/disciplines" element={<AdminProtectedRoute><AdminDisciplinesScreen /></AdminProtectedRoute>} />
-                        <Route path="/admin/plans" element={<AdminProtectedRoute><AdminDashboardScreen /></AdminProtectedRoute>} />
-                        <Route path="/admin/sprints" element={<AdminProtectedRoute><AdminDashboardScreen /></AdminProtectedRoute>} />
-                        <Route path="/admin/permissions" element={<AdminProtectedRoute><AdminDashboardScreen /></AdminProtectedRoute>} />
+                        <Route path="/admin/plans" element={<AdminProtectedRoute><AdminPlansScreen /></AdminProtectedRoute>} />
+                        <Route path="/admin/sprints" element={<AdminProtectedRoute><AdminSprintsScreen /></AdminProtectedRoute>} />
+                        <Route path="/admin/permissions" element={<AdminProtectedRoute><AdminPermissionsScreen /></AdminProtectedRoute>} />
                         <Route path="/admin/settings" element={<AdminProtectedRoute><AdminDashboardScreen /></AdminProtectedRoute>} />
                         <Route path="/admin/settings/*" element={<AdminProtectedRoute><AdminDashboardScreen /></AdminProtectedRoute>} />
                         <Route path="/welcome" element={<WelcomeScreen />} />

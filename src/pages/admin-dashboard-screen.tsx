@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router';
-import { AdminDashboardHeader } from '@/components/admin/dashboard/admin-dashboard-header';
+import { AdminHeader } from '@/components/admin/admin-header';
 import { AdminMetricsCards } from '@/components/admin/dashboard/admin-metrics-cards';
 import { AdminStudentsTable } from '@/components/admin/students/admin-students-table';
 import { UniversalAccountSettings } from '@/components/account-settings/universal-account-settings';
@@ -94,7 +94,7 @@ export const AdminDashboardScreen: React.FC = () => {
         background: '#191923',
       }}
     >
-      <AdminDashboardHeader />
+      <AdminHeader />
       
       <main
         style={{

@@ -1,5 +1,5 @@
 import React from 'react';
-import { AdminHeader } from '../components/admin/shared/admin-header';
+import { AdminHeader } from '../components/admin/admin-header';
 import { AdminDisciplinesContent } from '../components/admin/disciplines/admin-disciplines-content';
 
 export const AdminDisciplinesScreen: React.FC = () => {
@@ -10,7 +10,7 @@ export const AdminDisciplinesScreen: React.FC = () => {
       minHeight: '100vh',
       background: '#191923'
     }}>
-      <AdminHeader currentPage="disciplines" />
+      <AdminHeader />
       
       <AdminDisciplinesContent />
     </div>

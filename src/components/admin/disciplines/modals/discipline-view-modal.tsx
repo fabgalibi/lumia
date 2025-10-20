@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { X, Copy, Edit } from 'lucide-react';
 import { adminDisciplinesService, DisciplinaDetalhes } from '../../../../services/api/admin-disciplines.service';
 import { DisciplineRegistrationModal } from './discipline-registration-modal';
@@ -7,12 +7,14 @@ interface DisciplineViewModalProps {
   isOpen: boolean;
   onClose: () => void;
   disciplineId: number;
+  openInEditMode?: boolean;
 }
 
 export const DisciplineViewModal: React.FC<DisciplineViewModalProps> = ({
   isOpen,
   onClose,
-  disciplineId
+  disciplineId,
+  openInEditMode = false
 }) => {
   const [discipline, setDiscipline] = useState<DisciplinaDetalhes | null>(null);
   const [loading, setLoading] = useState(false);
@@ -22,12 +24,22 @@ export const DisciplineViewModal: React.FC<DisciplineViewModalProps> = ({
     nome: string;
     assuntos: { id: number; nome: string; codigo: string }[];
   } | null>(null);
+  const hasOpenedEditModal = useRef(false);
 
   useEffect(() => {
     if (isOpen && disciplineId) {
       fetchDisciplineDetails();
     }
   }, [isOpen, disciplineId]);
+
+  // Abrir modal de edição automaticamente se openInEditMode for true
+  useEffect(() => {
+    if (openInEditMode && discipline && !isEditModalOpen && !loading && !hasOpenedEditModal.current) {
+      console.log('🚀 Abrindo modal de edição automaticamente');
+      hasOpenedEditModal.current = true;
+      handleEdit();
+    }
+  }, [openInEditMode, discipline, isEditModalOpen, loading]);
 
   const fetchDisciplineDetails = async () => {
     try {
@@ -50,6 +62,7 @@ export const DisciplineViewModal: React.FC<DisciplineViewModalProps> = ({
 
   const handleEdit = () => {
     if (discipline) {
+      console.log('🔧 Abrindo modal de edição para disciplina:', discipline.nome);
       setEditInitialData({
         nome: discipline.nome,
         assuntos: discipline.assuntos.map(a => ({ id: a.id, nome: a.nome, codigo: a.codigo }))
@@ -59,14 +72,23 @@ export const DisciplineViewModal: React.FC<DisciplineViewModalProps> = ({
   };
 
   const handleEditSuccess = () => {
+    console.log('✅ Edição bem-sucedida, fechando modais');
     // Recarregar os dados da disciplina após edição
     if (disciplineId) {
       fetchDisciplineDetails();
     }
     setIsEditModalOpen(false);
+    hasOpenedEditModal.current = false;
     // Fechar também o modal de visualização após edição bem-sucedida
     onClose();
   };
+
+  // Reset ref quando modal é fechado
+  useEffect(() => {
+    if (!isOpen) {
+      hasOpenedEditModal.current = false;
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 

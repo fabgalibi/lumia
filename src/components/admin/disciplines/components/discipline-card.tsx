@@ -1,12 +1,15 @@
 import React from 'react';
-import { MoreVertical } from 'lucide-react';
 import { Disciplina } from '../../../services/api/admin-disciplines.service';
+import { DisciplineOptionsMenu } from './discipline-options-menu';
 
 interface DisciplineCardProps {
   discipline: Disciplina;
   currentStatus: 'active' | 'inactive'; // Status atual (pode ser diferente do status da API)
   onViewDiscipline: (id: string) => void;
-  onOptionsClick: (id: string) => void;
+  onEdit?: (id: string) => void;
+  onAddSubjects?: (id: string) => void;
+  onDuplicate?: (id: string) => void;
+  onDelete?: (id: string) => void;
   onToggleCheckbox?: (id: string) => void;
   onToggleStatus?: (id: string) => void;
   showChevronIcon?: boolean;
@@ -17,7 +20,10 @@ export const DisciplineCard: React.FC<DisciplineCardProps> = ({
   discipline,
   currentStatus,
   onViewDiscipline,
-  onOptionsClick,
+  onEdit,
+  onAddSubjects,
+  onDuplicate,
+  onDelete,
   onToggleCheckbox,
   onToggleStatus,
   showChevronIcon = true,
@@ -41,17 +47,23 @@ export const DisciplineCard: React.FC<DisciplineCardProps> = ({
   };
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      gap: '16px',
-      padding: '16px',
-      background: '#252532',
-      border: '1px solid #2C2C45',
-      borderRadius: '12px',
-      width: '410.67px'
-    }}>
+    <div 
+      className="discipline-card"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '16px',
+        padding: '16px',
+        background: '#252532',
+        border: '1px solid #2C2C45',
+        borderRadius: '12px',
+        width: '100%',
+        minWidth: '280px',
+        maxWidth: '100%',
+        boxSizing: 'border-box'
+      }}
+    >
       {/* Card - Campanha Ativa */}
       <div style={{
         display: 'flex',
@@ -296,29 +308,13 @@ export const DisciplineCard: React.FC<DisciplineCardProps> = ({
           Visualizar Disciplina
         </button>
 
-        {/* Options component */}
-        <button
-          onClick={() => onOptionsClick(discipline.idDisciplina.toString())}
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '10px',
-            width: '40px',
-            background: '#2D2D45',
-            border: '1px solid #272737',
-            borderRadius: '8px',
-            cursor: 'pointer'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = '#363946';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = '#2D2D45';
-          }}
-        >
-          <MoreVertical size={16} color="#FFFFFF" strokeWidth={1.67} />
-        </button>
+        {/* Options Menu */}
+        <DisciplineOptionsMenu
+          onEdit={() => onEdit?.(discipline.idDisciplina.toString())}
+          onAddSubjects={() => onAddSubjects?.(discipline.idDisciplina.toString())}
+          onDuplicate={() => onDuplicate?.(discipline.idDisciplina.toString())}
+          onDelete={() => onDelete?.(discipline.idDisciplina.toString())}
+        />
       </div>
     </div>
   );

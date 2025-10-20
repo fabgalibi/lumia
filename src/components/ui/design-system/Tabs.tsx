@@ -44,6 +44,10 @@ export const Tabs: React.FC<TabsProps> = ({
       flexDirection: 'column',
       gap: '8px',
       borderBottom: variant === 'underline' ? '1px solid #22262F' : 'none',
+      flex: '1 1 0%',
+      alignItems: 'flex-end',
+      justifyContent: 'flex-start',
+      width: '100%',
     };
 
     return baseStyle;
@@ -54,6 +58,9 @@ export const Tabs: React.FC<TabsProps> = ({
       display: 'flex',
       gap: '12px', // Conforme Figma - sempre 12px
       flexWrap: screenSize === 'mobile' || screenSize === 'tablet' ? 'wrap' : 'nowrap',
+      alignItems: 'flex-end',
+      justifyContent: 'flex-start',
+      width: '100%',
     };
   };
 
@@ -117,13 +124,13 @@ export const Tabs: React.FC<TabsProps> = ({
 
   return (
     <div
-      className={className}
+      className={`tabs-container ${className || ''}`}
       style={{
         ...getTabsContainerStyle(),
         ...style
       }}
     >
-      <div style={getTabsInnerStyle()}>
+      <div className="tabs-inner" style={getTabsInnerStyle()}>
         {tabs.map((tab) => (
           <button
             key={tab.id}
