@@ -7,6 +7,7 @@ import { AdminPagination } from '../../ui/admin-pagination';
 import { AdminEntitySkeleton } from '../shared/admin-entity-skeleton';
 import { SuccessNotification } from '../../ui/success-notification';
 import { ErrorNotification } from '../../ui/error-notification';
+import { PlanRegistrationModal } from './modals/plan-registration-modal';
 import { adminPlansService, PlanoMestre, PaginationParams, PaginatedResponse } from '../../../services/api/admin-plans.service';
 
 export const AdminPlansContent: React.FC = () => {
@@ -20,7 +21,8 @@ export const AdminPlansContent: React.FC = () => {
   const tabs = [
     { id: 'all', label: 'Todos os planos' },
     { id: 'active', label: 'Planos ativos' },
-    { id: 'inactive', label: 'Planos inativos' }
+    { id: 'inactive', label: 'Planos inativos' },
+    { id: 'copies', label: 'Planos - cópias' }
   ];
 
   // Estados para API
@@ -42,7 +44,7 @@ export const AdminPlansContent: React.FC = () => {
         page: currentPage,
         limit: 5,
         search: searchTerm || undefined,
-        status: activeTab === 'all' ? undefined : activeTab as 'active' | 'inactive'
+        status: activeTab === 'all' || activeTab === 'copies' ? undefined : activeTab as 'active' | 'inactive'
       };
 
       const response: PaginatedResponse<PlanoMestre> = await adminPlansService.getPlansPaginated(params);
@@ -83,20 +85,14 @@ export const AdminPlansContent: React.FC = () => {
   // Os planos já vêm paginados e filtrados da API
   const filteredPlans = plans;
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null);
-  const [editInitialData, setEditInitialData] = useState<{
-    nome: string;
-    nomeCargo: string;
-  } | null>(null);
-
   // Estados para notificações
   const [showSuccessNotification, setShowSuccessNotification] = useState(false);
   const [showErrorNotification, setShowErrorNotification] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage] = useState('');
+
+  // Estados para modais
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleAddPlan = () => {
     setIsModalOpen(true);
@@ -118,41 +114,12 @@ export const AdminPlansContent: React.FC = () => {
     }, 100);
   };
 
-  const handleEditSuccess = () => {
-    fetchPlans();
-    setIsEditModalOpen(false);
-    setEditInitialData(null);
-    setSelectedPlanId(null);
-    
-    // Mostrar notificação de sucesso com delay
-    setTimeout(() => {
-      setSuccessMessage('O plano foi atualizado com sucesso!');
-      setShowSuccessNotification(true);
-      
-      // Esconder notificação após 3 segundos
-      setTimeout(() => {
-        setShowSuccessNotification(false);
-      }, 3000);
-    }, 100);
-  };
-
   const handleViewPlan = (planId: string | number) => {
-    const id = typeof planId === 'string' ? parseInt(planId) : planId;
-    setSelectedPlanId(id);
-    setIsViewModalOpen(true);
+    console.log('Visualizar plano:', planId);
   };
 
   const handleEditPlan = (planId: string | number) => {
-    const id = typeof planId === 'string' ? parseInt(planId) : planId;
-    const plan = plans.find(p => p.idPlanoMestre === id);
-    if (plan) {
-      setEditInitialData({
-        nome: plan.nome,
-        nomeCargo: plan.nomeCargo
-      });
-      setSelectedPlanId(id);
-      setIsEditModalOpen(true);
-    }
+    console.log('Editar plano:', planId);
   };
 
   const handleDuplicatePlan = (planId: string | number) => {
@@ -218,9 +185,9 @@ export const AdminPlansContent: React.FC = () => {
     >
       {/* Header Section */}
       <AdminEntityHeader
-        title="Planos de Estudos"
+        title="Planos cadastrados"
         totalCount={pagination.totalItems}
-        buttonText="Cadastrar novo plano"
+        buttonText="Cadastrar plano"
         onEntityCreated={handleAddPlan}
       />
 
@@ -248,7 +215,7 @@ export const AdminPlansContent: React.FC = () => {
         <AdminEntitySearch
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
-          placeholder="Buscar planos..."
+          placeholder="Buscar plano, ID, disciplinas, etc..."
         />
       </div>
 
@@ -311,7 +278,12 @@ export const AdminPlansContent: React.FC = () => {
         />
       )}
 
-      {/* Modals - TODO: Implementar modais de planos */}
+      {/* Modals */}
+      <PlanRegistrationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSuccess={handleModalSuccess}
+      />
 
       {/* Notificações */}
       <SuccessNotification
