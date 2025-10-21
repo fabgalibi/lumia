@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Copy } from 'lucide-react';
+import { Copy, Check } from 'lucide-react';
+import { useCopyFeedback } from '../../../../utils/copy-feedback';
 
 interface SubjectsListProps {
   subjects: string[];
@@ -19,11 +20,7 @@ export const SubjectsList: React.FC<SubjectsListProps> = ({
 }) => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingValue, setEditingValue] = useState('');
-
-  const handleCopyCode = (code: string) => {
-    navigator.clipboard.writeText(code);
-    console.log(`Código copiado: ${code}`);
-  };
+  const { handleCopyWithFeedback, isCopied } = useCopyFeedback();
 
   const handleEdit = (index: number, currentValue: string) => {
     setEditingIndex(index);
@@ -253,7 +250,7 @@ export const SubjectsList: React.FC<SubjectsListProps> = ({
                           {/* Botões de ação - alinhados à direita */}
                           {isEditMode && subjectsWithCodes[index]?.codigo && (
                             <button
-                              onClick={() => handleCopyCode(subjectsWithCodes[index].codigo)}
+                              onClick={() => handleCopyWithFeedback(subjectsWithCodes[index].codigo)}
                               style={{
                                 display: 'flex',
                                 justifyContent: 'center',
@@ -272,7 +269,11 @@ export const SubjectsList: React.FC<SubjectsListProps> = ({
                                 e.currentTarget.style.backgroundColor = 'transparent';
                               }}
                             >
-                              <Copy size={16} color="#CECFD2" strokeWidth={1.5} />
+                              {isCopied(subjectsWithCodes[index].codigo) ? (
+                                <Check size={16} color="#CECFD2" strokeWidth={1.5} />
+                              ) : (
+                                <Copy size={16} color="#CECFD2" strokeWidth={1.5} />
+                              )}
                             </button>
                           )}
                         </>

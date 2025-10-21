@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router';
-import { AdminHeader } from '@/components/admin/admin-header';
+import { AdminLayout } from '@/components/admin';
 import { AdminMetricsCards } from '@/components/admin/dashboard/admin-metrics-cards';
 import { AdminStudentsTable } from '@/components/admin/students/admin-students-table';
 import { UniversalAccountSettings } from '@/components/account-settings/universal-account-settings';
@@ -86,23 +86,9 @@ export const AdminDashboardScreen: React.FC = () => {
   };
   
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-        background: '#191923',
-      }}
-    >
-      <AdminHeader />
-      
-      <main
+    <AdminLayout>
+      <div
         style={{
-          flexGrow: 1,
-          padding: '64px 0',
-          width: '100%',
-          maxWidth: '1440px',
-          margin: '0 auto',
           display: 'flex',
           flexDirection: 'column',
           gap: '48px',
@@ -118,7 +104,6 @@ export const AdminDashboardScreen: React.FC = () => {
               alignItems: 'center',
               alignSelf: 'stretch',
               gap: '32px',
-              padding: '0 48px',
             }}
           >
             <div
@@ -245,12 +230,12 @@ export const AdminDashboardScreen: React.FC = () => {
         {!isSettingsRoute && (
           <>
             {/* Metrics Section */}
-            <section style={{ padding: '0 48px' }}>
+            <section>
               <AdminMetricsCards />
             </section>
 
             {/* Students Table Section */}
-            <section style={{ padding: '0 48px' }}>
+            <section>
               <AdminStudentsTable 
                 refreshTrigger={studentsRefreshTrigger} 
                 onAddStudent={() => setShowStudentModal(true)}
@@ -261,7 +246,7 @@ export const AdminDashboardScreen: React.FC = () => {
 
         {/* Settings Section */}
         {isSettingsRoute && (
-          <section style={{ padding: '0 48px', flex: 1 }}>
+          <section style={{ flex: 1 }}>
             <UniversalAccountSettings
               onDeleteAccount={handleDeleteAccount}
               onUpdatePhoto={handleUpdatePhoto}
@@ -271,7 +256,7 @@ export const AdminDashboardScreen: React.FC = () => {
             />
           </section>
         )}
-      </main>
+      </div>
       
       {/* Modal de cadastro de aluno */}
       <StudentRegistrationModal
@@ -296,6 +281,6 @@ export const AdminDashboardScreen: React.FC = () => {
         message={errorMessage}
         autoCloseDelay={5000}
       />
-    </div>
+    </AdminLayout>
   );
 };

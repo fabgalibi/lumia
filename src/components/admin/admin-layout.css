@@ -1,0 +1,13 @@
+/* Admin Layout Styles */
+.admin-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #191923;
+}
+
+.admin-main-content {
+  flex: 1;
+  padding: 24px 48px;
+  background: #191923;
+}

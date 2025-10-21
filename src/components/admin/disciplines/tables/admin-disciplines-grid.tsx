@@ -1,5 +1,5 @@
 import React from 'react';
-import { DisciplineCard, AddDisciplineCard } from '../components';
+import { AdminEntityGrid } from '../../shared/admin-entity-grid';
 import { Disciplina } from '../../../services/api/admin-disciplines.service';
 
 interface AdminDisciplinesGridProps {
@@ -29,37 +29,53 @@ export const AdminDisciplinesGrid: React.FC<AdminDisciplinesGridProps> = ({
   checkedDisciplines = [],
   onAddDiscipline
 }) => {
+  // Função para obter campos adicionais específicos de disciplinas
+  const getAdditionalFields = (discipline: Disciplina) => [
+    {
+      label: 'Assuntos',
+      value: `${discipline.totalAssuntos} (${discipline.totalAssuntos === 0 ? 'Nenhum' : discipline.totalAssuntos === 1 ? 'um' : 'nove'})`
+    },
+    {
+      label: 'Criada em',
+      value: new Date(discipline.dataCriacao).toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    }
+  ];
+
+  // Função para obter ações específicas do menu de opções para disciplinas
+  const getOptionsMenuActions = (discipline: Disciplina) => ({
+    onEdit: onEdit ? () => onEdit(discipline.idDisciplina.toString()) : undefined,
+    onAddSubjects: onAddSubjects ? () => onAddSubjects(discipline.idDisciplina.toString()) : undefined,
+    onDuplicate: onDuplicate ? () => onDuplicate(discipline.idDisciplina.toString()) : undefined,
+    onDelete: onDelete ? () => onDelete(discipline.idDisciplina.toString()) : undefined,
+    editText: 'Editar dados',
+    addSubjectsText: 'Adicionar assuntos',
+    duplicateText: 'Duplicar',
+    deleteText: 'Apagar disciplina',
+  });
+
   return (
-    <div 
-      className="disciplines-grid"
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-        gap: '24px',
-        width: '100%',
-        minHeight: '572px'
-      }}
-    >
-      {/* Add Discipline Card */}
-      <AddDisciplineCard onClick={onAddDiscipline} />
-      
-      {/* Discipline Cards */}
-      {disciplines.map((discipline) => (
-        <DisciplineCard
-          key={discipline.idDisciplina}
-          discipline={discipline}
-          currentStatus={disciplinesStatus[discipline.idDisciplina.toString()] || 'inactive'}
-          onViewDiscipline={onViewDiscipline}
-          onEdit={onEdit}
-          onAddSubjects={onAddSubjects}
-          onDuplicate={onDuplicate}
-          onDelete={onDelete}
-          onToggleCheckbox={onToggleCheckbox}
-          onToggleStatus={onToggleStatus}
-          showChevronIcon={true}
-          isChecked={checkedDisciplines.includes(discipline.idDisciplina.toString())}
-        />
-      ))}
-    </div>
+    <AdminEntityGrid
+      entities={disciplines}
+      entitiesStatus={disciplinesStatus}
+      onViewEntity={onViewDiscipline}
+      onEdit={onEdit}
+      onDuplicate={onDuplicate}
+      onDelete={onDelete}
+      onToggleCheckbox={onToggleCheckbox || (() => {})}
+      onToggleStatus={onToggleStatus || (() => {})}
+      checkedEntities={checkedDisciplines}
+      onAddEntity={onAddDiscipline || (() => {})}
+      viewButtonText="Visualizar Disciplina"
+      addText="Cadastrar nova disciplina"
+      getAdditionalFields={getAdditionalFields}
+      getIdField={(discipline) => discipline.idDisciplina}
+      getOptionsMenuActions={getOptionsMenuActions}
+    />
   );
 };

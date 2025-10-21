@@ -1,5 +1,6 @@
 import React from 'react';
-import { Copy } from 'lucide-react';
+import { Copy, Check } from 'lucide-react';
+import { useCopyFeedback } from '../../../../utils/copy-feedback';
 
 interface DisciplineFormProps {
   nomeDisciplina: string;
@@ -23,11 +24,7 @@ export const DisciplineForm: React.FC<DisciplineFormProps> = ({
   isEditMode = false,
   codigoDisciplina
 }) => {
-  const handleCopyCode = (code: string) => {
-    navigator.clipboard.writeText(code);
-    // Aqui você pode adicionar uma notificação de sucesso
-    console.log(`Código copiado: ${code}`);
-  };
+  const { handleCopyWithFeedback, isCopied } = useCopyFeedback();
 
   return (
     <div style={{
@@ -94,7 +91,7 @@ export const DisciplineForm: React.FC<DisciplineFormProps> = ({
               </span>
             </div>
             <button
-              onClick={() => handleCopyCode(codigoDisciplina)}
+              onClick={() => handleCopyWithFeedback(codigoDisciplina)}
               style={{
                 display: 'flex',
                 justifyContent: 'center',
@@ -113,7 +110,11 @@ export const DisciplineForm: React.FC<DisciplineFormProps> = ({
                 e.currentTarget.style.backgroundColor = 'transparent';
               }}
             >
-              <Copy size={16} color="#CECFD2" strokeWidth={1.5} />
+              {isCopied(codigoDisciplina) ? (
+                <Check size={16} color="#CECFD2" strokeWidth={1.5} />
+              ) : (
+                <Copy size={16} color="#CECFD2" strokeWidth={1.5} />
+              )}
             </button>
           </div>
         ) : (

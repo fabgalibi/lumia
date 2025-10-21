@@ -1,25 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Copy, Edit } from 'lucide-react';
+import { X, Copy, Edit, Check } from 'lucide-react';
 import { adminDisciplinesService, DisciplinaDetalhes } from '../../../../services/api/admin-disciplines.service';
 import { DisciplineRegistrationModal } from './discipline-registration-modal';
+import { useCopyFeedback } from '../../../../utils/copy-feedback';
 
 interface DisciplineViewModalProps {
   isOpen: boolean;
   onClose: () => void;
   disciplineId: number;
   openInEditMode?: boolean;
+  onEditSuccess?: () => void;
 }
 
 export const DisciplineViewModal: React.FC<DisciplineViewModalProps> = ({
   isOpen,
   onClose,
   disciplineId,
-  openInEditMode = false
+  openInEditMode = false,
+  onEditSuccess
 }) => {
   const [discipline, setDiscipline] = useState<DisciplinaDetalhes | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const { handleCopyWithFeedback, isCopied } = useCopyFeedback();
   const [editInitialData, setEditInitialData] = useState<{
     nome: string;
     assuntos: { id: number; nome: string; codigo: string }[];
@@ -55,10 +59,6 @@ export const DisciplineViewModal: React.FC<DisciplineViewModalProps> = ({
     }
   };
 
-  const handleCopyCode = (code: string) => {
-    navigator.clipboard.writeText(code);
-    // Aqui você pode adicionar uma notificação de sucesso
-  };
 
   const handleEdit = () => {
     if (discipline) {
@@ -72,13 +72,18 @@ export const DisciplineViewModal: React.FC<DisciplineViewModalProps> = ({
   };
 
   const handleEditSuccess = () => {
-    console.log('✅ Edição bem-sucedida, fechando modais');
     // Recarregar os dados da disciplina após edição
     if (disciplineId) {
       fetchDisciplineDetails();
     }
     setIsEditModalOpen(false);
     hasOpenedEditModal.current = false;
+    
+    // Chamar a função de callback do componente pai para mostrar notificação
+    if (onEditSuccess) {
+      onEditSuccess();
+    }
+    
     // Fechar também o modal de visualização após edição bem-sucedida
     onClose();
   };
@@ -272,7 +277,7 @@ export const DisciplineViewModal: React.FC<DisciplineViewModalProps> = ({
                     </span>
                   </div>
                   <button
-                    onClick={() => handleCopyCode(discipline.codigo)}
+                    onClick={() => handleCopyWithFeedback(discipline.codigo)}
                     style={{
                       display: 'flex',
                       justifyContent: 'center',
@@ -290,7 +295,11 @@ export const DisciplineViewModal: React.FC<DisciplineViewModalProps> = ({
                       e.currentTarget.style.backgroundColor = 'transparent';
                     }}
                   >
-                    <Copy size={16} color="#CECFD2" strokeWidth={1.5} />
+                    {isCopied(discipline.codigo) ? (
+                      <Check size={16} color="#CECFD2" strokeWidth={1.5} />
+                    ) : (
+                      <Copy size={16} color="#CECFD2" strokeWidth={1.5} />
+                    )}
                   </button>
                 </div>
               </div>
@@ -453,7 +462,7 @@ export const DisciplineViewModal: React.FC<DisciplineViewModalProps> = ({
                             </span>
                           </div>
                           <button
-                            onClick={() => handleCopyCode(assunto.codigo)}
+                            onClick={() => handleCopyWithFeedback(assunto.codigo)}
                             style={{
                               display: 'flex',
                               justifyContent: 'center',
@@ -471,7 +480,11 @@ export const DisciplineViewModal: React.FC<DisciplineViewModalProps> = ({
                               e.currentTarget.style.backgroundColor = 'transparent';
                             }}
                           >
-                            <Copy size={16} color="#CECFD2" strokeWidth={1.5} />
+                            {isCopied(assunto.codigo) ? (
+                              <Check size={16} color="#CECFD2" strokeWidth={1.5} />
+                            ) : (
+                              <Copy size={16} color="#CECFD2" strokeWidth={1.5} />
+                            )}
                           </button>
                         </div>
                       </div>

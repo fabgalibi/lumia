@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { DisciplineModalHeader, DisciplineForm, SubjectsList, DisciplineModalFooter } from '../forms';
 import { adminDisciplinesService, CreateDisciplinaRequest, UpdateDisciplinaRequest, AssuntoEdicao } from '../../../../services/api/admin-disciplines.service';
-import { SuccessNotification } from '../../../ui/success-notification';
-import { ErrorNotification } from '../../../ui/error-notification';
 
 interface DisciplineRegistrationModalProps {
   isOpen: boolean;
@@ -30,9 +28,6 @@ export const DisciplineRegistrationModal: React.FC<DisciplineRegistrationModalPr
   const [assunto, setAssunto] = useState('');
   const [assuntos, setAssuntos] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccessNotification, setShowSuccessNotification] = useState(false);
-  const [showErrorNotification, setShowErrorNotification] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
   const [disciplineDetails, setDisciplineDetails] = useState<{
     codigo: string;
     assuntos: { id: number; nome: string; codigo: string }[]
@@ -163,8 +158,15 @@ export const DisciplineRegistrationModal: React.FC<DisciplineRegistrationModalPr
       }
       
       // Fechar modal imediatamente
-      onSuccess?.();
-      onClose();
+      // Chamar onSuccess primeiro
+      if (onSuccess) {
+        onSuccess();
+      }
+      
+      // Fechar modal após um pequeno delay
+      setTimeout(() => {
+        onClose();
+      }, 100);
       
       // Reset form apenas se não estiver em modo de edição
       if (!isEditMode) {
@@ -173,29 +175,13 @@ export const DisciplineRegistrationModal: React.FC<DisciplineRegistrationModalPr
         setAssuntos([]);
       }
       
-      // Mostrar notificação de sucesso após fechar o modal
-      setTimeout(() => {
-        setShowSuccessNotification(true);
-        // Esconder notificação após 3 segundos
-        setTimeout(() => {
-          setShowSuccessNotification(false);
-        }, 3000);
-      }, 100);
+      // Modal será fechado e notificação será mostrada no componente pai
       
     } catch (error: any) {
       console.error(`❌ Erro ao ${isEditMode ? 'atualizar' : 'cadastrar'} disciplina:`, error);
       
-      // Definir mensagem de erro
-      setErrorMessage(error.message || `Erro ao ${isEditMode ? 'atualizar' : 'cadastrar'} disciplina`);
-      
-      // Mostrar notificação de erro
-      setShowErrorNotification(true);
-      
-      // Esconder notificação de erro após 5 segundos
-      setTimeout(() => {
-        setShowErrorNotification(false);
-        setErrorMessage('');
-      }, 5000);
+      // Erro será tratado no componente pai
+      console.error('Erro detalhado:', error);
       
     } finally {
       setIsSubmitting(false);
@@ -284,24 +270,6 @@ export const DisciplineRegistrationModal: React.FC<DisciplineRegistrationModalPr
         />
       </div>
 
-      {/* Notificação de Sucesso */}
-      <SuccessNotification
-        isOpen={showSuccessNotification}
-        onClose={() => setShowSuccessNotification(false)}
-        title={isEditMode ? "Disciplina atualizada com sucesso!" : "Disciplina cadastrada com sucesso!"}
-        message={isEditMode 
-          ? `A disciplina "${nomeDisciplina}" foi atualizada com sucesso.` 
-          : `A disciplina "${nomeDisciplina}" já está disponível na lista de disciplinas cadastradas.`
-        }
-      />
-
-      {/* Notificação de Erro */}
-      <ErrorNotification
-        isOpen={showErrorNotification}
-        onClose={() => setShowErrorNotification(false)}
-        title={isEditMode ? "Erro ao atualizar disciplina" : "Erro ao cadastrar disciplina"}
-        message={errorMessage}
-      />
     </div>,
     document.body
   );

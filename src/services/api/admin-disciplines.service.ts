@@ -166,6 +166,38 @@ export const adminDisciplinesService = {
         };
       }
       
+      // Se retorna {data: {...}, status: 200} - verificar se data contém array
+      if ((response as any).data && (response as any).status && Array.isArray((response as any).data)) {
+        const allData = (response as any).data;
+        const startIndex = (params.page - 1) * params.limit;
+        const endIndex = startIndex + params.limit;
+        const paginatedData = allData.slice(startIndex, endIndex);
+        
+        return {
+          data: paginatedData,
+          pagination: {
+            currentPage: params.page,
+            totalPages: Math.ceil(allData.length / params.limit),
+            totalItems: allData.length,
+            itemsPerPage: params.limit
+          }
+        };
+      }
+      
+      // Se retorna {data: {...}, status: 200} mas data não é array - retornar vazio
+      if ((response as any).data && (response as any).status && !Array.isArray((response as any).data)) {
+        console.warn('⚠️ API retornou {data: {...}, status: 200} mas data não é array:', (response as any).data);
+        return {
+          data: [],
+          pagination: {
+            currentPage: 1,
+            totalPages: 0,
+            totalItems: 0,
+            itemsPerPage: params.limit
+          }
+        };
+      }
+      
       // Se retorna array direto, simular paginação
       if (Array.isArray(response)) {
         const startIndex = (params.page - 1) * params.limit;
@@ -214,6 +246,24 @@ export const adminDisciplinesService = {
     } catch (error: any) {
       console.error('❌ Erro ao atualizar status da disciplina:', error);
       throw new Error(error.message || 'Erro ao atualizar status da disciplina');
+    }
+  },
+
+  /**
+   * Duplica uma disciplina
+   */
+  async duplicateDiscipline(idDisciplina: number): Promise<Disciplina> {
+    try {
+      console.log(`🔄 Duplicando disciplina ${idDisciplina}`);
+      
+      const response = await apiClient.post(`/disciplinas/${idDisciplina}/duplicate`);
+      
+      console.log('✅ Disciplina duplicada com sucesso:', response.data);
+      return response.data as Disciplina;
+      
+    } catch (error: any) {
+      console.error('❌ Erro ao duplicar disciplina:', error);
+      throw new Error(error.message || 'Erro ao duplicar disciplina');
     }
   },
 

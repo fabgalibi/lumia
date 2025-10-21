@@ -66,7 +66,10 @@ export const UserMenu: React.FC = () => {
         gap: '4px',
         boxShadow: '0px 4px 12px 0px rgba(0, 0, 0, 0.25)',
         border: '1px solid rgba(244, 142, 47, 0.3)',
-        backdropFilter: 'blur(8px)'
+        backdropFilter: 'blur(8px)',
+        display: 'flex',
+        alignItems: 'center',
+        height: '48px'
       }}
     >
       {/* Botão hamburger */}

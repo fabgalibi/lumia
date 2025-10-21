@@ -4,6 +4,9 @@ import { Tabs } from '../../ui/design-system/Tabs';
 import { AdminDisciplinesGrid } from './tables';
 import { AdminPagination } from '../../ui/admin-pagination';
 import { DisciplineRegistrationModal, DisciplineViewModal } from './modals';
+import { AdminEntitySkeleton } from '../shared/admin-entity-skeleton';
+import { SuccessNotification } from '../../ui/success-notification';
+import { ErrorNotification } from '../../ui/error-notification';
 import { adminDisciplinesService, Disciplina, PaginationParams, PaginatedResponse } from '../../../services/api/admin-disciplines.service';
 
 export const AdminDisciplinesContent: React.FC = () => {
@@ -12,7 +15,6 @@ export const AdminDisciplinesContent: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [checkedDisciplines, setCheckedDisciplines] = useState<string[]>([]);
   const [disciplinesStatus, setDisciplinesStatus] = useState<Record<string, 'active' | 'inactive'>>({});
-  const [paginationLoading, setPaginationLoading] = useState(false);
 
   // Configuração das tabs
   const tabs = [
@@ -37,53 +39,51 @@ export const AdminDisciplinesContent: React.FC = () => {
     try {
       setLoading(true);
       
-      // Adicionar delay artificial para mostrar o loading de paginação
-      if (paginationLoading) {
-        await new Promise(resolve => setTimeout(resolve, 800));
-      }
-      
       const params: PaginationParams = {
         page: currentPage,
         limit: 5,
         search: searchTerm || undefined,
         status: activeTab === 'all' ? undefined : activeTab as 'active' | 'inactive'
       };
-      
+
       const response: PaginatedResponse<Disciplina> = await adminDisciplinesService.getDisciplinesPaginated(params);
       
       setDisciplines(response.data);
-      setPagination(response.pagination);
       
-      // Inicializar status das disciplinas baseado na API
-      const initialStatus: Record<string, 'active' | 'inactive'> = {};
-      response.data.forEach(disciplina => {
-        initialStatus[disciplina.idDisciplina.toString()] = disciplina.status ? 'active' : 'inactive';
+      // Mapear status das disciplinas
+      const statusMap: Record<string, 'active' | 'inactive'> = {};
+      response.data.forEach(discipline => {
+        statusMap[discipline.idDisciplina.toString()] = discipline.status ? 'active' : 'inactive';
       });
-      setDisciplinesStatus(initialStatus);
+      console.log('📊 Status das disciplinas mapeados:', statusMap);
+      setDisciplinesStatus(statusMap);
+      
+      setPagination({
+        currentPage: response.pagination.currentPage,
+        totalPages: response.pagination.totalPages,
+        totalItems: response.pagination.totalItems,
+        itemsPerPage: response.pagination.itemsPerPage
+      });
       
     } catch (err: any) {
       console.error('Erro ao buscar disciplinas:', err);
     } finally {
       setLoading(false);
-      setPaginationLoading(false);
     }
   };
 
   // Buscar disciplinas da API quando página, aba ou busca mudarem
   useEffect(() => {
     fetchDisciplines();
-  }, [currentPage, activeTab, searchTerm, paginationLoading]);
+  }, [currentPage, activeTab, searchTerm]);
 
-  // Reset página quando filtros mudarem (exceto paginationLoading)
+  // Reset página quando filtros mudarem
   useEffect(() => {
-    if (!paginationLoading) {
-      setCurrentPage(1);
-    }
+    setCurrentPage(1);
   }, [activeTab, searchTerm]);
 
   // As disciplinas já vêm paginadas e filtradas da API
   const filteredDisciplines = disciplines;
-
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -93,23 +93,50 @@ export const AdminDisciplinesContent: React.FC = () => {
     nome: string;
     assuntos: { id: number; nome: string; codigo: string }[];
   } | null>(null);
+  
+  // Estados para notificações
+  const [showSuccessNotification, setShowSuccessNotification] = useState(false);
+  const [showErrorNotification, setShowErrorNotification] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleAddDiscipline = () => {
     setIsModalOpen(true);
   };
 
+
   const handleModalSuccess = () => {
-    console.log('Disciplina cadastrada com sucesso!');
     fetchDisciplines();
     setIsModalOpen(false);
+    
+    // Mostrar notificação de sucesso com delay para garantir que o modal feche primeiro
+    setTimeout(() => {
+      setSuccessMessage('A disciplina foi cadastrada com sucesso!');
+      setShowSuccessNotification(true);
+      
+      // Esconder notificação após 3 segundos
+      setTimeout(() => {
+        setShowSuccessNotification(false);
+      }, 3000);
+    }, 100);
   };
 
   const handleEditSuccess = () => {
-    console.log('Disciplina editada com sucesso!');
     fetchDisciplines();
     setIsEditModalOpen(false);
     setEditInitialData(null);
     setSelectedDisciplineId(null);
+    
+    // Mostrar notificação de sucesso com delay
+    setTimeout(() => {
+      setSuccessMessage('A disciplina foi atualizada com sucesso!');
+      setShowSuccessNotification(true);
+      
+      // Esconder notificação após 3 segundos
+      setTimeout(() => {
+        setShowSuccessNotification(false);
+      }, 3000);
+    }, 100);
   };
 
   const handleViewDiscipline = (disciplineId: string | number) => {
@@ -118,46 +145,32 @@ export const AdminDisciplinesContent: React.FC = () => {
     setIsViewModalOpen(true);
   };
 
-  const handleEditDiscipline = async (disciplineId: string) => {
-    const id = parseInt(disciplineId);
-    try {
-      console.log('🔧 Buscando dados da disciplina para edição:', id);
-      const details = await adminDisciplinesService.getDisciplineDetails(id);
+  const handleEditDiscipline = (disciplineId: string | number) => {
+    const id = typeof disciplineId === 'string' ? parseInt(disciplineId) : disciplineId;
+    const discipline = disciplines.find(d => d.idDisciplina === id);
+    if (discipline) {
       setEditInitialData({
-        nome: details.nome,
-        assuntos: details.assuntos.map(a => ({ id: a.id, nome: a.nome, codigo: a.codigo }))
+        nome: discipline.nome,
+        assuntos: [] // Disciplina não tem assuntos na interface básica
       });
       setSelectedDisciplineId(id);
       setIsEditModalOpen(true);
-    } catch (error) {
-      console.error('Erro ao buscar dados da disciplina:', error);
     }
   };
 
-  const handleAddSubjects = async (disciplineId: string) => {
-    const id = parseInt(disciplineId);
-    try {
-      console.log('🔧 Buscando dados da disciplina para adicionar assuntos:', id);
-      const details = await adminDisciplinesService.getDisciplineDetails(id);
-      setEditInitialData({
-        nome: details.nome,
-        assuntos: details.assuntos.map(a => ({ id: a.id, nome: a.nome, codigo: a.codigo }))
-      });
-      setSelectedDisciplineId(id);
-      setIsEditModalOpen(true);
-    } catch (error) {
-      console.error('Erro ao buscar dados da disciplina:', error);
-    }
+  const handleAddSubjects = (disciplineId: string | number) => {
+    const id = typeof disciplineId === 'string' ? parseInt(disciplineId) : disciplineId;
+    console.log('Adicionar assuntos para disciplina:', id);
   };
 
-  const handleDuplicateDiscipline = (disciplineId: string) => {
-    console.log('Duplicar disciplina:', disciplineId);
-    // TODO: Implementar funcionalidade de duplicar disciplina
+  const handleDuplicateDiscipline = (disciplineId: string | number) => {
+    const id = typeof disciplineId === 'string' ? parseInt(disciplineId) : disciplineId;
+    console.log('Duplicar disciplina:', id);
   };
 
-  const handleDeleteDiscipline = (disciplineId: string) => {
-    console.log('Deletar disciplina:', disciplineId);
-    // TODO: Implementar funcionalidade de deletar disciplina
+  const handleDeleteDiscipline = (disciplineId: string | number) => {
+    const id = typeof disciplineId === 'string' ? parseInt(disciplineId) : disciplineId;
+    console.log('Deletar disciplina:', id);
   };
 
   const handleToggleCheckbox = (disciplineId: string) => {
@@ -171,82 +184,58 @@ export const AdminDisciplinesContent: React.FC = () => {
   const handleToggleStatus = async (disciplineId: string) => {
     try {
       const newStatus = disciplinesStatus[disciplineId] === 'active' ? 'inactive' : 'active';
-      const statusBoolean = newStatus === 'active';
+      const isActive = newStatus === 'active';
       
-      // Atualizar localmente primeiro (otimistic update)
+      await adminDisciplinesService.updateDisciplineStatus(parseInt(disciplineId), isActive);
+      
       setDisciplinesStatus(prev => ({
         ...prev,
         [disciplineId]: newStatus
       }));
       
-      // Chamar API para atualizar no servidor
-      await adminDisciplinesService.updateDisciplineStatus(
-        parseInt(disciplineId), 
-        statusBoolean
-      );
-      
-      console.log(`✅ Status da disciplina ${disciplineId} atualizado para ${newStatus}`);
-      
+      console.log('Status da disciplina atualizado com sucesso');
     } catch (error) {
-      console.error('❌ Erro ao atualizar status da disciplina:', error);
-      
-      // Reverter mudança local em caso de erro
-      setDisciplinesStatus(prev => ({
-        ...prev,
-        [disciplineId]: prev[disciplineId] === 'active' ? 'inactive' : 'active'
-      }));
-      
       console.error('Erro ao atualizar status da disciplina');
     }
   };
 
   // Funções de paginação
   const handlePreviousPage = () => {
-    if (pagination.currentPage > 1 && !paginationLoading) {
-      console.log('🔄 Disciplinas - Iniciando loading paginação - Página anterior');
-      setPaginationLoading(true);
+    if (pagination.currentPage > 1) {
       setCurrentPage(prev => prev - 1);
     }
   };
 
   const handleNextPage = () => {
-    if (pagination.currentPage < pagination.totalPages && !paginationLoading) {
-      console.log('🔄 Disciplinas - Iniciando loading paginação - Próxima página');
-      setPaginationLoading(true);
+    if (pagination.currentPage < pagination.totalPages) {
       setCurrentPage(prev => prev + 1);
     }
   };
 
   const handlePageChange = (page: number) => {
-    if (!paginationLoading) {
-      console.log('🔄 Disciplinas - Iniciando loading paginação - Página:', page);
-      setPaginationLoading(true);
-      setCurrentPage(page);
-    }
+    setCurrentPage(page);
   };
 
   return (
     <div 
-      className="admin-disciplines-container"
+      className="admin-disciplines-content"
       style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: '24px',
-        padding: '48px 80px 0',
-        minHeight: 'calc(100vh - 120px)',
-        maxWidth: '1440px',
-        margin: '0 auto',
+        gap: '48px',
         width: '100%'
       }}
     >
       {/* Header Section */}
-      <AdminDisciplinesHeader 
+      <AdminDisciplinesHeader
         totalCount={pagination.totalItems}
         onDisciplineCreated={fetchDisciplines}
+        onModalSuccess={handleModalSuccess}
       />
+      
 
       {/* Tabs and Search Row */}
-      <div 
+      <div
         className="tabs-search-row"
         style={{
           display: 'flex',
@@ -275,266 +264,38 @@ export const AdminDisciplinesContent: React.FC = () => {
       {/* Disciplines Grid */}
       {loading ? (
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(410px, 1fr))',
+          display: 'flex',
+          flexWrap: 'wrap',
           gap: '24px',
           width: '100%',
           minHeight: '572px'
         }}>
           {Array.from({ length: 5 }, (_, index) => (
-            <div
-              key={index}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '24px',
-                padding: '16px',
-                background: '#252532',
-                border: '1px solid #2C2C45',
-                borderRadius: '12px',
-                width: '410.67px',
-                height: '400px'
-              }}
-            >
-              {/* Header skeleton */}
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignSelf: 'stretch',
-                gap: '16px'
-              }}>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  alignSelf: 'stretch',
-                  gap: '24px',
-                  padding: '16px',
-                  background: '#191923',
-                  borderRadius: '8px'
-                }}>
-                  <div style={{
-                    width: '20px',
-                    height: '20px',
-                    background: 'linear-gradient(90deg, #363946 25%, #2D2D45 50%, #363946 75%)',
-                    backgroundSize: '200% 100%',
-                    animation: 'shimmer 1.5s infinite',
-                    borderRadius: '6px'
-                  }} />
-                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    <div style={{
-                      width: '60%',
-                      height: '16px',
-                      background: 'linear-gradient(90deg, #363946 25%, #2D2D45 50%, #363946 75%)',
-                      backgroundSize: '200% 100%',
-                      animation: 'shimmer 1.5s infinite',
-                      borderRadius: '4px'
-                    }} />
-                    <div style={{
-                      width: '40%',
-                      height: '12px',
-                      background: 'linear-gradient(90deg, #363946 25%, #2D2D45 50%, #363946 75%)',
-                      backgroundSize: '200% 100%',
-                      animation: 'shimmer 1.5s infinite',
-                      borderRadius: '4px'
-                    }} />
-                  </div>
-                </div>
-                
-                {/* Content skeleton */}
-                {Array.from({ length: 3 }, (_, i) => (
-                  <div key={i} style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    alignSelf: 'stretch',
-                    gap: '6px'
-                  }}>
-                    <div style={{
-                      width: '30%',
-                      height: '14px',
-                      background: 'linear-gradient(90deg, #363946 25%, #2D2D45 50%, #363946 75%)',
-                      backgroundSize: '200% 100%',
-                      animation: 'shimmer 1.5s infinite',
-                      borderRadius: '4px'
-                    }} />
-                    <div style={{
-                      width: '40%',
-                      height: '14px',
-                      background: 'linear-gradient(90deg, #363946 25%, #2D2D45 50%, #363946 75%)',
-                      backgroundSize: '200% 100%',
-                      animation: 'shimmer 1.5s infinite',
-                      borderRadius: '4px'
-                    }} />
-                  </div>
-                ))}
-              </div>
-              
-              {/* Actions skeleton */}
-              <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignSelf: 'stretch',
-                gap: '16px'
-              }}>
-                <div style={{
-                  flex: 1,
-                  height: '40px',
-                  background: 'linear-gradient(90deg, #363946 25%, #2D2D45 50%, #363946 75%)',
-                  backgroundSize: '200% 100%',
-                  animation: 'shimmer 1.5s infinite',
-                  borderRadius: '8px'
-                }} />
-                <div style={{
-                  width: '40px',
-                  height: '40px',
-                  background: 'linear-gradient(90deg, #363946 25%, #2D2D45 50%, #363946 75%)',
-                  backgroundSize: '200% 100%',
-                  animation: 'shimmer 1.5s infinite',
-                  borderRadius: '8px'
-                }} />
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : paginationLoading ? (
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(410px, 1fr))',
-          gap: '24px',
-          width: '100%',
-          minHeight: '572px'
-        }}>
-          {Array.from({ length: 5 }, (_, index) => (
-            <div
-              key={index}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '24px',
-                padding: '16px',
-                background: '#252532',
-                border: '1px solid #2C2C45',
-                borderRadius: '12px',
-                width: '410.67px',
-                height: '400px'
-              }}
-            >
-              {/* Header skeleton */}
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignSelf: 'stretch',
-                gap: '16px'
-              }}>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  alignSelf: 'stretch',
-                  gap: '24px',
-                  padding: '16px',
-                  background: '#191923',
-                  borderRadius: '8px'
-                }}>
-                  <div style={{
-                    width: '20px',
-                    height: '20px',
-                    background: 'linear-gradient(90deg, #363946 25%, #2D2D45 50%, #363946 75%)',
-                    backgroundSize: '200% 100%',
-                    animation: 'shimmer 1.5s infinite',
-                    borderRadius: '6px'
-                  }} />
-                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    <div style={{
-                      width: '60%',
-                      height: '16px',
-                      background: 'linear-gradient(90deg, #363946 25%, #2D2D45 50%, #363946 75%)',
-                      backgroundSize: '200% 100%',
-                      animation: 'shimmer 1.5s infinite',
-                      borderRadius: '4px'
-                    }} />
-                    <div style={{
-                      width: '40%',
-                      height: '12px',
-                      background: 'linear-gradient(90deg, #363946 25%, #2D2D45 50%, #363946 75%)',
-                      backgroundSize: '200% 100%',
-                      animation: 'shimmer 1.5s infinite',
-                      borderRadius: '4px'
-                    }} />
-                  </div>
-                </div>
-                
-                {/* Content skeleton */}
-                {Array.from({ length: 3 }, (_, i) => (
-                  <div key={i} style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    alignSelf: 'stretch',
-                    gap: '6px'
-                  }}>
-                    <div style={{
-                      width: '30%',
-                      height: '14px',
-                      background: 'linear-gradient(90deg, #363946 25%, #2D2D45 50%, #363946 75%)',
-                      backgroundSize: '200% 100%',
-                      animation: 'shimmer 1.5s infinite',
-                      borderRadius: '4px'
-                    }} />
-                    <div style={{
-                      width: '40%',
-                      height: '14px',
-                      background: 'linear-gradient(90deg, #363946 25%, #2D2D45 50%, #363946 75%)',
-                      backgroundSize: '200% 100%',
-                      animation: 'shimmer 1.5s infinite',
-                      borderRadius: '4px'
-                    }} />
-                  </div>
-                ))}
-              </div>
-              
-              {/* Actions skeleton */}
-              <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignSelf: 'stretch',
-                gap: '16px'
-              }}>
-                <div style={{
-                  flex: 1,
-                  height: '40px',
-                  background: 'linear-gradient(90deg, #363946 25%, #2D2D45 50%, #363946 75%)',
-                  backgroundSize: '200% 100%',
-                  animation: 'shimmer 1.5s infinite',
-                  borderRadius: '8px'
-                }} />
-                <div style={{
-                  width: '40px',
-                  height: '40px',
-                  background: 'linear-gradient(90deg, #363946 25%, #2D2D45 50%, #363946 75%)',
-                  backgroundSize: '200% 100%',
-                  animation: 'shimmer 1.5s infinite',
-                  borderRadius: '8px'
-                }} />
-              </div>
-            </div>
+            <AdminEntitySkeleton key={index} />
           ))}
         </div>
       ) : (
-        <AdminDisciplinesGrid
-          disciplines={filteredDisciplines}
-          disciplinesStatus={disciplinesStatus}
-          onViewDiscipline={handleViewDiscipline}
-          onEdit={handleEditDiscipline}
-          onAddSubjects={handleAddSubjects}
-          onDuplicate={handleDuplicateDiscipline}
-          onDelete={handleDeleteDiscipline}
-          onToggleCheckbox={handleToggleCheckbox}
-          onToggleStatus={handleToggleStatus}
-          checkedDisciplines={checkedDisciplines}
-          onAddDiscipline={handleAddDiscipline}
-        />
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '24px',
+          width: '100%',
+          minHeight: '572px'
+        }}>
+          <AdminDisciplinesGrid
+            disciplines={filteredDisciplines}
+            disciplinesStatus={disciplinesStatus}
+            onViewDiscipline={handleViewDiscipline}
+            onEdit={handleEditDiscipline}
+            onAddSubjects={handleAddSubjects}
+            onDuplicate={handleDuplicateDiscipline}
+            onDelete={handleDeleteDiscipline}
+            onToggleCheckbox={handleToggleCheckbox}
+            onToggleStatus={handleToggleStatus}
+            checkedDisciplines={checkedDisciplines}
+            onAddDiscipline={handleAddDiscipline}
+          />
+        </div>
       )}
 
       {/* Pagination */}
@@ -548,14 +309,12 @@ export const AdminDisciplinesContent: React.FC = () => {
         />
       )}
 
-      {/* Modal de Cadastro de Disciplina */}
+      {/* Modals */}
       <DisciplineRegistrationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSuccess={handleModalSuccess}
       />
-
-      {/* Modal de Edição de Disciplina */}
       {selectedDisciplineId && editInitialData && (
         <DisciplineRegistrationModal
           isOpen={isEditModalOpen}
@@ -570,29 +329,34 @@ export const AdminDisciplinesContent: React.FC = () => {
           initialData={editInitialData}
         />
       )}
+      {selectedDisciplineId && (
+        <DisciplineViewModal
+          isOpen={isViewModalOpen}
+          onClose={() => {
+            setIsViewModalOpen(false);
+            setSelectedDisciplineId(null);
+          }}
+          disciplineId={selectedDisciplineId}
+          onEditSuccess={handleEditSuccess}
+        />
+      )}
 
-             {/* Modal de Visualização de Disciplina */}
-             {selectedDisciplineId && (
-               <DisciplineViewModal
-                 isOpen={isViewModalOpen}
-                 onClose={() => {
-                   setIsViewModalOpen(false);
-                   setSelectedDisciplineId(null);
-                 }}
-                 disciplineId={selectedDisciplineId}
-               />
-             )}
+      {/* Notificações */}
+      <SuccessNotification
+        isOpen={showSuccessNotification}
+        onClose={() => setShowSuccessNotification(false)}
+        title="Sucesso!"
+        message={successMessage}
+      />
       
-      <style>{`
-        @keyframes shimmer {
-          0% {
-            background-position: -200% 0;
-          }
-          100% {
-            background-position: 200% 0;
-          }
-        }
-      `}</style>
+      <ErrorNotification
+        isOpen={showErrorNotification}
+        onClose={() => setShowErrorNotification(false)}
+        title="Erro"
+        message={errorMessage}
+        autoCloseDelay={5000}
+      />
+
     </div>
   );
 };
