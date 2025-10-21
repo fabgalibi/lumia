@@ -73,17 +73,17 @@ export const PlanRegistrationModal: React.FC<PlanRegistrationModalProps> = ({
     }
     
     .custom-scrollbar::-webkit-scrollbar {
-      width: 6px;
+      width: 8px;
     }
     
     .custom-scrollbar::-webkit-scrollbar-track {
       background: transparent;
-      margin: 0 0 0 2px;
+      margin: 0 0 0 12px;
     }
     
     .custom-scrollbar::-webkit-scrollbar-thumb {
       background: #4A4D56;
-      border-radius: 3px;
+      border-radius: 4px;
       border: 1px solid #2D2D3B;
     }
     
@@ -197,7 +197,7 @@ export const PlanRegistrationModal: React.FC<PlanRegistrationModalProps> = ({
               gap: '20px',
               flex: 1,
               overflowY: 'auto',
-              paddingRight: '0px'
+              paddingRight: '16px'
             }}
           >
             {/* Nome do plano */}
